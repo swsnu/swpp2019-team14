@@ -1,0 +1,53 @@
+body{
+    padding: 200px;
+    padding-top: 50px;
+    padding-bottom: 0px;
+}
+.login_form{
+    padding: 20%;
+    padding-top: 10%;
+}
+.Login{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.Login input{
+    align-self: center;
+}
+.Login label{
+    position: absolute;
+    left: 30%;
+}
+.Login button{
+    align-items: center;
+    margin-top: 20px;
+    width: 70%;
+}
+.list{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.comments{
+    box-shadow: inset 0 0 0 1px #383c43;
+}
+.logout{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.NewArticle input,
+.NewArticle textarea {
+  display: block;
+  width: 80%;
+  box-sizing: border-box;
+  border: 1px solid black;
+  outline: none;
+  font: inherit;
+  margin: auto;
+}
