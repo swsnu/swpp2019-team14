@@ -1,6 +1,6 @@
 # Booksbridge
 ## Project Requirements and Specification
-### 04/10/2019, Rev. 1.0 - initial version 
+### 05/10/2019, Rev. 1.0 - initial version 
  
 ### Project Abstract
 
@@ -431,8 +431,8 @@ _Acceptance Test_:
 
 ### User Interface Requirements
 
-![](https://github.com/swsnu/swpp2019-team14/blob/master/1.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/2.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/1.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/2.png)
 There are many pages accessible from every page, so we drew separate flows diagram that excludes those pages.
 
 The pages accessible from all pages are as follows:
@@ -446,15 +446,14 @@ The pages accessible from all pages are as follows:
 ### UI drawings for each page
 
 
-![](https://github.com/swsnu/swpp2019-team14/blob/master/3.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/4.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/5.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/6.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/7.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/8.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/9.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/10.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/11.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/12.png)
-![](https://github.com/swsnu/swpp2019-team14/blob/master/13.png)
-
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/3.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/4.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/5.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/6.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/7.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/8.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/9.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/10.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/11.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/12.png)
+![](https://github.com/swsnu/swpp2019-team14/blob/master/wiki/13.png)
