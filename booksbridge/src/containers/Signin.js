@@ -5,7 +5,7 @@ import './containers.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 
-class Login extends Component {
+class Signin extends Component {
   state = {
     email: '',
     password: '',
@@ -56,7 +56,11 @@ class Login extends Component {
           <Button
             variant="primary"
             id="login-button"
-            onClick={() => this.LoginHandler()}>Submit</Button>
+            onClick={() => this.LoginHandler()}>Sign in</Button>
+          <Button
+            variant="primary"
+            id="signup-button"
+            onClick={() => this.props.history.push('/sign-up/')}>Sign up</Button>
         </Form>
       </div>
     );
@@ -73,4 +77,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Signin));

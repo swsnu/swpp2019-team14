@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { connectRouter, ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-import Login from './Login';
+import Signin from './Signin';
 import { getMockStore } from '../test-utils/mocks';
 import { history } from '../store/store';
 import * as actionCreators from '../store/actions/actionCreators';
@@ -14,7 +14,7 @@ const stubInitialState = {
 
 const mockStore = getMockStore(stubInitialState);
 
-describe('<Login />', () => {
+describe('<Signin />', () => {
   let login, spyGetUsers;
   beforeEach(() => {
     login = (

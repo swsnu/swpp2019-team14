@@ -11,6 +11,13 @@ export const getUsers = () => {
   };
 };
 
+export const postUser = (user) => {
+  return dispatch => {
+    return axios.post('/api/user/',user)
+    .then(res=> dispatch({type: actionTypes.POST_USER, user: res.data}))
+  }
+}
+
 export const toggleLoginInfo = (User) => {
   return dispatch => {
     return axios.patch('/api/user/' + User.id, { logged_in: !User.logged_in })

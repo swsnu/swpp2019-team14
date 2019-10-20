@@ -9,5 +9,6 @@ export {
   getComments,
   addComment,
   editComment,
-  deleteComment
+  deleteComment,
+  postUser
 } from './actionCreators';

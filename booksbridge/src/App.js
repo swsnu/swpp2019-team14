@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 
-import Login from './containers/Login';
+import Signin from './containers/Signin';
+import Signup from './containers/Signup';
 import Create from './containers/Create'
 import Main from './containers/Main'
 import { Route, Redirect, Switch } from 'react-router-dom';
@@ -13,8 +14,8 @@ function App(props) {
     <ConnectedRouter history={props.history}>
       <div className="App" >
         <Switch>
-          <Route path='/login' exact render={() => <Login />} />
-          <Route path='/sign-up' exact component={Create} />
+          <Route path='/sign-in' exact render={() => <Signin />} />
+          <Route path='/sign-up' exact component={Signup} />
           <Route path='/main' exact component={Main} />
           <Route path='/result/' exact component={Create} />
           <Route path='/page/:user_id' exact component={Create} />
@@ -28,7 +29,7 @@ function App(props) {
           <Route path='/curation/create' exact component={Create} />
           <Route path='/curation/:user_id/:curation_id' exact component={Create} />
           <Route path='/curation/:user_id/:curation_id/edit' exact component={Create} />
-          <Redirect from='/' to='/login' />
+          <Redirect from='/' to='/sign-in' />
         </Switch>
       </div >
     </ConnectedRouter>
