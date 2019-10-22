@@ -3,8 +3,9 @@ import './App.css';
 
 import Signin from './containers/Signin';
 import Signup from './containers/Signup';
-import Create from './containers/Create'
-import Main from './containers/Main'
+import Create from './containers/Create';
+import Main from './containers/Main';
+import BookDetail from './containers/BookDetail';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -23,6 +24,7 @@ function App(props) {
           <Route path='/page/:user_id/curation-list' exact component={Create} />
           <Route path='/review' exact component={Create} />
           <Route path='/review/create' exact component={Create} />
+          <Route path='/book/:book_id' exact component={BookDetail} />
           <Route path='/book/:book_id/:review_id/' exact component={Create} />
           <Route path='/book/:book_id/:review_id/edit' exact component={Create} />
           <Route path='/curation/' exact component={Create} />
