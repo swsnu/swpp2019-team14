@@ -19,7 +19,7 @@ class Signup extends Component {
   }
 
   onClickSignUpButton = () => {
-    this.props.onAddUser(this.props.state.email, this.props.state.password);
+    this.props.onAddUser(this.state.email, this.state.password);
   };
 
   render() {
