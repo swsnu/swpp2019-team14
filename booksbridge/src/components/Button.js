@@ -4,15 +4,15 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';  // this gives warning (type checking)
 
-const Button = (props) => {
+const myButton = (props) => {
     const { id, content, onClick } = props; 
     return <Button id={id} onClick={onClick}>{content}</Button>
 }
 
-Button.propTypes = {
-    id: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-    onClick: PropTypes.function.isRequired
-}
+// myButton.propTypes = {
+//     id: PropTypes.string.isRequired,
+//     content: PropTypes.string.isRequired,
+//     onClick: PropTypes.function.isRequired
+// }
 
-export default Button;
+export default myButton;

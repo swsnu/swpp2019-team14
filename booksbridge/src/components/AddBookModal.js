@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Button from './Button';
 
 class AddBookModal extends Component {
 
     state = {
-        searchKeyword = "",
-        searchedBookList = [],
+        searchKeyword : "",
+        searchedBookList : [],
         book: "", 
     }
 
@@ -27,9 +28,9 @@ class AddBookModal extends Component {
         const ADD_BOOK = this.props.show &&
                         <div id="add-book-modal">
                             <input id="search-book" onChange={(event) => this.setState({ searchKeyword: event.target.value })}/> 
-                            <Button id="search-book-button" content="Search" onClick={() => this.props.onClickSearchBookButton()}/>
+                            <Button id="search-book-button" content="Search" onClick={() => this.onClickSearchBookButton()}/>
                             {bookList}
-                            <Button id="choose-book-button" content="Choose" onClick={() => this.props.onClickChooseBookButton()}/>
+                            <Button id="choose-book-button" content="Choose" onClick={() => this.onClickChooseBookButton()}/>
                         </div>
         return ADD_BOOK; 
     }

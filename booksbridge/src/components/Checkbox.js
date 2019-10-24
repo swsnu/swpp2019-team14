@@ -15,10 +15,10 @@ const Checkbox = (props) => {
     )
 }
 
-Button.propTypes = {
-    id: ProTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-    onClick: PropTypes.function.isRequired
-}
+// Button.propTypes = {
+//     id: PropTypes.string.isRequired,
+//     content: PropTypes.string.isRequired,
+//     onClick: PropTypes.function.isRequired
+// }
 
 export default Checkbox;

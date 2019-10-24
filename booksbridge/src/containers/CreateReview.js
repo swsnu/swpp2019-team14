@@ -52,6 +52,10 @@ addedBook = (book_id) => {
 
 
 render() {
+    const quote = !this.state.ocr && 
+                  <Button id="quote" content="Quote" onClick={() => this.setState({ ocr: !this.state.ocr })}/>;
+    const addBook = !this.state.add_book &&  
+                    <Button id="add-book" content="Add Book" onClick={()=> this.setState({ add_book: !this.state.add_book })}/>;
    
     return (
       <div className='CreateReview'>
@@ -68,11 +72,11 @@ render() {
         </div>
 
         <div id="review-write-section">
-            <Button id="add-book" content="Add Book" onClick={()=> this.setState({ add_book: !this.state.add_book })}/>
-            <AddBookModal id="add-book-modal" show={this.state.add_book} whenDone={() => addedBook(book_id)}/>
+            {addBook}
+            <AddBookModal id="add-book-modal" show={this.state.add_book} whenDone={(book_id) => this.addedBook(book_id)}/>
             <input id="review-title" onChange={(event) => this.setState({ title: event.target.value })}/>
             <textarea id="review-content" onChange={(event) => this.setState({ content: event.target.value })}/>
-            <Button id="quote" content="Quote" onClick={() => this.setState({ ocr: !this.state.ocr })}/>
+            {quote}
             <OCRModal id="ocr-modal" show={this.state.ocr} whenDone={() => this.setState({ ocr: !this.state.ocr })}/>  
             <Button id="create-review" content="Create" onClick={()=>this.onClickCreateButton()}/>
         </div>        

@@ -1,6 +1,7 @@
 // this is modal (popup box) such as that in email-write box in Gmail
 // to be used in OCR feature
 
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import Button from './Button';
 
@@ -31,7 +32,7 @@ class OCRModal extends Component {
     render() {
         const OCR = this.props.show &&
                     <div id="ocr-modal">
-                        <Button id="upload-page-picture" content="Upload Picture" onClick={() => this.onClickAddPictureButton()}/>
+                        <Button id="upload-page-picture" content="Upload Picture" onClick={() => this.onClickUploadPictureButton()}/>
                         <Button id="run-ocr" content="Run" onClick={() => this.onClickRunOcrButton()}/>
                         <textarea id="ocr-text" value={this.state.ocrText}/> 
                         <Button id="close-ocr-feature" content="close" onClick={() => this.onClickCloseButton()}/> 
