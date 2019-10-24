@@ -19,7 +19,7 @@ function App(props) {
           <Route path='/sign-in' exact render={() => <Signin />} />
           <Route path='/sign-up' exact component={Signup} />
           <Route path='/main' exact component={Main} />
-          <Route path='/result/' exact component={Create} />
+          <Route path='/result/search=:keyword' exact component={Create} />
           <Route path='/page/:user_id' exact component={Create} />
           <Route path='/page/:user_id/library' exact component={Create} />
           <Route path='/page/:user_id/curation-list' exact component={Create} />

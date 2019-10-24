@@ -11,12 +11,19 @@ import thunk from 'redux-thunk';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 
+import curationReducer from './store/reducers/curation'
+import longReviewReducer from './store/reducers/longReview'
+import phraseReducer from './store/reducers/phrase'
+import shortReviewReducer from './store/reducers/shortReview'
+import userReducer from './store/reducers/user'
 
 const history = createBrowserHistory();
 const rootReducer = combineReducers({
-  // user: userReducer,
-  // list: articlesReducer,
-  // com: commentsReducer,
+  user: userReducer,
+  curation: curationReducer,
+  longReview: longReviewReducer,
+  phrase: phraseReducer,
+  shortReview: shortReviewReducer,
   router: connectRouter(history),
 });
 
