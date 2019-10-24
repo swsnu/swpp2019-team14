@@ -1,12 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Header.css';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Alert from 'react-bootstrap/Alert';
+import {withRouter} from 'react-router-dom';
 
 const Header = (props) => {
 
+    const [search_input, setSearchInput] = useState('');
+
+    const onSearch = () => {
+        props.history.push('/result/search='+search_input);
+    };
 
     return (
         <div className="header">
@@ -19,12 +25,13 @@ const Header = (props) => {
                     <FormControl
                         aria-describedby="basic-addon2"
                         type="text"
+                        value={search_input}
+                        onChange={({target:{value}})=>setSearchInput(value)}
                     />
                     <InputGroup.Append>
                         <Button
                             variant="outline-secondary"
-                            onClick={() => {
-                            }}
+                            onClick={() => onSearch()}
                         >Search</Button>
                     </InputGroup.Append>
                 </InputGroup>
@@ -36,4 +43,4 @@ const Header = (props) => {
     );
 };
 
-export default Header;
+export default withRouter(Header);
