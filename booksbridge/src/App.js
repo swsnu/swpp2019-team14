@@ -4,6 +4,7 @@ import './App.css';
 import Signin from './containers/Signin';
 import Signup from './containers/Signup';
 import Create from './containers/Create';
+import CreateReview from './containers/CreateReview';
 import Main from './containers/Main';
 import BookDetail from './containers/BookDetail';
 import { Route, Redirect, Switch } from 'react-router-dom';
@@ -18,12 +19,12 @@ function App(props) {
           <Route path='/sign-in' exact render={() => <Signin />} />
           <Route path='/sign-up' exact component={Signup} />
           <Route path='/main' exact component={Main} />
-          <Route path='/result/' exact component={Create} />
+          <Route path='/result/search=:keyword' exact component={Create} />
           <Route path='/page/:user_id' exact component={Create} />
           <Route path='/page/:user_id/library' exact component={Create} />
           <Route path='/page/:user_id/curation-list' exact component={Create} />
           <Route path='/review' exact component={Create} />
-          <Route path='/review/create' exact component={Create} />
+          <Route path='/review/create' exact component={CreateReview} />
           <Route path='/book/:book_id' exact component={BookDetail} />
           <Route path='/book/:book_id/:review_id/' exact component={Create} />
           <Route path='/book/:book_id/:review_id/edit' exact component={Create} />
