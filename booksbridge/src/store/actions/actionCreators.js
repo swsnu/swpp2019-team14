@@ -7,7 +7,7 @@ export const postUser = (user) => {
   return dispatch => {
     return axios.post('/api/user/', user)
       .then(res => dispatch({
-        type: actionTypes.POST_USER,
+        type: actionTypes.POST_NEW_USER,
         user: res.data
       }))
   }
@@ -214,7 +214,7 @@ export const getLongReviewLike = (id) => {
   return dispatch => {
     return axios.get('/api/review_long/' + id + '/')
       .then(res => dispatch({
-        type: actionTypes.GET_LONG_REIVEW_LIKE,
+        type: actionTypes.GET_LONG_REVIEW_LIKE,
         like: res.data
       }))
   }
@@ -477,7 +477,7 @@ export const getSpecificLongReviewComment = (id) => {
 // export const EDIT_SPECIFIC_LONG_REVIEW_COMMENT  = 'EDIT_SPECIFIC_LONG_REVIEW_COMMENT'
 export const editSpecificLongReviewComment = (comment) => {
   return dispatch => {
-    return axios.put('/api/comment/long_review/' + id + '/', comment)
+    return axios.put('/api/comment/long_review/' + comment.id + '/', comment)
       .then(res => dispatch({
         type: actionTypes.EDIT_SPECIFIC_LONG_REVIEW_COMMENT,
         comment: res.data
@@ -528,7 +528,7 @@ export const getSpecificCurationComment = (id) => {
 // export const EDIT_SPECIFIC_CURATION_COMMENT  = 'EDIT_SPECIFIC_CURATION_COMMENT'
 export const editSpecificCurationComment = (comment) => {
   return dispatch => {
-    return axios.put('/api/comment/curation/' + id + '/', comment)
+    return axios.put('/api/comment/curation/' + comment.id + '/', comment)
       .then(res => dispatch({
         type: actionTypes.EDIT_SPECIFIC_CURATION_COMMENT,
         comment: res.data
