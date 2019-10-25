@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 
 import Header from '../components/Header';
 import BookInfo from '../components/BookInfo';
+import BookTabs from '../components/BookTabs';
 
 class BookDetail extends Component {
 
@@ -18,11 +19,30 @@ class BookDetail extends Component {
   }
 
   render() {
+    const containerStyle = {
+      display: 'flex',
+      justifyContent: 'center',
+    }
+
+    const tabStyle = {
+      textAlign: 'center',
+      left: '40%',
+      right: '40%',
+      position: 'absolute',
+      height: 'auto',
+      width: '500px',
+    }
+
     return (
       <div className='main'>
         <Header />
         <h1>Book Detail</h1>
-        <BookInfo />
+        <div style={containerStyle}>
+          <BookInfo />
+        </div>
+        <div style={tabStyle}>
+          <BookTabs />
+        </div>
       </div>
     );
   } 
