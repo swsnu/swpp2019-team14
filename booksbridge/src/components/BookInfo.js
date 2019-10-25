@@ -5,10 +5,9 @@ import { withRouter } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 import Image from 'react-bootstrap/Image';
 
-
 import * as actionCreators from '../store/actions/actionCreators';
 
-//import './BookInfo.css';
+import './BookInfo.css';
 
 class BookInfo extends Component{
   constructor(props) {
@@ -18,26 +17,6 @@ class BookInfo extends Component{
 
   render(){
     console.log('[DEBUG] match: ' + this.props.match);
-
-    const containerStyle = {
-      height: '500px',
-      width: '800px',
-      border: '1px solid gray',
-    };
-
-    const imageStyle = {
-      height: '500px',
-      width: 'auto',
-      textAlign: 'left',
-      padding: '20px',
-    };
-
-    const infoStyle = {
-      height: '500px',
-      width: '400px',
-      textAlign: 'right',
-      padding: '20px',
-    };
     
     const titleStyle = {};
     const authorStyle = {};
@@ -54,23 +33,35 @@ class BookInfo extends Component{
 
     const isbn = this.props.match.params.book_id;
     const title = this.props.currentBook.title;
-    const author = this.props.currentBook.author;
+    const authors = this.props.currentBook.authors.replace(/\['/, '').replace(/'\]/, '').replace(/', '/, ', ');
     const publisher = this.props.currentBook.publisher;
     const publishedDate = this.props.currentBook.datetime;
     const thumbnail = this.props.currentBook.thumbnail;
     
+    console.log("[DEBUG] isbn: " + isbn);
+    console.log("[DEBUG] title: " + title);
+    console.log("[DEBUG] author: " + authors);
+    console.log("[DEBUG] publisher: " + publisher);
+    console.log("[DEBUG] publishedDate: " + publishedDate);
 
     return (
-      <div style={containerStyle}>
-        <div className="image" style={{textAlign: 'left'}}>
+      <div className='containerStyle'>
+        <div style={{textAlign: 'left'}}>
           <Image 
             src={thumbnail}
-            style={imageStyle}
+            className='imageStyle'
           />
         </div>
-        <div className="info" style={{textAlign: 'right'}}>
-          <div style={infoStyle}>
-            
+
+        <div style={{textAlign: 'right'}}>
+          <div className='infoStyle'>
+          <div>
+          <p>isbn: {isbn}</p>
+          <p>title: {title}</p>
+          <p>author(s): {authors}</p>
+          <p>publisher: {publisher}</p>
+          <p>publishedDate: {publishedDate}</p>
+        </div>
           </div>
         </div>
       </div>

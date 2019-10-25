@@ -5,6 +5,8 @@ import { withRouter } from 'react-router';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
+import './BookTab.css';
+
 class BookTabs extends Component {
   componentDidMount(){
 
@@ -15,14 +17,6 @@ class BookTabs extends Component {
   }
 
   render(){
-    const containerStyle = {
-        display: 'flex',
-        justifyContent: 'center',
-    }
-
-    const tabStyle = {
-      textAlign: 'center',
-    }
 
     const cityUponAHill = 'Now the only way to avoid this shipwreck, and to provide for our posterity, is to follow the counsel of Micah, to do justly, to love mercy, to walk humbly with our God. For this end, we must be knit together, in this work, as one man. We must entertain each other in brotherly affection. We must be willing to abridge ourselves of our superfluities, for the supply of others’ necessities. We must uphold a familiar commerce together in all meekness, gentleness, patience and liberality. We must delight in each other; make others’ conditions our own; rejoice together, mourn together, labor and suffer together, always having before our eyes our commission and community in the work, as members of the same body. So shall we keep the unity of the spirit in the bond of peace. The Lord will be our God, and delight to dwell among us, as His own people, and will command a blessing upon us in all our ways, so that we shall see much more of His wisdom, power, goodness and truth, than formerly we have been acquainted with. We shall find that the God of Israel is among us, when ten of us shall be able to resist a thousand of our enemies; when He shall make us a praise and glory that men shall say of succeeding plantations, “may the Lord make it like that of New England.” For we must consider that we shall be as a city upon a hill. The eyes of all people are upon us. So that if we shall deal falsely with our God in this work we have undertaken, and so cause Him to withdraw His present help from us, we shall be made a story and a by-word through the world. We shall open the mouths of enemies to speak evil of the ways of God, and all professors for God’s sake. We shall shame the faces of many of God’s worthy servants, and cause their prayers to be turned into curses upon us till we be consumed out of the good land whither we are going.';
     const theArmySong = 'March along, sing our song, with the Army of the free\nCount the brave, count the true, who have fought to victory\nWe\'re the Army and proud of our name\nWe\'re the Army and proudly proclaim\nFirst to fight for the right,\nAnd to build the Nation\'s might,\nAnd The Army Goes Rolling Along\nProud of all we have done,\nFighting till the battle\'s won,\nAnd the Army Goes Rolling Along.\nThen it\'s Hi! Hi! Hey!\nThe Army\'s on its way.\nCount off the cadence loud and strong!\nFor where e\'er we go, You will always know\nThat The Army Goes Rolling Along.';

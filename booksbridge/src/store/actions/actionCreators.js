@@ -555,6 +555,9 @@ export const getCommentsByCurationID = (id) => {
       }));
   };
 };
+
+/////////////////////////////////// Library ////////////////////////////////////
+
 // export const POST_LIBRARY = 'POST_LIBRARY'
 export const postLibrary = (library) => {
   return dispatch => {
@@ -594,6 +597,8 @@ export const deleteSpecificLibrary = (id) => {
       }));
   };
 };
+
+////////////////////////////////////// FOLLOW ///////////////////////////////////
 
 // export const FOLLOW_USER = 'FOLLOW_USER'
 export const followUser = (userid) => {

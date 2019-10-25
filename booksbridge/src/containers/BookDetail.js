@@ -1,13 +1,17 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import './containers.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 import Header from '../components/Header';
 import BookInfo from '../components/BookInfo';
 import BookTabs from '../components/BookTabs';
+
+import * as actionCreators from '../store/actions/actionCreators';
+
+import './BookDetail.css';
+import './containers.css';
 
 class BookDetail extends Component {
 
@@ -18,21 +22,12 @@ class BookDetail extends Component {
     return nextState;
   }
 
-  render() {
-    const containerStyle = {
-      display: 'flex',
-      justifyContent: 'center',
-    }
+  onCreateReview = () => {
+    console.log('[DEBUG] onCreateReview clicked');
+    this.props.history.push('/review/create');
+  }
 
-    const tabStyle = {
-      textAlign: 'center',
-      left: '40%',
-      right: '40%',
-      position: 'absolute',
-      height: 'auto',
-      width: '500px',
-      padding: '20px',
-    }
+  render() {
 
     //북디테일에서 리뷰버튼을 누르면 CreateReview로 가도록, 즉 /review/create로 가도록 해라
 
@@ -40,10 +35,14 @@ class BookDetail extends Component {
       <div >
         <Header />
         <h1>Book Detail</h1>
-        <div style={containerStyle}>
+        <div className='infoStyle'>
           <BookInfo />
         </div>
-        <div style={tabStyle}>
+        <Button
+          id='create_review_button'
+          onClick={() => this.onCreateReview()}
+        >Create a Review!</Button>
+        <div className='tabStyle'>
           <BookTabs /> 
         </div>
       </div>

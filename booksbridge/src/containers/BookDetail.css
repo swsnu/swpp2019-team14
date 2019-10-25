@@ -1,0 +1,16 @@
+.infoStyle {
+    height: auto;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px;
+    width: 800px;
+}

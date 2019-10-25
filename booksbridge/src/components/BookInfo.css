@@ -1,0 +1,20 @@
+.containerStyle {
+  height: 240px;
+  width: 800px;
+  border: 1px solid gray;
+  text-align: center;
+}
+
+.imageStyle {
+  height: auto;
+  width: 160;
+  text-align: center;
+  padding: 20px;
+}
+
+.infoStyle {
+  height: 500px;
+  width: auto;
+  text-align: left;
+  padding: 20px;
+};
