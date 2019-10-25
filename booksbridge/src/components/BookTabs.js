@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
@@ -55,4 +56,4 @@ const mapDispatchToProps = (dispatch) => {
     return {};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookTabs);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BookTabs));
