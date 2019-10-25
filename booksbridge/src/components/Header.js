@@ -1,17 +1,17 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './Header.css';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Alert from 'react-bootstrap/Alert';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const Header = (props) => {
 
     const [search_input, setSearchInput] = useState('');
 
     const onSearch = () => {
-        props.history.push('/result/search='+search_input+'/book/1');
+        props.history.push('/result/search=' + search_input + '/book/1');
     };
 
     return (
@@ -26,13 +26,13 @@ const Header = (props) => {
                         aria-describedby="basic-addon2"
                         type="text"
                         value={search_input}
-                        onChange={({target:{value}})=>setSearchInput(value)}
+                        onChange={({ target: { value } }) => setSearchInput(value)}
                         onKeyPress={event => {
                             if (event.key === "Enter") {
                                 onSearch()
                             }
                         }
-                    }
+                        }
                     />
                     <InputGroup.Append>
                         <Button

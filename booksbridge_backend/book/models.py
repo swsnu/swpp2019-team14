@@ -10,6 +10,7 @@ class Book(models.Model):
     thumbnail = models.TextField()
     authors = models.TextField()
     publisher = models.TextField()
+    published_date = models.TextField()
     def __str__(self):
         return str(self.isbn)
 

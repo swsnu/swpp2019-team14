@@ -7,6 +7,32 @@ from .models import Book
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
 
+def signup(request):
+    if request.method == 'POST':
+        req_data = json.loads(request.body.decode())
+        username = req_data['username']
+        password = req_data['password']
+        User.objects.create_user(username,'', password)
+        return HttpResponse(status=201)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def signin(request):
+    if request.method == 'POST':
+        req_data = json.loads(request.body.decode())
+        username = req_data['username']
+        password = req_data['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            user.save()
+            return HttpResponse(status=204)
+        else:
+            return HttpResponse(status=400)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+
 @csrf_exempt
 def searchbooks(request,keyword,page):
     if request.method == 'GET':
@@ -32,17 +58,32 @@ def searchbooks(request,keyword,page):
                         book_dict = model_to_dict(book_in_db)
                         book_response.append(book_dict)
                     except ValueError:
-                        continue
+                        book_in_db = Book.objects.get(isbn = int(book['isbn'][5:]))
+                        book_dict = model_to_dict(book_in_db)
+                        book_response.append(book_dict)
                 except Book.DoesNotExist:
-                    new_book = Book(
-                        isbn = int(book['isbn'][11:]) if (len(book['isbn']) == 24) else int(book['isbn']),
-                        title = book['title'],
-                        contents = book['contents'],
-                        url = book['url'],
-                        thumbnail = book['thumbnail'],
-                        authors = book['authors'],
-                        publisher = book['publisher'],
-                    )
+                    try:
+                        new_book = Book(
+                            isbn = int(book['isbn'][11:]) if (len(book['isbn']) == 24) else int(book['isbn']),
+                            title = book['title'],
+                            contents = book['contents'],
+                            url = book['url'],
+                            thumbnail = book['thumbnail'],
+                            authors = book['authors'],
+                            publisher = book['publisher'],
+                            published_date = book['datetime'][0:9],
+                        )
+                    except ValueError:
+                        new_book = Book(
+                            isbn = int(book['isbn'][5:]),
+                            title = book['title'],
+                            contents = book['contents'],
+                            url = book['url'],
+                            thumbnail = book['thumbnail'],
+                            authors = book['authors'],
+                            publisher = book['publisher'],
+                            published_date = book['datetime'][0:9],
+                        )
                     new_book.save()
                     book_dict = model_to_dict(new_book)
                     book_response.append(book_dict)
@@ -59,9 +100,7 @@ def specific_book(request,isbn):
         book_dict = model_to_dict(book_in_db)
         return JsonResponse(book_dict,status=200)
     else:
-        return HttpResponseNotAllowed
-
-
+        return HttpResponseNotAllowed(['GET'])
 @ensure_csrf_cookie
 def token(request):
     if request.method == 'GET':
