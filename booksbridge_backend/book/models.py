@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 class Book(models.Model):
     isbn = models.BigIntegerField(primary_key=True)
@@ -47,7 +48,7 @@ class Library(models.Model):
 
 class BookInLibrary(models.Model):
     library = models.ForeignKey(Library, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
 class LongReivewComment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -67,7 +68,7 @@ class ShortReviewLike(models.Model):
      
 class LongReivewLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    long_review = models.ForeignKey(LongReivew, on_delete=models.CASCADE)
+    long_review = models.ForeignKey(LongReview, on_delete=models.CASCADE)
 
 class PhraseLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -78,7 +79,7 @@ class CurationLike(models.Model):
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE)
 
 class Follow(models.Model):
-    follower = models.ForeignKey(User, on_delete=models.CASCADE)
-    followee = models.ForeignKey(User, on_delete=models.CASCADE)
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="follower")
+    followee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followee")
 
 
