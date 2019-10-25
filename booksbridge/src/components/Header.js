@@ -27,6 +27,12 @@ const Header = (props) => {
                         type="text"
                         value={search_input}
                         onChange={({target:{value}})=>setSearchInput(value)}
+                        onKeyPress={event => {
+                            if (event.key === "Enter") {
+                                onSearch()
+                            }
+                        }
+                    }
                     />
                     <InputGroup.Append>
                         <Button
