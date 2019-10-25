@@ -11,7 +11,7 @@ const Header = (props) => {
     const [search_input, setSearchInput] = useState('');
 
     const onSearch = () => {
-        props.history.push('/result/search='+search_input);
+        props.history.push('/result/search='+search_input+'/book/1');
     };
 
     return (
