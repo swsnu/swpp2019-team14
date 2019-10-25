@@ -18,12 +18,7 @@ class BookDetail extends Component {
   componentDidMount() {
   }
 
-  static getDerivedStateFromProps(nextProps, nextState) {
-    return nextState;
-  }
-
   onCreateReview = () => {
-    console.log('[DEBUG] onCreateReview clicked');
     this.props.history.push('/review/create');
   }
 

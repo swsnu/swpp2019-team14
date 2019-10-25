@@ -12,9 +12,10 @@ class BookTabs extends Component {
 
   }
 
-  static getDerivedStateFromProps(nextProps, nextState){
-      return nextState;
-  }
+  // static getDerivedStateFromProps(nextProps, nextState){
+  //     return nextState;
+  // }
+  //필요 없을거 같아요 - 한결
 
   render(){
 

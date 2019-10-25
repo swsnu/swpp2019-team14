@@ -6,10 +6,10 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';  // this gives warning (type checking)
 
 const Checkbox = (props) => {
-    const { id, content, onClick } = props; 
+    const { id, content, onClick } = props;
     return (
         <div>
-            <Button id={id} onClick={onClick}/>
+            <Button id={id} onClick={onClick} />
             {content}
         </div>
     )
