@@ -16,9 +16,11 @@ import longReviewReducer from './store/reducers/longReview'
 import phraseReducer from './store/reducers/phrase'
 import shortReviewReducer from './store/reducers/shortReview'
 import userReducer from './store/reducers/user'
+import bookReducer from './store/reducers/book'
 
 const history = createBrowserHistory();
 const rootReducer = combineReducers({
+  book: bookReducer,
   user: userReducer,
   curation: curationReducer,
   longReview: longReviewReducer,
