@@ -1,0 +1,8 @@
+.containerStyle {
+  display: flex;
+  justify-content: center;
+}
+
+.tabStyle {
+  text-align: center;
+}
