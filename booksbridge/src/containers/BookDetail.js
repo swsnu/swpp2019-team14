@@ -31,17 +31,20 @@ class BookDetail extends Component {
       position: 'absolute',
       height: 'auto',
       width: '500px',
+      padding: '20px',
     }
 
+    //북디테일에서 리뷰버튼을 누르면 CreateReview로 가도록, 즉 /review/create로 가도록 해라
+
     return (
-      <div className='main'>
+      <div >
         <Header />
         <h1>Book Detail</h1>
         <div style={containerStyle}>
           <BookInfo />
         </div>
         <div style={tabStyle}>
-          <BookTabs />
+          <BookTabs /> 
         </div>
       </div>
     );
@@ -58,4 +61,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BookDetail));
