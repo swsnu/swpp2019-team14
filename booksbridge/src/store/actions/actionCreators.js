@@ -56,19 +56,20 @@ export const getSearchedUsers = (keyword) => {
 };
 
 // export const GET_SEARCHED_BOOKS = 'GET_SEARCHED_BOOKS'
-export const getSearchedBooks = (keyword,page) => {
+export const getSearchedBooks = (keyword, page) => {
   return dispatch => {
-    return axios.get('/api/book/' + encodeURI(keyword) + '/' + page +'/')
+    return axios.get('/api/book/' + encodeURI(keyword) + '/' + page + '/')
       .then(res => dispatch({
         type: actionTypes.GET_SEARCHED_BOOKS,
-        books: res.data,
+        books: res.data.books,
+        count: res.data.count,
       }));
   };
 };
 // export const GET_SPECIFIC_BOOK = 'GET_SPECIFIC_BOOK'
-export const getSpecificBook = (id) => {
+export const getSpecificBook = (isbn) => {
   return dispatch => {
-    return axios.get('/api/book/' + id + '/')
+    return axios.get('/api/book/' + isbn + '/')
       .then(res => dispatch({
         type: actionTypes.GET_SPECIFIC_BOOK,
         book: res.data,
