@@ -52,6 +52,14 @@ def searchbooks(request,keyword,page):
     else:
         return HttpResponseNotAllowed(['GET','PUT','DELETE']) 
 
+@csrf_exempt
+def specific_book(request,isbn):
+    if request.method == 'GET':
+        book_in_db = Book.objects.get(isbn = isbn)
+        book_dict = model_to_dict(book_in_db)
+        return JsonResponse(book_dict,status=200)
+
+
 @ensure_csrf_cookie
 def token(request):
     if request.method == 'GET':
