@@ -53,11 +53,13 @@ class LongReivewComment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     long_review = models.ForeignKey(LongReview, on_delete=models.CASCADE)
     content = models.TextField()
+    date = models.DateTimeField(default=datetime.now, blank=True)
 
 class CurationComment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE)
     content = models.TextField()
+    date = models.DateTimeField(default=datetime.now, blank=True)
 
 class ShortReviewLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
