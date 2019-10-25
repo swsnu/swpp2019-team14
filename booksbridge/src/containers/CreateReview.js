@@ -19,6 +19,7 @@ class BookDetail extends Component {
     long_review: false, 
     phrase: false,
     add_book: false,
+    book: this.props.selectedBook, // from bookDetail
     ocr: false,
   }
 
@@ -44,7 +45,7 @@ onClickCreateButton = () => {
     }
 }
 
-addedBook = (book_id) => {
+addedBook = (book_id) => {  // this function may become obsolete as we get book from selectedBook in both cases
   this.setState({ add_book: false })
   // get request to /book to get chosen book
 }
@@ -54,9 +55,10 @@ addedBook = (book_id) => {
 render() {
     const quote = !this.state.ocr && 
                   <Button id="quote" content="Quote" onClick={() => this.setState({ ocr: !this.state.ocr })}/>;
-    const addBook = !this.state.add_book &&  
+    const addBook = !this.state.add_book && (this.state.book == null) && 
                     <Button id="add-book" content="Add Book" onClick={()=> this.setState({ add_book: !this.state.add_book })}/>;
-   
+    const book = this.state.book;
+
     return (
       <div className='CreateReview'>
         <Header />
@@ -74,6 +76,7 @@ render() {
         <div id="review-write-section">
             {addBook}
             <AddBookModal id="add-book-modal" show={this.state.add_book} whenDone={(book_id) => this.addedBook(book_id)}/>
+            {book}
             <input id="review-title" onChange={(event) => this.setState({ title: event.target.value })}/>
             <textarea id="review-content" onChange={(event) => this.setState({ content: event.target.value })}/>
             {quote}
@@ -88,6 +91,7 @@ render() {
 
 const mapStateToProps = state => {
   return {
+    selectedBook: state.book.selectedBook,
   };
 }
 
