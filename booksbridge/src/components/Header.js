@@ -16,11 +16,11 @@ const Header = (props) => {
 
     return (
         <div className="header">
-            <div class="logo">
-                <a class="top">BOOKS</a>
-                <a class="bottom">BRIDGE</a>
+            <div className="logo">
+                <a className="top">BOOKS</a>
+                <a className="bottom">BRIDGE</a>
             </div>
-            <div class="search">
+            <div className="search">
                 <InputGroup >
                     <FormControl
                         aria-describedby="basic-addon2"
@@ -36,7 +36,7 @@ const Header = (props) => {
                     </InputGroup.Append>
                 </InputGroup>
             </div>
-            <div class="profile">
+            <div className="profile">
                 <h4>내 프로필</h4>
             </div>
         </div>

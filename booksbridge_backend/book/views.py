@@ -47,7 +47,7 @@ def searchbooks(request,keyword,page):
                     book_dict = model_to_dict(new_book)
                     book_response.append(book_dict)
             response_body={'books':book_response,'count': count}
-            return JsonResponse(json.dumps(response_body,ensure_ascii = False),safe=False)
+            return JsonResponse(response_body) #json.dumps(response_body,ensure_ascii = False))
         return HttpResponse(status=402)
     else:
         return HttpResponseNotAllowed(['GET','PUT','DELETE']) 
@@ -58,6 +58,8 @@ def specific_book(request,isbn):
         book_in_db = Book.objects.get(isbn = isbn)
         book_dict = model_to_dict(book_in_db)
         return JsonResponse(book_dict,status=200)
+    else:
+        return HttpResponseNotAllowed
 
 
 @ensure_csrf_cookie

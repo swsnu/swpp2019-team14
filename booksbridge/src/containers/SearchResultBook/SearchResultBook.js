@@ -6,6 +6,7 @@ import * as actionCreators from '../../store/actions/actionCreators';
 
 const mapStateToProps = state => {
     return {
+        books : state.book.books,
     };
 }
   

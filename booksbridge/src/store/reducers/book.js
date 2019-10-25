@@ -9,7 +9,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_SEARCHED_BOOKS:
-      return { ...state, books: action.books, page: action.count };
+      return { ...state, books: action.books, count: action.count };
     case actionTypes.GET_SPECIFIC_BOOK:
       return { ...state, selectedBook: action.book };
   }
