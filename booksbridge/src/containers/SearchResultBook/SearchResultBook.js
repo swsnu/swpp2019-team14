@@ -41,7 +41,8 @@ class SearchResultBook extends Component {
         let active = parseInt(this.props.match.params.page);
         let items = [];
         let first = active - 2, last = active + 2;
-        const final = parseInt(this.props.count / 10) + 1;
+        let final = parseInt(this.props.count / 10) + 1;
+        if(this.props.count%10===0) final = final-1;
 
         if (final < 5) {
             for (let number = 1; number <= final; number++) {
@@ -69,9 +70,7 @@ class SearchResultBook extends Component {
         const pagination = (
             <div className="pagination">
                 <Pagination>
-                    <Pagination.First onClick={() => this.props.history.push('/result/search=' + this.props.match.params.keyword + '/book/1')} />
                     {items}
-                    <Pagination.Last onClick={() => this.props.history.push('/result/search=' + this.props.match.params.keyword + '/book/' + final)} />
                 </Pagination>
             </div>
         );

@@ -12,12 +12,11 @@ body {
 }
 
 .logo {
+    padding:0.5rem;
     flex: auto;
     justify-content: center;
-    line-height: 28px;
     display: flex;
-    flex-direction: column;
-    font-size: 30px;
+    flex-direction: row;
 }
 
 .logo .top{
