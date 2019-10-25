@@ -1,0 +1,28 @@
+.Summary{
+    display: flex;
+    justify-content: center;
+    padding:1rem;
+    border-bottom: 1px solid rgb(216, 216, 216);
+}
+.inside{
+    display: flex;
+    flex-basis: 600px;
+}
+.book_cover{
+    padding: 1rem;
+    border: 1px solid rgb(216, 216, 216);
+}
+.book_info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.book_summary{
+    text-align: left;
+}
+.book_title{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+}

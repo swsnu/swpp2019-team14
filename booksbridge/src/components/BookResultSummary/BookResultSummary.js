@@ -4,24 +4,32 @@ import { withRouter } from 'react-router';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
+import './BookResultSummary.css';
 
 const BookResultSummary = (props) => {
+
+    let cover;
+    if(props.cover==='') cover = "/images/no_cover.jpg";
+    else cover = props.cover;
+
     return (
-        <div>
-            <Container>
+        <div className="outer">
+            <Container className="Summary">
+                <div className="inside" onClick={()=>props.history.push('/book/'+props.isbn)}>
                 <Row>
-                    <Col>
-                        <Image src={props.cover}/>
+                    <Col md="auto" className="book_cover">
+                        <Image src={cover}/>
                     </Col>
-                    <Col>
-                        <div id="book_title">{props.title}</div>
-                        <div id="book_summary">
+                    <Col className="book_info">
+                        <div className="book_title">{props.title}</div>
+                        <div className="book_summary">
                             {props.authors}
                             <br/>
                             {props.publisher}
                         </div>
                     </Col>
                 </Row>
+                </div>
             </Container>
         </div>
     );

@@ -4,8 +4,8 @@ import { withRouter } from 'react-router';
 import Header from '../../components/Header';
 import * as actionCreators from '../../store/actions/actionCreators';
 import BookResultSummary from '../../components/BookResultSummary/BookResultSummary';
-import PageItem from 'react-bootstrap/PageItem';
 import Pagination from 'react-bootstrap/Pagination';
+import './SearchResultBook.css';
 
 const mapStateToProps = state => {
     return {
@@ -67,12 +67,11 @@ class SearchResultBook extends Component {
         }
 
         const pagination = (
-            <div>
-                <br />
+            <div className="pagination">
                 <Pagination>
-                <Pagination.First onClick={()=>this.props.history.push('/result/search=' + this.props.match.params.keyword + '/book/1')}/>
-                {items}
-                <Pagination.Last onClick={()=>this.props.history.push('/result/search=' + this.props.match.params.keyword + '/book/'+final)} />
+                    <Pagination.First onClick={() => this.props.history.push('/result/search=' + this.props.match.params.keyword + '/book/1')} />
+                    {items}
+                    <Pagination.Last onClick={() => this.props.history.push('/result/search=' + this.props.match.params.keyword + '/book/' + final)} />
                 </Pagination>
             </div>
         );
@@ -93,11 +92,9 @@ class SearchResultBook extends Component {
             <div className='SearchResultBook'>
                 <Header />
                 <div id='result'>
-                {result}
+                    {result}
                 </div>
-                <div id='pagination'>
                 {pagination}
-                </div>
             </div>
         );
     }
