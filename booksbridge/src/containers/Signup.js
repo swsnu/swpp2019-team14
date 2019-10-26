@@ -5,7 +5,6 @@ import * as actionCreators from "../store/actions/index";
 import "./containers.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import FormCheck from 'react-bootstrap/FormCheck'
 
 class Signup extends Component {
   state = {
@@ -24,7 +23,6 @@ class Signup extends Component {
     const user = { "email": this.state.email, "username": this.state.username, "password": this.state.password };
     e.preventDefault();
     this.props.onAddUser(user);
-    this.props.history.push('/sign-in');
   };
 
   render() {

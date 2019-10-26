@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-import push from 'connected-react-router';
+import {push} from 'connected-react-router';
 
 axios.defaults.xsrfCookieName="csrftoken";
 axios.defaults.xsrfHeaderName="X-CSRFTOKEN";
@@ -9,22 +9,29 @@ axios.defaults.xsrfHeaderName="X-CSRFTOKEN";
 export const postUser = (user) => {
   return dispatch => {
     return axios.post('/api/user/', user)
-      .then(res => dispatch({
-        type: actionTypes.POST_NEW_USER,
-        user: res.data,
-      }));
+      .then(res => {
+        dispatch({
+          type: actionTypes.POST_NEW_USER,
+          user: res.data,
+        });
+        dispatch(push('/sigin-in'));
+      })
   };
 };
 // export const LOGIN_USER = 'LOGIN_USER'
 export const loginUser = (user) => {
   return dispatch => {
     return axios.post('/api/sign_in/', user)
-      .then(res => dispatch({
-        type: actionTypes.LOGIN_USER,
-        user: res.data,
-      }));
+      .then(res =>{
+        dispatch({
+          type: actionTypes.LOGIN_USER,
+          user: res.data,
+        });
+        //dispatch(push('/articles/'+res.data.id));
+    });
   };
 };
+
 // export const LOGOUT_USER = 'LOGOUT_USER'
 export const logoutUser = () => {
   return dispatch => {
