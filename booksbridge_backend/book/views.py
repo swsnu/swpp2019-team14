@@ -11,8 +11,9 @@ def signup(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
         username = req_data['username']
+        email = req_data['email']
         password = req_data['password']
-        User.objects.create_user(username,'', password)
+        User.objects.create_user(username, email, password)
         return HttpResponse(status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -101,6 +102,7 @@ def specific_book(request,isbn):
         return JsonResponse(book_dict,status=200)
     else:
         return HttpResponseNotAllowed(['GET'])
+
 @ensure_csrf_cookie
 def token(request):
     if request.method == 'GET':
