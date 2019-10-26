@@ -2,6 +2,9 @@ import * as actionTypes from './actionTypes';
 import axios from 'axios';
 import push from 'connected-react-router';
 
+axios.defaults.xsrfCookieName="csrftoken";
+axios.defaults.xsrfHeaderName="X-CSRFTOKEN";
+
 // export const POST_NEW_USER = 'POST_NEW_USER'
 export const postUser = (user) => {
   return dispatch => {

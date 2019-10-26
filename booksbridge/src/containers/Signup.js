@@ -5,21 +5,25 @@ import * as actionCreators from "../store/actions/index";
 import "./containers.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import FormCheck from 'react-bootstrap/FormCheck'
 
 class Signup extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    username: ""
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   static getDerivedStateFromProps(nextProps, nextState) {
     return nextState;
   }
 
   onClickSignUpButton = () => {
-    this.props.onAddUser(this.state.email, this.state.password);
+    const user = { "email": this.state.email, "username": this.state.username, "password": this.state.password };
+    this.props.onAddUser(user);
+    this.props.history.push('/main');
   };
 
   render() {
@@ -27,52 +31,65 @@ class Signup extends Component {
       <div className="login_page">
         <h1>Sign up</h1>
         <Form className="login_form">
-          <Form.Group>
+          <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
-              type="text"
-              id="email-input"
+              type="email"
+              placeholder="Enter email"
               value={this.state.email}
               onChange={event => this.setState({ email: event.target.value })}
             />
           </Form.Group>
-          <Form.Group>
+          <Form.Group controlId="validationFormikUsername">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter username"
+              aria-describedby="inputGroupPrepend"
+              value={this.state.username}
+              onChange={event =>
+                this.setState({ username: event.target.value })
+              }
+            />
+            </Form.Group>
+          <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              id="pw-input"
+              placeholder="Enter password"
               value={this.state.password}
               onChange={event =>
                 this.setState({ password: event.target.value })
               }
             />
           </Form.Group>
-          <Button
-            variant="primary"
-            id="login-button"
-            onClick={() => this.onClickSignUpButton()}
-          >
-            Confirm
+            <Button
+              variant="primary"
+              type="submit"
+              id="login-button"
+              onClick={() => this.onClickSignUpButton()}
+            >
+              Confirm
           </Button>
         </Form>
       </div>
-    );
-  }
-}
-
+        );
+      }
+    }
+    
 const mapStateToProps = state => {
   return {};
-};
-
+      };
+      
 const mapDispatchToProps = dispatch => {
   return {
-    onAddUser: (email, password) => {
-      //dispatch(actionCreators.postUser({email, password}));
-    }
+          onAddUser: (user) => {
+          dispatch(actionCreators.postUser(user));
+      }
+    };
   };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Signup);
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Signup);
