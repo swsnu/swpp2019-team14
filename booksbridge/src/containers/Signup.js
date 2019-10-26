@@ -20,25 +20,30 @@ class Signup extends Component {
     return nextState;
   }
 
-  onClickSignUpButton = () => {
+  onClickSignUpButton = (e) => {
     const user = { "email": this.state.email, "username": this.state.username, "password": this.state.password };
+    e.preventDefault();
     this.props.onAddUser(user);
-    this.props.history.push('/main');
+    this.props.history.push('/sign-in');
   };
 
   render() {
     return (
       <div className="login_page">
         <h1>Sign up</h1>
-        <Form className="login_form">
+        <Form className="login_form" onSubmit={this.onClickSignUpButton}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
               value={this.state.email}
-              onChange={event => this.setState({ email: event.target.value })}
-            />
+              onChange={event => this.setState({ email: event.target.value })
+              }
+            required />
+            <Form.Control.Feedback type="invalid">
+            Please provide a valid email.
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="validationFormikUsername">
             <Form.Label>Username</Form.Label>
@@ -50,7 +55,7 @@ class Signup extends Component {
               onChange={event =>
                 this.setState({ username: event.target.value })
               }
-            />
+              required />
             </Form.Group>
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
@@ -61,13 +66,12 @@ class Signup extends Component {
               onChange={event =>
                 this.setState({ password: event.target.value })
               }
-            />
+            required/>
           </Form.Group>
             <Button
               variant="primary"
               type="submit"
               id="login-button"
-              onClick={() => this.onClickSignUpButton()}
             >
               Confirm
           </Button>
