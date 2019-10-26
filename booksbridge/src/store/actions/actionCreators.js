@@ -1,9 +1,9 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-import {push} from 'connected-react-router';
+import { push } from 'connected-react-router';
 
-axios.defaults.xsrfCookieName="csrftoken";
-axios.defaults.xsrfHeaderName="X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
 // export const POST_NEW_USER = 'POST_NEW_USER'
 export const postUser = (user) => {
@@ -14,7 +14,7 @@ export const postUser = (user) => {
           type: actionTypes.POST_NEW_USER,
           user: res.data,
         });
-        dispatch(push('/sigin-in'));
+        dispatch(push('/sigin-in/'));
       })
   };
 };
@@ -22,13 +22,15 @@ export const postUser = (user) => {
 export const loginUser = (user) => {
   return dispatch => {
     return axios.post('/api/sign_in/', user)
-      .then(res =>{
+      .then(res => {
         dispatch({
           type: actionTypes.LOGIN_USER,
           user: res.data,
         });
-        //dispatch(push('/articles/'+res.data.id));
-    });
+        dispatch(push('/main/'));
+      }).catch(err => {
+        alert("Username or Password is incorrect.");
+      });
   };
 };
 
