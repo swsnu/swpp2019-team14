@@ -9,5 +9,5 @@ urlpatterns = [
     path('book/<isbn>/', views.specific_book, name='specific_book'),
     path('book/<keyword>/<page>/', views.searchbooks, name='searchbooks'),
     path('token/', views.token, name='token'),
-    path('review_short/', views.create_short_review, name='create_short_review'),
+    path('review_short/', views.short_review, name='create_short_review'),
 ]

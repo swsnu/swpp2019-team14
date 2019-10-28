@@ -69,6 +69,7 @@ class CreateReview extends Component {
         title: this.state.title,
         content: this.state.content
       })
+      window.alert("review is created");
     } else {
       window.alert("input is empty");
     }

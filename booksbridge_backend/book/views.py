@@ -105,7 +105,7 @@ def specific_book(request,isbn):
 
 
 @csrf_exempt
-def create_short_review(request):
+def short_review(request):
     if request.method == 'POST':
         try:
             req_data = json.loads(request.body.decode())
@@ -125,10 +125,10 @@ def create_short_review(request):
     else:
         pass
 
-def create_long_review(request):
+def long_review(request):
     pass
 
-def create_phrase(request):
+def phrase(request):
     pass
 
 
