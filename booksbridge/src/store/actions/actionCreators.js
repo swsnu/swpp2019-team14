@@ -159,9 +159,9 @@ export const deleteShortReviewLike = (id) => {
   };
 };
 // export const GET_SHORT_REVIEWS_BY_BOOKID = 'GET_SHORT_REVIEWS_BY_BOOKID'
-export const getShortReviewsByBookId = (id) => {
+export const getShortReviewsByBookId = (isbn) => {
   return dispatch => {
-    return axios.get('/api/review_short/?bookID=' + id + '/')
+    return axios.get('/api/review_short/bookID=' + isbn + '/')
       .then(res => dispatch({
         type: actionTypes.GET_SHORT_REVIEWS_BY_BOOKID,
         reviews: res.data,
@@ -252,9 +252,9 @@ export const deleteLongReviewLike = (id) => {
   };
 };
 // export const GET_LONG_REVIEWS_BY_BOOKID = 'GET_LONG_REVIEWS_BY_BOOKID'
-export const getLongReviewsByBookId = (id) => {
+export const getLongReviewsByBookId = (isbn) => {
   return dispatch => {
-    return axios.get('/api/review_long/?bookID=' + id + '/')
+    return axios.get('/api/review_long/bookID=' + isbn + '/')
       .then(res => dispatch({
         type: actionTypes.GET_LONG_REVIEWS_BY_BOOKID,
         reviews: res.data,
@@ -349,9 +349,9 @@ export const deletePhraseLike = (id) => {
   };
 };
 // export const GET_PHRASES_BY_BOOKID = 'GET_PHRASES_BY_BOOKID'
-export const getPhrasesByBookId = (id) => {
+export const getPhrasesByBookId = (isbn) => {
   return dispatch => {
-    return axios.get('/api/review_phrase/?bookID=' + id + '/')
+    return axios.get('/api/review_phrase/bookID=' + isbn + '/')
       .then(res => dispatch({
         type: actionTypes.GET_PHRASES_BY_BOOKID,
         reviews: res.data,

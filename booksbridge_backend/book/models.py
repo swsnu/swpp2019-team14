@@ -10,28 +10,37 @@ class Book(models.Model):
     thumbnail = models.TextField()
     authors = models.TextField()
     publisher = models.TextField()
-    published_date = models.TextField()
+    published_date = models.TextField(null=True)
     def __str__(self):
         return str(self.isbn)
 
 class ShortReview(models.Model):
+    objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     content = models.TextField()
-    date = models.DateTimeField(default=datetime.now, blank=True)	
-
+    date = models.DateTimeField(default=datetime.now, blank=True)
+    def __str__(self):
+        return str(self.content)
 
 class LongReview(models.Model):
+    objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    title = models.TextField(default='NO TITLE')
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
+    def __str__(self):
+        return str(self.title)
 
 class Phrase(models.Model):
+    objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
+    def __str__(self):
+        return str(self.content)
 
 class Curation(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)

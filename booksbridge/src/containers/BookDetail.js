@@ -17,6 +17,9 @@ class BookDetail extends Component {
 
   componentDidMount() {
     this.props.onLoadBook(this.props.match.params.book_id);
+    this.props.onLoadShortReviews(this.props.match.params.book_id);
+    this.props.onLoadLongReviews(this.props.match.params.book_id);
+    this.props.onLoadPhrases(this.props.match.params.book_id);
   }
 
   onCreateReview = () => {
@@ -25,7 +28,7 @@ class BookDetail extends Component {
 
   render() {
 
-    if(!this.props.currentBook){
+    if (!this.props.currentBook) {
       return (
         <div>
           LOADING...
@@ -36,7 +39,7 @@ class BookDetail extends Component {
     const isbn = this.props.match.params.book_id;
     const title = this.props.currentBook.title;
     var pattern = /[\[\]\']/g;
-    const authors = this.props.currentBook.authors.replace(pattern,'');
+    const authors = this.props.currentBook.authors.replace(pattern, '');
     const publisher = this.props.currentBook.publisher;
     const publishedDate = this.props.currentBook.published_date;
     const thumbnail = this.props.currentBook.thumbnail;
@@ -47,7 +50,7 @@ class BookDetail extends Component {
         <Header />
         <h1>Book Detail</h1>
         <div className='infoStyle'>
-          <BookInfo 
+          <BookInfo
             isbn={isbn}
             title={title}
             authors={authors}
@@ -61,12 +64,12 @@ class BookDetail extends Component {
           onClick={() => this.onCreateReview()}
         >Create a Review!</Button>
         <div className='tab'>
-          <BookTabs 
-            contents={contents}/> 
+          <BookTabs
+            contents={contents} />
         </div>
       </div>
     );
-  } 
+  }
 }
 
 const mapStateToProps = state => {
@@ -77,8 +80,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadBook: (isbn) => 
+    onLoadBook: (isbn) =>
       dispatch(actionCreators.getSpecificBook(isbn)),
+    onLoadPhrases: (isbn) =>
+      dispatch(actionCreators.getPhrasesByBookId(isbn)),
+    onLoadShortReviews: (isbn) =>
+      dispatch(actionCreators.getShortReviewsByBookId(isbn)),
+    onLoadLongReviews: (isbn) =>
+      dispatch(actionCreators.getLongReviewsByBookId(isbn)),
   }
 }
 

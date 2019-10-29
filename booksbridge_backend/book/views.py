@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie , csrf_exempt
 import json
 import urllib.request, requests
-from .models import Book
+from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
+from django.shortcuts import get_object_or_404
 
 def signup(request):
     if request.method == 'POST':
@@ -97,6 +98,27 @@ def specific_book(request,isbn):
         book_in_db = Book.objects.get(isbn = isbn)
         book_dict = model_to_dict(book_in_db)
         return JsonResponse(book_dict,status=200)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def searchLongReviews(request, isbn):
+    if request.method == 'GET':
+        review_all_list = [review for review in LongReview.objects.filter(book_id=isbn).values()]
+        return JsonResponse(review_all_list, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def searchShortReviews(request,isbn):
+    if request.method == 'GET':
+        review_all_list = [review for review in ShortReview.objects.filter(book_id=isbn).values()]
+        return JsonResponse(review_all_list, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def searchPhrases(request,isbn):
+    if request.method == 'GET':
+        review_all_list = [review for review in Phrase.objects.filter(book_id=isbn).values()]
+        return JsonResponse(review_all_list, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
 

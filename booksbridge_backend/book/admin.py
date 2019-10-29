@@ -6,3 +6,6 @@ class BookAdmin(admin.ModelAdmin):
     fields = ['isbn','title','contents']
 
 admin.site.register(Book, BookAdmin)
+admin.site.register(Phrase)
+admin.site.register(ShortReview)
+admin.site.register(LongReview)
