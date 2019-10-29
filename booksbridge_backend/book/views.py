@@ -33,8 +33,6 @@ def signin(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-
-@csrf_exempt
 def searchbooks(request,keyword,page):
     if request.method == 'GET':
         try:
@@ -70,7 +68,7 @@ def searchbooks(request,keyword,page):
                             contents = book['contents'],
                             url = book['url'],
                             thumbnail = book['thumbnail'],
-                            authors = book['authors'],
+                            authors = ' '.join(book['authors']),
                             publisher = book['publisher'],
                             published_date = book['datetime'][0:9],
                         )
@@ -81,7 +79,7 @@ def searchbooks(request,keyword,page):
                             contents = book['contents'],
                             url = book['url'],
                             thumbnail = book['thumbnail'],
-                            authors = book['authors'],
+                            authors = ' '.join(book['authors']),
                             publisher = book['publisher'],
                             published_date = book['datetime'][0:9],
                         )
@@ -94,7 +92,6 @@ def searchbooks(request,keyword,page):
     else:
         return HttpResponseNotAllowed(['GET','PUT','DELETE']) 
 
-@csrf_exempt
 def specific_book(request,isbn):
     if request.method == 'GET':
         book_in_db = Book.objects.get(isbn = isbn)

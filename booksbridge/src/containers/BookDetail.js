@@ -35,7 +35,8 @@ class BookDetail extends Component {
 
     const isbn = this.props.match.params.book_id;
     const title = this.props.currentBook.title;
-    const authors = this.props.currentBook.authors.replace(/\['/, '').replace(/'\]/, '').replace(/', '/, ', ');
+    var pattern = /[\[\]\']/g;
+    const authors = this.props.currentBook.authors.replace(pattern,'');
     const publisher = this.props.currentBook.publisher;
     const publishedDate = this.props.currentBook.published_date;
     const thumbnail = this.props.currentBook.thumbnail;
