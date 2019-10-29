@@ -35,7 +35,7 @@ class BookInfo extends Component{
     const title = this.props.currentBook.title;
     const authors = this.props.currentBook.authors.replace(/\['/, '').replace(/'\]/, '').replace(/', '/, ', ');
     const publisher = this.props.currentBook.publisher;
-    const publishedDate = this.props.currentBook.datetime;
+    const publishedDate = this.props.currentBook.published_date;
     const thumbnail = this.props.currentBook.thumbnail;
     
     console.log("[DEBUG] isbn: " + isbn);
@@ -56,11 +56,11 @@ class BookInfo extends Component{
         <div style={{textAlign: 'right'}}>
           <div className='infoStyle'>
           <div>
-          <p>isbn: {isbn}</p>
-          <p>title: {title}</p>
-          <p>author(s): {authors}</p>
-          <p>publisher: {publisher}</p>
-          <p>publishedDate: {publishedDate}</p>
+          <p className='titleStyle'>{title}</p>
+          <p><b>AUTHORS : </b>{authors}</p>
+          <p><b>PUBLISHER : </b>{publisher}</p>
+          <p><b>PUBLISHED DATE : </b>{publishedDate}</p>
+          <p><b>ISBN : </b>{isbn}</p>
         </div>
           </div>
         </div>

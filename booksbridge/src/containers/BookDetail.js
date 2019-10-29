@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import Button from 'react-bootstrap/Button';
+import { Button } from 'semantic-ui-react';
 import Form from 'react-bootstrap/Form';
 
 import Header from '../components/Header';
@@ -37,7 +37,7 @@ class BookDetail extends Component {
           id='create_review_button'
           onClick={() => this.onCreateReview()}
         >Create a Review!</Button>
-        <div className='tabStyle'>
+        <div className='tab'>
           <BookTabs /> 
         </div>
       </div>
