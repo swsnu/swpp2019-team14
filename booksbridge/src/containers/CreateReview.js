@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import './containers.css';
 import Form from 'react-bootstrap/Form';
+import { Button, Radio, TextArea } from 'semantic-ui-react'
+import {Header as uiHeader} from 'semantic-ui-react';
 
 import Header from '../components/Header';
-import OCRModal from '../components/OCRModal';
-import AddBookModal from '../components/AddBookModal';
+import OcrModal from '../components/OcrModal';
+import ChooseBookModal from '../components/ChooseBookModal';
 import Checkbox from '../components/Checkbox';
-import Button from '../components/Button';
 import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from '../components/BookResultSummary/BookResultSummary';
 
@@ -33,9 +34,7 @@ class CreateReview extends Component {
   state = {
     title: "",
     content: "",
-    short_review: true,  // default
-    long_review: false,
-    phrase: false,
+    type: "phrase",
     add_book: false,
     book: {isbn: "9788996991342", // 미움받을용기 isbn 
            authors:  "문병로",
@@ -44,7 +43,7 @@ class CreateReview extends Component {
            thumbnail: "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1566973%3Ftimestamp%3D20190130232605",
            title: "쉽게 배우는 알고리즘(개정판)(IT Cookbook 한빛 교재 시리즈 229)",
            }, 
-    //book : this.props.selectedBook, // 1. from BookDetail   or   2. add book in this page by search
+    book2 : this.props.selectedBook, // 1. from BookDetail   or   2. add book in this page by search
     ocr: false,
   }
 
@@ -83,12 +82,14 @@ class CreateReview extends Component {
 
 
   render() {
-    const quote = !this.state.ocr &&
-      <Button id="quote" content="Quote" onClick={() => this.setState({ ocr: !this.state.ocr })} />;
-    const addBook = !this.state.add_book && (this.state.book == null) &&
-      <Button id="add-book" content="Add Book" onClick={() => this.setState({ add_book: !this.state.add_book })} />;
+    // const quote = !this.state.ocr &&
+    //   <Button id="quote" content="Quote" onClick={() => this.setState({ ocr: !this.state.ocr })} />;
 
-    console.log(this.state.book);
+    // const addBook = !this.state.add_book && (this.state.book == null) &&
+    //   <Button id="add-book" content="Add Book" onClick={() => this.setState({ add_book: !this.state.add_book })} />;
+
+    // const addBookModal = <AddBookModal id="add-book-modal" show={this.state.add_book} whenDone={(book_id) => this.addedBook(book_id)} />
+
     const book = <BookResultSummary
                   cover={this.state.book.thumbnail}
                   title={this.state.book.title}
@@ -97,36 +98,71 @@ class CreateReview extends Component {
                   isbn={this.state.book.isbn}
                  />;
 
+    console.log("DEBUG: " + this.state.type);
+
     return (
       <div className='CreateReview'>
-        <Header />
+        <Header/>
         <h1>Create Review</h1>
 
-        <div id="category">
-          <Checkbox id="short-review" content="Short Review" onClick={() => this.setState({
-            short_review: !this.state.short_review,
-            long_review: false, phrase: false
-          })} />
-          <Checkbox id="long-review" content="Long Review" onClick={() => this.setState({
-            long_review: !this.state.long_review,
-            short_review: false, phrase: false
-          })} />
-          <Checkbox id="phrase" content="Phrase" onClick={() => this.setState({
-            phrase: !this.state.phrase,
-            short_review: false, long_review: false
-          })} />
-        </div>
+          <form>
+            <label>
+              <input
+                id="short-review-radio"
+                type='radio'
+                name='radioGroup'
+                value='short-review'
+                checked={this.state.type === 'short-review'}
+                onChange={(event) => this.setState({ type: event.target.value })}
+              />
+              Short Review
+            </label>
+            <label>
+              <input
+                id="long-review-radio"
+                type='radio'
+                name='radioGroup'
+                value='long-review'
+                checked={this.state.type === 'long-review'}
+                onchange={(event) => this.setState({ type: event.target.value })} 
+              />
+              Long Review
+            </label>
+            <label>
+              <input
+                  id="phrase-radio"
+                  type='radio'
+                  name='radioGroup'
+                  value='phrase'
+                  checked={this.state.type === 'phrase'}
+                  onchange={(event) => this.setState({ type: event.target.value })}
+              />
+              Phrase
+            </label>
+          </form>
+
         <div>
-          {addBook}
-          <AddBookModal id="add-book-modal" show={this.state.add_book} whenDone={(book_id) => this.addedBook(book_id)} />
+          <ChooseBookModal id="choose-book-modal"/>
           {book}
-          Title:
-          <input id="review-title" onChange={(event) => this.setState({ title: event.target.value })} />
-          Content: 
-          <textarea id="review-content" onChange={(event) => this.setState({ content: event.target.value })} />
-          {quote}
-          <OCRModal id="ocr-modal" show={this.state.ocr} whenDone={() => this.setState({ ocr: !this.state.ocr })} />
-          <Button id="create-review" content="Create" onClick={() => this.onClickCreateButton()} />
+
+          제목:
+          <TextArea 
+            id="review-title" 
+            onChange={(event) => this.setState({ title: event.target.value })} 
+            placeholder='write your title' 
+            rows={2}
+            style={{ minWidth: 1000 }}
+          />
+          <br/>
+          내용:
+          <TextArea 
+            id="review-content" 
+            onChange={(event) => this.setState({ content: event.target.value })} 
+            placeholder='write your thoughts' 
+            style={{ minHeight: 500, minWidth: 1000 }} 
+          />
+          <OcrModal id="ocr-modal"/>
+          <Button id="create-review" content="완료" onClick={() => this.onClickCreateButton()} />
         </div>
       </div>
     );
