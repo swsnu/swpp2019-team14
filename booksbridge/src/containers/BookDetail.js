@@ -16,6 +16,7 @@ import './containers.css';
 class BookDetail extends Component {
 
   componentDidMount() {
+    this.props.onLoadBook(this.props.match.params.book_id);
   }
 
   onCreateReview = () => {
@@ -24,21 +25,43 @@ class BookDetail extends Component {
 
   render() {
 
-    //북디테일에서 리뷰버튼을 누르면 CreateReview로 가도록, 즉 /review/create로 가도록 해라
+    if(!this.props.currentBook){
+      return (
+        <div>
+          LOADING...
+        </div>
+      );
+    }
+
+    const isbn = this.props.match.params.book_id;
+    const title = this.props.currentBook.title;
+    const authors = this.props.currentBook.authors.replace(/\['/, '').replace(/'\]/, '').replace(/', '/, ', ');
+    const publisher = this.props.currentBook.publisher;
+    const publishedDate = this.props.currentBook.published_date;
+    const thumbnail = this.props.currentBook.thumbnail;
+    const contents = this.props.currentBook.contents;
 
     return (
       <div >
         <Header />
         <h1>Book Detail</h1>
         <div className='infoStyle'>
-          <BookInfo />
+          <BookInfo 
+            isbn={isbn}
+            title={title}
+            authors={authors}
+            publisher={publisher}
+            publishedDate={publishedDate}
+            thumbnail={thumbnail}
+          />
         </div>
         <Button
           id='create_review_button'
           onClick={() => this.onCreateReview()}
         >Create a Review!</Button>
         <div className='tab'>
-          <BookTabs /> 
+          <BookTabs 
+            contents={contents}/> 
         </div>
       </div>
     );
@@ -47,11 +70,14 @@ class BookDetail extends Component {
 
 const mapStateToProps = state => {
   return {
+    currentBook: state.book.selectedBook,
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    onLoadBook: (isbn) => 
+      dispatch(actionCreators.getSpecificBook(isbn)),
   }
 }
 
