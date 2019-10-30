@@ -23,9 +23,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onSearchBooks: (keyword, page) => dispatch(actionCreators.getSearchedBooks(keyword, page)),
     onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
-    onPostShortReview: review => dispatch(actionCreators.postShortReview(review)),
-    onPostLongReivew: review => dispatch(actionCreators.postLongReview(review)),
-    onPostPhrase: review => dispatch(actionCreators.postPhrase(review)),
+    // onPostShortReview: review => dispatch(actionCreators.postShortReview(review)),
+    // onPostLongReivew: review => dispatch(actionCreators.postLongReview(review)),
+    // onPostPhrase: review => dispatch(actionCreators.postPhrase(review)),
   }
 }
 
