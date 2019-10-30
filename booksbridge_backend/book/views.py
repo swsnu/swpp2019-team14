@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie , csrf_exempt
 import json
 import urllib.request, requests
-from .models import *  
+from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
+from django.shortcuts import get_object_or_404
 
 def signup(request):
     if request.method == 'POST':
@@ -33,8 +34,6 @@ def signin(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-
-@csrf_exempt
 def searchbooks(request,keyword,page):
     if request.method == 'GET':
         try:
@@ -70,7 +69,7 @@ def searchbooks(request,keyword,page):
                             contents = book['contents'],
                             url = book['url'],
                             thumbnail = book['thumbnail'],
-                            authors = book['authors'],
+                            authors = ' '.join(book['authors']),
                             publisher = book['publisher'],
                             published_date = book['datetime'][0:9],
                         )
@@ -81,7 +80,7 @@ def searchbooks(request,keyword,page):
                             contents = book['contents'],
                             url = book['url'],
                             thumbnail = book['thumbnail'],
-                            authors = book['authors'],
+                            authors = ' '.join(book['authors']),
                             publisher = book['publisher'],
                             published_date = book['datetime'][0:9],
                         )
@@ -94,7 +93,6 @@ def searchbooks(request,keyword,page):
     else:
         return HttpResponseNotAllowed(['GET','PUT','DELETE']) 
 
-@csrf_exempt
 def specific_book(request,isbn):
     if request.method == 'GET':
         book_in_db = Book.objects.get(isbn = isbn)
@@ -103,6 +101,26 @@ def specific_book(request,isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+def searchLongReviews(request, isbn):
+    if request.method == 'GET':
+        review_all_list = [review for review in LongReview.objects.filter(book_id=isbn).values()]
+        return JsonResponse(review_all_list, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def searchShortReviews(request,isbn):
+    if request.method == 'GET':
+        review_all_list = [review for review in ShortReview.objects.filter(book_id=isbn).values()]
+        return JsonResponse(review_all_list, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def searchPhrases(request,isbn):
+    if request.method == 'GET':
+        review_all_list = [review for review in Phrase.objects.filter(book_id=isbn).values()]
+        return JsonResponse(review_all_list, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 @csrf_exempt
 def short_review(request):
@@ -148,9 +166,6 @@ def long_review(request):
 
 def phrase(request):
     pass
-
-
-
 
 @ensure_csrf_cookie
 def token(request):

@@ -6,11 +6,13 @@
     align-items: center;
 }
 
-.tabStyle {
+.tab {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
-    padding: 10px;
-    width: 800px;
 }
+
+.ui.button {
+    margin: 1.5rem !important;
+}
+
