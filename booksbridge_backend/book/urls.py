@@ -13,4 +13,5 @@ urlpatterns = [
     # path('review_short/?bookID=<isbn>/', views.searchShortReviews, name='searchshortreviews'),
     path('review_short/bookID=<isbn>/', views.searchShortReviews, name='searchshortreviews'),
     path('token/', views.token, name='token'),
+    path('review_short/', views.short_review, name='create_short_review'),
 ]

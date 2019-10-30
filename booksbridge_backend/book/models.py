@@ -18,6 +18,7 @@ class ShortReview(models.Model):
     objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    title = models.TextField()
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
     def __str__(self):
@@ -37,6 +38,7 @@ class Phrase(models.Model):
     objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    title = models.TextField()
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
     def __str__(self):
@@ -45,6 +47,7 @@ class Phrase(models.Model):
 class Curation(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.TextField()
+    content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
 
 class BookInCuration(models.Model):

@@ -122,6 +122,51 @@ def searchPhrases(request,isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+@csrf_exempt
+def short_review(request):
+    if request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            isbn = int(req_data['isbn'])
+            title = req_data['title']
+            content = req_data['content']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+        try:
+            book = Book.objects.get(isbn=isbn)   # 미움받을 용기는 되나 문병로 알고리즘은 안 됨 
+        except Book.DoesNotExist:
+            return HttpResponse(status=404)
+        short_review = ShortReview(author=request.user, book=book, content=content, title=title)
+        short_review.save()
+        short_review_dict = model_to_dict(short_review)
+        return JsonResponse(short_review_dict, status=201)
+    else:
+        pass
+
+def long_review(request):
+    if request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            isbn = int(req_data['isbn'])
+            title = req_data['title']
+            content = req_data['content']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+        try:
+            book = Book.objects.get(isbn=isbn)   # 미움받을 용기는 되나 문병로 알고리즘은 안 됨 
+        except Book.DoesNotExist:
+            return HttpResponse(status=404)
+        long_review = LongReview(author=request.user, book=book, content=content, title=title)
+        long_review.save()
+        long_review_dict = model_to_dict(long_review)
+        return JsonResponse(long_review_dict, status=201)
+
+    else:
+        pass
+
+def phrase(request):
+    pass
+
 @ensure_csrf_cookie
 def token(request):
     if request.method == 'GET':
