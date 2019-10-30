@@ -93,7 +93,7 @@ export const getSpecificBook = (isbn) => {
 // export const POST_ARTICLE = 'POST_ARTICLE'
 export const postArticle = (article) => {
   return dispatch => {
-    return axios.post('/api/article/', review)
+    return axios.post('/api/article/', article)
       .then(res => dispatch({
         type: actionTypes.POST_ARTICLE,
         article: res.data,
