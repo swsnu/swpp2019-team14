@@ -11,6 +11,8 @@ import SearchResultBook from './containers/SearchResultBook/SearchResultBook'
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'semantic-ui-css/semantic.min.css';
+
 
 function App(props) {
   return (
