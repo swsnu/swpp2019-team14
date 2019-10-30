@@ -13,9 +13,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 
 import curationReducer from './store/reducers/curation'
-import longReviewReducer from './store/reducers/longReview'
-import phraseReducer from './store/reducers/phrase'
-import shortReviewReducer from './store/reducers/shortReview'
+import articleReducer from './store/reducers/article'
 import userReducer from './store/reducers/user'
 import bookReducer from './store/reducers/book'
 
@@ -24,9 +22,7 @@ const rootReducer = combineReducers({
   book: bookReducer,
   user: userReducer,
   curation: curationReducer,
-  longReview: longReviewReducer,
-  phrase: phraseReducer,
-  shortReview: shortReviewReducer,
+  article: articleReducer,
   router: connectRouter(history),
 });
 

@@ -13,21 +13,6 @@ import Checkbox from '../components/Checkbox';
 import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from '../components/BookResultSummary/BookResultSummary';
 
-const mapStateToProps = state => {
-  return {
-    selectedBook: state.book.selectedBook,
-  };
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSearchBooks: (keyword, page) => dispatch(actionCreators.getSearchedBooks(keyword, page)),
-    onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
-    onPostShortReview: review => dispatch(actionCreators.postShortReview(review)),
-    onPostLongReivew: review => dispatch(actionCreators.postLongReview(review)),
-    onPostPhrase: review => dispatch(actionCreators.postPhrase(review)),
-  }
-}
 
 class CreateReview extends Component {
 
@@ -63,10 +48,11 @@ class CreateReview extends Component {
   onClickCreateButton = () => {
     // create review OR show alert message for inappropriate input 
     if (this.state.title != "" && this.state.content != "") {
-      this.props.onPostShortReview({
+      this.props.onPostArticle({
         isbn: this.state.book.isbn,
         title: this.state.title,
-        content: this.state.content
+        content: this.state.content,
+        is_long: true,
       })
       window.alert("review is created");
     } else {
@@ -166,6 +152,20 @@ class CreateReview extends Component {
         </div>
       </div>
     );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    selectedBook: state.book.selectedBook,
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSearchBooks: (keyword, page) => dispatch(actionCreators.getSearchedBooks(keyword, page)),
+    onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
+    onPostArticle: review => dispatch(actionCreators.postArticle(review)),
   }
 }
 

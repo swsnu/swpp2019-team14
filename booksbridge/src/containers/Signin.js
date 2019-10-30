@@ -51,7 +51,7 @@ class Signin extends Component {
               id="username-input"
               placeholder="Enter username"
               value={this.state.username}
-              onChange={(event) => this.setState({ username: event.target.value })} 
+              onChange={(event) => this.setState({ username: event.target.value })}
               required />
           </Form.Group>
           <Form.Group>
@@ -86,8 +86,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onLoginUser: (user) => {
-    dispatch(actionCreators.loginUser(user));
-  }
+      dispatch(actionCreators.loginUser(user));
+    }
   };
 }
 

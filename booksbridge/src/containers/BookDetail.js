@@ -75,6 +75,9 @@ class BookDetail extends Component {
 const mapStateToProps = state => {
   return {
     currentBook: state.book.selectedBook,
+    longReviews: state.article.longReviews,
+    shortReviews: state.article.shortReviews,
+    phrases: state.article.phrases,
   };
 }
 
@@ -82,12 +85,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onLoadBook: (isbn) =>
       dispatch(actionCreators.getSpecificBook(isbn)),
-    onLoadPhrases: (isbn) =>
-      dispatch(actionCreators.getPhrasesByBookId(isbn)),
-    onLoadShortReviews: (isbn) =>
-      dispatch(actionCreators.getShortReviewsByBookId(isbn)),
-    onLoadLongReviews: (isbn) =>
-      dispatch(actionCreators.getLongReviewsByBookId(isbn)),
+    onLoadArticles: (isbn) =>
+      dispatch(actionCreators.getArticlesByBookId(isbn)),
   }
 }
 
