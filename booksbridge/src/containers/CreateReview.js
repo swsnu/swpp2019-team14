@@ -43,10 +43,6 @@ class CreateReview extends Component {
   componentDidMount() {
   }
 
-  //   static getDerivedStateFromProps(nextProps, nextState) {
-  //     return nextState;
-  //   }
-
 
   HandleCheckbox = () => {
     // short review  vs  long review  vs  phrase
@@ -56,11 +52,12 @@ class CreateReview extends Component {
   onClickCreateButton = () => {
     // create review OR show alert message for inappropriate input 
     if (this.state.title != "" && this.state.content != "") {
-      this.props.onPostShortReview({
-        isbn: this.state.book.isbn,
-        title: this.state.title,
-        content: this.state.content
-      })
+      // COMMENT OUT DUE TO CHANGE IN BACKEND
+      // this.props.onPostShortReview({
+      //   isbn: this.state.book.isbn,
+      //   title: this.state.title,
+      //   content: this.state.content
+      // })
       window.alert("review is created");
     } else {
       window.alert("input is empty");
@@ -94,6 +91,7 @@ class CreateReview extends Component {
                     authors={this.state.book.authors}
                     publisher={this.state.book.publisher}
                     isbn={this.state.book.isbn}
+                    direct={false}
                   /> :
                   <BookResultSummary
                     cover={null}
@@ -101,10 +99,11 @@ class CreateReview extends Component {
                     authors={null}
                     publisher={null}
                     isbn={null}
+                    direct={false}
                   />;
                  
     
-    console.log("DEBUG: ", this.props.selectedBook);
+    console.log("DEBUG: update???");
 
     return (
       <div className='CreateReview'>

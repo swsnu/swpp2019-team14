@@ -8,6 +8,12 @@ import './BookResultSummary.css';
 
 const BookResultSummary = (props) => {
 
+    clickHandler = () => {
+        if (props.direct) {
+            props.history.push('/book/' + props.isbn);
+        }    
+    }
+
     let cover;
     if(props.cover==='') cover = "/images/no_cover.jpg";
     else cover = props.cover;
@@ -15,7 +21,7 @@ const BookResultSummary = (props) => {
     return (
         <div className="outer">
             <Container className="Summary">
-                <div className="inside" onClick={()=>props.history.push('/book/'+props.isbn)}>
+                <div className="inside" onClick={clickHandler}>
                 <Row>
                     <Col md="auto" className="book_cover">
                         <Image src={cover}/>
