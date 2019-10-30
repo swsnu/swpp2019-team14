@@ -89,282 +89,94 @@ export const getSpecificBook = (isbn) => {
   };
 };
 
-// export const POST_SHORT_REVIEW = 'POST_SHORT_REVIEW'
-export const postShortReview = (review) => {
+
+// export const POST_ARTICLE = 'POST_ARTICLE'
+export const postArticle = (article) => {
   return dispatch => {
-    return axios.post('/api/review_short/', review)
+    return axios.post('/api/article/', review)
       .then(res => dispatch({
-        type: actionTypes.POST_SHORT_REVIEW,
-        review: res.data,
-      }));
-  };
-};
-// export const GET_SPECIFIC_SHORT_REVIEW = 'GET_SPECIFIC_SHORT_REVIEW'
-export const getSpecificShortReview = (id) => {
-  return dispatch => {
-    return axios.get('/api/review_short/' + id + '/')
-      .then(res => dispatch({
-        type: actionTypes.GET_SPECIFIC_SHORT_REVIEW,
-        review: res.data,
+        type: actionTypes.POST_ARTICLE,
+        article: res.data,
       }));
   };
 };
 
-// export const EDIT_SPECIFIC_SHORT_REVIEW = 'EDIT_SPECIFIC_SHORT_REVIEW'
-export const editSpecificShortReview = (review) => {
+// export const GET_SPECIFIC_ARTICLE = 'GET_SPECIFIC_ARTICLE'
+export const getSpecificArticle = (id) => {
   return dispatch => {
-    return axios.put('/api/review_short/' + review.id + '/', review)
+    return axios.get('/api/article/' + id + '/')
       .then(res => dispatch({
-        type: actionTypes.EDIT_SPECIFIC_SHORT_REVIEW,
-        review: res.data,
-      }));
-  };
-};
-// export const DELETE_SPECIFIC_SHORT_REVIEW = 'DELETE_SPECIFIC_SHORT_REVIEW'
-export const deleteSpecificShortReview = (id) => {
-  return dispatch => {
-    return axios.delete('/api/review_short/' + id + '/')
-      .then(res => dispatch({
-        type: actionTypes.DELETE_SPECIFIC_SHORT_REVIEW,
-      }));
-  };
-};
-// export const GET_SHORT_REIVEW_LIKE = 'GET_SHORT_REIVEW_LIKE'
-export const getShortReviewLike = (id) => {
-  return dispatch => {
-    return axios.get('/api/review_short/' + id + '/')
-      .then(res => dispatch({
-        type: actionTypes.GET_SHORT_REIVEW_LIKE,
-        like: res.data,
-      }));
-  };
-};
-// export const POST_SHORT_REVIEW_LIKE = 'POST_SHORT_REVIEW_LIKE'
-export const postShortReviewLike = (id) => {
-  return dispatch => {
-    return axios.post('/api/review_short/' + id + '/like/')
-      .then(res => dispatch({
-        type: actionTypes.POST_SHORT_REVIEW_LIKE,
-        like: res.data,
-      }));
-  };
-};
-// export const DELETE_SHORT_REVIEW_LIKE = 'DELETE_SHORT_REVIEW_LIKE'
-export const deleteShortReviewLike = (id) => {
-  return dispatch => {
-    return axios.delete('/api/review_short/' + id + '/like/')
-      .then(res => dispatch({
-        type: actionTypes.DELETE_SHORT_REVIEW_LIKE,
-      }));
-  };
-};
-// export const GET_SHORT_REVIEWS_BY_BOOKID = 'GET_SHORT_REVIEWS_BY_BOOKID'
-export const getShortReviewsByBookId = (isbn) => {
-  return dispatch => {
-    return axios.get('/api/review_short/bookID=' + isbn + '/')
-      .then(res => dispatch({
-        type: actionTypes.GET_SHORT_REVIEWS_BY_BOOKID,
-        reviews: res.data,
-      }));
-  };
-};
-// export const GET_SHORT_REVIEWS_BY_USERID = 'GET_SHORT_REVIEWS_BY_USERID'
-export const getShortReviewsByUserId = (id) => {
-  return dispatch => {
-    return axios.get('/api/review_short/?userID=' + id + '/')
-      .then(res => dispatch({
-        type: actionTypes.GET_SHORT_REVIEWS_BY_USERID,
-        reviews: res.data,
+        type: actionTypes.GET_SPECIFIC_ARTICLE,
+        article: res.data,
       }));
   };
 };
 
-////////////////////////////////////////// LONG REVIEW ///////////////////////////////
-
-// export const POST_LONG_REVIEW = 'POST_LONG_REVIEW'
-export const postLongReview = (review) => {
+// export const EDIT_SPECIFIC_ARTICLE = 'EDIT_SPECIFIC_ARTICLE'
+export const editSpecificArticle = (article) => {
   return dispatch => {
-    return axios.post('/api/review_long/', review)
+    return axios.put('/api/article/' + article.id + '/', article)
       .then(res => dispatch({
-        type: actionTypes.POST_LONG_REVIEW,
-        review: res.data,
+        type: actionTypes.EDIT_SPECIFIC_ARTICLE,
+        article: res.data,
       }));
   };
 };
-
-// export const GET_SPECIFIC_LONG_REVIEW = 'GET_SPECIFIC_LONG_REVIEW'
-export const getSpecificLongReview = (id) => {
+// export const DELETE_SPECIFIC_ARTICLE = 'DELETE_SPECIFIC_ARTICLE'
+export const deleteSpecificArticle = (id) => {
   return dispatch => {
-    return axios.get('/api/review_long/' + id + '/')
+    return axios.delete('/api/article/' + id + '/')
       .then(res => dispatch({
-        type: actionTypes.GET_SPECIFIC_LONG_REVIEW,
-        review: res.data,
-      }));
-  };
-};
-
-// export const EDIT_SPECIFIC_LONG_REVIEW = 'EDIT_SPECIFIC_LONG_REVIEW'
-export const editSpecificLongReview = (review) => {
-  return dispatch => {
-    return axios.put('/api/review_long/' + review.id + '/', review)
-      .then(res => dispatch({
-        type: actionTypes.EDIT_SPECIFIC_LONG_REVIEW,
-        review: res.data,
-      }));
-  };
-};
-// export const DELETE_SPECIFIC_LONG_REVIEW = 'DELETE_SPECIFIC_LONG_REVIEW'
-export const deleteSpecificLongReview = (id) => {
-  return dispatch => {
-    return axios.delete('/api/review_long/' + id + '/')
-      .then(res => dispatch({
-        type: actionTypes.DELETE_SPECIFIC_LONG_REVIEW,
+        type: actionTypes.DELETE_SPECIFIC_ARTICLE,
       }))
   }
 }
-// export const GET_LONG_REVIEW_LIKE = 'GET_LONG_REVIEW_LIKE'
-export const getLongReviewLike = (id) => {
+// export const GET_ARTICLE_LIKE = 'GET_ARTICLE_LIKE'
+export const getArticleLike = (id) => {
   return dispatch => {
-    return axios.get('/api/review_long/' + id + '/')
+    return axios.get('/api/article/' + id + '/')
       .then(res => dispatch({
-        type: actionTypes.GET_LONG_REVIEW_LIKE,
+        type: actionTypes.GET_ARTICLE_LIKE,
         like: res.data,
       }));
   };
 };
-// export const POST_LONG_REVIEW_LIKE = 'POST_LONG_REVIEW_LIKE'
-export const postLongReviewLike = (id) => {
+// export const POST_ARTICLE_LIKE = 'POST_ARTICLE_LIKE'
+export const postArticleLike = (id) => {
   return dispatch => {
-    return axios.post('/api/review_long/' + id + '/like/')
+    return axios.post('/api/article/' + id + '/like/')
       .then(res => dispatch({
-        type: actionTypes.POST_LONG_REVIEW_LIKE,
+        type: actionTypes.POST_ARTICLE_LIKE,
         like: res.data,
       }));
   };
 };
-// export const DELETE_LONG_REVIEW_LIKE = 'DELETE_LONG_REVIEW_LIKE'
-export const deleteLongReviewLike = (id) => {
+// export const DELETE_ARTICLE_LIKE = 'DELETE_ARTICLE_LIKE'
+export const deleteArticleLike = (id) => {
   return dispatch => {
-    return axios.delete('/api/review_long/' + id + '/like/')
+    return axios.delete('/api/article/' + id + '/like/')
       .then(res => dispatch({
-        type: actionTypes.DELETE_LONG_REVIEW_LIKE,
+        type: actionTypes.DELETE_ARTICLE_LIKE,
       }));
   };
 };
-// export const GET_LONG_REVIEWS_BY_BOOKID = 'GET_LONG_REVIEWS_BY_BOOKID'
-export const getLongReviewsByBookId = (isbn) => {
+// export const GET_ARTICLES_BY_BOOKID = 'GET_ARTICLES_BY_BOOKID'
+export const getArticlesByBookId = (isbn) => {
   return dispatch => {
-    return axios.get('/api/review_long/bookID=' + isbn + '/')
+    return axios.get('/api/article/bookID=' + isbn + '/')
       .then(res => dispatch({
-        type: actionTypes.GET_LONG_REVIEWS_BY_BOOKID,
-        reviews: res.data,
+        type: actionTypes.GET_ARTICLES_BY_BOOKID,
+        articles: res.data,
       }));
   };
 };
-// export const GET_LONG_REVIEWS_BY_USERID = 'GET_LONG_REVIEWS_BY_USERID'
-export const getLongReviewsByUserId = (id) => {
+// export const GET_ARTICLES_BY_USERID = 'GET_ARTICLES_BY_USERID'
+export const getArticlesByUserId = (id) => {
   return dispatch => {
-    return axios.get('/api/review_long/?userID=' + id + '/')
+    return axios.get('/api/article/userID=' + id + '/')
       .then(res => dispatch({
-        type: actionTypes.GET_LONG_REVIEWS_BY_USERID,
-        reviews: res.data,
-      }));
-  };
-};
-
-////////////////////////////////////// PHRASE //////////////////////////////////////
-
-
-// export const POST_PHRASE = 'POST_PHRASE'
-export const postPhrase = (review) => {
-  return dispatch => {
-    return axios.post('/api/review_phrase/', review)
-      .then(res => dispatch({
-        type: actionTypes.POST_PHRASE,
-        review: res.data,
-      }));
-  };
-};
-
-// export const GET_SPECIFIC_PHRASE = 'GET_SPECIFIC_PHRASE'
-export const getSpecificPhrase = (id) => {
-  return dispatch => {
-    return axios.get('/api/review_phrase/' + id + '/')
-      .then(res => dispatch({
-        type: actionTypes.GET_SPECIFIC_PHRASE,
-        review: res.data,
-      }));
-  };
-};
-
-// export const EDIT_SPECIFIC_PHRASE = 'EDIT_SPECIFIC_PHRASE'
-export const editSpecificPhrase = (review) => {
-  return dispatch => {
-    return axios.put('/api/review_phrase/' + review.id + '/', review)
-      .then(res => dispatch({
-        type: actionTypes.EDIT_SPECIFIC_PHRASE,
-        review: res.data,
-      }));
-  };
-};
-
-// export const DELETE_SPECIFIC_PHRASE = 'DELETE_SPECIFIC_PHRASE'
-export const deleteSpecificPhrase = (id) => {
-  return dispatch => {
-    return axios.delete('/api/review_phrase/' + id + '/')
-      .then(res => dispatch({
-        type: actionTypes.DELETE_SPECIFIC_PHRASE,
-      }));
-  };
-};
-
-// export const GET_PHRASE_LIKE = 'GET_PHRASE_LIKE'
-export const getPhraseLike = (id) => {
-  return dispatch => {
-    return axios.get('/api/review_phrase/' + id + '/')
-      .then(res => dispatch({
-        type: actionTypes.GET_PHRASE_LIKE,
-        like: res.data,
-      }));
-  };
-};
-
-// export const POST_PHRASE_LIKE = 'POST_PHRASE_LIKE'
-export const postPhraseLike = (id) => {
-  return dispatch => {
-    return axios.post('/api/review_phrase/' + id + '/like/')
-      .then(res => dispatch({
-        type: actionTypes.POST_PHRASE_LIKE,
-        like: res.data,
-      }));
-  };
-};
-// export const DELETE_PHRASE_LIKE = 'DELETE_PHRASE_LIKE'
-export const deletePhraseLike = (id) => {
-  return dispatch => {
-    return axios.delete('/api/review_phrase/' + id + '/like/')
-      .then(res => dispatch({
-        type: actionTypes.DELETE_PHRASE_LIKE,
-      }));
-  };
-};
-// export const GET_PHRASES_BY_BOOKID = 'GET_PHRASES_BY_BOOKID'
-export const getPhrasesByBookId = (isbn) => {
-  return dispatch => {
-    return axios.get('/api/review_phrase/bookID=' + isbn + '/')
-      .then(res => dispatch({
-        type: actionTypes.GET_PHRASES_BY_BOOKID,
-        reviews: res.data,
-      }));
-  };
-};
-// export const GET_PHRASES_BY_USERID = 'GET_PHRASES_BY_USERID'
-export const getPhrasesByUserId = (id) => {
-  return dispatch => {
-    return axios.get('/api/review_long/?userID=' + id + '/')
-      .then(res => dispatch({
-        type: actionTypes.GET_PHRASES_BY_USERID,
-        reviews: res.data,
+        type: actionTypes.GET_ARTICLES_BY_USERID,
+        articles: res.data,
       }));
   };
 };
@@ -509,7 +321,7 @@ export const deleteSpecificLongReviewComment = (id) => {
 // export const GET_COMMENTS_BY_REVIEWID = 'GET_COMMENTS_BY_REVIEWID'
 export const getCommentsByReviewID = (id) => {
   return dispatch => {
-    return axios.get('/api/comment/long_review/?reviewID=' + id + '/')
+    return axios.get('/api/comment/long_review/reviewID=' + id + '/')
       .then(res => dispatch({
         type: actionTypes.GET_COMMENTS_BY_REVIEWID,
         comments: res.data,
