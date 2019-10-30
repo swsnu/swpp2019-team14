@@ -43,6 +43,9 @@ class CreateReview extends Component {
   componentDidMount() {
   }
 
+  // componentDidUpdate() {
+  //   this.setState({ book: this.props.selectedBook });  // didn't work and caused maximum depth problem
+  // }
 
   HandleCheckbox = () => {
     // short review  vs  long review  vs  phrase
@@ -84,13 +87,14 @@ class CreateReview extends Component {
 
     // const addBookModal = <AddBookModal id="add-book-modal" show={this.state.add_book} whenDone={(book_id) => this.addedBook(book_id)} />
 
+// maybe this.state.book this update is slower than I think and componentdidupdate didn't work
     const book = (this.props.selectedBook) ? 
                   <BookResultSummary
-                    cover={this.state.book.thumbnail}
-                    title={this.state.book.title}
-                    authors={this.state.book.authors}
-                    publisher={this.state.book.publisher}
-                    isbn={this.state.book.isbn}
+                    cover={this.props.selectedBook.thumbnail}   
+                    title={this.props.selectedBook.title}
+                    authors={this.props.selectedBook.authors}
+                    publisher={this.props.selectedBook.publisher}
+                    isbn={this.props.selectedBook.isbn}
                     direct={false}
                   /> :
                   <BookResultSummary
@@ -103,7 +107,7 @@ class CreateReview extends Component {
                   />;
                  
     
-    console.log("DEBUG: update???");
+    console.log("DEBUG in CreateReview: ", this.props.selectedBook);
 
     return (
       <div className='CreateReview'>

@@ -1,16 +1,20 @@
 import React from "react";
+import { connect } from 'react-redux';
 import Image from 'react-bootstrap/Image';
 import { withRouter } from 'react-router';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import './BookResultSummary.css';
+import * as actionCreators from '../../store/actions/actionCreators';
 
 const BookResultSummary = (props) => {
 
-    clickHandler = () => {
+    const clickHandler = () => {
         if (props.direct) {
             props.history.push('/book/' + props.isbn);
+        } else {
+            props.onGetSpecificBook(props.isbn);
         }    
     }
 
@@ -40,5 +44,10 @@ const BookResultSummary = (props) => {
         </div>
     );
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
+  }
+}
 
-export default withRouter(BookResultSummary);
+export default connect(null, mapDispatchToProps)(withRouter(BookResultSummary));
