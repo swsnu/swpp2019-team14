@@ -17,9 +17,7 @@ class BookDetail extends Component {
 
   componentDidMount() {
     this.props.onLoadBook(this.props.match.params.book_id);
-    this.props.onLoadShortReviews(this.props.match.params.book_id);
-    this.props.onLoadLongReviews(this.props.match.params.book_id);
-    this.props.onLoadPhrases(this.props.match.params.book_id);
+    this.props.onLoadArticles(this.props.match.params.book_id);
   }
 
   onCreateReview = () => {

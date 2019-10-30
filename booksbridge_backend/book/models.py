@@ -21,9 +21,9 @@ class Article(models.Model):
     title = models.TextField(default='NO TITLE')
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
-    is_long = models.BooleanField(defualt=False)
-    is_short = models.BooleanField(defualt=False)
-    is_phrase = models.BooleanField(defualt=False)
+    is_long = models.BooleanField(default=False)
+    is_short = models.BooleanField(default=False)
+    is_phrase = models.BooleanField(default=False)
     def __str__(self):
         return str(self.content)
 
@@ -48,7 +48,7 @@ class BookInLibrary(models.Model):
 
 class LongReivewComment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    long_review = models.ForeignKey(LongReview, on_delete=models.CASCADE)
+    long_review = models.ForeignKey(Article, on_delete=models.CASCADE)
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
 
