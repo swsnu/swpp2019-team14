@@ -14,33 +14,16 @@ class Book(models.Model):
     def __str__(self):
         return str(self.isbn)
 
-class ShortReview(models.Model):
-    objects = models.Manager()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    title = models.TextField()
-    content = models.TextField()
-    date = models.DateTimeField(default=datetime.now, blank=True)
-    def __str__(self):
-        return str(self.content)
-
-class LongReview(models.Model):
+class Article(models.Model):
     objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     title = models.TextField(default='NO TITLE')
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
-    def __str__(self):
-        return str(self.title)
-
-class Phrase(models.Model):
-    objects = models.Manager()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    title = models.TextField()
-    content = models.TextField()
-    date = models.DateTimeField(default=datetime.now, blank=True)
+    is_long = models.BooleanField(defualt=False)
+    is_short = models.BooleanField(defualt=False)
+    is_phrase = models.BooleanField(defualt=False)
     def __str__(self):
         return str(self.content)
 
@@ -75,18 +58,10 @@ class CurationComment(models.Model):
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
 
-class ShortReviewLike(models.Model):
+class ArticleLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    short_reiew = models.ForeignKey(ShortReview, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
      
-class LongReivewLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    long_review = models.ForeignKey(LongReview, on_delete=models.CASCADE)
-
-class PhraseLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    phrase = models.ForeignKey(Phrase, on_delete=models.CASCADE)
-
 class CurationLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE)

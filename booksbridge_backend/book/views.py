@@ -101,23 +101,9 @@ def specific_book(request,isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-def searchLongReviews(request, isbn):
+def searchArticle(request, isbn):
     if request.method == 'GET':
-        review_all_list = [review for review in LongReview.objects.filter(book_id=isbn).values()]
-        return JsonResponse(review_all_list, safe=False)
-    else:
-        return HttpResponseNotAllowed(['GET'])
-
-def searchShortReviews(request,isbn):
-    if request.method == 'GET':
-        review_all_list = [review for review in ShortReview.objects.filter(book_id=isbn).values()]
-        return JsonResponse(review_all_list, safe=False)
-    else:
-        return HttpResponseNotAllowed(['GET'])
-
-def searchPhrases(request,isbn):
-    if request.method == 'GET':
-        review_all_list = [review for review in Phrase.objects.filter(book_id=isbn).values()]
+        review_all_list = [review for review in Article.objects.filter(book_id=isbn).values()]
         return JsonResponse(review_all_list, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
