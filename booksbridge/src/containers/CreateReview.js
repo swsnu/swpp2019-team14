@@ -7,7 +7,7 @@ import { Button, Radio, TextArea } from 'semantic-ui-react'
 import {Header as uiHeader} from 'semantic-ui-react';
 
 import Header from '../components/Header';
-import OcrModal from '../components/OcrModal';
+import OcrModal from '../components/OcrModal/OcrModal';
 import ChooseBookModal from '../components/ChooseBookModal';
 import Checkbox from '../components/Checkbox';
 import * as actionCreators from '../store/actions/actionCreators';
@@ -79,15 +79,8 @@ class CreateReview extends Component {
 
 
   render() {
-    // const quote = !this.state.ocr &&
-    //   <Button id="quote" content="Quote" onClick={() => this.setState({ ocr: !this.state.ocr })} />;
 
-    // const addBook = !this.state.add_book && (this.state.book == null) &&
-    //   <Button id="add-book" content="Add Book" onClick={() => this.setState({ add_book: !this.state.add_book })} />;
-
-    // const addBookModal = <AddBookModal id="add-book-modal" show={this.state.add_book} whenDone={(book_id) => this.addedBook(book_id)} />
-
-// maybe this.state.book this update is slower than I think and componentdidupdate didn't work
+    // maybe this.state.book this update is slower than I think and componentdidupdate didn't work
     const book = (this.props.selectedBook) ? 
                   <BookResultSummary
                     cover={this.props.selectedBook.thumbnail}   
@@ -158,7 +151,7 @@ class CreateReview extends Component {
           <TextArea 
             id="review-title" 
             onChange={(event) => this.setState({ title: event.target.value })} 
-            placeholder='write your title' 
+            placeholder='제목을 입력하세요' 
             rows={2}
             style={{ minWidth: 1000 }}
           />
@@ -167,7 +160,7 @@ class CreateReview extends Component {
           <TextArea 
             id="review-content" 
             onChange={(event) => this.setState({ content: event.target.value })} 
-            placeholder='write your thoughts' 
+            placeholder='내용을 입력하세요' 
             style={{ minHeight: 500, minWidth: 1000 }} 
           />
           <OcrModal id="ocr-modal"/>
