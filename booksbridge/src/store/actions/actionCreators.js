@@ -464,3 +464,11 @@ export const getFollowees = (userid) => {
       }));
   };
 };
+
+
+/////////////////////////////////// EXTRA /////////////////////////////////////////
+export const emptySearchedBooks = () => {
+  return {
+    type: actionTypes.EMPTY_SEARCHED_BOOKS,
+  };
+};
