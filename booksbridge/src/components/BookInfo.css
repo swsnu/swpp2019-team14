@@ -1,15 +1,22 @@
 .containerStyle {
-  height: 240px;
-  width: 800px;
-  border: 1px solid gray;
-  text-align: center;
+  border-top: 3px dashed rgb(179, 179, 179);
+  border-bottom: 3px dashed rgb(179, 179, 179);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
 
 .imageStyle {
-  height: auto;
-  width: 160;
+  border: 1px solid rgb(216, 216, 216);
   text-align: center;
-  padding: 20px;
+  padding: 1rem;
+}
+
+.titleStyle {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
 }
 
 .infoStyle {
