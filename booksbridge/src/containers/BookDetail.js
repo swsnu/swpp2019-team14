@@ -42,6 +42,10 @@ class BookDetail extends Component {
     const publishedDate = this.props.currentBook.published_date;
     const thumbnail = this.props.currentBook.thumbnail;
     const contents = this.props.currentBook.contents;
+    const shortReviews = this.props.shortReviews;
+    const longReviews = this.props.longReviews;
+    const phrases = this.props.phrases;
+
 
     return (
       <div >
@@ -63,7 +67,11 @@ class BookDetail extends Component {
         >Create a Review!</Button>
         <div className='tab'>
           <BookTabs
-            contents={contents} />
+            contents={contents}
+            shortReviews={shortReviews}
+            longReviews={longReviews}
+            phrases={phrases}
+          />
         </div>
       </div>
     );
@@ -73,8 +81,8 @@ class BookDetail extends Component {
 const mapStateToProps = state => {
   return {
     currentBook: state.book.selectedBook,
-    longReviews: state.article.longReviews,
     shortReviews: state.article.shortReviews,
+    longReviews: state.article.longReviews,
     phrases: state.article.phrases,
   };
 }
