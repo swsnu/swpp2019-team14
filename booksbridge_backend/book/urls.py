@@ -11,4 +11,5 @@ urlpatterns = [
     path('article/bookID=<isbn>/', views.searchArticle, name='searchArticle'),
     path('token/', views.token, name='token'),
     path('article/', views.article, name='article'),
+    path('article/<page>/', views.article_page, name='article_page'),
 ]

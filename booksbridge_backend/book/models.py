@@ -18,7 +18,7 @@ class Article(models.Model):
     objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    title = models.TextField(default='NO TITLE')
+    title = models.TextField(blank=True)
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
     is_long = models.BooleanField(default=False)

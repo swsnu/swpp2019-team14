@@ -5,6 +5,7 @@ const initialState = {
   shortReviews: [],
   phrases: [],
   articles: [],
+  hasNext: [],
   selectedArticle: null,
 };
 
@@ -20,7 +21,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_ARTICLES:
       return {
         ...state,
-        articles: state.articles.concat(action.articles),
+        articles: action.articles,
+        hasNext: action.has_next,
       };
   }
   return state;
