@@ -104,11 +104,13 @@ export const getArticles = (page) => {
 export const postArticle = (article) => {
   return dispatch => {
     return axios.post('/api/article/', article)
-      .then(res => dispatch({
-        type: actionTypes.POST_ARTICLE,
-        article: res.data,
-      }));
-  };
+      .then(res => {
+        dispatch({
+          type: actionTypes.POST_ARTICLE,
+          article: res.data,
+        });
+        dispatch(push('/review/' + res.data.id));
+      })}
 };
 
 // export const GET_SPECIFIC_ARTICLE = 'GET_SPECIFIC_ARTICLE'

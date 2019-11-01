@@ -24,6 +24,11 @@ const reducer = (state = initialState, action) => {
         articles: action.articles,
         hasNext: action.has_next,
       };
+    case actionTypes.GET_SPECIFIC_ARTICLE:
+        return {
+          ...state,
+          selectedArticle: action.article
+        };
   }
   return state;
 };
