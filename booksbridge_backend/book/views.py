@@ -143,14 +143,10 @@ def article(request):
         article.save()
         article_dict = model_to_dict(article)
         return JsonResponse(article_dict, status=201)
-    else:
-        pass
 
 def curation(request):
     # {title, content, isbn_content_pairs} from frontend
-    if request.method == 'GET':
-        pass
-    elif request.method == 'POST':
+    if request.method == 'POST':
         try:
             req_data = json.loads(request.body.decode())
             isbn = int(req_data['isbn'])
@@ -189,7 +185,7 @@ def article_page(request, page):
         articles = list(paginator.page(page).object_list.values())
         # articles = list(articles_all.values())
         # response_body={'articles':articles,'count': Article.objects.count()} 
-        response_body={'articles':articles,'has_next': paginator.page(page).has_next()}
+        response_body={'articles': articles,'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body)
 
 @ensure_csrf_cookie
