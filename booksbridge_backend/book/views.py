@@ -7,6 +7,8 @@ from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
+
 
 def signup(request):
     if request.method == 'POST':
@@ -109,8 +111,14 @@ def searchArticle(request, isbn):
         return HttpResponseNotAllowed(['GET'])
 
 @csrf_exempt
-def short_review(request):
-    if request.method == 'POST':
+def article(request):
+    if request.method == 'GET':
+        articles_all = Article.objects.all()
+        paginator = Paginator(articles_all, 10)
+        page = request.GET.get('page')
+        articles = list(paginator.page(page).object_list.values())
+        return JsonResponse(articles, safe=False)
+    elif request.method == 'POST':
         try:
             req_data = json.loads(request.body.decode())
             isbn = int(req_data['isbn'])
@@ -128,30 +136,6 @@ def short_review(request):
         return JsonResponse(short_review_dict, status=201)
     else:
         pass
-
-def long_review(request):
-    if request.method == 'POST':
-        try:
-            req_data = json.loads(request.body.decode())
-            isbn = int(req_data['isbn'])
-            title = req_data['title']
-            content = req_data['content']
-        except (KeyError) as e:
-            return HttpResponse(status=400)
-        try:
-            book = Book.objects.get(isbn=isbn)   # 미움받을 용기는 되나 문병로 알고리즘은 안 됨 
-        except Book.DoesNotExist:
-            return HttpResponse(status=404)
-        long_review = LongReview(author=request.user, book=book, content=content, title=title)
-        long_review.save()
-        long_review_dict = model_to_dict(long_review)
-        return JsonResponse(long_review_dict, status=201)
-
-    else:
-        pass
-
-def phrase(request):
-    pass
 
 @ensure_csrf_cookie
 def token(request):

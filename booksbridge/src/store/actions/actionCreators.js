@@ -89,6 +89,15 @@ export const getSpecificBook = (isbn) => {
   };
 };
 
+export const getArticles = (page) => {
+  return dispatch => {
+    return axios.get('/api/article/?page=' + page + '/')
+      .then(res => dispatch({
+        type: actionTypes.GET_ARTICLES,
+        articles: res.data,
+      }));
+  };
+};
 
 // export const POST_ARTICLE = 'POST_ARTICLE'
 export const postArticle = (article) => {

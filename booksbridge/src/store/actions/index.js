@@ -6,6 +6,7 @@ export {
   getSearchedUsers,
   getSearchedBooks,
   getSpecificBook,
+  getArticles,
   postArticle,
   getSpecificArticle,
   editSpecificArticle,

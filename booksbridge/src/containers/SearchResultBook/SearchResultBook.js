@@ -42,7 +42,7 @@ class SearchResultBook extends Component {
         let items = [];
         let first = active - 2, last = active + 2;
         let final = parseInt(this.props.count / 10) + 1;
-        if(this.props.count%10===0) final = final-1;
+        if (this.props.count % 10 === 0) final = final - 1;
 
         if (final < 5) {
             for (let number = 1; number <= final; number++) {
