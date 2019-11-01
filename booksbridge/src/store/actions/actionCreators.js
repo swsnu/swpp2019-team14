@@ -91,7 +91,7 @@ export const getSpecificBook = (isbn) => {
 
 export const getArticles = (page) => {
   return dispatch => {
-    return axios.get('/api/article/'+page+'/')
+    return axios.get('/api/article/page/'+page+'/')
       .then(res => dispatch({
         type: actionTypes.GET_ARTICLES,
         articles: res.data.articles,
