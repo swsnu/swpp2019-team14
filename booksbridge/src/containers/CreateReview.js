@@ -7,7 +7,7 @@ import { Button, Radio, TextArea } from 'semantic-ui-react'
 import {Header as uiHeader} from 'semantic-ui-react';
 
 import Header from '../components/Header';
-import OcrModal from '../components/OcrModal';
+import OcrModal from '../components/OcrModal/OcrModal';
 import ChooseBookModal from '../components/ChooseBookModal';
 import Checkbox from '../components/Checkbox';
 import * as actionCreators from '../store/actions/actionCreators';
@@ -20,25 +20,17 @@ class CreateReview extends Component {
     title: "",
     content: "",
     type: "phrase",
-    add_book: false,
-    book: {isbn: "9788996991342", // 미움받을용기 isbn 
-           authors:  "문병로",
-           contents: "귀납적 사고를 통한 문제 해결 기법 훈련 알고리즘에 대한 지식을 기반으로 제대로 프로그래밍을 하는 이들뿐만 아니라, 알고리즘 속에 깃들어 있는 여러 가지 생각하는 방법, 자료구조, 테크닉을 통해 체계적으로 생각하는 훈련을 하고자 하는 모든 이들을 대상으로 합니다. 알고리즘의 설계와 분석을 활용하여 체계적으로 사고할 수 있는 빌딩 블록을 구축하여 컴퓨터 또는 관련 분야의 연구자 또는 개발자로서 갖춰야 할 지적 기반을 쌓을 수 있습니다.",
-           publisher: "한빛아카데미",
-           thumbnail: "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1566973%3Ftimestamp%3D20190130232605",
-           title: "쉽게 배우는 알고리즘(개정판)(IT Cookbook 한빛 교재 시리즈 229)",
-           }, 
-    book2 : this.props.selectedBook, // 1. from BookDetail   or   2. add book in this page by search
+    addBookBySearch: false,
+    book : this.props.selectedBook, // 1. from BookDetail   or   2. add book in this page by search
     ocr: false,
   }
 
   componentDidMount() {
   }
 
-  //   static getDerivedStateFromProps(nextProps, nextState) {
-  //     return nextState;
-  //   }
-
+  // componentDidUpdate() {
+  //   this.setState({ book: this.props.selectedBook });  // didn't work and caused maximum depth problem
+  // }
 
   HandleCheckbox = () => {
     // short review  vs  long review  vs  phrase
@@ -65,26 +57,35 @@ class CreateReview extends Component {
     // get request to /book to get chosen book
   }
 
+  radioHandler = (event) => {
+    this.setState({ type: event.target.value });
+  }
+
 
 
   render() {
-    // const quote = !this.state.ocr &&
-    //   <Button id="quote" content="Quote" onClick={() => this.setState({ ocr: !this.state.ocr })} />;
 
-    // const addBook = !this.state.add_book && (this.state.book == null) &&
-    //   <Button id="add-book" content="Add Book" onClick={() => this.setState({ add_book: !this.state.add_book })} />;
-
-    // const addBookModal = <AddBookModal id="add-book-modal" show={this.state.add_book} whenDone={(book_id) => this.addedBook(book_id)} />
-
-    const book = <BookResultSummary
-                  cover={this.state.book.thumbnail}
-                  title={this.state.book.title}
-                  authors={this.state.book.authors}
-                  publisher={this.state.book.publisher}
-                  isbn={this.state.book.isbn}
-                 />;
-
-    console.log("DEBUG: " + this.state.type);
+    // maybe this.state.book this update is slower than I think and componentdidupdate didn't work
+    const book = (this.props.selectedBook) ? 
+                  <BookResultSummary
+                    cover={this.props.selectedBook.thumbnail}   
+                    title={this.props.selectedBook.title}
+                    authors={this.props.selectedBook.authors}
+                    publisher={this.props.selectedBook.publisher}
+                    isbn={this.props.selectedBook.isbn}
+                    direct={false}
+                  /> :
+                  <BookResultSummary
+                    cover={null}
+                    title={null}
+                    authors={null}
+                    publisher={null}
+                    isbn={null}
+                    direct={false}
+                  />;
+                 
+    
+    console.log("DEBUG in CreateReview: ", this.props.selectedBook);
 
     return (
       <div className='CreateReview'>
@@ -99,7 +100,7 @@ class CreateReview extends Component {
                 name='radioGroup'
                 value='short-review'
                 checked={this.state.type === 'short-review'}
-                onChange={(event) => this.setState({ type: event.target.value })}
+                onChange={this.radioHandler}
               />
               Short Review
             </label>
@@ -110,7 +111,7 @@ class CreateReview extends Component {
                 name='radioGroup'
                 value='long-review'
                 checked={this.state.type === 'long-review'}
-                onchange={(event) => this.setState({ type: event.target.value })} 
+                onChange={this.radioHandler}
               />
               Long Review
             </label>
@@ -121,21 +122,21 @@ class CreateReview extends Component {
                   name='radioGroup'
                   value='phrase'
                   checked={this.state.type === 'phrase'}
-                  onchange={(event) => this.setState({ type: event.target.value })}
+                  onChange={this.radioHandler}
               />
               Phrase
             </label>
           </form>
 
         <div>
-          <ChooseBookModal id="choose-book-modal"/>
+          <ChooseBookModal id="choose-book-modal" onDone={() => this.setState({ addBookBySearch: true})} />
           {book}
 
           제목:
           <TextArea 
             id="review-title" 
             onChange={(event) => this.setState({ title: event.target.value })} 
-            placeholder='write your title' 
+            placeholder='제목을 입력하세요' 
             rows={2}
             style={{ minWidth: 1000 }}
           />
@@ -144,7 +145,7 @@ class CreateReview extends Component {
           <TextArea 
             id="review-content" 
             onChange={(event) => this.setState({ content: event.target.value })} 
-            placeholder='write your thoughts' 
+            placeholder='내용을 입력하세요' 
             style={{ minHeight: 500, minWidth: 1000 }} 
           />
           <OcrModal id="ocr-modal"/>

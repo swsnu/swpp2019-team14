@@ -83,6 +83,7 @@ class SearchResultBook extends Component {
                     authors={book.authors}
                     publisher={book.publisher}
                     isbn={book.isbn}
+                    direct={true}
                 />
             );
         });
