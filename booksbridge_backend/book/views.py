@@ -139,16 +139,58 @@ def article(request):
             is_phrase = req_data['is_phrase']
         except (KeyError) as e:
             return HttpResponse(status=400)
+
         try:
             book = Book.objects.get(isbn=isbn)   
         except Book.DoesNotExist:
             return HttpResponse(status=404)
+
         article = Article(author=request.user, book=book, content=content, title=title, is_long=is_long, is_short=is_short, is_phrase=is_phrase)
         article.save()
         article_dict = model_to_dict(article)
         return JsonResponse(article_dict, status=201)
     else:
         pass
+
+def curation(request):
+    # {title, content, isbn_content_pairs} from frontend
+    if request.method == 'GET':
+        pass
+    elif request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            isbn = int(req_data['isbn'])
+            title = req_data['title']
+            content = req_data['content']
+            isbn_content_list = req_data['isbn_content_pairs'] 
+            # isbn_content_list = [(isbn, content) for (isbn, content) in isbn_content_pairs]
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        try:
+            book_content_list = [(Book.object.get(isbn=isbn), content) for (isbn, content) in isbn_content_list]  
+        except Book.DoesNotExist:
+            return HttpResponse(status=404)
+    
+        # should fix into TRANSACTION FORM!
+        curation = Curation(author=request.user, title=title, content=content)
+        curation.save()
+        curation_dict = model_to_dict(curation)
+
+        book_content_dict = []
+        for (book, content) in book_content_list:
+            new_book_in_curation = BookInCuration(curation=curation, book=book, content=content) 
+            new_book_in_curation.save()
+            book_content_dict.append(model_to_dict(new_book_in_curation))
+
+        result_dict = { "curation": curation_dict, "book_content": book_content_dict } 
+        return JsonResponse(result_dict, status=201)
+    else:
+        pass
+
+
+
+
 
 @ensure_csrf_cookie
 def token(request):
