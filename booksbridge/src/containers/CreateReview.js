@@ -19,42 +19,23 @@ class CreateReview extends Component {
   state = {
     title: "",
     content: "",
-    type: "phrase",
-    addBookBySearch: false,
-    book : this.props.selectedBook, // 1. from BookDetail   or   2. add book in this page by search
-    ocr: false,
-  }
-
-  componentDidMount() {
-  }
-
-  // componentDidUpdate() {
-  //   this.setState({ book: this.props.selectedBook });  // didn't work and caused maximum depth problem
-  // }
-
-  HandleCheckbox = () => {
-    // short review  vs  long review  vs  phrase
-    // because when we send post request to create review, we should decide review's type
+    type: "short-review",
   }
 
   onClickCreateButton = () => {
-    // create review OR show alert message for inappropriate input 
     if (this.state.title != "" && this.state.content != "") {
       this.props.onPostArticle({
-        isbn: this.state.book.isbn,
+        isbn: this.props.selectedBook.isbn,
         title: this.state.title,
         content: this.state.content,
-        is_long: true,
+        is_long: this.state.type === "long-review",
+        is_short: this.state.type === "short-review",
+        is_phrase: this.state.type === "phrase"
       })
-      window.alert("review is created");
+      window.alert("포스팅되었습니다");
     } else {
-      window.alert("input is empty");
+      window.alert("제목 또는 내용이 비어있습니다");
     }
-  }
-
-  addedBook = (book_id) => {  // this function may become obsolete as we get book from selectedBook in both cases
-    this.setState({ add_book: false })
-    // get request to /book to get chosen book
   }
 
   radioHandler = (event) => {
@@ -62,10 +43,7 @@ class CreateReview extends Component {
   }
 
 
-
   render() {
-
-    // maybe this.state.book this update is slower than I think and componentdidupdate didn't work
     const book = (this.props.selectedBook) ? 
                   <BookResultSummary
                     cover={this.props.selectedBook.thumbnail}   
@@ -83,15 +61,10 @@ class CreateReview extends Component {
                     isbn={null}
                     direct={false}
                   />;
-                 
-    
-    console.log("DEBUG in CreateReview: ", this.props.selectedBook);
-
     return (
       <div className='CreateReview'>
         <Header/>
         <h1>Create Review</h1>
-
           <form>
             <label>
               <input
@@ -129,9 +102,8 @@ class CreateReview extends Component {
           </form>
 
         <div>
-          <ChooseBookModal id="choose-book-modal" onDone={() => this.setState({ addBookBySearch: true})} />
+          <ChooseBookModal id="choose-book-modal"  />
           {book}
-
           제목:
           <TextArea 
             id="review-title" 

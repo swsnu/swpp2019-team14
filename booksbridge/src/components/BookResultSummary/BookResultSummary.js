@@ -21,8 +21,8 @@ const BookResultSummary = (props) => {
     let cover;
     if(props.cover==='') cover = "/images/no_cover.jpg";
     else cover = props.cover;
-    var pattern = /[\[\]\']/g;
-    const authors = props.authors.replace(pattern,'');
+    // var pattern = /[\[\]\']/g;
+    // const authors = props.authors.replace(pattern,'');
 
     return (
         <div className="outer">
@@ -35,7 +35,7 @@ const BookResultSummary = (props) => {
                     <Col className="book_info">
                         <div className="book_title">{props.title}</div>
                         <div className="book_summary">
-                            {authors}
+                            {props.authors}
                             <br/>
                             {props.publisher}
                         </div>
