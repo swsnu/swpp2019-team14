@@ -110,6 +110,16 @@ def searchArticle(request, isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+def specific_article(request,review_id):
+    if request.method == 'GET':
+        article = get_object_or_404(Article, id=review_id)
+        book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
+        book_dict = model_to_dict(book_in_db)
+        response_dict = {'id':article.id, 'author':article.author_id, 'book':book_dict, 'title':article.title, 'content':article.content, 'date':article.date}
+        return JsonResponse(response_dict)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
 @csrf_exempt
 def article(request):
     if request.method == 'GET':

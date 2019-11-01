@@ -22,6 +22,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         articles: state.articles.concat(action.articles),
       };
+    case actionTypes.GET_SPECIFIC_ARTICLE:
+        return {
+          ...state,
+          selectedArticle: action.article
+        };
   }
   return state;
 };
