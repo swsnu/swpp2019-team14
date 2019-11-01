@@ -41,12 +41,12 @@ class ChooseBookModal extends Component {
     this.setState({ requestNum: this.state.requestNum + 1 });
   }
 
-  chooseHandler = () => {   // may become obsolete -> yes this button is not needed.
-    if (this.props.selectedBook) {
-      this.props.onDone();
-    }
+  // chooseHandler = () => {   // may become obsolete -> yes this button is not needed.
+  //   if (this.props.selectedBook) {
+  //     this.props.onDone();
+  //   }
      
-  }
+  // }
 
   render () {
     // console.log("DEBUG ", this.props.searchedBooks);
@@ -69,7 +69,7 @@ class ChooseBookModal extends Component {
         <Modal.Content scrolling={true}>
           <Input placeholder='search...' onChange={(event) => this.setState({ keyword: event.target.value})} />
           <Button onClick={this.searchHandler}>찾기</Button>
-          <Button onClick={this.chooseHandler}>확인</Button> 
+          {/* <Button onClick={this.chooseHandler}>확인</Button>  */}
           {result}
           <Button onClick={this.seeMoreHandler}>더보기</Button>
         </Modal.Content>
