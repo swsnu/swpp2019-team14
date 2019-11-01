@@ -9,6 +9,7 @@ urlpatterns = [
     path('book/<isbn>/', views.specific_book, name='specific_book'),
     path('book/<keyword>/<page>/', views.searchbooks, name='searchbooks'),
     path('article/bookID=<isbn>/', views.searchArticle, name='searchArticle'),
+    path('article/<review_id>/', views.specific_article, name='specific_article'),
     path('token/', views.token, name='token'),
     path('article/', views.article, name='article'),
 ]

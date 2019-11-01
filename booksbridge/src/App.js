@@ -12,6 +12,7 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'semantic-ui-css/semantic.min.css';
+import ReviewDetailPage from './containers/ReviewDetailPage/ReviewDetailPage';
 
 
 function App(props) {
@@ -28,9 +29,9 @@ function App(props) {
           <Route path='/page/:user_id/curation-list' exact component={Create} />
           <Route path='/review' exact component={Create} />
           <Route path='/review/create' exact component={CreateReview} />
+          <Route path='/review/:review_id' exact component={ReviewDetailPage} />
+          <Route path='/review/:review_id/edit' exact component={ReviewDetailPage} />
           <Route path='/book/:book_id' exact component={BookDetail} />
-          <Route path='/book/:book_id/:review_id' exact component={Create} />
-          <Route path='/book/:book_id/:review_id/edit' exact component={Create} />
           <Route path='/curation' exact component={Create} />
           <Route path='/curation/create' exact component={Create} />
           <Route path='/curation/:user_id/:curation_id' exact component={Create} />
