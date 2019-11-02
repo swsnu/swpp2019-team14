@@ -54,9 +54,11 @@ class Main extends React.Component {
             {this.state.articles.map((article, index) => (
               <div key={index}>
                 <Article
-                  author={article.author}
+                  author_name={article.author_name}
+                  book_isbn={article.book_isbn}
+                  book_title={article.book_title}
+                  book_thumbnail={article.book_thumbnail}
                   title={article.title}
-                  book={article.book}
                   content={article.content}
                   date={article.date}
                   is_long={article.is_long}
