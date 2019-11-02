@@ -13,8 +13,11 @@ matrix:
     - cd booksbridge  
     install: # Script to install required packages
     - yarn install
+    - yarn install coveralls
     script: # Script to test your build
     - ./node_modules/.bin/eslint src
     - yarn test --coverage --watchAll=false
     - sonar-scanner
+    after_success:
+    - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
