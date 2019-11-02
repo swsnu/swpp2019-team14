@@ -182,11 +182,27 @@ def article_page(request, page):
     if request.method == 'GET':
         articles_all = Article.objects.all()
         paginator = Paginator(articles_all, 10)
-        articles = list(paginator.page(page).object_list.values())
+        paginator.page(page).has_next()
+        articles_list = paginator.page(page).object_list
+        articles = list()
+        for article in articles_list:
+            article_dict = {
+                'author_name':article.author.get_username(),
+                'book_isbn':article.book.isbn,
+                'book_title':article.book.title,
+                'book_thumbnail':article.book.thumbnail,
+                'title':article.title,
+                'content':article.content,
+                'date':article.date,
+                'is_long':article.is_long,
+                'is_short':article.is_short,
+                'is_phrase':article.is_phrase}
+            articles.append(article_dict)
         # articles = list(articles_all.values())
         # response_body={'articles':articles,'count': Article.objects.count()} 
         response_body={'articles': articles,'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body)
+
 
 @ensure_csrf_cookie
 def token(request):

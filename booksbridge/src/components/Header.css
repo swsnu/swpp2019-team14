@@ -17,6 +17,10 @@ body {
     padding:0.5rem;
 }
 
+.search{
+    flex: auto;
+    padding: 40px;
+}
 .profile{
     flex:auto;
     justify-content: center;
@@ -26,8 +30,4 @@ body {
 .profile{
     margin: auto 0;
     justify-content: center;
-}
-.search{
-    flex: auto;
-    padding: 40px;
 }

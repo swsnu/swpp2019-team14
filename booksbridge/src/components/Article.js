@@ -8,13 +8,6 @@ import "./Article.css";
 import Alert from 'react-bootstrap/Alert';
 
 const Article = props => {
-  const clickHandler = () => {
-    if (props.direct) {
-      props.history.push("/book/" + props.isbn);
-    } else {
-      props.onGetSpecificBook(props.isbn);
-    }
-  };
 
   return (
     <Alert variant="secondary" className="article">
@@ -25,21 +18,22 @@ const Article = props => {
           </div>
           <div class="content">
             <div class="summary">
-              <a>{props.author}</a>
+              <a>{props.author_name}</a>
               <div class="date">3 days ago</div>
             </div>
             <div class="ui items">
               <div class="item">
                 <div class="book_cover">
-                  <img src="/images/no_cover.jpg" />
+                  <a onClick={() => {props.history.push("/book/" + props.book_isbn)}}>
+                  <img src={props.book_thumbnail} /></a>
                 </div>
                 <div class="box">
-                  <a class="header">{props.title}</a>
+                  <a><h3>{props.title}</h3></a>
                   <div class="meta">
-                    <span>{props.book}</span>
+                    <span>{props.book_title}</span>
                   </div>
                   <div class="extra text">{props.content}</div>
-                  <div class="extra">Additional Details</div>
+                  {props.is_long?<div class="extra">Additional Details</div>:null}
                 </div>
               </div>
             </div>
@@ -53,19 +47,16 @@ const Article = props => {
             </div>
           </div>
         </div>
+        {
+          props.is_long?
         <div class="ui comments">
           <h3 class="ui dividing header">Comments</h3>
-        </div>
+        </div>:null
+        }
       </div>
     </Alert>
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {};
-};
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(withRouter(Article));
+export default withRouter(Article);

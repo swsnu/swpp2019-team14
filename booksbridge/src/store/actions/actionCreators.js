@@ -96,7 +96,7 @@ export const getArticles = (page) => {
         type: actionTypes.GET_ARTICLES,
         articles: res.data.articles,
         has_next: res.data.has_next,
-      }));
+      }))
   };
 };
 

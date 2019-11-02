@@ -1,8 +1,6 @@
 .articles{
-    width: 50%;
+    width: 41%;
     align-self: center;
-}
-.scroll{
 }
 .main{
     display: flex;
