@@ -14,7 +14,7 @@ class Main extends React.Component {
     super(params);
     this.props.onGetArticles(1);
     this.state = {
-      page: 1,
+      page: 2,
       articles: [],
       hasNext: true
     };

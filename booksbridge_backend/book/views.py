@@ -180,9 +180,8 @@ def curation(request):
       
 def article_page(request, page):
     if request.method == 'GET':
-        articles_all = Article.objects.all()
+        articles_all = Article.objects.all().order_by('-id')
         paginator = Paginator(articles_all, 10)
-        paginator.page(page).has_next()
         articles_list = paginator.page(page).object_list
         articles = list()
         for article in articles_list:
