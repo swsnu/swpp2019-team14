@@ -31,7 +31,7 @@ class Main extends React.Component {
         articles: this.state.articles.concat(this.props.loadArticle),
         hasNext: this.props.hasNext
       });
-    }, 1000);
+    }, 500);
   };
 
   render() {
@@ -58,6 +58,7 @@ class Main extends React.Component {
                   book_isbn={article.book_isbn}
                   book_title={article.book_title}
                   book_thumbnail={article.book_thumbnail}
+                  id={article.id}
                   title={article.title}
                   content={article.content}
                   date={article.date}
