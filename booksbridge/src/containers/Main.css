@@ -1,0 +1,10 @@
+.articles{
+    width: 50%;
+    align-self: center;
+}
+.scroll{
+}
+.main{
+    display: flex;
+    flex-direction: column;
+}

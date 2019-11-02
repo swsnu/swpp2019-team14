@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Input } from 'semantic-ui-react'
+import { Button, Modal, Input } from 'semantic-ui-react';
 
 import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from '../components/BookResultSummary/BookResultSummary';
