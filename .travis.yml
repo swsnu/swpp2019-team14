@@ -1,12 +1,20 @@
 matrix:
- include:
- - language: node_js # Your language e.g. node_js, python
-   node_js:
-   - '10' # node_js version
-   before_install: # Script to run before install
-   - cd booksbridge  
-   install: # Script to install required packages
-   - yarn install
-   script: # Script to test your build
-   - ./node_modules/.bin/eslint src
-   - yarn test --coverage --watchAll=false
+  include:
+  - language: node_js # Your language e.g. node_js, python
+    node_js:
+    - '10' # node_js version
+    dist: trusty
+    addons:
+      sonarcloud:
+        organization: "swsnu"
+        token:
+          secure: "nwRFF7tUMPb6C59fnNRdbZbDXtPyfFRQGWutZJ/h4FJF836KqrmSZWAeLAD/k1p8UK0cY5qrb+zkxS3voFKVhe5du6/XCCiCWY8+dkZ93T6bIhxD39bcmlM4ImGF3jScry2/kd4wC68Qk4jC0yKUjA5TxUtszJ2FNdaR2gvMZiRsnWre160bffJY2RaV2Nx1R+eYFFxi6fnCdzv9FIo0PsXqsPg3qVepQbU4DP7c1kPEgtAVIT1grLl3nHUuKxeF99iYm3Cgu7mv49I18EWZr/IyGex69ibdDFZAt7951vWNfHOeUZGwa2g/1WpfTxnrFzGg0y2hD+8OruhybmIC+zvT9sN6M5mXvDUx5J+XqQtntmIX6KiEvVowarj99GknXpwX+1If1ZcOtRcvz55xhH7kdGG+0RCSNREPT8bvv8LEdlQZrgo+vAtFbHlJSrCd3761NV/c7BrlbM2q8AmhL+c6R0Zc+ptjAc/oOLKjKXhgadhGv/91FhECU0z2ttNOgY5HpNnX28rEdKVPsHxmsL7WzzHp1xUbB/5p5AhQ0Jpc4Gjy1xDfLcl2eK58FJqS1rLDyA4aW7pygo+JekfmTrMOZZkXhl31O05dYpRMlmSUEi1vZOHpZKYd62z7i/mP9s9E3VKvXx0xTHdKFdipjDERMWKEulb129Mg1JAQu8A="
+    before_install: # Script to run before install
+    - cd booksbridge  
+    install: # Script to install required packages
+    - yarn install
+    script: # Script to test your build
+    - ./node_modules/.bin/eslint src
+    - yarn test --coverage --watchAll=false
+    - sonar-scanner
+
