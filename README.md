@@ -1,10 +1,11 @@
 # Booksbridge
-
-# Booksbridge SPRINT3 Revision (2019.11.02)
+# Revision (2019.11.02)
+# Booksbridge SPRINT 3 
 
 ## Available Features
 
-After you run the django backend server & the app, you can try some booksbridge's features.
+By running the django backend server & the react app, you can try some booksbridge's features.
+After installing some packages, you can run our app with `yarn start` and `python manage.py runserver`.
 
 ### `Sign Up & Sign In`
 
@@ -21,3 +22,11 @@ You redirect to the book's detail page when you click the div of a book you want
 ### `Check Book Detail`
 
 In Book detail page, you can see list of long reviews, short reviews, phrases of that book that other users & you created.
+
+### `Create Review`
+
+In Create Review page, you select category of review and a book to write review on, fill in title and text, and push '완료'. Then you can successfully post your review.
+
+## Tests
+
+Due to schedule, we couldn't implement meaningful tests and we are planning to create all the tests in Sprint 4.
