@@ -12,19 +12,9 @@ body {
 }
 
 .logo {
-    padding:0.5rem;
     flex: auto;
-    justify-content: center;
-    display: flex;
-    flex-direction: row;
-}
-
-.logo .top{
-    margin-right: 10%;
-}
-
-.logo .bottom{
-    margin-left: 10%;
+    width: 0%;
+    padding:0.5rem;
 }
 
 .profile{

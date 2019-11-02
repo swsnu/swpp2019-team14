@@ -91,10 +91,11 @@ export const getSpecificBook = (isbn) => {
 
 export const getArticles = (page) => {
   return dispatch => {
-    return axios.get('/api/article/?page=' + page + '/')
+    return axios.get('/api/article/page/'+page+'/')
       .then(res => dispatch({
         type: actionTypes.GET_ARTICLES,
-        articles: res.data,
+        articles: res.data.articles,
+        has_next: res.data.has_next,
       }));
   };
 };
@@ -103,11 +104,13 @@ export const getArticles = (page) => {
 export const postArticle = (article) => {
   return dispatch => {
     return axios.post('/api/article/', article)
-      .then(res => dispatch({
-        type: actionTypes.POST_ARTICLE,
-        article: res.data,
-      }));
-  };
+      .then(res => {
+        dispatch({
+          type: actionTypes.POST_ARTICLE,
+          article: res.data,
+        });
+        dispatch(push('/review/' + res.data.id));
+      })}
 };
 
 // export const GET_SPECIFIC_ARTICLE = 'GET_SPECIFIC_ARTICLE'

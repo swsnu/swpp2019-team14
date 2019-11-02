@@ -1,0 +1,13 @@
+.book_cover{
+    height: 200px;
+}
+.image{
+    height: 20%;
+}
+.box{
+    padding: 20px;
+    padding-left: 50px;
+}
+.article{
+    background-color: white;
+}

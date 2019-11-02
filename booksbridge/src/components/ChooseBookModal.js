@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Input } from 'semantic-ui-react'
+import { Button, Modal, Input } from 'semantic-ui-react';
 
 import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from '../components/BookResultSummary/BookResultSummary';
+
+import "./ChooseBookModal.css";
 
 const mapStateToProps = state => {
   return {
@@ -65,7 +67,7 @@ class ChooseBookModal extends Component {
                 }) : null;
 
     return (
-      <Modal trigger={<Button onClick={() => this.props.onEmptySearchedBooks()}>책 고르기</Button>}>
+      <Modal trigger={<Button className="SelectBookButton" onClick={() => this.props.onEmptySearchedBooks()}>Select Another Book</Button>}>
         <Modal.Content scrolling={true}>
           <Input placeholder='search...' onChange={(event) => this.setState({ keyword: event.target.value})} />
           <Button onClick={this.searchHandler}>찾기</Button>

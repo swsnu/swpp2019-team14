@@ -12,4 +12,5 @@ urlpatterns = [
     path('article/<review_id>/', views.specific_article, name='specific_article'),
     path('token/', views.token, name='token'),
     path('article/', views.article, name='article'),
+    path('article/page/<page>/', views.article_page, name='article_page'),
 ]

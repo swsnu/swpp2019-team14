@@ -5,6 +5,7 @@ import { Button } from "semantic-ui-react";
 
 import Header from "../../components/Header";
 import BookInfo from "../../components/BookInfo";
+import Comments from "../Comments/Comments";
 
 import * as actionCreators from "../../store/actions/actionCreators";
 
@@ -29,8 +30,8 @@ class ReviewDetailPage extends Component {
     return (
       <div>
         <Header />
-        <div className='ReviewTitleStyle'>
-            <h1>{this.props.currentArticle.title}</h1>
+        <div className="ReviewTitleStyle">
+          <h1>{this.props.currentArticle.title}</h1>
         </div>
         <div className="infoStyle">
           <BookInfo
@@ -48,7 +49,18 @@ class ReviewDetailPage extends Component {
           </Button>
         </div>
         <div className="ReviewContainer">
-        {this.props.currentArticle.content}
+          {this.props.currentArticle.content}
+          <div className="LikeButton">
+            <div class="ui labeled button" tabindex="0">
+              <div class="ui red button">
+                <i class="heart icon"></i> Like
+              </div>
+              <a class="ui basic red left pointing label">1,048</a>
+            </div>
+          </div>
+          <div className="ReviewComments">
+          <Comments />
+          </div>
         </div>
       </div>
     );
