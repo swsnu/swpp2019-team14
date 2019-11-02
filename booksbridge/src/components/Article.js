@@ -28,12 +28,12 @@ const Article = props => {
                   <img src={props.book_thumbnail} /></a>
                 </div>
                 <div class="box">
-                  <a><h3>{props.title}</h3></a>
+                  <a onClick={() => {props.history.push("/review/" + props.id)}}><h3>{props.title}</h3></a>
                   <div class="meta">
                     <span>{props.book_title}</span>
                   </div>
                   <div class="extra text">{props.content}</div>
-                  {props.is_long?<div class="extra">Additional Details</div>:null}
+                  {props.is_long?<a class="extra" onClick={() => {props.history.push("/review/" + props.id)}}>Additional Details</a>:null}
                 </div>
               </div>
             </div>
