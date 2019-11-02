@@ -6,6 +6,7 @@
 .DetailTabStyle {
   width: 800px;
   margin: 10px;
+  white-space: pre-wrap;
 }
 
 .ui.attached.tabular.menu{

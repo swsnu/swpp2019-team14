@@ -15,11 +15,6 @@ class BookInfo extends Component{
   }
 
   render(){
-    
-    const titleStyle = {};
-    const authorStyle = {};
-    const publisherStyle = {};
-    const publishedDateStyle = {};
 
     return (
       <div className='containerStyle'>
