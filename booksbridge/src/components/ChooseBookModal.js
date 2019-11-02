@@ -67,15 +67,18 @@ class ChooseBookModal extends Component {
                 }) : null;
 
     return (
-      <Modal trigger={<Button className="SelectBookButton" onClick={() => this.props.onEmptySearchedBooks()}>Select Another Book</Button>}>
+      <div className="check">
+        <Modal trigger={<Button className="SelectBookButton"
+        onClick={() => this.props.onEmptySearchedBooks()}>Select Another Book</Button>}>
         <Modal.Content scrolling={true}>
           <Input placeholder='search...' onChange={(event) => this.setState({ keyword: event.target.value})} />
-          <Button onClick={this.searchHandler}>찾기</Button>
+          <Button onClick={this.searchHandler}>Search!</Button>
           {/* <Button onClick={this.chooseHandler}>확인</Button>  */}
           {result}
-          <Button onClick={this.seeMoreHandler}>더보기</Button>
+          <Button onClick={this.seeMoreHandler}>More...</Button>
         </Modal.Content>
       </Modal>
+      </div>
     )
   }
 }

@@ -15,7 +15,7 @@ class CreateReview extends Component {
   state = {
     title: "",
     content: "",
-    type: "short-review"
+    type: "long-review"
   };
 
   onClickCreateButton = () => {
@@ -49,54 +49,64 @@ class CreateReview extends Component {
         direct={false}
       />
     ) : (
-      null
-    );
+        null
+      );
     return (
       <div className="CreateReview">
         <Header />
         <h1>Create Review</h1>
-        <form>
-          <label>
-            <input
-              id="short-review-radio"
-              type="radio"
-              name="radioGroup"
-              value="short-review"
-              checked={this.state.type === "short-review"}
-              onChange={this.radioHandler}
-            />
-            Short Review
-          </label>
-          <label>
-            <input
-              id="long-review-radio"
-              type="radio"
-              name="radioGroup"
-              value="long-review"
-              checked={this.state.type === "long-review"}
-              onChange={this.radioHandler}
-            />
-            Long Review
-          </label>
-          <label>
-            <input
-              id="phrase-radio"
-              type="radio"
-              name="radioGroup"
-              value="phrase"
-              checked={this.state.type === "phrase"}
-              onChange={this.radioHandler}
-            />
-            Phrase
-          </label>
-        </form>
+        <div className="ReviewTypeCheckbox">
+          <div className="ui form">
+            <div className="inline fields">
+              <div className="field">
+                <div className="ui radio checkbox">
+                  <input type="radio"
+                  id="long-review-radio"
+                  type="radio"
+                  name="radioGroup"
+                  value="long-review"
+                  checked={this.state.type === "long-review"}
+                  onChange={this.radioHandler}
+                  ></input>
+                  <label>Long Review</label>
+                </div>
+              </div>
+              <div className="field">
+                <div className="ui radio checkbox">
+                  <input type="radio"
+                  id="short-review-radio"
+                  type="radio"
+                  name="radioGroup"
+                  value="short-review"
+                  checked={this.state.type === "short-review"}
+                  onChange={this.radioHandler}
+                  ></input>
+                  <label>Short Review</label>
+                </div>
+              </div>
+              <div className="field">
+                <div className="ui radio checkbox">
+                  <input type="radio"
+                  id="phrase-radio"
+                  type="radio"
+                  name="radioGroup"
+                  value="phrase"
+                  checked={this.state.type === "phrase"}
+                  onChange={this.radioHandler}
+                  ></input>
+                  <label>Phrase</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div>
           <ChooseBookModal id="choose-book-modal" />
           {book}
           <div className="ReviewCreateForm">
-            <Form class="ui form">
-              <div class="field">
+            <Form className="ui form">
+              <div className="field">
                 <label className="FormLabel">Title</label>
                 <input
                   id="review-title"
@@ -109,7 +119,7 @@ class CreateReview extends Component {
                 ></input>
               </div>
               <br></br>
-              <div class="field">
+              <div className="field">
                 <label className="FormLabel">Content</label>
                 <TextArea
                   id="review-content"
@@ -124,7 +134,8 @@ class CreateReview extends Component {
 
               <OcrModal id="ocr-modal" />
 
-              <Button
+              <Button 
+                className="SubmitButton"
                 id="create-review"
                 content="Submit"
                 onClick={() => this.onClickCreateButton()}
