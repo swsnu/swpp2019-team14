@@ -22,7 +22,7 @@ If you fill the box with a search keyword, our app sends a request to search boo
 In search result page, you can check Book cover image & Title & authors & publishers & published date of books. 
 You redirect to the book's detail page when you click the div of a book you want to create review or read others' reviews.
 
-### `Check Book Detail` ('localhost:3000/book/<isbn>')
+### `Check Book Detail` ('localhost:3000/book/isbn')
 
 In Book detail page, you can see list of long reviews, short reviews, phrases of that book that other users & you created.
 
