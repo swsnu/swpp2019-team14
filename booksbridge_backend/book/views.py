@@ -190,6 +190,7 @@ def article_page(request, page):
                 'book_isbn':article.book.isbn,
                 'book_title':article.book.title,
                 'book_thumbnail':article.book.thumbnail,
+                'id':article.id,
                 'title':article.title,
                 'content':article.content,
                 'date':article.date,
