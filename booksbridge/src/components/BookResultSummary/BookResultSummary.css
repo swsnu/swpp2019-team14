@@ -8,6 +8,9 @@
     display: flex;
     flex-basis: 600px;
 }
+.inside:hover {
+    color: DarkCyan;
+}
 .book_cover{
     padding: 1rem;
     border: 1px solid rgb(216, 216, 216);

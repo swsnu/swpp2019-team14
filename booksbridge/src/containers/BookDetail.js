@@ -5,8 +5,8 @@ import { Button } from 'semantic-ui-react';
 import Form from 'react-bootstrap/Form';
 
 import Header from '../components/Header';
-import BookInfo from '../components/BookInfo';
-import BookTabs from '../components/BookTabs';
+import BookInfo from '../components/BookDetail/BookInfo';
+import BookTabs from '../components/BookDetail/BookTabs';
 
 import * as actionCreators from '../store/actions/actionCreators';
 
@@ -42,6 +42,7 @@ class BookDetail extends Component {
     const publishedDate = this.props.currentBook.published_date;
     const thumbnail = this.props.currentBook.thumbnail;
     const contents = this.props.currentBook.contents;
+    const author_contents = this.props.currentBook.author_contents;
     const shortReviews = this.props.shortReviews;
     const longReviews = this.props.longReviews;
     const phrases = this.props.phrases;
@@ -68,6 +69,7 @@ class BookDetail extends Component {
         <div className='tab'>
           <BookTabs
             contents={contents}
+            author_contents={author_contents}
             shortReviews={shortReviews}
             longReviews={longReviews}
             phrases={phrases}

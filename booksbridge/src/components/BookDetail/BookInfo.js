@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 import Image from 'react-bootstrap/Image';
 
-import * as actionCreators from '../store/actions/actionCreators';
+import * as actionCreators from '../../store/actions/actionCreators';
 
 import './BookInfo.css';
 

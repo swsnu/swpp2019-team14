@@ -21,6 +21,7 @@ class OcrModal extends Component {
     super(props);
     this.state = {
       files: [],
+      open: false,
     }
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
@@ -58,29 +59,33 @@ class OcrModal extends Component {
   
   render () {
     return (
-      <Modal trigger={<Button>페이지 가져오기</Button>}>
-        <Modal.Content>
-          <Dropzone  
-              onFilesAdded={this.onFilesAdded}
-              disabled={false}
-          />
-          {this.state.files.map(file =>  {
-            return (
-              <div key={file.name} className="Row">
-                <span className="Filename">
-                  {file.name}
-                </span>
-              </div>
-            )
-          })}
-          <Button id='clear' onClick={() => this.setState({ files: [] })}>삭제하기</Button>
-          <Button id="run-ocr" onClick={this.runOcrOnFiles}>내용 추출하기</Button> 
-          <TextArea 
-            id="ocr-text" 
-            style={{ minHeight: 500, minWidth: 1000 }} 
-          />
-        </Modal.Content>
-      </Modal>
+      <div className="ocr-modal">
+        <Button onClick={() => this.setState({ open: true })}>Quote</Button>
+        <Modal open={this.state.open}>
+          <Modal.Content>
+            <Dropzone  
+                onFilesAdded={this.onFilesAdded}
+                disabled={false}
+            />
+            {this.state.files.map(file =>  {
+              return (
+                <div key={file.name} className="Row">
+                  <span className="Filename">
+                    {file.name}
+                  </span>
+                </div>
+              )
+            })}
+            <Button id='clear' onClick={() => this.setState({ files: [] })}>삭제하기</Button>
+            <Button id="run-ocr" onClick={this.runOcrOnFiles}>내용 추출하기</Button> 
+            <Button onClick={() => this.setState({ open: false })}>Close</Button>
+            <TextArea 
+              id="ocr-text" 
+              style={{ minHeight: 500, minWidth: 1000 }} 
+            />
+          </Modal.Content>
+        </Modal>
+      </div>
     )
   }
 }

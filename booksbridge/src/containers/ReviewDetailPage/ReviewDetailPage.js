@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import { Button } from "semantic-ui-react";
 
 import Header from "../../components/Header";
-import BookInfo from "../../components/BookInfo";
+import BookInfo from "../../components/BookDetail/BookInfo";
 import Comments from "../Comments/Comments";
 
 import * as actionCreators from "../../store/actions/actionCreators";
