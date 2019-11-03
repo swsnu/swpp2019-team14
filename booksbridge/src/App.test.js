@@ -6,37 +6,10 @@ import { connectRouter, ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import App from './App';
-import { getMockStore } from './test-utils/mocks';
 import { history } from './store/store';
 
-const mockStore = getMockStore({ 
-  users: [
-    {
-      "id": 1,
-      "email": "swpp@snu.ac.kr",
-      "password": "iluvswpp",
-      "name": "ARTICLE_AUTHOR",
-      "logged_in": false
-    },
-    {
-      "id": 2,
-      "email": "alan@turing.com",
-      "password": "iluvswpp",
-      "name": "Alan Turing",
-      "logged_in": false
-    },
-    {
-      "id": 3,
-      "email": "edsger@dijkstra.com",
-      "password": "iluvswpp",
-      "name": "Edsger Dijkstra",
-      "logged_in": false
-    }
-  ],
-  logged_in_user: null,
-});
 
-jest.mock('./containers/Login', () => {
+jest.mock('./containers/sign-in', () => {
   return jest.fn(props => {
     return (
       <div className="spyLogin">

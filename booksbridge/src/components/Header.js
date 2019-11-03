@@ -16,10 +16,10 @@ const Header = (props) => {
 
     return (
         <div className="header">
-            <div className="logo"
+            <a className="logo"
                 onClick={() => props.history.push('/main')}>
                 <img src="/images/logo.png" width="170px"></img>
-            </div>
+            </a>
             <div className="search">
                 <InputGroup >
                     <FormControl
@@ -42,9 +42,9 @@ const Header = (props) => {
                     </InputGroup.Append>
                 </InputGroup>
             </div>
-            <div className="profile">
+            <a className="profile">
                 <h4>내 프로필</h4>
-            </div>
+            </a>
         </div>
     );
 };
