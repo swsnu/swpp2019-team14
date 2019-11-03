@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import * as actionCreators from "../store/actions/index";
 import "./containers.css";
-import Button from "react-bootstrap/Button";
+import { Button } from "semantic-ui-react";
 import Form from "react-bootstrap/Form";
 
 class Signup extends Component {
@@ -28,8 +28,8 @@ class Signup extends Component {
   render() {
     return (
       <div className="login_page">
-        <h1>Sign up</h1>
         <Form className="login_form" onSubmit={this.onClickSignUpButton}>
+          <h1>SIGN UP</h1>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
