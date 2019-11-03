@@ -1,13 +1,14 @@
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie , csrf_exempt
-import json
+import json, re
 import urllib.request, requests
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
+from bs4 import BeautifulSoup
 from django.db import transaction
 
 
@@ -100,11 +101,24 @@ def specific_book(request,isbn):
     if request.method == 'GET':
         book_in_db = Book.objects.get(isbn = isbn)
         book_dict = model_to_dict(book_in_db)
+        try:
+            response = requests.get('https://m.search.daum.net/search'+book_in_db.url[30:]).text
+        except:
+            return HttpResponse(status=400)
+        try:
+            bs = BeautifulSoup(response, 'html.parser')
+            tags = bs.findAll('p', attrs={'class': 'desc'})
+            contents = tags[0].text
+            author_info = tags[1].text
+            book_dict['contents']=contents
+            book_dict['author_contents']=author_info
+        except:
+            return JsonResponse(book_dict,status=200)
         return JsonResponse(book_dict,status=200)
     else:
         return HttpResponseNotAllowed(['GET'])
 
-def searchArticle(request, isbn):
+def search_article(request, isbn):
     if request.method == 'GET':
         review_all_list = [review for review in Article.objects.filter(book_id=isbn).values()]
         return JsonResponse(review_all_list, safe=False)
