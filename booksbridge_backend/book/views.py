@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
+from django.db import transaction
 
 
 def signup(request):
@@ -162,21 +163,29 @@ def curation(request):
         except Book.DoesNotExist:
             return HttpResponse(status=404)
     
-        # should fix into TRANSACTION FORM!
-        curation = Curation(author=request.user, title=title, content=content)
-        curation.save()
-        curation_dict = model_to_dict(curation)
+        # TRANSACTION FORM!
+        sid = transaction.savepoint()
 
-        book_content_dict = []
-        for (book, content) in book_content_list:
-            new_book_in_curation = BookInCuration(curation=curation, book=book, content=content) 
-            new_book_in_curation.save()
-            book_content_dict.append(model_to_dict(new_book_in_curation))
+        try:
+            curation = Curation(author=request.user, title=title, content=content)
+            curation.save()
+            curation_dict = model_to_dict(curation)
 
+            book_content_dict = []
+            for (book, content) in book_content_list:
+                new_book_in_curation = BookInCuration(curation=curation, book=book, content=content) 
+                new_book_in_curation.save()
+                book_content_dict.append(model_to_dict(new_book_in_curation))
+            
+            transaction.savepoint_commit(sid)
+        except:
+            transaction.savepoint_rollback(sid)
+            
         result_dict = { "curation": curation_dict, "book_content": book_content_dict } 
         return JsonResponse(result_dict, status=201)
     else:
         pass
+
       
 def article_page(request, page):
     if request.method == 'GET':
@@ -203,6 +212,41 @@ def article_page(request, page):
         response_body={'articles': articles,'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body)
 
+def curation(request):
+    # {title, content, isbn_content_pairs} from frontend
+    if request.method == 'GET':
+        pass
+    elif request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            isbn = int(req_data['isbn'])
+            title = req_data['title']
+            content = req_data['content']
+            isbn_content_list = req_data['isbn_content_pairs'] 
+            # isbn_content_list = [(isbn, content) for (isbn, content) in isbn_content_pairs]
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        try:
+            book_content_list = [(Book.object.get(isbn=isbn), content) for (isbn, content) in isbn_content_list]  
+        except Book.DoesNotExist:
+            return HttpResponse(status=404)
+
+        # should fix into TRANSACTION FORM!
+        curation = Curation(author=request.user, title=title, content=content)
+        curation.save()
+        curation_dict = model_to_dict(curation)
+
+        book_content_dict = []
+        for (book, content) in book_content_list:
+            new_book_in_curation = BookInCuration(curation=curation, book=book, content=content) 
+            new_book_in_curation.save()
+            book_content_dict.append(model_to_dict(new_book_in_curation))
+
+        result_dict = { "curation": curation_dict, "book_content": book_content_dict } 
+        return JsonResponse(result_dict, status=201)
+    else:
+        pass
 
 @ensure_csrf_cookie
 def token(request):
