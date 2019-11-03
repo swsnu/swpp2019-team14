@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Tab } from 'semantic-ui-react';
 import BookTabsReviewList from './BookTabsReviewList';
-import BookTabsReview from './BookTabsReview';
-import BookDetailInfo from '../components/BookDetailInfo/BookDetailInfo';
+import BookDetailInfo from '../BookDetailInfo/BookDetailInfo';
 
 import './BookTabs.css';
 
