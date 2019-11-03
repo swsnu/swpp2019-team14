@@ -2,35 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import './containers.css';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Button } from "semantic-ui-react";
+import Form from 'react-bootstrap/Form'
 import * as actionCreators from "../store/actions/index";
 
 class Signin extends Component {
   state = {
     username: '',
     password: '',
-  }
-
-  componentDidMount() {
-    // this.props.onGetUsers();
-  }
-
-  static getDerivedStateFromProps(nextProps, nextState) {
-    // if (nextProps.storedUser !== null && nextProps.loggedinUser !== null) {
-    //   nextProps.history.push('/');
-    // }
-    return nextState;
-  }
-
-  LoginHandler = () => {
-    // if (this.state.email === this.props.storedUser.email && this.state.password === this.props.storedUser.password) {
-    //   this.props.onToggleLoginInfo(this.props.storedUser);
-    // }
-    // else {
-    //   alert("Email or password is wrong");
-    // }
-    this.props.history.push('/main/');
   }
 
   onClickSignInButton = (e) => {
@@ -42,8 +21,8 @@ class Signin extends Component {
   render() {
     return (
       <div className='login_page'>
-        <h1>Login</h1>
         <Form className="login_form" onSubmit={this.onClickSignInButton}>
+          <h1>SIGN IN</h1>
           <Form.Group>
             <Form.Label>Username</Form.Label>
             <Form.Control
