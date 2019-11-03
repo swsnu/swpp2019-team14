@@ -1,0 +1,12 @@
+
+.box{
+    padding: 20px;
+    padding-left: 50px;
+    width: 80%;
+}
+.article{
+    background-color: white;
+}
+.text{
+    height: auto;
+}
