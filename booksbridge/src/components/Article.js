@@ -19,7 +19,7 @@ const Article = props => {
           <div className="content">
             <div className="summary">
               <a>{props.author_name}</a>
-              <div className="date">3 days ago</div>
+              <div className="date">30 minutes ago</div>
             </div>
             <div className="ui items">
               <div className="item">
@@ -42,7 +42,7 @@ const Article = props => {
                 <div className="ui red button">
                   <i className="heart icon"></i> Like
                 </div>
-                <a className="ui basic red left pointing label">1,048</a>
+                <a className="ui basic red left pointing label">0</a>
               </div>
             </div>
           </div>
