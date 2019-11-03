@@ -102,8 +102,8 @@ class CreateReview extends Component {
         </div>
 
         <div>
+          <div className="SelectedBook">{book}</div>
           <ChooseBookModal id="choose-book-modal" />
-          {book}
           <div className="ReviewCreateForm">
             <Form className="ui form">
               <div className="field">

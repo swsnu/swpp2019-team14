@@ -2,11 +2,12 @@
     display: flex;
     justify-content: center;
     padding:1rem;
-    border-bottom: 1px solid rgb(216, 216, 216);
 }
 .inside{
     display: flex;
     flex-basis: 600px;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgb(216, 216, 216);
 }
 .inside:hover {
     color: DarkCyan;
@@ -22,7 +23,9 @@
     align-items: flex-start;
 }
 .book_summary{
+    padding-top: 10px;
     text-align: left;
+    line-height: 2;
 }
 .book_title{
     font-size: 20px;
