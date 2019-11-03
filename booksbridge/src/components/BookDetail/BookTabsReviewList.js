@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import Article from "./Article";
+import BookTabsReview from "./BookTabsReview";
 
-import "./BookTabsReview.css";
+import "./BookTabsReviewList.css";
 
-class BookTabsReview extends Component {
+class BookTabsReviewList extends Component {
   componentDidMount() {}
 
   render() {
@@ -18,7 +18,7 @@ class BookTabsReview extends Component {
 
       return (
         <div>
-          <Article
+          <BookTabsReview
             author={review.author}
             title={review.title}
             book={review.book}
@@ -57,4 +57,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(BookTabsReview));
+)(withRouter(BookTabsReviewList));

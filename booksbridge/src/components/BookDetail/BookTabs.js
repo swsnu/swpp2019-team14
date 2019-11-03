@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Tab } from 'semantic-ui-react';
-import BookTabsReview from './BookTabsReview';
+import BookTabsReviewList from './BookTabsReviewList';
 
 import './BookTabs.css';
 
@@ -17,19 +17,19 @@ class BookTabs extends Component {
     console.log("[DEBUG] long reviews: " + this.props.longReviews);
     console.log("[DEBUG] phrase reviews: " + this.props.phrases);
 
-    var shortReviewList = <BookTabsReview
+    var shortReviewList = <BookTabsReviewList
                             is_short={true}
                             is_long={false}
                             is_phrase={false}
                             reviews={this.props.shortReviews}
                           />;
-    var longReviewList = <BookTabsReview
+    var longReviewList = <BookTabsReviewList
                             is_short={false}
                             is_long={true}
                             is_phrase={false}
                             reviews={this.props.longReviews}
                           />;
-    var phraseList = <BookTabsReview
+    var phraseList = <BookTabsReviewList
                       is_short={false}
                       is_long={false}
                       is_phrase={true}

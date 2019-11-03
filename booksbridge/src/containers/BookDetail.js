@@ -5,8 +5,8 @@ import { Button } from 'semantic-ui-react';
 import Form from 'react-bootstrap/Form';
 
 import Header from '../components/Header';
-import BookInfo from '../components/BookInfo';
-import BookTabs from '../components/BookTabs';
+import BookInfo from '../components/BookDetail/BookInfo';
+import BookTabs from '../components/BookDetail/BookTabs';
 
 import * as actionCreators from '../store/actions/actionCreators';
 
