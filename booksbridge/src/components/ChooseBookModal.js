@@ -27,7 +27,12 @@ class ChooseBookModal extends Component {
   state = {
     keyword: "",
     requestNum: 1,
-    // searchedBooks: [],
+    open: false,
+  }
+
+  openHandler = () => {
+    this.setState({ open: true });
+    this.props.onEmptySearchedBooks();
   }
 
   searchHandler = () => {
@@ -36,19 +41,13 @@ class ChooseBookModal extends Component {
     // this.setState({ searchedBooks: this.props.books});
     this.setState({ requestNum: 2});
   }
+
   seeMoreHandler = () => {
     // console.log("SEE MORE: ", this.state.requestNum);
     this.props.onSearchBooks(this.state.keyword, this.state.requestNum);
     // this.setState({ searchedBooks: this.state.searchedBooks.concat(this.props.books)});
     this.setState({ requestNum: this.state.requestNum + 1 });
   }
-
-  // chooseHandler = () => {   // may become obsolete -> yes this button is not needed.
-  //   if (this.props.selectedBook) {
-  //     this.props.onDone();
-  //   }
-     
-  // }
 
   render () {
     // console.log("DEBUG ", this.props.searchedBooks);
@@ -67,13 +66,15 @@ class ChooseBookModal extends Component {
                 }) : null;
 
     return (
-      <div className="check">
-        <Modal trigger={<Button className="SelectBookButton"
-        onClick={() => this.props.onEmptySearchedBooks()}>Select Another Book</Button>}>
+      <div className="choose-book-modal">
+        <Button className="select-book-button" onClick={this.openHandler}>Select Book</Button>
+
+        <Modal open={this.state.open}>
         <Modal.Content scrolling={true}>
           <Input placeholder='search...' onChange={(event) => this.setState({ keyword: event.target.value})} />
           <Button onClick={this.searchHandler}>Search!</Button>
-          {/* <Button onClick={this.chooseHandler}>확인</Button>  */}
+          {/* <Button onClick={() => this.setState({ open: false })}>Choose</Button>  */}
+          <Button className="close-select-book-button" onClick={() => this.setState({ open: false })}>Close</Button>
           {result}
           <Button onClick={this.seeMoreHandler}>More...</Button>
         </Modal.Content>
@@ -83,3 +84,6 @@ class ChooseBookModal extends Component {
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseBookModal);
+
+
+
