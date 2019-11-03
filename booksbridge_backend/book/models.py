@@ -1,6 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
+from django.conf import settings
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    nickname = models.CharField(max_length=32, blank=True)
+    profile_text = models.TextField(blank=True)
+    profile_photo = ProcessedImageField(
+    		blank = True,
+        	upload_to = 'user/profile/images',
+        	processors = [ResizeToFill(300, 300)],
+        	format = 'JPEG',
+        	options = {'quality':100},
+    		)
 
 class Book(models.Model):
     isbn = models.BigIntegerField(primary_key=True)
