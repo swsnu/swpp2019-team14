@@ -7,9 +7,12 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 
 import App from './App';
 import { history } from './store/store';
+import { getMockStore } from './test-utils/mocks';
 
+const mockStore = getMockStore({ 
+});
 
-jest.mock('./containers/sign-in', () => {
+jest.mock('./containers/Signin', () => {
   return jest.fn(props => {
     return (
       <div className="spyLogin">

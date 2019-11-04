@@ -32,7 +32,7 @@ const Article = props => {
                   <div className="meta">
                     <span>{props.book_title}</span>
                   </div>
-                  <div className="extra text">{props.content}</div>
+                  <div className="extra text"><div className="text-box">{props.content}</div></div>
                   {props.is_long?<a className="extra" onClick={() => {props.history.push("/review/" + props.id)}}>Additional Details</a>:null}
                 </div>
               </div>
