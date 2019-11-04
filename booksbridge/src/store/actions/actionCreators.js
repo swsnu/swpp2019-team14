@@ -16,18 +16,23 @@ export const postUser = (user) => (dispatch) => axios.post('/api/user/', user).t
   dispatch(push('/sigin-in/'));
 });
 // export const LOGIN_USER = 'LOGIN_USER'
-export const loginUser = (user) => (dispatch) => axios
-  .post('/api/sign_in/', user)
-  .then((res) => {
-    dispatch({
-      type: actionTypes.LOGIN_USER,
-      user: res.data,
-    });
-    dispatch(push('/main/'));
-  })
-  .catch((err) => {
-    alert('Username or Password is incorrect.');
-  });
+
+export const loginUser = user => {
+  return dispatch => {
+    return axios
+      .post("/api/sign_in/", user)
+      .then(res => {
+        dispatch({
+          type: actionTypes.LOGIN_USER,
+          user: res.data
+        });
+        storage.set('logged_in_user', res.data);
+        dispatch(push('/main/'));
+      }).catch(err => {
+        alert("Username or Password is incorrect.");
+      });
+  };
+};
 
 // export const LOGOUT_USER = 'LOGOUT_USER'
 export const logoutUser = () => (dispatch) => axios.post('/api/sign_out/').then((res) => dispatch({
