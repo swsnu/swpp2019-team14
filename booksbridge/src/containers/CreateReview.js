@@ -5,7 +5,7 @@ import { Button, Form, TextArea } from "semantic-ui-react";
 
 import Header from "../components/Header";
 import OcrModal from "../components/OcrModal/OcrModal";
-import ChooseBookModal from "../components/ChooseBookModal";
+import ChooseBookModal from "../components/ChooseBookModal/ChooseBookModal";
 import * as actionCreators from "../store/actions/actionCreators";
 import BookResultSummary from "../components/BookResultSummary/BookResultSummary";
 
@@ -38,7 +38,7 @@ class CreateReview extends Component {
       if (this.state.content != "") {
         this.props.onPostArticle({
           isbn: this.props.selectedBook.isbn,
-          title: null,
+          title: "",
           content: this.state.content,
           is_long: false,
           is_short: this.state.type === "short-review",
