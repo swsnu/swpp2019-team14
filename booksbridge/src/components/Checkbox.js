@@ -3,17 +3,17 @@
 
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import PropTypes from 'prop-types';  // this gives warning (type checking)
+import PropTypes from 'prop-types'; // this gives warning (type checking)
 
 const Checkbox = (props) => {
-    const { id, content, onClick } = props;
-    return (
-        <div>
-            <Button id={id} onClick={onClick} />
-            {content}
-        </div>
-    )
-}
+  const { id, content, onClick } = props;
+  return (
+    <div>
+      <Button id={id} onClick={onClick} />
+      {content}
+    </div>
+  );
+};
 
 // Button.propTypes = {
 //     id: PropTypes.string.isRequired,

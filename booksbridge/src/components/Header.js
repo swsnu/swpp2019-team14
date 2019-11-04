@@ -7,46 +7,48 @@ import Alert from 'react-bootstrap/Alert';
 import { withRouter } from 'react-router-dom';
 
 const Header = (props) => {
+  const [search_input, setSearchInput] = useState('');
 
-    const [search_input, setSearchInput] = useState('');
+  const onSearch = () => {
+    props.history.push(`/result/search=${search_input}/book/1`);
+  };
 
-    const onSearch = () => {
-        props.history.push('/result/search=' + search_input + '/book/1');
-    };
-
-    return (
-        <div className="header">
-            <a className="logo"
-                onClick={() => props.history.push('/main')}>
-                <img src="/images/logo.png" width="170px"></img>
-            </a>
-            <div className="search">
-                <InputGroup >
-                    <FormControl
-                        aria-describedby="basic-addon2"
-                        type="text"
-                        value={search_input}
-                        onChange={({ target: { value } }) => setSearchInput(value)}
-                        onKeyPress={event => {
-                            if (event.key === "Enter") {
-                                onSearch()
-                            }
-                        }
-                        }
-                    />
-                    <InputGroup.Append>
-                        <Button
-                            variant="outline-secondary"
-                            onClick={() => onSearch()}
-                        >Search</Button>
-                    </InputGroup.Append>
-                </InputGroup>
-            </div>
-            <a className="profile">
-                <h4>내 프로필</h4>
-            </a>
-        </div>
-    );
+  return (
+    <div className="header">
+      <a
+        className="logo"
+        onClick={() => props.history.push('/main')}
+      >
+        <img src="/images/logo.png" width="170px" />
+      </a>
+      <div className="search">
+        <InputGroup>
+          <FormControl
+            aria-describedby="basic-addon2"
+            type="text"
+            value={search_input}
+            onChange={({ target: { value } }) => setSearchInput(value)}
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') {
+                onSearch();
+              }
+            }}
+          />
+          <InputGroup.Append>
+            <Button
+              variant="outline-secondary"
+              onClick={() => onSearch()}
+            >
+Search
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+      </div>
+      <a className="profile">
+        <h4>내 프로필</h4>
+      </a>
+    </div>
+  );
 };
 
 export default withRouter(Header);

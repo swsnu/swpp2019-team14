@@ -1,27 +1,27 @@
 import { withRouter } from 'react-router-dom';
 import React from 'react';
 
-import "./Comments.css";
+import './Comments.css';
 
-import Comment from "../../components/Comment/Comment"
+import Comment from '../../components/Comment/Comment';
 
-const Comments = props => {
-  return (
-    <div class="ui comments">
-      <h3 class="ui dividing header">Comments</h3>
-      <Comment />
-      <form class="ui reply form">
-        <div class="field">
-          <textarea></textarea>
+const Comments = (props) => (
+  <div className="ui comments">
+    <h3 className="ui dividing header">Comments</h3>
+    <Comment />
+    <form className="ui reply form">
+      <div className="field">
+        <textarea />
+      </div>
+      <div className="ReplyButton">
+        <div className="ui black labeled submit icon button">
+          <i className="icon edit" />
+          {' '}
+Add Reply
         </div>
-        <div class="ReplyButton">
-        <div class="ui black labeled submit icon button">
-          <i class="icon edit"></i> Add Reply
-        </div>
-        </div>
-      </form>
-    </div>
-  );
-};
+      </div>
+    </form>
+  </div>
+);
 
 export default withRouter(Comments);
