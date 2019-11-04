@@ -45,11 +45,11 @@ class Main extends React.Component {
             next={this.fetchMoreData}
             hasMore={this.state.hasNext}
             loader={<h4>Loading...</h4>}
-            endMessage={(
+            endMessage={
               <p style={{ textAlign: 'center' }}>
                 <b>Yay! You have seen it all</b>
               </p>
-            )}
+            }
           >
             {this.state.articles.map((article, index) => (
               <div key={index}>

@@ -26,7 +26,8 @@ class CurationAddBookModal extends Component {
         <input
           id="search-book"
           onChange={event =>
-            this.setState({ searchKeyword: event.target.value })}
+            this.setState({ searchKeyword: event.target.value })
+          }
         />
         <Button
           id="search-book-button"
