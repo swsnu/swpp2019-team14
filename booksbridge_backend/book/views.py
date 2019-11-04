@@ -11,7 +11,7 @@ from django.core.paginator import Paginator
 from bs4 import BeautifulSoup
 from django.db import transaction
 
-
+#@csrf_exempt
 def signup(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
@@ -25,6 +25,7 @@ def signup(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+#@csrf_exempt
 def profile_update(request):
     if request.method == 'PUT':
         profile = request.user.profile
@@ -40,6 +41,7 @@ def profile_update(request):
     else:
         return HttpResponseNotAllowed(['PUT'])
 
+#@csrf_exempt
 def signin(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
@@ -153,7 +155,7 @@ def specific_article(request,review_id):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-@csrf_exempt
+#@csrf_exempt
 def article(request):
     if request.method == 'POST':
         try:
@@ -177,6 +179,7 @@ def article(request):
         article_dict = model_to_dict(article)
         return JsonResponse(article_dict, status=201)
 
+#@csrf_exempt
 def curation(request):
     # {title, content, isbn_content_pairs} from frontend
     if request.method == 'POST':
@@ -244,6 +247,7 @@ def article_page(request, page):
         response_body={'articles': articles,'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body)
 
+#@csrf_exempt
 def curation(request):
     # {title, content, isbn_content_pairs} from frontend
     if request.method == 'GET':
