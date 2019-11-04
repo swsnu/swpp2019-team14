@@ -45,5 +45,4 @@ export {
   getFollowees,
   emptySearchedBooks,
 }
-from './actionCreators';
-
+  from './actionCreators';

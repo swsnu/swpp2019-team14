@@ -3,7 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
   users: [
   ],
-  logged_in_user: null
+  logged_in_user: null,
 };
 
 const reducer = (state = initialState, action) => {

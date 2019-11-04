@@ -2,12 +2,12 @@
 
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import PropTypes from 'prop-types';  // this gives warning (type checking)
+import PropTypes from 'prop-types'; // this gives warning (type checking)
 
 const myButton = (props) => {
-    const { id, content, onClick } = props;
-    return <Button id={id} onClick={onClick}>{content}</Button>
-}
+  const { id, content, onClick } = props;
+  return <Button id={id} onClick={onClick}>{content}</Button>;
+};
 
 // myButton.propTypes = {
 //     id: PropTypes.string.isRequired,

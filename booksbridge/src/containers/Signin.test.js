@@ -15,24 +15,25 @@ const stubInitialState = {
 const mockStore = getMockStore(stubInitialState);
 
 describe('<Signin />', () => {
-  let login, spyGetUsers;
+  let signin;
   beforeEach(() => {
-    login = (
+    signin = (
       <Provider store={mockStore}>
         <ConnectedRouter history={history}>
-        <Switch>
-          <Route path='/' exact
-            render={() => <Login />} />
-        </Switch>
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={() => <Signin />}
+            />
+          </Switch>
         </ConnectedRouter>
       </Provider>
     );
-    spyGetUsers = jest.spyOn(actionCreators, 'getUsers')
-        .mockImplementation(() => { return dispatch => {}; });
-  })
+  });
 
-  it('should render Login page', () => {
-    const component = mount(login);
+  it('should render Signin page', () => {
+    const component = mount(signin);
     const wrapper = component.find('.login_page');
     expect(wrapper.length).toBe(1);
   });

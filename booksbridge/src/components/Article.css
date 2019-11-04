@@ -11,6 +11,7 @@
 .article{
     background-color: white;
 }
-.text{
+.text-box{
     height: 100px;
+    overflow: hidden;
 }
