@@ -25,12 +25,12 @@ class Main extends React.Component {
     // a fake async api call like which sends
     // 20 more records in 1.5 secs
     setTimeout(() => {
-      this.props.onGetArticles(this.state.page);
       this.setState({
         page: this.state.page + 1,
         articles: this.state.articles.concat(this.props.loadArticle),
         hasNext: this.props.hasNext
       });
+      this.props.onGetArticles(this.state.page);
     }, 500);
   };
 

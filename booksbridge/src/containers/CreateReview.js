@@ -19,18 +19,36 @@ class CreateReview extends Component {
   };
 
   onClickCreateButton = () => {
-    if (this.state.title != "" && this.state.content != "") {
-      this.props.onPostArticle({
-        isbn: this.props.selectedBook.isbn,
-        title: this.state.title,
-        content: this.state.content,
-        is_long: this.state.type === "long-review",
-        is_short: this.state.type === "short-review",
-        is_phrase: this.state.type === "phrase"
-      });
-      window.alert("Success!");
-    } else {
-      window.alert("Title or content is empty.");
+    if (this.state.type === "long-review") {
+      if (this.state.title != "" && this.state.content != "") {
+        this.props.onPostArticle({
+          isbn: this.props.selectedBook.isbn,
+          title: this.state.title,
+          content: this.state.content,
+          is_long: true,
+          is_short: false,
+          is_phrase: false,
+        });
+        window.alert("Success!");
+      } else {
+        window.alert("Title or content is empty.");
+      }
+    }
+    else {
+      if (this.state.content != "") {
+        this.props.onPostArticle({
+          isbn: this.props.selectedBook.isbn,
+          title: null,
+          content: this.state.content,
+          is_long: false,
+          is_short: this.state.type === "short-review",
+          is_phrase: this.state.type === "phrase"
+        });
+        window.alert("Success!");
+        this.props.history.push("/book/" + this.props.selectedBook.isbn)
+      } else {
+        window.alert("Content is empty.");
+      }
     }
   };
 
@@ -48,9 +66,7 @@ class CreateReview extends Component {
         isbn={this.props.selectedBook.isbn}
         direct={false}
       />
-    ) : (
-        null
-      );
+    ) : null;
     return (
       <div className="CreateReview">
         <Header />
@@ -60,39 +76,42 @@ class CreateReview extends Component {
             <div className="inline fields">
               <div className="field">
                 <div className="ui radio checkbox">
-                  <input type="radio"
-                  id="long-review-radio"
-                  type="radio"
-                  name="radioGroup"
-                  value="long-review"
-                  checked={this.state.type === "long-review"}
-                  onChange={this.radioHandler}
+                  <input
+                    type="radio"
+                    id="long-review-radio"
+                    type="radio"
+                    name="radioGroup"
+                    value="long-review"
+                    checked={this.state.type === "long-review"}
+                    onChange={this.radioHandler}
                   ></input>
                   <label>Long Review</label>
                 </div>
               </div>
               <div className="field">
                 <div className="ui radio checkbox">
-                  <input type="radio"
-                  id="short-review-radio"
-                  type="radio"
-                  name="radioGroup"
-                  value="short-review"
-                  checked={this.state.type === "short-review"}
-                  onChange={this.radioHandler}
+                  <input
+                    type="radio"
+                    id="short-review-radio"
+                    type="radio"
+                    name="radioGroup"
+                    value="short-review"
+                    checked={this.state.type === "short-review"}
+                    onChange={this.radioHandler}
                   ></input>
                   <label>Short Review</label>
                 </div>
               </div>
               <div className="field">
                 <div className="ui radio checkbox">
-                  <input type="radio"
-                  id="phrase-radio"
-                  type="radio"
-                  name="radioGroup"
-                  value="phrase"
-                  checked={this.state.type === "phrase"}
-                  onChange={this.radioHandler}
+                  <input
+                    type="radio"
+                    id="phrase-radio"
+                    type="radio"
+                    name="radioGroup"
+                    value="phrase"
+                    checked={this.state.type === "phrase"}
+                    onChange={this.radioHandler}
                   ></input>
                   <label>Phrase</label>
                 </div>
@@ -106,18 +125,20 @@ class CreateReview extends Component {
           <ChooseBookModal id="choose-book-modal" />
           <div className="ReviewCreateForm">
             <Form className="ui form">
-              <div className="field">
-                <label className="FormLabel">Title</label>
-                <input
-                  id="review-title"
-                  type="text"
-                  name="title"
-                  placeholder="Enter Title"
-                  onChange={event =>
-                    this.setState({ title: event.target.value })
-                  }
-                ></input>
-              </div>
+              {this.state.type === "long-review" ? (
+                <div className="field">
+                  <label className="FormLabel">Title</label>
+                  <input
+                    id="review-title"
+                    type="text"
+                    name="title"
+                    placeholder="Enter Title"
+                    onChange={event =>
+                      this.setState({ title: event.target.value })
+                    }
+                  ></input>
+                </div>
+              ) : null}
               <br></br>
               <div className="field">
                 <label className="FormLabel">Content</label>
@@ -125,7 +146,7 @@ class CreateReview extends Component {
                   id="review-content"
                   name="content"
                   placeholder="Enter Content"
-                  rows="20"
+                  rows={this.state.type === "long-review" ? "20": "5"}
                   onChange={event =>
                     this.setState({ content: event.target.value })
                   }
@@ -134,7 +155,7 @@ class CreateReview extends Component {
 
               <OcrModal id="ocr-modal" />
 
-              <Button 
+              <Button
                 className="SubmitButton"
                 id="create-review"
                 content="Submit"

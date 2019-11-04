@@ -3,7 +3,6 @@ import './App.css';
 
 import Signin from './containers/Signin';
 import Signup from './containers/Signup';
-import Create from './containers/Create';
 import CreateReview from './containers/CreateReview';
 import Main from './containers/Main';
 import BookDetail from './containers/BookDetail';
@@ -18,7 +17,6 @@ import {connect} from 'react-redux';
 import * as actionTypes from './store/actions/actionTypes';
 
 class App extends Component{
-
 
   initializeUserInfo = async () => {
     const logged_in_user = storage.get('logged_in_user'); 
