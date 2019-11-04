@@ -55,7 +55,8 @@ class Signup extends Component {
               aria-describedby="inputGroupPrepend"
               value={this.state.username}
               onChange={event =>
-                this.setState({ username: event.target.value })}
+                this.setState({ username: event.target.value })
+              }
               required
             />
           </Form.Group>
@@ -66,7 +67,8 @@ class Signup extends Component {
               placeholder="Enter password"
               value={this.state.password}
               onChange={event =>
-                this.setState({ password: event.target.value })}
+                this.setState({ password: event.target.value })
+              }
               required
             />
           </Form.Group>

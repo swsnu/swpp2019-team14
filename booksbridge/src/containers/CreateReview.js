@@ -131,7 +131,8 @@ class CreateReview extends Component {
                     name="title"
                     placeholder="Enter Title"
                     onChange={event =>
-                      this.setState({ title: event.target.value })}
+                      this.setState({ title: event.target.value })
+                    }
                   />
                 </div>
               ) : null}
@@ -144,7 +145,8 @@ class CreateReview extends Component {
                   placeholder="Enter Content"
                   rows={this.state.type === 'long-review' ? '20' : '5'}
                   onChange={event =>
-                    this.setState({ content: event.target.value })}
+                    this.setState({ content: event.target.value })
+                  }
                 />
               </div>
 

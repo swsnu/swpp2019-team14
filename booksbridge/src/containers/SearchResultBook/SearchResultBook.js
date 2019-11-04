@@ -58,7 +58,8 @@ class SearchResultBook extends Component {
             onClick={() =>
               this.props.history.push(
                 `/result/search=${this.props.match.params.keyword}/book/${number}`,
-              )}
+              )
+            }
           >
             {number}
           </Pagination.Item>,
@@ -81,7 +82,8 @@ class SearchResultBook extends Component {
             onClick={() =>
               this.props.history.push(
                 `/result/search=${this.props.match.params.keyword}/book/${number}`,
-              )}
+              )
+            }
           >
             {number}
           </Pagination.Item>,

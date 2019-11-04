@@ -34,7 +34,8 @@ class Signin extends Component {
               placeholder="Enter username"
               value={this.state.username}
               onChange={event =>
-                this.setState({ username: event.target.value })}
+                this.setState({ username: event.target.value })
+              }
               required
             />
           </Form.Group>
@@ -46,7 +47,8 @@ class Signin extends Component {
               placeholder="Enter password"
               value={this.state.password}
               onChange={event =>
-                this.setState({ password: event.target.value })}
+                this.setState({ password: event.target.value })
+              }
               required
             />
           </Form.Group>

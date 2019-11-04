@@ -6,7 +6,6 @@ module.exports = {
     jest: true,
   },
   extends: [
-    'airbnb',
     'plugin:prettier/recommended',
     'prettier'
   ],
@@ -18,7 +17,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 6,
+    ecmaVersion: 2018,
     sourceType: 'module',
   },
   plugins: [
@@ -28,7 +27,8 @@ module.exports = {
   rules: {
     'react/prefer-stateless-function': 0,
     'react/jsx-filename-extension': 0,
-    'react/jsx-one-expression-per-line': 0,
+    'react/jsx-curly-newline': 0,
     "prettier/prettier": ["error"],
+    
   },
 };
