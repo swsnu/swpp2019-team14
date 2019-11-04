@@ -1,9 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { shallow, mount } from 'enzyme';
+// import ReactDOM from 'react-dom';
+import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
-import { connectRouter, ConnectedRouter } from 'connected-react-router';
-import { Route, Redirect, Switch } from 'react-router-dom';
+// import { connectRouter, ConnectedRouter } from 'connected-react-router';
+import { Redirect} from 'react-router-dom';
 
 import App from './App';
 import { history } from './store/store';
