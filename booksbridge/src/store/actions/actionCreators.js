@@ -29,8 +29,8 @@ export const loginUser = user => {
           type: actionTypes.LOGIN_USER,
           user: res.data
         });
-        dispatch(push('/main/'));
         storage.set('logged_in_user', res.data);
+        dispatch(push('/main/'));
       }).catch(err => {
         alert("Username or Password is incorrect.");
       });
