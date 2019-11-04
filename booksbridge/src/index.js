@@ -4,9 +4,7 @@ import './index.css';
 import 'semantic-ui-css/semantic.min.css';
 
 import { Provider } from 'react-redux';
-import {
-  createStore, combineReducers, applyMiddleware, compose,
-} from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import { connectRouter, routerMiddleware } from 'connected-react-router';
@@ -28,16 +26,16 @@ const rootReducer = combineReducers({
   router: connectRouter(history),
 });
 
-const logger = (store) => (next) => (action) => {
+const logger = store => next => action => {
   const result = next(action);
   return result;
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer,
-  composeEnhancers(
-    applyMiddleware(logger, thunk, routerMiddleware(history)),
-  ));
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(logger, thunk, routerMiddleware(history))),
+);
 
 ReactDOM.render(
   <Provider store={store}>

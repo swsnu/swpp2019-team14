@@ -8,9 +8,7 @@ import BookDetailInfo from '../BookDetailInfo/BookDetailInfo';
 import './BookTabs.css';
 
 class BookTabs extends Component {
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   render() {
     console.log(`[DEBUG] short reviews: ${this.props.shortReviews}`);
@@ -45,12 +43,23 @@ class BookTabs extends Component {
     // for debugging
     // shortReviewList = this.props.shortReviews[0];
     // console.log("[DEBUG] shortReviewList[0] == " + shortReviewList)
-    const contents = <BookDetailInfo contents={this.props.contents} author_contents={this.props.author_contents} />;
+    const contents = (
+      <BookDetailInfo
+        contents={this.props.contents}
+        author_contents={this.props.author_contents}
+      />
+    );
 
     const panes = [
       { menuItem: 'Summary', render: () => <Tab.Pane>{contents}</Tab.Pane> },
-      { menuItem: 'Short Review', render: () => <Tab.Pane>{shortReviewList}</Tab.Pane> },
-      { menuItem: 'Long Review', render: () => <Tab.Pane>{longReviewList}</Tab.Pane> },
+      {
+        menuItem: 'Short Review',
+        render: () => <Tab.Pane>{shortReviewList}</Tab.Pane>,
+      },
+      {
+        menuItem: 'Long Review',
+        render: () => <Tab.Pane>{longReviewList}</Tab.Pane>,
+      },
       { menuItem: 'Phrase', render: () => <Tab.Pane>{phraseList}</Tab.Pane> },
     ];
 
@@ -62,8 +71,11 @@ class BookTabs extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = state => ({});
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BookTabs));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(BookTabs));

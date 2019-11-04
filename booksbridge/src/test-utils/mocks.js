@@ -1,6 +1,4 @@
-import {
-  createStore, combineReducers, applyMiddleware, compose,
-} from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
@@ -9,7 +7,7 @@ import { history, middlewares } from '../store/store';
 import * as actionTypes from '../store/actions/actionTypes';
 
 const getMockReducer = jest.fn(
-  (initialState) => (state = initialState, action) => {
+  initialState => (state = initialState, action) => {
     switch (action.type) {
       default:
         break;
@@ -18,7 +16,7 @@ const getMockReducer = jest.fn(
   },
 );
 
-export const getMockStore = (initialState) => {
+export const getMockStore = initialState => {
   const mockReducer = getMockReducer(initialState);
   const rootReducer = combineReducers({
     book: mockReducer,
@@ -27,8 +25,11 @@ export const getMockStore = (initialState) => {
     article: mockReducer,
     router: connectRouter(history),
   });
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  const mockStore = createStore(rootReducer,
-    composeEnhancers(applyMiddleware(...middlewares)));
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const mockStore = createStore(
+    rootReducer,
+    composeEnhancers(applyMiddleware(...middlewares)),
+  );
   return mockStore;
 };

@@ -3,17 +3,17 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 // import { connectRouter, ConnectedRouter } from 'connected-react-router';
-import { Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import App from './App';
 import { history } from './store/store';
 import { getMockStore } from './test-utils/mocks';
 
-const mockStore = getMockStore({
-});
+const mockStore = getMockStore({});
 
-jest.mock('./containers/Signin', () => jest.fn((props) => (
-  <div className="spyLogin" />)));
+jest.mock('./containers/Signin', () =>
+  jest.fn(props => <div className="spyLogin" />),
+);
 
 describe('App', () => {
   let app;

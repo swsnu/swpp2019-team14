@@ -1,31 +1,31 @@
-import React, { Component } from "react";
-import "./App.css";
+import React, { Component } from 'react';
+import './App.css';
+import { connect } from 'react-redux';
 
-import { Route, Redirect, Switch } from "react-router-dom";
-import { ConnectedRouter } from "connected-react-router";
-import Signin from "./containers/Signin";
-import Signup from "./containers/Signup";
-import CreateReview from "./containers/CreateReview";
-import Main from "./containers/Main";
-import BookDetail from "./containers/BookDetail";
-import SearchResultBook from "./containers/SearchResultBook/SearchResultBook";
-import "bootstrap/dist/css/bootstrap.css";
-import "semantic-ui-css/semantic.min.css";
-import ReviewDetailPage from "./containers/ReviewDetailPage/ReviewDetailPage";
-import storage from "./lib/storage";
-import { connect } from "react-redux";
-import * as actionTypes from "./store/actions/actionTypes";
+import { Route, Redirect, Switch } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
+import Signin from './containers/Signin';
+import Signup from './containers/Signup';
+import CreateReview from './containers/CreateReview';
+import Main from './containers/Main';
+import BookDetail from './containers/BookDetail';
+import SearchResultBook from './containers/SearchResultBook/SearchResultBook';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'semantic-ui-css/semantic.min.css';
+import ReviewDetailPage from './containers/ReviewDetailPage/ReviewDetailPage';
+import storage from './lib/storage';
+import * as actionTypes from './store/actions/actionTypes';
 
 class App extends Component {
-  initializeUserInfo = async () => {
-    const logged_in_user = storage.get("logged_in_user");
-    if (!logged_in_user) return;
-    this.props.onSetLogin(logged_in_user);
-  };
-
   componentDidMount() {
     this.initializeUserInfo();
   }
+
+  initializeUserInfo = () => {
+    const logged_in_user = storage.get('logged_in_user');
+    if (!logged_in_user) return;
+    this.props.onSetLogin(logged_in_user);
+  };
 
   render() {
     return (
@@ -79,11 +79,11 @@ class App extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     onSetLogin: user =>
-      dispatch({ type: actionTypes.SET_LOGGED_IN_USER, user: user })
+      dispatch({ type: actionTypes.SET_LOGGED_IN_USER, user }),
   };
 };
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(App);

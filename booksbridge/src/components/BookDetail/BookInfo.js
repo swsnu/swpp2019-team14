@@ -18,10 +18,7 @@ class BookInfo extends Component {
     return (
       <div className="containerStyle">
         <div style={{ textAlign: 'left' }}>
-          <Image
-            src={this.props.thumbnail}
-            className="imageStyle"
-          />
+          <Image src={this.props.thumbnail} className="imageStyle" />
         </div>
 
         <div style={{ textAlign: 'right' }}>
@@ -52,12 +49,15 @@ class BookInfo extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   currentBook: state.book.selectedBook,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onLoadBook: (isbn) => dispatch(actionCreators.getSpecificBook(isbn)),
+const mapDispatchToProps = dispatch => ({
+  onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BookInfo));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(BookInfo));
