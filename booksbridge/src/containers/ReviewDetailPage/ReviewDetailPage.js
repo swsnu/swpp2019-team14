@@ -6,6 +6,7 @@ import { Button } from "semantic-ui-react";
 import Header from "../../components/Header";
 import BookInfo from "../../components/BookDetail/BookInfo";
 import Comments from "../Comments/Comments";
+import ProfileSummary from '../../components/ProfileSummary/ProfileSummary';
 
 import * as actionCreators from "../../store/actions/actionCreators";
 
@@ -33,13 +34,16 @@ class ReviewDetailPage extends Component {
         <div className="ReviewTitleStyle">
           <h1>{this.props.currentArticle.title}</h1>
         </div>
+        <div className="AuthorProfile">
+          <ProfileSummary user = {this.props.currentArticle.author} />
+        </div>
         <div className="infoStyle">
           <BookInfo
             isbn={book.isbn}
             title={book.title}
             authors={book.authors}
             publisher={book.publisher}
-            publishedDate={book.publishedDate}
+            publishedDate={book.published_date}
             thumbnail={book.thumbnail}
           />
         </div>

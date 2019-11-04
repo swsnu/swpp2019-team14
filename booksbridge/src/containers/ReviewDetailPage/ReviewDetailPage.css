@@ -9,6 +9,12 @@
     line-height: 1.5;
 }
 
+.AuthorProfile{
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 25%;
+}
+
 .ReviewTitleStyle {
     padding-left: 25%;
     padding-right: 25%;

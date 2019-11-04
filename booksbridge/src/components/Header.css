@@ -28,8 +28,9 @@ body {
     padding: 40px;
 }
 
-.profile{
+.headerProfile{
     display: flex;
+    flex-direction: row;
     width: 30%;
     align-items: center;
     justify-content: center;
@@ -45,4 +46,9 @@ body {
 
 .ui.inline.dropdown {
     display: flex !important;
+}
+
+.ProfileSummary{
+    display: flex;
+    flex-direction: row;
 }
