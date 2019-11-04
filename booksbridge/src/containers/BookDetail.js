@@ -14,7 +14,6 @@ import './BookDetail.css';
 import './containers.css';
 
 class BookDetail extends Component {
-
   componentDidMount() {
     this.props.onLoadBook(this.props.match.params.book_id);
     this.props.onLoadArticles(this.props.match.params.book_id);
@@ -22,37 +21,31 @@ class BookDetail extends Component {
 
   onCreateReview = () => {
     this.props.history.push('/review/create');
-  }
+  };
 
   render() {
-
     if (!this.props.currentBook) {
-      return (
-        <div>
-          LOADING...
-        </div>
-      );
+      return <div>LOADING...</div>;
     }
 
     const isbn = this.props.match.params.book_id;
-    const title = this.props.currentBook.title;
-    var pattern = /[\[\]\']/g;
+    const { title } = this.props.currentBook;
+    const pattern = /[\[\]\']/g;
     const authors = this.props.currentBook.authors.replace(pattern, '');
-    const publisher = this.props.currentBook.publisher;
+    const { publisher } = this.props.currentBook;
     const publishedDate = this.props.currentBook.published_date;
-    const thumbnail = this.props.currentBook.thumbnail;
-    const contents = this.props.currentBook.contents;
-    const author_contents = this.props.currentBook.author_contents;
-    const shortReviews = this.props.shortReviews;
-    const longReviews = this.props.longReviews;
-    const phrases = this.props.phrases;
-
+    const { thumbnail } = this.props.currentBook;
+    const { contents } = this.props.currentBook;
+    const { author_contents } = this.props.currentBook;
+    const { shortReviews } = this.props;
+    const { longReviews } = this.props;
+    const { phrases } = this.props;
 
     return (
-      <div >
+      <div>
         <Header />
         <h1>Book Detail</h1>
-        <div className='infoStyle'>
+        <div className="infoStyle">
           <BookInfo
             isbn={isbn}
             title={title}
@@ -62,11 +55,10 @@ class BookDetail extends Component {
             thumbnail={thumbnail}
           />
         </div>
-        <Button
-          id='create_review_button'
-          onClick={() => this.onCreateReview()}
-        >Create a Review!</Button>
-        <div className='tab'>
+        <Button id="create_review_button" onClick={() => this.onCreateReview()}>
+          Create a Review!
+        </Button>
+        <div className="tab">
           <BookTabs
             contents={contents}
             author_contents={author_contents}
@@ -87,15 +79,16 @@ const mapStateToProps = state => {
     longReviews: state.article.longReviews,
     phrases: state.article.phrases,
   };
-}
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadBook: (isbn) =>
-      dispatch(actionCreators.getSpecificBook(isbn)),
-    onLoadArticles: (isbn) =>
-      dispatch(actionCreators.getArticlesByBookId(isbn)),
-  }
-}
+    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
+    onLoadArticles: isbn => dispatch(actionCreators.getArticlesByBookId(isbn)),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BookDetail));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(BookDetail));

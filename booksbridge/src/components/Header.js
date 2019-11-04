@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import "./Header.css";
-import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import ProfileSummary from "./ProfileSummary/ProfileSummary";
-import { Dropdown, Menu } from "semantic-ui-react";
+import React, { useState } from 'react';
+import './Header.css';
+import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Dropdown, Menu } from 'semantic-ui-react';
+import ProfileSummary from './ProfileSummary/ProfileSummary';
 
 const Header = props => {
-  const [search_input, setSearchInput] = useState("");
+  const [search_input, setSearchInput] = useState('');
 
   const onSearch = () => {
     props.history.push(`/result/search=${search_input}/book/1`);
@@ -17,8 +17,8 @@ const Header = props => {
 
   return (
     <div className="header">
-      <a className="logo" onClick={() => props.history.push("/main")}>
-        <img src="/images/logo.png" width="170px"></img>
+      <a className="logo" onClick={() => props.history.push('/main')}>
+        <img src="/images/logo.png" width="170px" />
       </a>
       <div className="search">
         <InputGroup>
@@ -28,7 +28,7 @@ const Header = props => {
             value={search_input}
             onChange={({ target: { value } }) => setSearchInput(value)}
             onKeyPress={event => {
-              if (event.key === "Enter") {
+              if (event.key === 'Enter') {
                 onSearch();
               }
             }}
@@ -49,11 +49,11 @@ const Header = props => {
 
 const mapStateToProps = state => {
   return {
-    logged_in_user: state.user.logged_in_user
+    logged_in_user: state.user.logged_in_user,
   };
 };
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(withRouter(Header));

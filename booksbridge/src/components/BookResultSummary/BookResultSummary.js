@@ -8,7 +8,7 @@ import Container from 'react-bootstrap/Container';
 import './BookResultSummary.css';
 import * as actionCreators from '../../store/actions/actionCreators';
 
-const BookResultSummary = (props) => {
+const BookResultSummary = props => {
   const clickHandler = () => {
     if (props.direct) {
       props.history.push(`/book/${props.isbn}`);
@@ -45,8 +45,11 @@ const BookResultSummary = (props) => {
     </div>
   );
 };
-const mapDispatchToProps = (dispatch) => ({
-  onGetSpecificBook: (isbn) => dispatch(actionCreators.getSpecificBook(isbn)),
+const mapDispatchToProps = dispatch => ({
+  onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
 });
 
-export default connect(null, mapDispatchToProps)(withRouter(BookResultSummary));
+export default connect(
+  null,
+  mapDispatchToProps,
+)(withRouter(BookResultSummary));

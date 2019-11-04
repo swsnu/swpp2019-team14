@@ -1,13 +1,13 @@
-import { connect } from "react-redux";
-import React, { Component } from "react";
-import { withRouter } from "react-router";
-import "./containers.css";
-import "./Main.css";
-import Header from "../components/Header";
-import * as actionCreators from "../store/actions/index";
-import Article from "../components/Article";
-import { Button } from "semantic-ui-react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import './containers.css';
+import './Main.css';
+import { Button } from 'semantic-ui-react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Header from '../components/Header';
+import * as actionCreators from '../store/actions/index';
+import Article from '../components/Article';
 
 class Main extends React.Component {
   constructor(params) {
@@ -16,7 +16,7 @@ class Main extends React.Component {
     this.state = {
       page: 2,
       articles: [],
-      hasNext: true
+      hasNext: true,
     };
     this.fetchMoreData();
   }
@@ -28,7 +28,7 @@ class Main extends React.Component {
       this.setState({
         page: this.state.page + 1,
         articles: this.state.articles.concat(this.props.loadArticle),
-        hasNext: this.props.hasNext
+        hasNext: this.props.hasNext,
       });
       this.props.onGetArticles(this.state.page);
     }, 500);
@@ -45,11 +45,11 @@ class Main extends React.Component {
             next={this.fetchMoreData}
             hasMore={this.state.hasNext}
             loader={<h4>Loading...</h4>}
-            endMessage={
-              <p style={{ textAlign: "center" }}>
+            endMessage={(
+              <p style={{ textAlign: 'center' }}>
                 <b>Yay! You have seen it all</b>
               </p>
-            }
+            )}
           >
             {this.state.articles.map((article, index) => (
               <div key={index}>
@@ -79,17 +79,17 @@ const mapStateToProps = state => {
   return {
     loadArticle: state.article.articles,
     hasNext: state.article.hasNext,
-    books: state.book.books
+    books: state.book.books,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetArticles: page => dispatch(actionCreators.getArticles(page))
+    onGetArticles: page => dispatch(actionCreators.getArticles(page)),
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Main);

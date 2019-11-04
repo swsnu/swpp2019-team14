@@ -5,7 +5,7 @@ import './Comments.css';
 
 import Comment from '../../components/Comment/Comment';
 
-const Comments = (props) => (
+const Comments = props => (
   <div className="ui comments">
     <h3 className="ui dividing header">Comments</h3>
     <Comment />
@@ -15,9 +15,7 @@ const Comments = (props) => (
       </div>
       <div className="ReplyButton">
         <div className="ui black labeled submit icon button">
-          <i className="icon edit" />
-          {' '}
-Add Reply
+          <i className="icon edit" /> Add Reply
         </div>
       </div>
     </form>

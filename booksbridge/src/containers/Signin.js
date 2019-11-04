@@ -2,25 +2,28 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import './containers.css';
-import { Button } from "semantic-ui-react";
-import Form from 'react-bootstrap/Form'
-import * as actionCreators from "../store/actions/index";
+import { Button } from 'semantic-ui-react';
+import Form from 'react-bootstrap/Form';
+import * as actionCreators from '../store/actions/index';
 
 class Signin extends Component {
   state = {
     username: '',
     password: '',
-  }
+  };
 
-  onClickSignInButton = (e) => {
-    const user = { "username": this.state.username, "password": this.state.password };
+  onClickSignInButton = e => {
+    const user = {
+      username: this.state.username,
+      password: this.state.password,
+    };
     e.preventDefault();
     this.props.onLoginUser(user);
   };
 
   render() {
     return (
-      <div className='login_page'>
+      <div className="login_page">
         <Form className="login_form" onSubmit={this.onClickSignInButton}>
           <h1>SIGN IN</h1>
           <Form.Group>
@@ -30,8 +33,10 @@ class Signin extends Component {
               id="username-input"
               placeholder="Enter username"
               value={this.state.username}
-              onChange={(event) => this.setState({ username: event.target.value })}
-              required />
+              onChange={event =>
+                this.setState({ username: event.target.value })}
+              required
+            />
           </Form.Group>
           <Form.Group>
             <Form.Label>Password</Form.Label>
@@ -40,17 +45,21 @@ class Signin extends Component {
               id="pw-input"
               placeholder="Enter password"
               value={this.state.password}
-              onChange={(event) => this.setState({ password: event.target.value })}
-              required />
+              onChange={event =>
+                this.setState({ password: event.target.value })}
+              required
+            />
           </Form.Group>
-          <Button
-            variant="primary"
-            id="login-button"
-            type="submit">Sign in</Button>
+          <Button variant="primary" id="login-button" type="submit">
+            Sign in
+          </Button>
           <Button
             variant="primary"
             id="signup-button"
-            onClick={() => this.props.history.push('/sign-up/')}>Sign up</Button>
+            onClick={() => this.props.history.push('/sign-up/')}
+          >
+            Sign up
+          </Button>
         </Form>
       </div>
     );
@@ -58,16 +67,18 @@ class Signin extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-  };
-}
+  return {};
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoginUser: (user) => {
+    onLoginUser: user => {
       dispatch(actionCreators.loginUser(user));
-    }
+    },
   };
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Signin));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(Signin));

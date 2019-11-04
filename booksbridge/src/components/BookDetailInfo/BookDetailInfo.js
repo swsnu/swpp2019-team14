@@ -3,7 +3,7 @@ import React from 'react';
 
 import './BookDetailInfo.css';
 
-const BookDetailInfo = (props) => (
+const BookDetailInfo = props => (
   <div className="BookDetailInfo">
     <div className="BookSummary">
       <h1 className="Label">About Book</h1>

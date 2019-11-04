@@ -14,9 +14,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_ARTICLES_BY_BOOKID:
       return {
         ...state,
-        longReviews: action.articles.filter((article) => article.is_long),
-        shortReviews: action.articles.filter((article) => article.is_short),
-        phrases: action.articles.filter((article) => article.is_phrase),
+        longReviews: action.articles.filter(article => article.is_long),
+        shortReviews: action.articles.filter(article => article.is_short),
+        phrases: action.articles.filter(article => article.is_phrase),
       };
     case actionTypes.GET_ARTICLES:
       return {

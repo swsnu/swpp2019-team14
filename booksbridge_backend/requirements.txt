@@ -6,7 +6,6 @@ Django==2.2.6
 django-appconf==1.0.3
 django-imagekit==4.0.2
 idna==2.8
-mysqlclient==1.4.4
 pilkit==2.0
 Pillow==6.2.1
 pytz==2019.3

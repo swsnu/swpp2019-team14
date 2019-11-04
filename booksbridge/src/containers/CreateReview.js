@@ -1,26 +1,26 @@
-import { connect } from "react-redux";
-import React, { Component } from "react";
-import { withRouter } from "react-router";
-import { Button, Form, TextArea } from "semantic-ui-react";
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import { Button, Form, TextArea } from 'semantic-ui-react';
 
-import Header from "../components/Header";
-import OcrModal from "../components/OcrModal/OcrModal";
-import ChooseBookModal from "../components/ChooseBookModal/ChooseBookModal";
-import * as actionCreators from "../store/actions/actionCreators";
-import BookResultSummary from "../components/BookResultSummary/BookResultSummary";
+import Header from '../components/Header';
+import OcrModal from '../components/OcrModal/OcrModal';
+import ChooseBookModal from '../components/ChooseBookModal';
+import * as actionCreators from '../store/actions/actionCreators';
+import BookResultSummary from '../components/BookResultSummary/BookResultSummary';
 
-import "./CreateReview.css";
+import './CreateReview.css';
 
 class CreateReview extends Component {
   state = {
-    title: "",
-    content: "",
-    type: "long-review"
+    title: '',
+    content: '',
+    type: 'long-review',
   };
 
   onClickCreateButton = () => {
-    if (this.state.type === "long-review") {
-      if (this.state.title != "" && this.state.content != "") {
+    if (this.state.type === 'long-review') {
+      if (this.state.title != '' && this.state.content != '') {
         this.props.onPostArticle({
           isbn: this.props.selectedBook.isbn,
           title: this.state.title,
@@ -29,7 +29,7 @@ class CreateReview extends Component {
           is_short: false,
           is_phrase: false,
         });
-        window.alert("Success!");
+        window.alert('Success!');
       } else {
         window.alert("Title or content is empty.");
       }
@@ -49,6 +49,19 @@ class CreateReview extends Component {
       } else {
         window.alert("Content is empty.");
       }
+    } else if (this.state.content != '') {
+      this.props.onPostArticle({
+        isbn: this.props.selectedBook.isbn,
+        title: null,
+        content: this.state.content,
+        is_long: false,
+        is_short: this.state.type === 'short-review',
+        is_phrase: this.state.type === 'phrase',
+      });
+      window.alert('Success!');
+      this.props.history.push(`/book/${this.props.selectedBook.isbn}`);
+    } else {
+      window.alert('Content is empty.');
     }
   };
 
@@ -82,9 +95,9 @@ class CreateReview extends Component {
                     type="radio"
                     name="radioGroup"
                     value="long-review"
-                    checked={this.state.type === "long-review"}
+                    checked={this.state.type === 'long-review'}
                     onChange={this.radioHandler}
-                  ></input>
+                  />
                   <label>Long Review</label>
                 </div>
               </div>
@@ -96,9 +109,9 @@ class CreateReview extends Component {
                     type="radio"
                     name="radioGroup"
                     value="short-review"
-                    checked={this.state.type === "short-review"}
+                    checked={this.state.type === 'short-review'}
                     onChange={this.radioHandler}
-                  ></input>
+                  />
                   <label>Short Review</label>
                 </div>
               </div>
@@ -110,9 +123,9 @@ class CreateReview extends Component {
                     type="radio"
                     name="radioGroup"
                     value="phrase"
-                    checked={this.state.type === "phrase"}
+                    checked={this.state.type === 'phrase'}
                     onChange={this.radioHandler}
-                  ></input>
+                  />
                   <label>Phrase</label>
                 </div>
               </div>
@@ -125,7 +138,7 @@ class CreateReview extends Component {
           <ChooseBookModal id="choose-book-modal" />
           <div className="ReviewCreateForm">
             <Form className="ui form">
-              {this.state.type === "long-review" ? (
+              {this.state.type === 'long-review' ? (
                 <div className="field">
                   <label className="FormLabel">Title</label>
                   <input
@@ -134,22 +147,20 @@ class CreateReview extends Component {
                     name="title"
                     placeholder="Enter Title"
                     onChange={event =>
-                      this.setState({ title: event.target.value })
-                    }
-                  ></input>
+                      this.setState({ title: event.target.value })}
+                  />
                 </div>
               ) : null}
-              <br></br>
+              <br />
               <div className="field">
                 <label className="FormLabel">Content</label>
                 <TextArea
                   id="review-content"
                   name="content"
                   placeholder="Enter Content"
-                  rows={this.state.type === "long-review" ? "20": "5"}
+                  rows={this.state.type === 'long-review' ? '20' : '5'}
                   onChange={event =>
-                    this.setState({ content: event.target.value })
-                  }
+                    this.setState({ content: event.target.value })}
                 />
               </div>
 
@@ -171,7 +182,7 @@ class CreateReview extends Component {
 
 const mapStateToProps = state => {
   return {
-    selectedBook: state.book.selectedBook
+    selectedBook: state.book.selectedBook,
   };
 };
 
@@ -180,11 +191,11 @@ const mapDispatchToProps = dispatch => {
     onSearchBooks: (keyword, page) =>
       dispatch(actionCreators.getSearchedBooks(keyword, page)),
     onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
-    onPostArticle: review => dispatch(actionCreators.postArticle(review))
+    onPostArticle: review => dispatch(actionCreators.postArticle(review)),
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(CreateReview));

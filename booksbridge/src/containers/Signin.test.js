@@ -9,8 +9,7 @@ import { getMockStore } from '../test-utils/mocks';
 import { history } from '../store/store';
 import * as actionCreators from '../store/actions/actionCreators';
 
-const stubInitialState = {
-};
+const stubInitialState = {};
 
 const mockStore = getMockStore(stubInitialState);
 
@@ -21,11 +20,7 @@ describe('<Signin />', () => {
       <Provider store={mockStore}>
         <ConnectedRouter history={history}>
           <Switch>
-            <Route
-              path="/"
-              exact
-              render={() => <Signin />}
-            />
+            <Route path="/" exact render={() => <Signin />} />
           </Switch>
         </ConnectedRouter>
       </Provider>
