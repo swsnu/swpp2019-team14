@@ -1,6 +1,8 @@
-import * as actionTypes from "./actionTypes";
-import axios from "axios";
-import { push } from "connected-react-router";
+
+import * as actionTypes from './actionTypes';
+import axios from 'axios';
+import { push } from 'connected-react-router';
+import storage from '../../lib/storage';
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -27,9 +29,9 @@ export const loginUser = user => {
           type: actionTypes.LOGIN_USER,
           user: res.data
         });
-        dispatch(push("/main/"));
-      })
-      .catch(err => {
+        dispatch(push('/main/'));
+        storage.set('logged_in_user', res.data);
+      }).catch(err => {
         alert("Username or Password is incorrect.");
       });
   };
@@ -45,8 +47,17 @@ export const logoutUser = () => {
     );
   };
 };
-// export const GET_SIGNED_IN_USER = 'GET_SIGNED_IN_USER'
-// 일단은 필요없어 보임 - 한결
+
+export const GET_SIGNED_IN_USER = 'GET_SIGNED_IN_USER'
+export const getSignedInUser = () => {
+  return dispatch => {
+    return axios.get('/api/user/')
+      .then(res => dispatch({
+        type: actionTypes.GET_SIGNED_IN_USER,
+        user: res.data,
+      }));
+  };
+};
 
 // export const GET_SPECIFIC_USER = 'GET_SPECIFIC_USER'
 export const getSpecificUser = id => {

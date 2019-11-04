@@ -19,9 +19,26 @@ def signup(request):
         email = req_data['email']
         password = req_data['password']
         User.objects.create_user(username, email, password)
+        user = User.objects.get(username=username)
+        Profile.objects.create(user=user)
         return HttpResponse(status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
+
+def profile_update(request):
+    if request.method == 'PUT':
+        profile = request.user.profile
+        req_data = json.loads(request.body.decode())
+        nickname = req_data['nickname']
+        profile_text = req_data['profile_text']
+        profile_photo = req_data['profile_photo']
+        profile.nickname = nickname
+        profile.profile_text = profile_text
+        profile.profile_photo = profile_photo
+        profile.save()  
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['PUT'])
 
 def signin(request):
     if request.method == 'POST':
@@ -32,7 +49,8 @@ def signin(request):
         if user is not None:
             login(request, user)
             user.save()
-            return HttpResponse(status=204)
+            user_dict = {'username':user.username, 'nickname':user.profile.nickname, 'profile_photo':user.profile.profile_photo.name, 'profile_text': user.profile.profile_text}
+            return JsonResponse(user_dict, status=200)
         else:
             return HttpResponse(status=400)
     else:
