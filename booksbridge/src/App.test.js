@@ -9,16 +9,11 @@ import App from './App';
 import { history } from './store/store';
 import { getMockStore } from './test-utils/mocks';
 
-const mockStore = getMockStore({ 
+const mockStore = getMockStore({
 });
 
-jest.mock('./containers/Signin', () => {
-  return jest.fn(props => {
-    return (
-      <div className="spyLogin">
-      </div>);
-  });
-});
+jest.mock('./containers/Signin', () => jest.fn((props) => (
+  <div className="spyLogin" />)));
 
 describe('App', () => {
   let app;
@@ -26,9 +21,9 @@ describe('App', () => {
   beforeEach(() => {
     app = (
       <Provider store={mockStore}>
-        <App history={history}/>
+        <App history={history} />
       </Provider>
-    )
+    );
   });
 
   it('should render', () => {
@@ -40,5 +35,5 @@ describe('App', () => {
     history.push('aaa');
     const component = mount(app);
     expect(component.find(Redirect));
-  })
+  });
 });

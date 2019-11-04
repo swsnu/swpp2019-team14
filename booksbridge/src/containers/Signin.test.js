@@ -20,14 +20,17 @@ describe('<Signin />', () => {
     signin = (
       <Provider store={mockStore}>
         <ConnectedRouter history={history}>
-        <Switch>
-          <Route path='/' exact
-            render={() => <Signin />} />
-        </Switch>
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={() => <Signin />}
+            />
+          </Switch>
         </ConnectedRouter>
       </Provider>
     );
-  })
+  });
 
   it('should render Signin page', () => {
     const component = mount(signin);
