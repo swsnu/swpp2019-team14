@@ -3,8 +3,10 @@ import './Header.css';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
-import Alert from 'react-bootstrap/Alert';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import ProfileSummary from './ProfileSummary/ProfileSummary';
+import { Dropdown, Menu } from 'semantic-ui-react';
 
 const Header = (props) => {
 
@@ -13,6 +15,18 @@ const Header = (props) => {
     const onSearch = () => {
         props.history.push('/result/search=' + search_input + '/book/1');
     };
+
+    var user_load = false;
+    let profile_photo;
+    let nickname;
+    let username;
+
+    if (!user_load && props.logged_in_user) {
+        nickname = props.logged_in_user.nickname;
+        username = props.logged_in_user.username;
+        profile_photo = '/static/' + username + '.jpg';
+        user_load = true;
+    }
 
     return (
         <div className="header">
@@ -42,11 +56,17 @@ const Header = (props) => {
                     </InputGroup.Append>
                 </InputGroup>
             </div>
-            <div className="profile">
-                <h4>내 프로필</h4>
-            </div>
-        </div>
-    );
-};
 
-export default withRouter(Header);
+            <ProfileSummary profile_photo={profile_photo} nickname={nickname} username={username} />
+
+            </div>
+            );
+        };
+        
+const mapStateToProps = state => {
+    return {
+                logged_in_user: state.user.logged_in_user,
+        };
+    };
+    
+export default connect(mapStateToProps, null)(withRouter(Header));

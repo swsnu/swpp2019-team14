@@ -5,13 +5,16 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from django.conf import settings
 
+def post_image_path(instance, filename): 
+    return f'resources/image/profile/{instance.user.username}.jpg'
+
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=32, blank=True)
     profile_text = models.TextField(blank=True)
     profile_photo = ProcessedImageField(
     		blank = True,
-        	upload_to = 'user/profile/images',
+        	upload_to = post_image_path,
         	processors = [ResizeToFill(300, 300)],
         	format = 'JPEG',
         	options = {'quality':100},

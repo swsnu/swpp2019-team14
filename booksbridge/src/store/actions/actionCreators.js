@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 import { push } from 'connected-react-router';
+import storage from '../../lib/storage';
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -28,6 +29,7 @@ export const loginUser = (user) => {
           user: res.data,
         });
         dispatch(push('/main/'));
+        storage.set('logged_in_user', res.data);
       }).catch(err => {
         alert("Username or Password is incorrect.");
       });
@@ -43,8 +45,17 @@ export const logoutUser = () => {
       }));
   };
 };
-// export const GET_SIGNED_IN_USER = 'GET_SIGNED_IN_USER'
-// 일단은 필요없어 보임 - 한결
+
+export const GET_SIGNED_IN_USER = 'GET_SIGNED_IN_USER'
+export const getSignedInUser = () => {
+  return dispatch => {
+    return axios.get('/api/user/')
+      .then(res => dispatch({
+        type: actionTypes.GET_SIGNED_IN_USER,
+        user: res.data,
+      }));
+  };
+};
 
 // export const GET_SPECIFIC_USER = 'GET_SPECIFIC_USER'
 export const getSpecificUser = (id) => {
@@ -91,7 +102,7 @@ export const getSpecificBook = (isbn) => {
 
 export const getArticles = (page) => {
   return dispatch => {
-    return axios.get('/api/article/page/'+page+'/')
+    return axios.get('/api/article/page/' + page + '/')
       .then(res => dispatch({
         type: actionTypes.GET_ARTICLES,
         articles: res.data.articles,
@@ -110,7 +121,8 @@ export const postArticle = (article) => {
           article: res.data,
         });
         dispatch(push('/review/' + res.data.id));
-      })}
+      })
+  }
 };
 
 // export const GET_SPECIFIC_ARTICLE = 'GET_SPECIFIC_ARTICLE'

@@ -5,29 +5,44 @@ body {
     margin: 0px;
 }
 
+.profilePic{
+    border-radius: 500rem;
+    width: 50px;
+    height: 50px;
+}
+
 .header {
     background-color: white;
     width: 100%;
     display: flex;
+    flex-direction: row;
 }
 
 .logo {
-    flex: auto;
-    width: 0%;
+    width: 30%;
     padding:0.5rem;
 }
 
 .search{
-    flex: auto;
+    width: 40%;
     padding: 40px;
-}
-.profile{
-    flex:auto;
-    justify-content: center;
-    font-display: center;
 }
 
 .profile{
-    margin: auto 0;
+    display: flex;
+    width: 30%;
+    align-items: center;
     justify-content: center;
+}
+
+.profileName{
+    display: flex;
+    flex-direction: column;
+    padding-left: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui.inline.dropdown {
+    display: flex !important;
 }

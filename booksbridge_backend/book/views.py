@@ -48,7 +48,8 @@ def signin(request):
         if user is not None:
             login(request, user)
             user.save()
-            return HttpResponse(status=204)
+            user_dict = {'username':user.username, 'nickname':user.profile.nickname, 'profile_photo':user.profile.profile_photo.name, 'profile_text': user.profile.profile_text}
+            return JsonResponse(user_dict, status=200)
         else:
             return HttpResponse(status=400)
     else:
