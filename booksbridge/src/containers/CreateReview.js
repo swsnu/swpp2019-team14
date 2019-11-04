@@ -31,37 +31,23 @@ class CreateReview extends Component {
         });
         window.alert('Success!');
       } else {
-        window.alert("Title or content is empty.");
+        window.alert('Title or content is empty.');
       }
-    }
-    else {
-      if (this.state.content != "") {
+    } else {
+      if (this.state.content != '') {
         this.props.onPostArticle({
           isbn: this.props.selectedBook.isbn,
-          title: "",
+          title: '',
           content: this.state.content,
           is_long: false,
-          is_short: this.state.type === "short-review",
-          is_phrase: this.state.type === "phrase"
+          is_short: this.state.type === 'short-review',
+          is_phrase: this.state.type === 'phrase',
         });
-        window.alert("Success!");
-        this.props.history.push("/book/" + this.props.selectedBook.isbn)
+        window.alert('Success!');
+        this.props.history.push('/book/' + this.props.selectedBook.isbn);
       } else {
-        window.alert("Content is empty.");
+        window.alert('Content is empty.');
       }
-    } else if (this.state.content != '') {
-      this.props.onPostArticle({
-        isbn: this.props.selectedBook.isbn,
-        title: null,
-        content: this.state.content,
-        is_long: false,
-        is_short: this.state.type === 'short-review',
-        is_phrase: this.state.type === 'phrase',
-      });
-      window.alert('Success!');
-      this.props.history.push(`/book/${this.props.selectedBook.isbn}`);
-    } else {
-      window.alert('Content is empty.');
     }
   };
 
