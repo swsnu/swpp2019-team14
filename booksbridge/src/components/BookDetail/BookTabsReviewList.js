@@ -27,6 +27,7 @@ class BookTabsReviewList extends Component {
             is_long={review.is_long}
             is_short={review.is_short}
             is_phrase={review.is_phrase}
+            id={review.id}
           />
         </div>
       );

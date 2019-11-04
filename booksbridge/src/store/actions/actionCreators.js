@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 import axios from 'axios';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
+=======
+
+import * as actionTypes from './actionTypes';
+import axios from 'axios';
+import { push } from 'connected-react-router';
+import storage from '../../lib/storage';
+>>>>>>> 72140c988f907ff45310028d1f4617b4a4f6ee87
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';

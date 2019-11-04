@@ -1,0 +1,14 @@
+
+.profilePic{
+    border-radius: 500rem;
+    width: 50px;
+    height: 50px;
+}
+
+.profileName{
+    display: flex;
+    flex-direction: column;
+    padding-left: 1rem;
+    align-items: flex-start;
+    justify-content: center;
+}
