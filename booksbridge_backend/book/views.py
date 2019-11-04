@@ -20,7 +20,7 @@ def signup(request):
         password = req_data['password']
         User.objects.create_user(username, email, password)
         user = User.objects.get(username=username)
-        Profile.objects.create(user=user)
+        Profile.objects.create(user=user, nickname=username)
         return HttpResponse(status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -157,8 +157,10 @@ def specific_article(request,review_id):
     elif request.method == 'GET':
         article = get_object_or_404(Article, id=review_id)
         book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
+        user = get_object_or_404(User, id=article.author_id)
         book_dict = model_to_dict(book_in_db)
-        response_dict = {'id':article.id, 'author':article.author_id, 'book':book_dict, 'title':article.title, 'content':article.content, 'date':article.date}
+        user_dict = {'username':user.username,'nickname':user.profile.nickname,'profile_photo':user.profile.profile_photo.name}
+        response_dict = {'id':article.id, 'author':user_dict, 'book':book_dict, 'title':article.title, 'content':article.content, 'date':article.date}
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])

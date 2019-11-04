@@ -16,18 +16,6 @@ const Header = (props) => {
         props.history.push('/result/search=' + search_input + '/book/1');
     };
 
-    var user_load = false;
-    let profile_photo;
-    let nickname;
-    let username;
-
-    if (!user_load && props.logged_in_user) {
-        nickname = props.logged_in_user.nickname;
-        username = props.logged_in_user.username;
-        profile_photo = '/static/' + username + '.jpg';
-        user_load = true;
-    }
-
     return (
         <div className="header">
             <a className="logo"
@@ -56,9 +44,9 @@ const Header = (props) => {
                     </InputGroup.Append>
                 </InputGroup>
             </div>
-
-            <ProfileSummary profile_photo={profile_photo} nickname={nickname} username={username} />
-
+            <div className="headerProfile">
+            <ProfileSummary user = {props.logged_in_user} />
+            </div>
             </div>
             );
         };
