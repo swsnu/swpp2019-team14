@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './App.css';
-
 import Signin from './containers/Signin';
 import Signup from './containers/Signup';
 import CreateReview from './containers/CreateReview';
@@ -37,18 +36,18 @@ componentDidMount() {
             <Route path='/sign-up' exact component={Signup} />
             <Route path='/main' exact component={Main} />
             <Route path='/result/search=:keyword/book/:page' exact component={SearchResultBook} />
-            <Route path='/page/:user_id' exact component={Create} />
-            <Route path='/page/:user_id/library' exact component={Create} />
-            <Route path='/page/:user_id/curation-list' exact component={Create} />
-            <Route path='/review' exact component={Create} />
+            <Route path='/page/:user_id' exact component={Main} />
+            <Route path='/page/:user_id/library' exact component={Main} />
+            <Route path='/page/:user_id/curation-list' exact component={Main} />
+            <Route path='/review' exact component={Main} />
             <Route path='/review/create' exact component={CreateReview} />
             <Route path='/review/:review_id' exact component={ReviewDetailPage} />
             <Route path='/review/:review_id/edit' exact component={ReviewDetailPage} />
             <Route path='/book/:book_id' exact component={BookDetail} />
-            <Route path='/curation' exact component={Create} />
-            <Route path='/curation/create' exact component={Create} />
-            <Route path='/curation/:user_id/:curation_id' exact component={Create} />
-            <Route path='/curation/:user_id/:curation_id/edit' exact component={Create} />
+            <Route path='/curation' exact component={Main} />
+            <Route path='/curation/create' exact component={Main} />
+            <Route path='/curation/:user_id/:curation_id' exact component={Main} />
+            <Route path='/curation/:user_id/:curation_id/edit' exact component={Main} />
             <Redirect from='/' to='/sign-in' />
           </Switch>
         </div >
