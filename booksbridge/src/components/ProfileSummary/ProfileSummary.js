@@ -10,9 +10,6 @@ const ProfileSummary = (props) => {
     if (!userload && props.user) {
         userload = true;
         user = props.user;
-        if (user.profile_photo === '') {
-            user.profile_photo = 'https://react.semantic-ui.com/images/avatar/large/matthew.png';
-        }
     }
 
     return (
