@@ -143,11 +143,9 @@ def specific_book(request,isbn):
         return HttpResponseNotAllowed(['GET'])
 
 def search_article(request, isbn):
-    if not request.user.is_authenticated:
-        return HttpResponse(status=401)
-    elif request.method == 'GET':
+    if request.method == 'GET':
         articles = list()
-        for article in Article.objects.filter(book_id=isbn).values():
+        for article in Article.objects.filter(book_id=isbn).order_by('-id'):
             deltatime = (datetime.now() - article.date)
             time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60,deltatime.seconds]
             user = get_object_or_404(User, id=article.author_id)
