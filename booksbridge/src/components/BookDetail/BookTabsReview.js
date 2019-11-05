@@ -58,7 +58,7 @@ const BookTabsReview = props => {
                     <div className="ui red button">
                       <i className="heart icon" /> Like
                     </div>
-                    <a className="ui basic red left pointing label">1,048</a>
+                    <a className="ui basic red left pointing label">0</a>
                   </div>
                 </div>
               )}
