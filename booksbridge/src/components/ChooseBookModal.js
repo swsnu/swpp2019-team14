@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, Sticky } from 'semantic-ui-react';
 import FormControl from 'react-bootstrap/FormControl';
-import ScrollUpButton from "react-scroll-up-button";
+import ScrollUpButton from 'react-scroll-up-button';
 
 import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from './BookResultSummary/BookResultSummary';
@@ -26,8 +26,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 class ChooseBookModal extends Component {
-  
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -48,20 +47,17 @@ class ChooseBookModal extends Component {
   searchHandler = () => {
     this.props.onEmptySearchedBooks();
     this.props.onSearchBooks(this.state.keyword, 1);
-    // this.setState({ searchedBooks: this.props.books});
     this.setState({ requestNum: 2, search: true });
   };
 
   seeMoreHandler = () => {
-    // console.log("SEE MORE: ", this.state.requestNum);
     this.props.onSearchBooks(this.state.keyword, this.state.requestNum);
-    // this.setState({ searchedBooks: this.state.searchedBooks.concat(this.props.books)});
     this.setState({ requestNum: this.state.requestNum + 1 });
   };
 
   chooseHandler = () => {
     this.setState({ open: false });
-  }
+  };
 
   render() {
     const result =
@@ -81,7 +77,9 @@ class ChooseBookModal extends Component {
           })
         : null;
 
-    const moreButton = this.state.search && <Button onClick={this.seeMoreHandler}>More...</Button>
+    const moreButton = this.state.search && (
+      <Button onClick={this.seeMoreHandler}>More...</Button>
+    );
 
     return (
       <div className="choose-book-modal">
@@ -102,19 +100,17 @@ class ChooseBookModal extends Component {
               }}
             />
             <Button onClick={this.searchHandler}>Search!</Button>
-<Sticky>
+            <Sticky>
               <Button
                 className="close-select-book-button"
-                onClick={() => this.setState({ open: false })}>Close
+                onClick={() => this.setState({ open: false })}
+              >
+                Close
               </Button>
             </Sticky>
             {result}
             {moreButton}
-            
           </Modal.Content>
-          <div className="close-button">
-            
-           </div>
         </Modal>
       </div>
     );
