@@ -1,7 +1,9 @@
 
 .box{
-    padding: 20px 60px 20px 20px;
+    padding: 20px 60px 20px 60px;
     width: auto;
+    text-align: left;
+    color: black !important;
 }
 .article{
     background-color: white;
@@ -11,13 +13,16 @@
 }
 .ReviewTitle{
     font-family: 'Noto Sans KR', sans-serif;
+    color: black !important;
 }
 .ReviewContent{
     padding: 20px 0px 0px 0px;
     width: 100%;
+    color: black !important;
 }
 .ReviewAdditionalDetail{
-    padding: 0px 0px 0px 20px;
+    padding: 0px 0px 0px 60px;
+    text-align: left;
 }
 .ReviewLikeButton{
     text-align: right;
@@ -28,6 +33,7 @@
     margin-bottom: 1rem !important;
     height: 50px;
     justify-content: space-between;
+    color: black !important;
 }
 .summary{
     text-align: right !important;
@@ -38,4 +44,5 @@
 }
 .Review{
     border: 1px solid gray;
+    color: black !important;
 }
