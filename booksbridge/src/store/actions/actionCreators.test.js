@@ -181,7 +181,7 @@ describe('ActionCreators', () => {
     });
   });
 
-  it(`'getArticlesByBookId'`, done => {
+  it(`'getArticlesByBookId, UserId'`, done => {
     const stubArticles = [stubArticle];
 
     const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
@@ -197,14 +197,14 @@ describe('ActionCreators', () => {
       .dispatch(actionCreators.getArticlesByBookId(123456789101))
       .then(() => {
         const newState = store.getState();
-        expect(newState.article.longReviews).toBe(stubArticles);
+        expect(newState.article.longReviews).toStrictEqual(stubArticles);
         expect(spy).toHaveBeenCalledTimes(2);
         done();
       });
 
     store.dispatch(actionCreators.getArticlesByUserId(2)).then(() => {
-      //   const newState = store.getState();
-      //   expect(newState.article.articles).toBe(stubArticles);
+      const newState = store.getState();
+      expect(newState.article.articles).toStrictEqual(stubArticles);
       expect(spy).toHaveBeenCalledTimes(2);
       done();
     });
