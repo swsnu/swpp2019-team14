@@ -13,8 +13,7 @@ const ProfileSummary = props => {
     user = props.user;
     if (user.profile_photo.startsWith('resources/image/profile'))
       profile_photo = '/static/' + user.profile_photo.substr(24);
-    else
-      profile_photo = user.profile_photo;
+    else profile_photo = user.profile_photo;
   }
 
   return (
