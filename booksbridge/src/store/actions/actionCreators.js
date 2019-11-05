@@ -15,7 +15,7 @@ export const postUser = user => {
         type: actionTypes.POST_NEW_USER,
         user: res.data
       });
-      dispatch(push("/sigin-in/"));
+      dispatch(push("/sign-in/"));
     });
   };
 };
