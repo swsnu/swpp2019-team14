@@ -1,25 +1,23 @@
 import { withRouter } from 'react-router-dom';
 import React from 'react';
+import { Button, Comment, Form, Header } from 'semantic-ui-react';
 
 import './Comments.css';
 
-import Comment from '../../components/Comment/Comment';
-
-const Comments = props => (
-  <div className="ui comments">
-    <h3 className="ui dividing header">Comments</h3>
-    <Comment />
-    <form className="ui reply form">
-      <div className="field">
-        <textarea />
-      </div>
-      <div className="ReplyButton">
-        <div className="ui black labeled submit icon button">
-          <i className="icon edit" /> Add Reply
-        </div>
-      </div>
-    </form>
-  </div>
-);
+const Comments = props => {
+  return (
+    <div>
+      <Comment.Group>
+        <Header as='h3' dividing>
+          Comments
+        </Header>
+        <Form reply>
+          <Form.TextArea />
+          <div className="ReplyButton"><Button className="ReplyButton" content='Add Reply' labelPosition='right' icon='edit' secondary /></div>
+        </Form>
+      </Comment.Group>
+    </div>
+  );
+};
 
 export default withRouter(Comments);

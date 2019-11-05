@@ -6,14 +6,20 @@ const ProfileSummary = props => {
   let userload = false;
   let user = { profile_photo: '', nickname: '', username: '' };
 
+  let profile_photo = '';
+
   if (!userload && props.user) {
     userload = true;
     user = props.user;
+    if (user.profile_photo.startsWith('resources/image/profile'))
+      profile_photo = '/static/' + user.profile_photo.substr(24) + 'jpg';
+    else
+      profile_photo = user.profile_photo;
   }
 
   return (
     <div className="ProfileSummary">
-      <img className="profilePic" src={user.profile_photo} />
+      <img className="profilePic" src={profile_photo} />
       <div className="profileName">
         <b className="nickname">{user.nickname}</b>
         <p className="username">@{user.username}</p>

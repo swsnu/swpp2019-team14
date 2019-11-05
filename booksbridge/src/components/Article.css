@@ -1,3 +1,5 @@
+
+
 .book_cover{
     height: 200px;
 }
@@ -14,4 +16,46 @@
 .text-box{
     height: 100px;
     overflow: hidden;
+}
+.AuthorProfileMain{
+    display: flex;
+    padding-left: 0px !important;
+    margin-bottom: 1rem !important;
+    height: 50px;
+    justify-content: space-between;
+}
+.MainLikeButton{
+    text-align: right;
+}
+.summary{
+    text-align: right !important;
+    display: flex;
+    align-items: center;
+    float: right;
+    font-size: .85714286em !important;
+}
+.MainArticleTitle{
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.MainBookTitle{
+    font-size: .85714286em;
+}
+.MainArticle{
+    text-align: left;
+    padding: 0px 20px 20px 50px;
+}
+.MainArticleContent{
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    white-space: normal;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    
+    margin: .5rem 0 0;
+    font-size: .85714286em !important;
 }

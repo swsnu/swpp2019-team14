@@ -257,8 +257,15 @@ def article_page(request, page):
         articles_list = paginator.page(page).object_list
         articles = list()
         for article in articles_list:
+            user = get_object_or_404(User, id=article.author_id)
+            user_dict = {
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
+            }
             article_dict = {
-                'author_name': article.author.get_username(),
+                'author': user_dict,
                 'book_isbn': article.book.isbn,
                 'book_title': article.book.title,
                 'book_thumbnail': article.book.thumbnail,

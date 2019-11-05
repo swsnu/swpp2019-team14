@@ -12,3 +12,7 @@
     align-items: flex-start;
     justify-content: center;
 }
+
+.username{
+    font-size: .85714286em;
+}
