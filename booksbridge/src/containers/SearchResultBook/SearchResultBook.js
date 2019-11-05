@@ -116,13 +116,19 @@ class SearchResultBook extends Component {
     return (
       <div className="SearchResultBook">
         <Header />
-        <div id="result">{result}</div>
-        {pagination}
-        <div className="TopButton">
-          <ScrollUpButton>
-            <Button>Top</Button>
-          </ScrollUpButton>
-        </div>
+        {this.props.count !== 0 ? (
+          <div>
+            <div id="result">{result}</div>
+            {pagination}
+            <div className="TopButton">
+              <ScrollUpButton>
+                <Button>Top</Button>
+              </ScrollUpButton>
+            </div>
+          </div>
+        ) : (
+          <h4>검색 결과가 없습니다.</h4>
+        )}
       </div>
     );
   }
