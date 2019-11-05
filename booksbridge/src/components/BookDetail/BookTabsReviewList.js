@@ -35,16 +35,18 @@ class BookTabsReviewList extends Component {
       );
     });
 
+    const reviews_top3 = reviews.slice(0, 3);
+
     if (this.props.is_short) {
-      return <div>{reviews}</div>;
+      return <div>{reviews_top3}</div>;
     }
 
     if (this.props.is_long) {
-      return <div>{reviews}</div>;
+      return <div>{reviews_top3}</div>;
     }
 
     if (this.props.is_phrase) {
-      return <div>{reviews}</div>;
+      return <div>{reviews_top3}</div>;
     }
   }
 }
