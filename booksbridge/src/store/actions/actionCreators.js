@@ -101,6 +101,8 @@ export const postArticle = article => dispatch =>
     });
     if (article.is_long) {
       dispatch(push(`/review/${res.data.id}`));
+    } else {
+      dispatch(push('/book/' + article.isbn));
     }
   });
 

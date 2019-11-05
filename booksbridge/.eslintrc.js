@@ -5,10 +5,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: [
-    'plugin:prettier/recommended',
-    'prettier'
-  ],
+  extends: ['plugin:prettier/recommended', 'prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -20,14 +17,12 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: [
-    'react', 'prettier'
-  ],
+  plugins: ['react', 'prettier'],
   parser: 'babel-eslint',
   rules: {
     'react/prefer-stateless-function': 0,
     'react/jsx-filename-extension': 0,
     'react/jsx-curly-newline': 0,
-    "prettier/prettier": ["error"],
+    'prettier/prettier': ['error'],
   },
 };

@@ -44,7 +44,6 @@ class CreateReview extends Component {
           is_phrase: this.state.type === 'phrase',
         });
         window.alert('Success!');
-        this.props.history.push('/book/' + this.props.selectedBook.isbn);
       } else {
         window.alert('Content is empty.');
       }
