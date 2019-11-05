@@ -64,3 +64,7 @@
     will-change: opacity;
     z-index: 1000;
 }
+
+.close-button {
+    text-align: right !important;
+}

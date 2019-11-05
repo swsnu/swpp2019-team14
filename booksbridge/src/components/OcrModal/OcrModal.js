@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, TextArea } from 'semantic-ui-react';
 import Dropzone from '../Dropzone/Dropzone';
 import './OcrModal.css';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 const mapStateToProps = state => {
   return {};
@@ -17,14 +18,17 @@ const mapDispatchToProps = dispatch => {
 class OcrModal extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       files: [],
       open: false,
+      content: "",
     };
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
     this.runOcrOnFiles = this.runOcrOnFiles.bind(this);
   }
+
 
   onFilesAdded = files => {
     this.setState(prevState => ({ files: prevState.files.concat(files) }));
@@ -37,10 +41,10 @@ class OcrModal extends Component {
 
     this.state.files.forEach(file => {
       promises.push(this.props.onRunOcr(file));
+      this.setState({ content: "swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  " });
     });
     try {
       await Promise.all(promises);
-
       // this.setState({
       //   uploaded: true,
       //   uploading: false
@@ -55,11 +59,11 @@ class OcrModal extends Component {
       window.alert('running ocr on file has failed');
     }
   }
-
+ 
   render() {
     return (
       <div className="ocr-modal">
-        <Button onClick={() => this.setState({ open: true })}>Quote</Button>
+        <Button onClick={() => this.setState({ files: [], open: true, content: "" })}>Quote</Button>
         <Modal open={this.state.open}>
           <Modal.Content>
             <Dropzone onFilesAdded={this.onFilesAdded} disabled={false} />
@@ -70,17 +74,22 @@ class OcrModal extends Component {
                 </div>
               );
             })}
-            <Button id="clear" onClick={() => this.setState({ files: [] })}>
-              삭제하기
-            </Button>
+            
             <Button id="run-ocr" onClick={this.runOcrOnFiles}>
-              내용 추출하기
+              Extract
+            </Button>
+            <CopyToClipboard text={this.state.content}>
+              <Button>Copy to the Clipboard</Button>
+            </CopyToClipboard>
+            <Button id="clear" onClick={() => this.setState({ files: [], content: "" })}>
+              Clear
             </Button>
             <Button onClick={() => this.setState({ open: false })}>
               Close
             </Button>
             <TextArea
               id="ocr-text"
+              value={this.state.content}
               style={{ minHeight: 500, minWidth: 1000 }}
             />
           </Modal.Content>
