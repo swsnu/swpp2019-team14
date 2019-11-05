@@ -38,15 +38,25 @@ const Article = (props) => {
                   <div className="extra text"><div className="text-box">{props.content}</div></div>
                   {props.is_long ? <a className="extra" onClick={() => { props.history.push("/review/" + props.id) }}>Additional Details</a> : null}
                 </div>
+                {props.is_long ? (
+                  <a
+                    className="extra"
+                    onClick={() => {
+                      props.history.push(`/review/${props.id}`);
+                    }}
+                  >
+                    Additional Details
+                  </a>
+                ) : null}
               </div>
             </div>
-            <div className="meta">
-              <div className="ui labeled button" tabindex="0">
-                <div className="ui red button">
-                  <i className="heart icon"></i> Like
-                </div>
-                <a className="ui basic red left pointing label">0</a>
+          </div>
+          <div className="meta">
+            <div className="ui labeled button" tabIndex="0">
+              <div className="ui red button">
+                <i className="heart icon" /> Like
               </div>
+              <a className="ui basic red left pointing label">0</a>
             </div>
         </div>
         {

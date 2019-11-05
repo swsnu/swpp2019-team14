@@ -2,7 +2,7 @@ import { withRouter } from 'react-router-dom';
 import React from 'react';
 import { Button, Comment, Form, Header } from 'semantic-ui-react';
 
-import "./Comments.css";
+import './Comments.css';
 
 import CommentUnit from "../../components/CommentUnit/CommentUnit"
 

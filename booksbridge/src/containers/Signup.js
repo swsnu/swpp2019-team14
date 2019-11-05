@@ -1,26 +1,30 @@
-import { connect } from "react-redux";
-import React, { Component } from "react";
-import { withRouter } from "react-router";
-import * as actionCreators from "../store/actions/index";
-import "./containers.css";
-import { Button } from "semantic-ui-react";
-import Form from "react-bootstrap/Form";
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import './containers.css';
+import { Button } from 'semantic-ui-react';
+import Form from 'react-bootstrap/Form';
+import * as actionCreators from '../store/actions/index';
 
 class Signup extends Component {
   state = {
-    email: "",
-    password: "",
-    username: ""
+    email: '',
+    password: '',
+    username: '',
   };
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   static getDerivedStateFromProps(nextProps, nextState) {
     return nextState;
   }
 
-  onClickSignUpButton = (e) => {
-    const user = { "email": this.state.email, "username": this.state.username, "password": this.state.password };
+  onClickSignUpButton = e => {
+    const user = {
+      email: this.state.email,
+      username: this.state.username,
+      password: this.state.password,
+    };
     e.preventDefault();
     this.props.onAddUser(user);
   };
@@ -36,11 +40,11 @@ class Signup extends Component {
               type="email"
               placeholder="Enter email"
               value={this.state.email}
-              onChange={event => this.setState({ email: event.target.value })
-              }
-            required />
+              onChange={event => this.setState({ email: event.target.value })}
+              required
+            />
             <Form.Control.Feedback type="invalid">
-            Please provide a valid email.
+              Please provide a valid email.
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="validationFormikUsername">
@@ -53,8 +57,9 @@ class Signup extends Component {
               onChange={event =>
                 this.setState({ username: event.target.value })
               }
-              required />
-            </Form.Group>
+              required
+            />
+          </Form.Group>
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
@@ -64,34 +69,31 @@ class Signup extends Component {
               onChange={event =>
                 this.setState({ password: event.target.value })
               }
-            required/>
+              required
+            />
           </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              id="login-button"
-            >
-              Confirm
+          <Button variant="primary" type="submit" id="login-button">
+            Confirm
           </Button>
         </Form>
       </div>
-        );
-      }
-    }
-    
+    );
+  }
+}
+
 const mapStateToProps = state => {
   return {};
-      };
-      
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-          onAddUser: (user) => {
-          dispatch(actionCreators.postUser(user));
-      }
-    };
+    onAddUser: user => {
+      dispatch(actionCreators.postUser(user));
+    },
   };
-  
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Signup);
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Signup);

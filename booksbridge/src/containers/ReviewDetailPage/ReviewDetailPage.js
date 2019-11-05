@@ -1,16 +1,16 @@
-import { connect } from "react-redux";
-import React, { Component } from "react";
-import { withRouter } from "react-router";
-import { Button } from "semantic-ui-react";
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import { Button } from 'semantic-ui-react';
 
-import Header from "../../components/Header";
-import BookInfo from "../../components/BookDetail/BookInfo";
-import Comments from "../Comments/Comments";
+import Header from '../../components/Header';
+import BookInfo from '../../components/BookDetail/BookInfo';
+import Comments from '../Comments/Comments';
 import ProfileSummary from '../../components/ProfileSummary/ProfileSummary';
 
-import * as actionCreators from "../../store/actions/actionCreators";
+import * as actionCreators from '../../store/actions/actionCreators';
 
-import "./ReviewDetailPage.css";
+import './ReviewDetailPage.css';
 
 class ReviewDetailPage extends Component {
   componentDidMount() {
@@ -18,7 +18,7 @@ class ReviewDetailPage extends Component {
   }
 
   onCreateReview = () => {
-    this.props.history.push("/review/create");
+    this.props.history.push('/review/create');
   };
 
   render() {
@@ -26,7 +26,7 @@ class ReviewDetailPage extends Component {
       return <div>LOADING...</div>;
     }
 
-    const book = this.props.currentArticle.book;
+    const { book } = this.props.currentArticle;
 
     return (
       <div>
@@ -35,7 +35,7 @@ class ReviewDetailPage extends Component {
           <h1>{this.props.currentArticle.title}</h1>
         </div>
         <div className="AuthorProfile">
-          <ProfileSummary user = {this.props.currentArticle.author} />
+          <ProfileSummary user={this.props.currentArticle.author} />
         </div>
         <div className="infoStyle">
           <BookInfo
@@ -48,22 +48,22 @@ class ReviewDetailPage extends Component {
           />
         </div>
         <div>
-          <Button onClick={() => this.props.history.push("/book/" + book.isbn)}>
+          <Button onClick={() => this.props.history.push(`/book/${book.isbn}`)}>
             Check this book!
           </Button>
         </div>
         <div className="ReviewContainer">
           {this.props.currentArticle.content}
           <div className="LikeButton">
-            <div class="ui labeled button" tabindex="0">
-              <div class="ui red button">
-                <i class="heart icon"></i> Like
+            <div className="ui labeled button" tabIndex="0">
+              <div className="ui red button">
+                <i className="heart icon" /> Like
               </div>
-              <a class="ui basic red left pointing label">1,048</a>
+              <a className="ui basic red left pointing label">1,048</a>
             </div>
           </div>
           <div className="ReviewComments">
-          <Comments />
+            <Comments />
           </div>
         </div>
       </div>
@@ -74,18 +74,18 @@ class ReviewDetailPage extends Component {
 const mapStateToProps = state => {
   return {
     currentArticle: state.article.selectedArticle,
-    currentBook: state.article.selectedBook
+    currentBook: state.article.selectedBook,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onLoadArticle: id => dispatch(actionCreators.getSpecificArticle(id)),
-    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn))
+    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(ReviewDetailPage));
