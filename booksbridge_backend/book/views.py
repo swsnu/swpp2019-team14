@@ -146,8 +146,32 @@ def search_article(request, isbn):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     elif request.method == 'GET':
-        review_all_list = [review for review in Article.objects.filter(book_id=isbn).values()]
-        return JsonResponse(review_all_list, safe=False)
+        articles = list()
+        for article in Article.objects.filter(book_id=isbn).values():
+            deltatime = (datetime.now() - article.date)
+            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60,deltatime.seconds]
+            user = get_object_or_404(User, id=article.author_id)
+            user_dict = {
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
+            }
+            article_dict = {
+                'author': user_dict,
+                'book_isbn': article.book.isbn,
+                'book_title': article.book.title,
+                'book_thumbnail': article.book.thumbnail,
+                'id': article.id,
+                'title': article.title,
+                'content': article.content,
+                'date': time_array,
+                'is_long': article.is_long,
+                'is_short': article.is_short,
+                'is_phrase': article.is_phrase
+            }
+            articles.append(article_dict)
+        return JsonResponse(articles, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -257,6 +281,8 @@ def article_page(request, page):
         articles_list = paginator.page(page).object_list
         articles = list()
         for article in articles_list:
+            deltatime = (datetime.now() - article.date)
+            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60,deltatime.seconds]
             user = get_object_or_404(User, id=article.author_id)
             user_dict = {
                 'id':user.id,
@@ -272,7 +298,7 @@ def article_page(request, page):
                 'id': article.id,
                 'title': article.title,
                 'content': article.content,
-                'date': article.date,
+                'date': time_array,
                 'is_long': article.is_long,
                 'is_short': article.is_short,
                 'is_phrase': article.is_phrase

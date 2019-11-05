@@ -1,11 +1,21 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { UI, Feed, Button, Modal, Input, Grid, Image } from 'semantic-ui-react';
+import * as actionCreators from '../store/actions/actionCreators';
 import './Article.css';
 import Alert from 'react-bootstrap/Alert';
-import ProfileSummary from './ProfileSummary/ProfileSummary';
 
 const Article = props => {
   const Author = <ProfileSummary user={props.author} />;
+  const timeDiff = () => {
+    const pTime = props.date;
+    if (pTime[0]) return pTime[0] + ' years ago';
+    else if (pTime[1]) return pTime[1] + ' months ago';
+    else if (pTime[2]) return pTime[2] + ' days ago';
+    else if (pTime[3]) return pTime[3] + ' hours ago';
+    else if (pTime[4]) return pTime[4] + ' minutes ago';
+    else return '방금 전';
+  };
   return (
     <div>
       <Alert variant="secondary" className="article">
@@ -14,7 +24,7 @@ const Article = props => {
             <div className="AuthorProfileMain">
               <div>{Author}</div>
               <div className="summary">
-                <div className="date">30 minutes ago</div>
+                <div className="date">{timeDiff()}</div>
               </div>
             </div>
             <div className="ui items">
@@ -29,13 +39,21 @@ const Article = props => {
                   </a>
                 </div>
                 <div className="MainArticle">
+                  <a
+                    onClick={() => {
+                      props.history.push(`/review/${props.id}`);
+                    }}
+                  >
+                    <h3 className="MainArticleTitle">{props.title}</h3>
+                  </a>
                   <div className="MainBookTitle">
                     <a
+                      className="meta"
                       onClick={() => {
-                        props.history.push(`/review/${props.id}`);
+                        props.history.push(`/book/${props.book_isbn}`);
                       }}
                     >
-                      <h3 className="MainArticleTitle">{props.title}</h3>
+                      <span>{props.book_title}</span>
                     </a>
                   </div>
                   <div className="MainArticleContent">
