@@ -9,14 +9,15 @@ axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 // export const POST_NEW_USER = 'POST_NEW_USER'
 export const postUser = user => {
   return dispatch => {
-    return axios.post("/api/user/", user).then(res => {
+    return axios.post('/api/user/', user).then(res => {
       dispatch({
         type: actionTypes.POST_NEW_USER,
-        user: res.data
+        user: res.data,
       });
-      dispatch(push("/sign-in/"));
-    })};
+      dispatch(push('/sign-in/'));
+    });
   };
+};
 // export const LOGIN_USER = 'LOGIN_USER'
 
 export const loginUser = user => {

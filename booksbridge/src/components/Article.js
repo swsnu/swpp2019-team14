@@ -1,14 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { UI, Feed, Button, Modal, Input, Grid, Image } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/actionCreators';
 import './Article.css';
 import Alert from 'react-bootstrap/Alert';
-import ProfileSummary from './ProfileSummary/ProfileSummary';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Container from 'react-bootstrap/Container';
 
 const Article = props => {
   const Author = <ProfileSummary user={props.author} />;
