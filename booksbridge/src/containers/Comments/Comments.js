@@ -4,8 +4,6 @@ import { Button, Comment, Form, Header } from 'semantic-ui-react';
 
 import './Comments.css';
 
-import CommentUnit from "../../components/CommentUnit/CommentUnit"
-
 const Comments = props => {
   return (
     <div>
@@ -15,7 +13,7 @@ const Comments = props => {
         </Header>
         <Form reply>
           <Form.TextArea />
-          <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+          <div className="ReplyButton"><Button className="ReplyButton" content='Add Reply' labelPosition='right' icon='edit' secondary /></div>
         </Form>
       </Comment.Group>
     </div>
