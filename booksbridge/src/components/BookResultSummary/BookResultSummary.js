@@ -14,6 +14,7 @@ const BookResultSummary = props => {
       props.history.push(`/book/${props.isbn}`);
     } else {
       props.onGetSpecificBook(props.isbn);
+      props.click();
     }
   };
 
