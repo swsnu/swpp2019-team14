@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Input } from 'semantic-ui-react';
+import { Button, Modal, Sticky } from 'semantic-ui-react';
+import FormControl from 'react-bootstrap/FormControl';
+import ScrollUpButton from "react-scroll-up-button";
 
 import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from './BookResultSummary/BookResultSummary';
@@ -24,14 +26,22 @@ const mapDispatchToProps = dispatch => {
 };
 
 class ChooseBookModal extends Component {
-  state = {
-    keyword: '',
-    requestNum: 1,
-    open: false,
-  };
+  
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      keyword: '',
+      requestNum: 1,
+      open: false,
+      search: false,
+    };
+
+    this.chooseHandler = this.chooseHandler.bind(this);
+  }
 
   openHandler = () => {
-    this.setState({ open: true });
+    this.setState({ open: true, search: false });
     this.props.onEmptySearchedBooks();
   };
 
@@ -39,7 +49,7 @@ class ChooseBookModal extends Component {
     this.props.onEmptySearchedBooks();
     this.props.onSearchBooks(this.state.keyword, 1);
     // this.setState({ searchedBooks: this.props.books});
-    this.setState({ requestNum: 2 });
+    this.setState({ requestNum: 2, search: true });
   };
 
   seeMoreHandler = () => {
@@ -49,8 +59,11 @@ class ChooseBookModal extends Component {
     this.setState({ requestNum: this.state.requestNum + 1 });
   };
 
+  chooseHandler = () => {
+    this.setState({ open: false });
+  }
+
   render() {
-    // console.log("DEBUG ", this.props.searchedBooks);
     const result =
       this.props.searchedBooks.length > 1
         ? this.props.searchedBooks.map(book => {
@@ -62,10 +75,13 @@ class ChooseBookModal extends Component {
                 publisher={book.publisher}
                 isbn={book.isbn}
                 direct={false}
+                click={this.chooseHandler}
               />
             );
           })
         : null;
+
+    const moreButton = this.state.search && <Button onClick={this.seeMoreHandler}>More...</Button>
 
     return (
       <div className="choose-book-modal">
@@ -75,21 +91,30 @@ class ChooseBookModal extends Component {
 
         <Modal open={this.state.open}>
           <Modal.Content scrolling>
-            <Input
-              placeholder="search..."
+            <FormControl
+              aria-describedby="basic-addon2"
+              type="text"
               onChange={event => this.setState({ keyword: event.target.value })}
+              onKeyPress={event => {
+                if (event.key === 'Enter') {
+                  this.searchHandler();
+                }
+              }}
             />
             <Button onClick={this.searchHandler}>Search!</Button>
-            {/* <Button onClick={() => this.setState({ open: false })}>Choose</Button>  */}
-            <Button
-              className="close-select-book-button"
-              onClick={() => this.setState({ open: false })}
-            >
-              Close
-            </Button>
+<Sticky>
+              <Button
+                className="close-select-book-button"
+                onClick={() => this.setState({ open: false })}>Close
+              </Button>
+            </Sticky>
             {result}
-            <Button onClick={this.seeMoreHandler}>More...</Button>
+            {moreButton}
+            
           </Modal.Content>
+          <div className="close-button">
+            
+           </div>
         </Modal>
       </div>
     );

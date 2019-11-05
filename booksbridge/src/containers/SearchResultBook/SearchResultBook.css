@@ -24,3 +24,6 @@
     background-color: #fff;
     border: 1px solid #dee2e6;
 }
+.TopButton {
+    text-align: right !important;
+}
