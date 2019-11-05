@@ -4,6 +4,7 @@ import { UI, Feed, Button, Modal, Input, Grid, Image } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/actionCreators';
 import './Article.css';
 import Alert from 'react-bootstrap/Alert';
+import ProfileSummary from './ProfileSummary/ProfileSummary';
 
 const Article = props => {
   const Author = <ProfileSummary user={props.author} />;
