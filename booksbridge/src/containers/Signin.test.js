@@ -32,4 +32,50 @@ describe('<Signin />', () => {
     const wrapper = component.find('.login_page');
     expect(wrapper.length).toBe(1);
   });
+
+  it(`should change username state`, () => {
+    const input = 'TEST_INPUT';
+    const component = mount(signin);
+    const wrapper = component.find('#username-input').at(0);
+    wrapper.simulate('change', { target: { value: input } });
+    const newInstance = component.find(Signin.WrappedComponent).instance();
+    expect(newInstance.state.username).toEqual(input);
+  });
+
+  it(`should change password state`, () => {
+    const input = 'TEST_INPUT';
+    const component = mount(signin);
+    const wrapper = component.find('#pw-input').at(0);
+    wrapper.simulate('change', { target: { value: input } });
+    const newInstance = component.find(Signin.WrappedComponent).instance();
+    expect(newInstance.state.password).toEqual(input);
+  });
+
+  it(`should call loginUser`, () => {
+    const spyLoginUser = jest
+      .spyOn(actionCreators, 'loginUser')
+      .mockImplementation(user => {
+        return dispatch => {};
+      });
+    const username = 'TEST_USER';
+    const password = 'TEST_PASSWORD';
+    const component = mount(signin);
+    const wrapperUsername = component.find('#username-input').at(0);
+    wrapperUsername.simulate('change', { target: { value: username } });
+    const wrapperPassword = component.find('#pw-input').at(0);
+    wrapperPassword.simulate('change', { target: { value: password } });
+    const wrapper = component.find('#login-button').at(0);
+    wrapper.simulate('click');
+    expect(spyLoginUser).toHaveBeenCalledTimes(1);
+  });
+
+  it(`'should redirect to signup page`, () => {
+    const spyHistoryPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(path => {});
+    const component = mount(signin);
+    const wrapper = component.find('#signup-button').at(0);
+    wrapper.simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/sign-up/');
+  });
 });
