@@ -8,7 +8,7 @@
     "start": "cd booksbridge && ./node_modules/.bin/react-scripts start",
     "startb": "cd booksbridge_backend && python manage.py runserver",
     "build": "react-scripts build",
-    "test": "cd booksbridge && ./node_modules/.bin/react-scripts test --coverage --watchAll=false && cd ../booksbridge_backend && coverage run --branch --source='./book' manage.py test && coverage report",
+    "test": "cd booksbridge && ./node_modules/.bin/react-scripts test --coverage --watchAll=false && cd ../booksbridge_backend && coverage run --branch --source='./book' manage.py test && coverage report && coverage html",
     "eject": "react-scripts eject",
     "installb": "pip3 install -r booksbridge_backend/requirements.txt",
     "install": "cd booksbridge && ./node_modules/.bin/react-scripts install"
