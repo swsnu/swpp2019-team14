@@ -47,7 +47,7 @@ class Signup extends Component {
               Please provide a valid email.
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group controlId="validationFormikUsername">
+          <Form.Group controlId="validationFormUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"

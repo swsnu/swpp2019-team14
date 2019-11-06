@@ -147,7 +147,7 @@ def search_article(request, isbn):
         articles = list()
         for article in Article.objects.filter(book_id=isbn).order_by('-id'):
             deltatime = (datetime.now() - article.date)
-            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60,deltatime.seconds]
+            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
             user = get_object_or_404(User, id=article.author_id)
             user_dict = {
                 'id':user.id,
@@ -280,7 +280,7 @@ def article_page(request, page):
         articles = list()
         for article in articles_list:
             deltatime = (datetime.now() - article.date)
-            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60,deltatime.seconds]
+            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
             user = get_object_or_404(User, id=article.author_id)
             user_dict = {
                 'id':user.id,

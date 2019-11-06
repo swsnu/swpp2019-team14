@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { connectRouter, ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-import Signin from './Signin';
+import Signup from './Signup';
 import { getMockStore } from '../test-utils/mocks';
 import { history } from '../store/store';
 import * as actionCreators from '../store/actions/actionCreators';
@@ -13,69 +13,71 @@ const stubInitialState = {};
 
 const mockStore = getMockStore(stubInitialState);
 
-describe('<Signin />', () => {
-  let signin;
+describe('<Signup />', () => {
+  let signup;
   beforeEach(() => {
-    signin = (
+    signup = (
       <Provider store={mockStore}>
         <ConnectedRouter history={history}>
           <Switch>
-            <Route path="/" exact render={() => <Signin />} />
+            <Route path="/" exact render={() => <Signup />} />
           </Switch>
         </ConnectedRouter>
       </Provider>
     );
   });
 
-  it('should render Signin page', () => {
-    const component = mount(signin);
+  it('should render Signup page', () => {
+    const component = mount(signup);
     const wrapper = component.find('.login_page');
     expect(wrapper.length).toBe(1);
   });
 
   it(`should change username state`, () => {
     const input = 'TEST_INPUT';
-    const component = mount(signin);
-    const wrapper = component.find('#username-input').at(0);
+    const component = mount(signup);
+    const wrapper = component.find('#formBasicEmail').at(0);
     wrapper.simulate('change', { target: { value: input } });
-    const newInstance = component.find(Signin.WrappedComponent).instance();
+    const newInstance = component.find(Signup.WrappedComponent).instance();
+    expect(newInstance.state.email).toEqual(input);
+  });
+
+  it(`should change username state`, () => {
+    const input = 'TEST_INPUT';
+    const component = mount(signup);
+    const wrapper = component.find('#validationFormUsername').at(0);
+    wrapper.simulate('change', { target: { value: input } });
+    const newInstance = component.find(Signup.WrappedComponent).instance();
     expect(newInstance.state.username).toEqual(input);
   });
 
   it(`should change password state`, () => {
     const input = 'TEST_INPUT';
-    const component = mount(signin);
-    const wrapper = component.find('#pw-input').at(0);
+    const component = mount(signup);
+    const wrapper = component.find('#formBasicPassword').at(0);
     wrapper.simulate('change', { target: { value: input } });
-    const newInstance = component.find(Signin.WrappedComponent).instance();
+    const newInstance = component.find(Signup.WrappedComponent).instance();
     expect(newInstance.state.password).toEqual(input);
   });
 
-  it(`should call loginUser`, () => {
-    const spyLoginUser = jest
-      .spyOn(actionCreators, 'loginUser')
+  it(`should call postUser`, () => {
+    const spyPostUser = jest
+      .spyOn(actionCreators, 'postUser')
       .mockImplementation(user => {
         return dispatch => {};
       });
+    const email = 'TEST_EMAIL';
     const username = 'TEST_USER';
     const password = 'TEST_PASSWORD';
-    const component = mount(signin);
-    const wrapperUsername = component.find('#username-input').at(0);
+    const component = mount(signup);
+    const wrapperEmail = component.find('#formBasicEmail').at(0);
+    wrapperEmail.simulate('change', { target: { value: email } });
+    const wrapperUsername = component.find('#validationFormUsername').at(0);
     wrapperUsername.simulate('change', { target: { value: username } });
-    const wrapperPassword = component.find('#pw-input').at(0);
+    const wrapperPassword = component.find('#formBasicPassword').at(0);
     wrapperPassword.simulate('change', { target: { value: password } });
     const wrapper = component.find('#login-button').at(0);
     wrapper.simulate('submit');
-    expect(spyLoginUser).toHaveBeenCalledTimes(1);
-  });
-
-  it(`'should redirect to signup page`, () => {
-    const spyHistoryPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(path => {});
-    const component = mount(signin);
-    const wrapper = component.find('#signup-button').at(0);
-    wrapper.simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/sign-up/');
+    expect(spyPostUser).toHaveBeenCalledTimes(1);
   });
 });

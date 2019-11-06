@@ -23,15 +23,20 @@ class Main extends React.Component {
 
   fetchMoreData = () => {
     // a fake async api call like which sends
-    // 20 more records in 1.5 secs
+    // 10 more records in 0.7 secs
     this.props.onGetArticles(this.state.page);
-    setTimeout(() => {
-      this.setState({
-        page: this.state.page + 1,
-        articles: this.state.articles.concat(this.props.loadArticle),
-        hasNext: this.props.hasNext,
-      });
-    }, 700);
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    delay(700)
+      .then(() =>
+        this.setState({
+          page: this.state.page + 1,
+          articles: this.state.articles.concat(this.props.loadArticle),
+          hasNext: this.props.hasNext,
+        }),
+      )
+      .catch();
   };
 
   render() {

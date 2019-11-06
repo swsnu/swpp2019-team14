@@ -23,6 +23,7 @@ const Header = props => {
       <div className="search">
         <InputGroup>
           <FormControl
+            id="search-input"
             aria-describedby="basic-addon2"
             type="text"
             value={search_input}
@@ -34,7 +35,11 @@ const Header = props => {
             }}
           />
           <InputGroup.Append>
-            <Button variant="outline-secondary" onClick={() => onSearch()}>
+            <Button
+              id="search-button"
+              variant="outline-secondary"
+              onClick={() => onSearch()}
+            >
               Search
             </Button>
           </InputGroup.Append>
