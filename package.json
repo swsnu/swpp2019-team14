@@ -10,6 +10,7 @@
     "build": "react-scripts build",
     "test": "cd booksbridge && ./node_modules/.bin/react-scripts test --coverage --watchAll=false && cd ../booksbridge_backend && coverage run --branch --source='./book' manage.py test",
     "eject": "react-scripts eject",
-    "install": "pip3 install -r booksbridge_backend/requirements.txt"
+    "installb": "pip3 install -r booksbridge_backend/requirements.txt",
+    "install": "cd booksbridge && ./node_modules/.bin/react-scripts install"
   }
 }
