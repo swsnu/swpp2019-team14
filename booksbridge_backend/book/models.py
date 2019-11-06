@@ -13,12 +13,12 @@ class Profile(models.Model):
     nickname = models.CharField(max_length=32, blank=True)
     profile_text = models.TextField(blank=True)
     profile_photo = ProcessedImageField(
-    		default = 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
-        	upload_to = post_image_path,
-        	processors = [ResizeToFill(300, 300)],
-        	format = 'JPEG',
-        	options = {'quality':100},
-    		)
+        default = 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+        upload_to = post_image_path,
+        processors = [ResizeToFill(300, 300)],
+        format = 'JPEG',
+        options = {'quality':100},
+        )
 
 class Book(models.Model):
     isbn = models.BigIntegerField(primary_key=True)

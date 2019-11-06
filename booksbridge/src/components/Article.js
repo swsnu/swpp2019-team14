@@ -18,73 +18,75 @@ const Article = props => {
     else return '방금 전';
   };
   return (
-    <div>
-      <Alert variant="secondary" className="article">
-        <div className="ui feed">
-          <div>
-            <div className="AuthorProfileMain">
-              <div>{Author}</div>
-              <div className="summary">
-                <div className="date">{timeDiff()}</div>
-              </div>
+    <Alert variant="secondary" className="article">
+      <div className="ui feed">
+        <div>
+          <div className="AuthorProfileMain">
+            <div>{Author}</div>
+            <div className="summary">
+              <div className="date">{timeDiff()}</div>
             </div>
-            <div className="ui items">
-              <div className="item">
-                <div className="book_cover">
+          </div>
+          <div className="ui items">
+            <div className="item">
+              <div className="book_cover">
+                <a
+                  id="book-cover"
+                  onClick={() => {
+                    props.history.push(`/book/${props.book_isbn}`);
+                  }}
+                >
+                  <img src={props.book_thumbnail} />
+                </a>
+              </div>
+              <div className="MainArticle">
+                <a
+                  id="article-title"
+                  onClick={() => {
+                    props.history.push(`/review/${props.id}`);
+                  }}
+                >
+                  <h3 className="MainArticleTitle">{props.title}</h3>
+                </a>
+                <div className="MainBookTitle">
                   <a
+                    id="book-title"
+                    className="meta"
                     onClick={() => {
                       props.history.push(`/book/${props.book_isbn}`);
                     }}
                   >
-                    <img src={props.book_thumbnail} />
+                    <span>{props.book_title}</span>
                   </a>
                 </div>
-                <div className="MainArticle">
+                <div className="MainArticleContent">
+                  <div className="content">{props.content}</div>
+                </div>
+                {props.is_long ? (
                   <a
+                    id="article-extra"
+                    className="extra"
                     onClick={() => {
                       props.history.push(`/review/${props.id}`);
                     }}
                   >
-                    <h3 className="MainArticleTitle">{props.title}</h3>
+                    View Full Review
                   </a>
-                  <div className="MainBookTitle">
-                    <a
-                      className="meta"
-                      onClick={() => {
-                        props.history.push(`/book/${props.book_isbn}`);
-                      }}
-                    >
-                      <span>{props.book_title}</span>
-                    </a>
-                  </div>
-                  <div className="MainArticleContent">
-                    <div className>{props.content}</div>
-                  </div>
-                  {props.is_long ? (
-                    <a
-                      className="extra"
-                      onClick={() => {
-                        props.history.push(`/review/${props.id}`);
-                      }}
-                    >
-                      View Full Review
-                    </a>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-            <div className="MainLikeButton">
-              <div className="ui labeled button" tabIndex="0">
-                <div className="ui red button">
-                  <i className="heart icon" /> Like
-                </div>
-                <a className="ui basic red left pointing label">0</a>
+                ) : null}
               </div>
             </div>
           </div>
+          <div className="MainLikeButton">
+            <div className="ui labeled button" tabIndex="0">
+              <div className="ui red button">
+                <i className="heart icon" /> Like
+              </div>
+              <a className="ui basic red left pointing label">0</a>
+            </div>
+          </div>
         </div>
-      </Alert>
-    </div>
+      </div>
+    </Alert>
   );
 };
 
