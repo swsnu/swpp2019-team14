@@ -12,9 +12,8 @@ import Article from '../components/Article';
 class Main extends React.Component {
   constructor(params) {
     super(params);
-    this.props.onGetArticles(1);
     this.state = {
-      page: 2,
+      page: 1,
       articles: [],
       hasNext: true,
     };
@@ -24,13 +23,13 @@ class Main extends React.Component {
   fetchMoreData = () => {
     // a fake async api call like which sends
     // 20 more records in 1.5 secs
+    this.props.onGetArticles(this.state.page);
     setTimeout(() => {
       this.setState({
         page: this.state.page + 1,
         articles: this.state.articles.concat(this.props.loadArticle),
         hasNext: this.props.hasNext,
       });
-      this.props.onGetArticles(this.state.page);
     }, 500);
   };
 
