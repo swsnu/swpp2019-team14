@@ -6,7 +6,7 @@ import Header from '../../components/Header';
 import * as actionCreators from '../../store/actions/actionCreators';
 import BookResultSummary from '../../components/BookResultSummary/BookResultSummary';
 import './SearchResultBook.css';
-import ScrollUpButton from "react-scroll-up-button";
+import ScrollUpButton from 'react-scroll-up-button';
 import { Button } from 'semantic-ui-react';
 
 const mapStateToProps = state => ({
@@ -42,7 +42,7 @@ class SearchResultBook extends Component {
       );
     }
     if (this.props.location !== prevProps.location) {
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     }
   }
 
@@ -116,16 +116,21 @@ class SearchResultBook extends Component {
     return (
       <div className="SearchResultBook">
         <Header />
-        <div id="result">{result}</div>
-        {pagination}
-        <div className="TopButton">
-          <ScrollUpButton>
-            <Button>Top</Button>
-          </ScrollUpButton>
-        </div>
+        {this.props.count !== 0 ? (
+          <div>
+            <div id="result">{result}</div>
+            {pagination}
+            <div className="TopButton">
+              <ScrollUpButton>
+                <Button>Top</Button>
+              </ScrollUpButton>
+            </div>
+          </div>
+        ) : (
+          <h4>검색 결과가 없습니다.</h4>
+        )}
       </div>
     );
-    
   }
 }
 

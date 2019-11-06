@@ -1,5 +1,5 @@
-import { withRouter } from "react-router-dom";
-import React from "react";
+import { withRouter } from 'react-router-dom';
+import React from 'react';
 import { Button, Comment, Form, Header } from 'semantic-ui-react';
 
 const CommentUnit = props => {
@@ -8,7 +8,7 @@ const CommentUnit = props => {
       <Comment>
         <img className="profilePic" src={props.user.profile_photo}></img>
         <Comment.Content>
-          <Comment.Author as='a'>{props.user.nickname}</Comment.Author>
+          <Comment.Author as="a">{props.user.nickname}</Comment.Author>
           <Comment.Metadata>
             <div>Today at 5:42PM</div>
           </Comment.Metadata>

@@ -13,13 +13,13 @@ class BookTabsReviewList extends Component {
       return <div>아직 리뷰가 없어요... 하나 작성해보시면 어떨까요?</div>;
     }
 
-    const reviews = this.props.reviews.map(review => {
+    const reviews = this.props.reviews.map((review, index) => {
       console.log(
         `[DEBUG] review.title: ${review.title}review.content: ${review.content}`,
       );
 
       return (
-        <div>
+        <div className="BookTabsReviewWrapper" key={index}>
           <BookTabsReview
             author={review.author}
             title={review.title}

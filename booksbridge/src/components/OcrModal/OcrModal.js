@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Modal, TextArea } from 'semantic-ui-react';
 import Dropzone from '../Dropzone/Dropzone';
 import './OcrModal.css';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const mapStateToProps = state => {
   return {};
@@ -22,13 +22,12 @@ class OcrModal extends Component {
     this.state = {
       files: [],
       open: false,
-      content: "",
+      content: '',
     };
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
     this.runOcrOnFiles = this.runOcrOnFiles.bind(this);
   }
-
 
   onFilesAdded = files => {
     this.setState(prevState => ({ files: prevState.files.concat(files) }));
@@ -41,7 +40,10 @@ class OcrModal extends Component {
 
     this.state.files.forEach(file => {
       promises.push(this.props.onRunOcr(file));
-      this.setState({ content: "swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  " });
+      this.setState({
+        content:
+          'swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  ',
+      });
     });
     try {
       await Promise.all(promises);
@@ -59,11 +61,15 @@ class OcrModal extends Component {
       window.alert('running ocr on file has failed');
     }
   }
- 
+
   render() {
     return (
       <div className="ocr-modal">
-        <Button onClick={() => this.setState({ files: [], open: true, content: "" })}>Quote</Button>
+        <Button
+          onClick={() => this.setState({ files: [], open: true, content: '' })}
+        >
+          Quote
+        </Button>
         <Modal open={this.state.open}>
           <Modal.Content>
             <Dropzone onFilesAdded={this.onFilesAdded} disabled={false} />
@@ -74,14 +80,17 @@ class OcrModal extends Component {
                 </div>
               );
             })}
-            
+
             <Button id="run-ocr" onClick={this.runOcrOnFiles}>
               Extract
             </Button>
             <CopyToClipboard text={this.state.content}>
               <Button>Copy to the Clipboard</Button>
             </CopyToClipboard>
-            <Button id="clear" onClick={() => this.setState({ files: [], content: "" })}>
+            <Button
+              id="clear"
+              onClick={() => this.setState({ files: [], content: '' })}
+            >
               Clear
             </Button>
             <Button onClick={() => this.setState({ open: false })}>

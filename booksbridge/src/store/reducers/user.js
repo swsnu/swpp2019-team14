@@ -7,8 +7,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_LOGGED_IN_USER:
-      return { ...state, logged_in_user: action.user };
     case actionTypes.LOGIN_USER:
       return { ...state, logged_in_user: action.user };
     // const modified = state.users.map((user) => {

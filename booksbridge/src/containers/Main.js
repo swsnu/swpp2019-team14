@@ -8,6 +8,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Header from '../components/Header';
 import * as actionCreators from '../store/actions/index';
 import Article from '../components/Article';
+import Spinner from 'react-bootstrap/Spinner';
 
 class Main extends React.Component {
   constructor(params) {
@@ -30,7 +31,7 @@ class Main extends React.Component {
         articles: this.state.articles.concat(this.props.loadArticle),
         hasNext: this.props.hasNext,
       });
-    }, 500);
+    }, 700);
   };
 
   render() {
@@ -43,7 +44,7 @@ class Main extends React.Component {
             dataLength={this.state.articles.length}
             next={this.fetchMoreData}
             hasMore={this.state.hasNext}
-            loader={<h4>Loading...</h4>}
+            loader={<Spinner animation="border" />}
             endMessage={
               <p style={{ textAlign: 'center' }}>
                 <b>Yay! You have seen it all</b>
