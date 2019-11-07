@@ -44,6 +44,12 @@ class Main extends React.Component {
       <div className="main">
         <Header />
         <div className="articles">
+          <img
+            className="createReviewLogo"
+            src="/images/reviewcreate.jpg"
+            width="600"
+            onClick={() => this.props.history.push('/review/create')}
+          />
           <InfiniteScroll
             className="scroll"
             dataLength={this.state.articles.length}

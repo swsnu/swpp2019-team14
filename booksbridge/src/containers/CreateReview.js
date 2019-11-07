@@ -19,6 +19,9 @@ class CreateReview extends Component {
   };
 
   onClickCreateButton = () => {
+    if (!this.props.selectedBook) {
+      return;
+    }
     if (this.state.type === 'long-review') {
       if (this.state.title != '' && this.state.content != '') {
         this.props.onPostArticle({
@@ -63,6 +66,7 @@ class CreateReview extends Component {
         publisher={this.props.selectedBook.publisher}
         isbn={this.props.selectedBook.isbn}
         direct={false}
+        click={() => {}}
       />
     ) : null;
     return (
