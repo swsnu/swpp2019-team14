@@ -8,7 +8,7 @@ const Comments = props => {
   return (
     <div>
       <Comment.Group>
-        <Header as="h3" dividing>
+        <Header className="CommentHeader" as="h3" dividing>
           Comments
         </Header>
         <Form reply>
