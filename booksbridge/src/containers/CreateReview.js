@@ -32,7 +32,6 @@ class CreateReview extends Component {
           is_short: false,
           is_phrase: false,
         });
-        window.alert('Success!');
       } else {
         window.alert('Title or content is empty.');
       }
