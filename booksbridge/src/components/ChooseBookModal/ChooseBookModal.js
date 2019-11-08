@@ -2,17 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, Sticky } from 'semantic-ui-react';
 import FormControl from 'react-bootstrap/FormControl';
-import ScrollUpButton from 'react-scroll-up-button';
-
-import * as actionCreators from '../store/actions/actionCreators';
-import BookResultSummary from './BookResultSummary/BookResultSummary';
+import * as actionCreators from '../../store/actions/actionCreators';
+import BookResultSummary from '../BookResultSummary/BookResultSummary';
 
 import './ChooseBookModal.css';
 
 const mapStateToProps = state => {
   return {
     selectedBook: state.book.selectedBook,
-    books: state.book.books,
     searchedBooks: state.book.searchedBooks,
   };
 };
@@ -20,7 +17,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onSearchBooks: (keyword, page) =>
       dispatch(actionCreators.getSearchedBooks(keyword, page)),
-    onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
     onEmptySearchedBooks: () => dispatch(actionCreators.emptySearchedBooks()),
   };
 };
@@ -78,7 +74,9 @@ class ChooseBookModal extends Component {
         : null;
 
     const moreButton = this.state.search && (
-      <Button onClick={this.seeMoreHandler}>More...</Button>
+      <Button className="more-button" onClick={this.seeMoreHandler}>
+        More...
+      </Button>
     );
 
     return (
@@ -87,9 +85,10 @@ class ChooseBookModal extends Component {
           Select Book
         </Button>
 
-        <Modal open={this.state.open}>
+        <Modal className="modal" open={this.state.open}>
           <Modal.Content scrolling>
             <FormControl
+              id="search-form"
               aria-describedby="basic-addon2"
               type="text"
               onChange={event => this.setState({ keyword: event.target.value })}
@@ -99,7 +98,9 @@ class ChooseBookModal extends Component {
                 }
               }}
             />
-            <Button onClick={this.searchHandler}>Search!</Button>
+            <Button className="search-button" onClick={this.searchHandler}>
+              Search!
+            </Button>
             <Sticky>
               <Button
                 className="close-select-book-button"

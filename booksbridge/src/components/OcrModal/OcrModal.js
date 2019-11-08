@@ -66,6 +66,7 @@ class OcrModal extends Component {
     return (
       <div className="ocr-modal">
         <Button
+          id="open-ocr"
           onClick={() => this.setState({ files: [], open: true, content: '' })}
         >
           Quote
@@ -85,7 +86,7 @@ class OcrModal extends Component {
               Extract
             </Button>
             <CopyToClipboard text={this.state.content}>
-              <Button>Copy to the Clipboard</Button>
+              <Button id="copy">Copy to the Clipboard</Button>
             </CopyToClipboard>
             <Button
               id="clear"
@@ -93,7 +94,10 @@ class OcrModal extends Component {
             >
               Clear
             </Button>
-            <Button onClick={() => this.setState({ open: false })}>
+            <Button
+              id="close-ocr"
+              onClick={() => this.setState({ open: false })}
+            >
               Close
             </Button>
             <TextArea
