@@ -58,6 +58,7 @@ class BookInCuration(models.Model):
 
 class Library(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
 
 class BookInLibrary(models.Model):
