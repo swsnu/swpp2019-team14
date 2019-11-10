@@ -654,7 +654,11 @@ class BookTestCase(TestCase):
         self.assertIsNotNone(response.content)
         self.assertEqual(response.status_code, 200)
 
+    def test_library(self):
+        pass
 
+    def test_book_in_library(self):
+        pass
 
 
 
