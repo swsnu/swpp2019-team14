@@ -258,7 +258,7 @@ def curation(request):
             transaction.savepoint_commit(sid)
         except:
             transaction.savepoint_rollback(sid)
-            return HttpReponse(status=400)
+            return HttpResponse(status=400)
             
         result_dict = { "curation": curation_dict, "book_content": book_content_dict } 
         return JsonResponse(result_dict, status=201)
