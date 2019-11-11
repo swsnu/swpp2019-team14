@@ -28,6 +28,8 @@ class Comments extends Component {
     const comments = this.props.comments.map(comment => {
       return (
         <CommentUnit
+          article_id={this.props.article_id}
+          comment_id={comment.id}
           author={comment.author}
           date={comment.date}
           content={comment.content}
