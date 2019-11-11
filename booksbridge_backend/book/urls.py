@@ -4,6 +4,7 @@ from book import views
 urlpatterns = [
     path('user/', views.signup, name='signup'),
     path('user/profile/', views.profile_update, name='profile_update'),
+    path('user/<user_id>/', views.specific_user, name='specific_user'),
     path('sign_in/', views.signin, name='signin'),
     # path('sign_out/', views.signout, name='signout'),
     # path('book/', views.books, name='book'),
