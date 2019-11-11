@@ -29,7 +29,7 @@ describe('<Header/>', () => {
   });
   it('should render without errors', () => {
     const component = mount(header);
-    const wrapper = component.find('.header');
+    const wrapper = component.find('.MainHeader');
     expect(wrapper.length).toBe(1);
   });
 
