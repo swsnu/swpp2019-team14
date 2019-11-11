@@ -44,7 +44,6 @@ class BookDetail extends Component {
     return (
       <div className="bookDetail">
         <Header />
-        <h1>Book Detail</h1>
         <div className="infoStyle">
           <BookInfo
             isbn={isbn}
