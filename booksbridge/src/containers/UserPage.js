@@ -16,29 +16,26 @@ class UserPage extends Component {
     this.props.onLoadUser(this.props.match.params.user_id);
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   // Q. how to enforce reendering after loading props state?
 
   render() {
     // need to implement whether user_id from url is valid or not
 
-    console.log('[DEBUG from userpage] user_id: ' + this.props.match.params.user_id);
+    console.log(
+      '[DEBUG from userpage] user_id: ' + this.props.match.params.user_id,
+    );
     console.log('[DEBUG from userpage] user: ' + this.props.profile_user);
 
     return (
       <div className="userPage">
         <Header />
         <div className="userInfo">
-          <UserInfo
-            profile_user={this.props.profile_user}
-          />
+          <UserInfo profile_user={this.props.profile_user} />
         </div>
         <div className="userReviewList">
-          <UserReviewList
-            profile_user={this.props.profile_user}
-          />
+          <UserReviewList profile_user={this.props.profile_user} />
         </div>
       </div>
     );
