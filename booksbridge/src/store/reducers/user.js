@@ -34,7 +34,6 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.GET_SPECIFIC_USER:
       return { ...state, profile_user: action.user };
-
   }
   return state;
 };

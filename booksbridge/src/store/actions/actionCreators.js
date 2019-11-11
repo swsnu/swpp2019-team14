@@ -51,13 +51,12 @@ export const logoutUser = () => dispatch =>
 // export const GET_SPECIFIC_USER = 'GET_SPECIFIC_USER'
 export const getSpecificUser = id => dispatch =>
   axios.get(`/api/user/${id}/`).then(res => {
-    console.log('[debug]')
+    console.log('[debug]');
     dispatch({
       type: actionTypes.GET_SPECIFIC_USER,
       user: res.data,
-    })
-  }
-  );
+    });
+  });
 // export const GET_SEARCHED_USERS = 'GET_SEARCHED_USERS'
 export const getSearchedUsers = keyword => dispatch =>
   axios.get(`/api/user/searchWord=${keyword}/`).then(res =>
