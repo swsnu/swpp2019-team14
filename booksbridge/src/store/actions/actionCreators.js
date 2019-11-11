@@ -255,7 +255,7 @@ export const postLongReviewComment = comment => dispatch =>
   axios.post('/api/comment/article/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_LONG_REVIEW_COMMENT,
-      comment: res.data,
+      article: res.data,
     }),
   );
 // export const GET_SPECIFIC_LONG_REVIEW_COMMENT = 'GET_SPECIFIC_LONG_REVIEW_COMMENT'
