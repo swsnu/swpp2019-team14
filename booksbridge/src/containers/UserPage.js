@@ -11,51 +11,51 @@ import * as actionCreators from '../store/actions/actionCreators';
 import './UserPage.css';
 
 class UserPage extends Component {
-    constructor(params) {
-        super(params);
-        this.props.onLoadUser(this.props.match.params.user_id);
-    }
+  constructor(params) {
+    super(params);
+    this.props.onLoadUser(this.props.match.params.user_id);
+  }
 
-    componentDidMount() {
-    }
+  componentDidMount() {
+  }
 
-    // Q. how to enforce reendering after loading props state?
+  // Q. how to enforce reendering after loading props state?
 
-    render() {
-        // need to implement whether user_id from url is valid or not
+  render() {
+    // need to implement whether user_id from url is valid or not
 
-        console.log('[DEBUG from userpage] user_id: ' + this.props.match.params.user_id);
-        console.log('[DEBUG from userpage] user: ' + this.props.profile_user);
+    console.log('[DEBUG from userpage] user_id: ' + this.props.match.params.user_id);
+    console.log('[DEBUG from userpage] user: ' + this.props.profile_user);
 
-        return (
-            <div className="userPage">
-                <Header />
-                <div className="userInfo">
-                    <UserInfo
-                        profile_user={this.props.profile_user}
-                    />
-                </div>
-                <div className="userReviewList">
-                    <UserReviewList
-                        profile_user={this.props.profile_user}
-                    />
-                </div>
-            </div>
-        );
-    }
+    return (
+      <div className="userPage">
+        <Header />
+        <div className="userInfo">
+          <UserInfo
+            profile_user={this.props.profile_user}
+          />
+        </div>
+        <div className="userReviewList">
+          <UserReviewList
+            profile_user={this.props.profile_user}
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
-    profile_user: state.user.profile_user,
+  profile_user: state.user.profile_user,
 });
 
 const mapDispatchToProps = dispatch => {
-    return {
-        onLoadUser: user_id => dispatch(actionCreators.getSpecificUser(user_id)),
-    };
+  return {
+    onLoadUser: user_id => dispatch(actionCreators.getSpecificUser(user_id)),
+  };
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(withRouter(UserPage));
