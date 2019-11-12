@@ -307,6 +307,16 @@ def article_page(request, page):
         response_body={'articles': articles, 'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body)
 
+def ocr(request):
+    if request.method == 'POST':
+        try:
+            image = request.POST.get('image')
+        except:
+            return HttpResponse(status=400)
+        print(image)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
 
 @ensure_csrf_cookie
 def token(request):

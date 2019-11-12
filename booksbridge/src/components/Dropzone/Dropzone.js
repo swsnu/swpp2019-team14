@@ -22,9 +22,11 @@ class Dropzone extends Component {
   onFilesAdded(evt) {
     if (this.props.disabled) return;
     const { files } = evt.target;
+    console.log(files);
     if (this.props.onFilesAdded) {
       const array = this.fileListToArray(files);
       this.props.onFilesAdded(array);
+      console.log('log: ', array);
     }
   }
 
@@ -75,6 +77,7 @@ class Dropzone extends Component {
           ref={this.fileInputRef}
           className="FileInput"
           type="file"
+          accept=".jpg, .jpeg, .png"
           multiple
           onChange={this.onFilesAdded}
         />

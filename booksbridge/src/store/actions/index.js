@@ -44,4 +44,5 @@ export {
   getFollowers,
   getFollowees,
   emptySearchedBooks,
+  runOcr,
 } from './actionCreators';

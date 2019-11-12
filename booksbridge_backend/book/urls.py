@@ -14,4 +14,5 @@ urlpatterns = [
     path('token/', views.token, name='token'),
     path('article/', views.article, name='article'),
     path('article/page/<page>/', views.article_page, name='article_page'),
+    path('ocr/', views.ocr, name='ocr'),
 ]

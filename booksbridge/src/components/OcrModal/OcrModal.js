@@ -4,6 +4,7 @@ import { Button, Modal, TextArea } from 'semantic-ui-react';
 import Dropzone from '../Dropzone/Dropzone';
 import './OcrModal.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import * as actionCreators from '../../store/actions/actionCreators';
 
 const mapStateToProps = state => {
   return {};
@@ -11,7 +12,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onRunOcr: file => console.log(`running ocr on ${file.name}`), // ocr actioncreator to be created
+    onRunOcr: formData => dispatch(actionCreators.runOcr(formData)), // ocr actioncreator to be created
   };
 };
 
@@ -39,7 +40,9 @@ class OcrModal extends Component {
     const promises = [];
 
     this.state.files.forEach(file => {
-      promises.push(this.props.onRunOcr(file));
+      let formData = new FormData();
+      formData.append('image', file);
+      promises.push(this.props.onRunOcr(formData));
       this.setState({
         content:
           'swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  ',
