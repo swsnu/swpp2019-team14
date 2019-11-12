@@ -4,8 +4,8 @@ import { Button, Modal, Sticky } from 'semantic-ui-react';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-import * as actionCreators from '../store/actions/actionCreators';
-import BookResultSummary from './BookResultSummary/BookResultSummary';
+import * as actionCreators from '../../store/actions/actionCreators';
+import BookResultSummary from '../BookResultSummary/BookResultSummary';
 
 import './ChooseBookModal.css';
 

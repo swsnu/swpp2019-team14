@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Modal, Sticky } from 'semantic-ui-react';
 import { Row, Col, Tab, Nav } from 'react-bootstrap';
 import * as actionCreators from '../../store/actions/actionCreators';
-import ChooseBookModal from '../ChooseBookModal';
+import ChooseBookModal from '../ChooseBookModal/ChooseBookModal';
 import BookResultSummary from '../BookResultSummary/BookResultSummary';
 import './CurationModal.css';
 

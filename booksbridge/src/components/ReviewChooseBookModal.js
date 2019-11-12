@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, Sticky } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/actionCreators';
-import ChooseBookModal from './ChooseBookModal';
+import ChooseBookModal from './ChooseBookModal/ChooseBookModal';
 
-import './ChooseBookModal.css';
+import './ChooseBookModal/ChooseBookModal.css';
 
 const mapDispatchToProps = dispatch => {
   return {
