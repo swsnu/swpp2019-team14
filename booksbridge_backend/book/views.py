@@ -179,14 +179,89 @@ def specific_article(request,review_id):
     elif request.method == 'GET':
         article = get_object_or_404(Article, id=review_id)
         book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
-        user = get_object_or_404(User, id=article.author_id)
         book_dict = model_to_dict(book_in_db)
-        user_dict = {'username':user.username,'nickname':user.profile.nickname,'profile_photo':user.profile.profile_photo.name}
-        response_dict = {'id':article.id, 'author':user_dict, 'book':book_dict, 'title':article.title, 'content':article.content, 'date':article.date}
+        user = get_object_or_404(User, id=article.author_id)
+        user_dict = {'id':user.id, 'username':user.username,'nickname':user.profile.nickname,'profile_photo':user.profile.profile_photo.name}
+        comments = get_comments(article)
+        response_dict = {'id':article.id, 'author':user_dict, 'book':book_dict, 'title':article.title, 'content':article.content, 'date':article.date, 'comments': comments}
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
 
+def get_comments(article):
+    comments = list()
+    for comment in article.comments.all():
+        deltatime = (datetime.now() - comment.date)
+        time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
+        comment_author = get_object_or_404(User, id=comment.author_id)
+        comment_author_dict = {
+            'id':comment_author.id,
+            'username':comment_author.username,
+            'profile_photo':comment_author.profile.profile_photo.name,
+            'nickname':comment_author.profile.nickname,
+        }
+        if(comment.parent==None):
+            replies = list()
+            for reply in comment.replies.all():
+                reply_deltatime = (datetime.now() - reply.date)
+                reply_time_array = [reply_deltatime.days//365,reply_deltatime.days//30,reply_deltatime.days,reply_deltatime.seconds//3600,reply_deltatime.seconds//60]
+                reply_author = get_object_or_404(User, id=reply.author_id)
+                reply_author_dict = {
+                    'id':reply_author.id,
+                    'username':reply_author.username,
+                    'profile_photo':reply_author.profile.profile_photo.name,
+                    'nickname':reply_author.profile.nickname,
+                }
+                reply_dict = {
+                    'author': reply_author_dict,
+                    'id': reply.id,
+                    'content': reply.content,
+                    'date': reply_time_array,
+                }
+                replies.append(reply_dict)
+            comment_dict = {
+            'author': comment_author_dict,
+            'id': comment.id,
+            'content': comment.content,
+            'date': time_array,
+            'replies': replies
+            }
+            comments.append(comment_dict)
+    return comments
+
+def comment(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            article_id = req_data['article_id']
+            content = req_data['content']
+            parent_id = req_data['parent_id']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+        article = get_object_or_404(Article, id=article_id)
+        try:
+            parent = Comment.objects.get(id=parent_id)
+        except Comment.DoesNotExist:
+            parent = None
+        comment = Comment(article=article, author=request.user, content=content, parent=parent)
+        comment.save()
+        comments = get_comments(article)
+        book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
+        book_dict = model_to_dict(book_in_db)
+        user = get_object_or_404(User, id=article.author_id)
+        user_dict = {'id':user.id, 'username':user.username,'nickname':user.profile.nickname,'profile_photo':user.profile.profile_photo.name}
+        response_dict = {'id':article.id, 'author':user_dict, 'book':book_dict, 'title':article.title, 'content':article.content, 'date':article.date, 'comments': comments}
+        return JsonResponse(response_dict, status=201)
+    elif request.method == 'PUT':
+        pass
+    elif request.method == 'DELETE':
+        pass
+    else:
+        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
+
+@csrf_exempt
 def article(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)

@@ -5,8 +5,7 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from django.conf import settings
 
-
-def post_image_path(instance, filename):
+def profile_pic_path(instance, filename): 
     return f'resources/image/profile/{instance.user.username}.jpg'
 
 
@@ -16,13 +15,12 @@ class Profile(models.Model):
     nickname = models.CharField(max_length=32, blank=True)
     profile_text = models.TextField(blank=True)
     profile_photo = ProcessedImageField(
-        default='https://react.semantic-ui.com/images/avatar/large/matthew.png',
-        upload_to=post_image_path,
-        processors=[ResizeToFill(300, 300)],
-        format='JPEG',
-        options={'quality': 100},
-    )
-
+        default = 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+        upload_to = profile_pic_path,
+        processors = [ResizeToFill(300, 300)],
+        format = 'JPEG',
+        options = {'quality':100},
+        )
 
 class Book(models.Model):
     isbn = models.BigIntegerField(primary_key=True)
@@ -41,7 +39,7 @@ class Book(models.Model):
 class Article(models.Model):
     objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='articles')
     title = models.TextField(blank=True)
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
@@ -52,6 +50,17 @@ class Article(models.Model):
     def __str__(self):
         return str(self.content)
 
+class Comment(models.Model):
+    objects = models.Manager()
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+    class Meta:
+        ordering = ('date',)
+    def __str__(self):
+        return str(self.content)
 
 class Curation(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
