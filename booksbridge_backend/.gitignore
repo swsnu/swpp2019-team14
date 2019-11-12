@@ -3,7 +3,7 @@ booksbridge_env/
 venv/
 
 ./book/migrations/
-sapiens_*
+sapiens*
 
 # Created by https://www.gitignore.io/api/vim,linux,macos,python,django,pycharm,windows,intellij
 # Edit at https://www.gitignore.io/?templates=vim,linux,macos,python,django,pycharm,windows,intellij
