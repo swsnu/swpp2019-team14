@@ -26,7 +26,7 @@ class BookInfo extends Component {
             <div>
               <p className="titleStyle">{this.props.title}</p>
               <p>
-                <b>AUTHORS : </b>
+                <b>AUTHOR(S) : </b>
                 {this.props.authors}
               </p>
               <p>

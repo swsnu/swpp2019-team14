@@ -45,6 +45,7 @@ class Main extends React.Component {
         <Header />
         <div className="articles">
           <img
+            id="createReviewLogo"
             className="createReviewLogo"
             src="/images/reviewcreate.jpg"
             width="600"
@@ -62,8 +63,8 @@ class Main extends React.Component {
               </p>
             }
           >
-            {this.state.articles.map((article, index) => (
-              <div key={index}>
+            {this.state.articles.map(article => (
+              <div>
                 <Article
                   author={article.author}
                   book_isbn={article.book_isbn}
@@ -90,7 +91,6 @@ const mapStateToProps = state => {
   return {
     loadArticle: state.article.articles,
     hasNext: state.article.hasNext,
-    books: state.book.books,
   };
 };
 
@@ -103,4 +103,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Main);
+)(withRouter(Main));

@@ -11,10 +11,6 @@ class BookTabs extends Component {
   componentDidMount() {}
 
   render() {
-    console.log(`[DEBUG] short reviews: ${this.props.shortReviews}`);
-    console.log(`[DEBUG] long reviews: ${this.props.longReviews}`);
-    console.log(`[DEBUG] phrase reviews: ${this.props.phrases}`);
-
     const shortReviewList = (
       <BookTabsReviewList
         is_short
@@ -42,10 +38,9 @@ class BookTabs extends Component {
 
     // for debugging
     // shortReviewList = this.props.shortReviews[0];
-    // console.log("[DEBUG] shortReviewList[0] == " + shortReviewList)
     const contents = (
       <BookDetailInfo
-        contents={this.props.contents}
+        contents={this.props.contents} // console.log("[DEBUG] shortReviewList[0] == " + shortReviewList)
         author_contents={this.props.author_contents}
       />
     );

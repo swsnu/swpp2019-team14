@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Modal, Sticky } from 'semantic-ui-react';
 import FormControl from 'react-bootstrap/FormControl';
 import ScrollUpButton from 'react-scroll-up-button';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from './BookResultSummary/BookResultSummary';
@@ -11,8 +12,6 @@ import './ChooseBookModal.css';
 
 const mapStateToProps = state => {
   return {
-    selectedBook: state.book.selectedBook,
-    books: state.book.books,
     searchedBooks: state.book.searchedBooks,
   };
 };
@@ -20,7 +19,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onSearchBooks: (keyword, page) =>
       dispatch(actionCreators.getSearchedBooks(keyword, page)),
-    onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
     onEmptySearchedBooks: () => dispatch(actionCreators.emptySearchedBooks()),
   };
 };
@@ -32,17 +30,9 @@ class ChooseBookModal extends Component {
     this.state = {
       keyword: '',
       requestNum: 1,
-      open: false,
       search: false,
     };
-
-    this.chooseHandler = this.chooseHandler.bind(this);
   }
-
-  openHandler = () => {
-    this.setState({ open: true, search: false });
-    this.props.onEmptySearchedBooks();
-  };
 
   searchHandler = () => {
     this.props.onEmptySearchedBooks();
@@ -53,10 +43,6 @@ class ChooseBookModal extends Component {
   seeMoreHandler = () => {
     this.props.onSearchBooks(this.state.keyword, this.state.requestNum);
     this.setState({ requestNum: this.state.requestNum + 1 });
-  };
-
-  chooseHandler = () => {
-    this.setState({ open: false });
   };
 
   render() {
@@ -71,7 +57,7 @@ class ChooseBookModal extends Component {
                 publisher={book.publisher}
                 isbn={book.isbn}
                 direct={false}
-                click={this.chooseHandler}
+                click={this.props.selected}
               />
             );
           })
@@ -82,37 +68,28 @@ class ChooseBookModal extends Component {
     );
 
     return (
-      <div className="choose-book-modal">
-        <Button className="select-book-button" onClick={this.openHandler}>
-          Select Book
-        </Button>
-
-        <Modal open={this.state.open}>
-          <Modal.Content scrolling>
-            <FormControl
-              aria-describedby="basic-addon2"
-              type="text"
-              onChange={event => this.setState({ keyword: event.target.value })}
-              onKeyPress={event => {
-                if (event.key === 'Enter') {
-                  this.searchHandler();
-                }
-              }}
-            />
+      <Modal.Content scrolling className="choose-book-modal-content">
+        <InputGroup className="choose-book-input">
+          <FormControl
+            aria-describedby="basic-addon2"
+            type="text"
+            onChange={event => this.setState({ keyword: event.target.value })}
+            onKeyPress={event => {
+              if (event.key === 'Enter') {
+                this.searchHandler();
+              }
+            }}
+          />
+          <InputGroup.Append>
             <Button onClick={this.searchHandler}>Search!</Button>
-            <Sticky>
-              <Button
-                className="close-select-book-button"
-                onClick={() => this.setState({ open: false })}
-              >
-                Close
-              </Button>
-            </Sticky>
-            {result}
-            {moreButton}
-          </Modal.Content>
-        </Modal>
-      </div>
+          </InputGroup.Append>
+        </InputGroup>
+        <Button className="close-select-book-button" onClick={this.props.close}>
+          Close
+        </Button>
+        {result}
+        {moreButton}
+      </Modal.Content>
     );
   }
 }
