@@ -7,7 +7,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as actionCreators from '../../store/actions/actionCreators';
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    quote: state.book.quote,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -40,16 +42,17 @@ class OcrModal extends Component {
     const promises = [];
 
     this.state.files.forEach(file => {
+      console.log(file);
       let formData = new FormData();
       formData.append('image', file);
       promises.push(this.props.onRunOcr(formData));
-      this.setState({
-        content:
-          'swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  swpp  ',
-      });
+      this.setState({ content: this.props.quote });
     });
     try {
       await Promise.all(promises);
+      this.setState({
+        content: this.props.quote,
+      });
       // this.setState({
       //   uploaded: true,
       //   uploading: false
@@ -101,7 +104,7 @@ class OcrModal extends Component {
             </Button>
             <TextArea
               id="ocr-text"
-              value={this.state.content}
+              value={this.state.content} // this.state.content  vs this.props.quote
               style={{ minHeight: 500, minWidth: 1000 }}
             />
           </Modal.Content>

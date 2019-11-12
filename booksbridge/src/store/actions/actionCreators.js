@@ -409,8 +409,15 @@ export const emptySearchedBooks = () => ({
 });
 
 export const runOcr = formData => dispatch =>
-  axios.get('/api/ocr/', formData, {
-    headers: {
-      'content-type': 'multipart/form-data',
-    },
-  });
+  axios
+    .post('/api/ocr/', formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    })
+    .then(res =>
+      dispatch({
+        type: actionTypes.RUN_OCR,
+        quote: res.quote,
+      }),
+    );

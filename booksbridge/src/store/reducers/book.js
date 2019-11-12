@@ -5,6 +5,7 @@ const initialState = {
   count: 0,
   selectedBook: null,
   searchedBooks: [],
+  quote: 'empty',
 };
 
 const reducer = (state = initialState, action) => {
@@ -20,6 +21,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, selectedBook: action.book };
     case actionTypes.EMPTY_SEARCHED_BOOKS:
       return { ...state, searchedBooks: [] };
+    case actionTypes.RUN_OCR:
+      return { ...state, quote: action.quote };
   }
 
   return state;
