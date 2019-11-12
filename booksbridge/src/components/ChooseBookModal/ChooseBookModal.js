@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, Sticky } from 'semantic-ui-react';
 import FormControl from 'react-bootstrap/FormControl';
-import ScrollUpButton from 'react-scroll-up-button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import * as actionCreators from '../store/actions/actionCreators';
@@ -64,7 +63,9 @@ class ChooseBookModal extends Component {
         : null;
 
     const moreButton = this.state.search && (
-      <Button onClick={this.seeMoreHandler}>More...</Button>
+      <Button className="more-button" onClick={this.seeMoreHandler}>
+        More...
+      </Button>
     );
 
     return (

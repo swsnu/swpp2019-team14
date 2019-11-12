@@ -32,9 +32,7 @@ class CreateReview extends Component {
           is_short: false,
           is_phrase: false,
         });
-        window.alert('Success!');
       } else {
-        window.alert('Title or content is empty.');
       }
     } else {
       if (this.state.content != '') {
@@ -46,9 +44,7 @@ class CreateReview extends Component {
           is_short: this.state.type === 'short-review',
           is_phrase: this.state.type === 'phrase',
         });
-        window.alert('Success!');
       } else {
-        window.alert('Content is empty.');
       }
     }
   };
@@ -179,9 +175,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSearchBooks: (keyword, page) =>
-      dispatch(actionCreators.getSearchedBooks(keyword, page)),
-    onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
     onPostArticle: review => dispatch(actionCreators.postArticle(review)),
   };
 };
