@@ -293,7 +293,6 @@ def article(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
 
-@csrf_exempt
 def curation(request): 
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -311,7 +310,7 @@ def curation(request):
             return HttpResponse(status=400)
 
         try:
-            book_content_list = [(Book.object.get(isbn=isbn), content) for (isbn, content) in isbn_content_list]  
+            book_content_list = [(Book.object.get(isbn=int(isbn)), content) for (isbn, content) in isbn_content_list]  
         except Book.DoesNotExist:
             return HttpResponse(status=404)
     
@@ -332,7 +331,7 @@ def curation(request):
             transaction.savepoint_commit(sid)
         except:
             transaction.savepoint_rollback(sid)
-            return HttpReponse(status=400)
+            return HttpResponse(status=400)
             
         result_dict = { "curation": curation_dict, "book_content": book_content_dict } 
         return JsonResponse(result_dict, status=201)
@@ -381,6 +380,71 @@ def article_page(request, page):
         response_body={'articles': articles, 'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body)
 
+def library(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'GET':
+        pass
+    elif request.method == 'POST':
+        # { title }
+        try:
+            req_data = json.loads(request.body.decode())
+            title = req_data['title']
+        except (KeyError) as e:
+            return HttpResponse(status=400) 
+        library = Library(user=request.user, title=title)
+        libary.save()
+        library_dict = model_to_dict(library)
+        return JsonResponse(library_dict, status=201)
+    elif request.method == 'PUT':
+        pass
+    elif request.method == 'DELETE':
+        pass
+    else:
+        return HttpResponseNotAllowed(['POST', 'GET', 'PUT', 'DELETE']) 
+
+def book_in_library(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'GET':
+        pass
+    elif request.method == 'POST':
+        # { isbn, library }: library means library_id (정수라고 가정)
+        try:
+            req_data = json.loads(request.body.decode())
+            isbn = int(req_data['isbn'])
+            library = int(req_data['library'])
+        except (KeyError) as e:
+            return HttpResponse(status=400) 
+        
+        book_in_library = BookInLibrary(isbn=isbn, library=library)
+        book_in_library.save()
+        result_dict = model_to_dict(book_in_library)
+        return JsonResponse(result_dict, status=201)
+    elif request.method == 'DELETE':
+        pass
+    else:
+        return HttpResponseNotAllowed(['POST', 'GET', 'DELETE']) 
+
+def specific_user(request, user_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'GET':
+        try:
+            user = User.objects.get(id=user_id)
+            user_dict = {
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
+            }
+            return JsonResponse(user_dict)
+        except: 
+            return HttpResponse(status=404)
+
+    else:
+        return HttpResponseNotAllowed(['GET',])
 
 @ensure_csrf_cookie
 def token(request):

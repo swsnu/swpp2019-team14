@@ -25,7 +25,7 @@ class BookDetail extends Component {
 
   render() {
     if (!this.props.currentBook) {
-      return <div>LOADING...</div>;
+      return <div className="loading">LOADING...</div>;
     }
 
     const isbn = this.props.match.params.book_id;
@@ -42,9 +42,8 @@ class BookDetail extends Component {
     const { phrases } = this.props;
 
     return (
-      <div>
+      <div className="bookDetail">
         <Header />
-        <h1>Book Detail</h1>
         <div className="infoStyle">
           <BookInfo
             isbn={isbn}

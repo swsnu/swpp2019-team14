@@ -5,7 +5,7 @@ import { Button, Form, TextArea } from 'semantic-ui-react';
 
 import Header from '../components/Header';
 import OcrModal from '../components/OcrModal/OcrModal';
-import ChooseBookModal from '../components/ChooseBookModal';
+import ReviewChooseBookModal from '../components/ReviewChooseBookModal';
 import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from '../components/BookResultSummary/BookResultSummary';
 
@@ -33,7 +33,6 @@ class CreateReview extends Component {
           is_phrase: false,
         });
       } else {
-        window.alert('Title or content is empty.');
       }
     } else {
       if (this.state.content != '') {
@@ -45,9 +44,7 @@ class CreateReview extends Component {
           is_short: this.state.type === 'short-review',
           is_phrase: this.state.type === 'phrase',
         });
-        window.alert('Success!');
       } else {
-        window.alert('Content is empty.');
       }
     }
   };
@@ -123,7 +120,7 @@ class CreateReview extends Component {
 
         <div>
           <div className="SelectedBook">{book}</div>
-          <ChooseBookModal id="choose-book-modal" />
+          <ReviewChooseBookModal id="choose-book-modal" />
           <div className="ReviewCreateForm">
             <Form className="ui form">
               {this.state.type === 'long-review' ? (
@@ -178,9 +175,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSearchBooks: (keyword, page) =>
-      dispatch(actionCreators.getSearchedBooks(keyword, page)),
-    onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
     onPostArticle: review => dispatch(actionCreators.postArticle(review)),
   };
 };
