@@ -10,12 +10,14 @@ import CreateReview from './containers/CreateReview';
 import Main from './containers/Main';
 import BookDetail from './containers/BookDetail';
 import SearchResultBook from './containers/SearchResultBook/SearchResultBook';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'semantic-ui-css/semantic.css';
 import ReviewDetailPage from './containers/ReviewDetailPage/ReviewDetailPage';
+import UserPage from './containers/UserPage';
 import storage from './lib/storage';
 import * as actionTypes from './store/actions/actionTypes';
 import CreateCuration from './containers/CreateCuration';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'semantic-ui-css/semantic.min.css';
 
 class App extends Component {
   componentDidMount() {
@@ -41,7 +43,7 @@ class App extends Component {
               exact
               component={SearchResultBook}
             />
-            <Route path="/page/:user_id" exact component={Main} />
+            <Route path="/page/:user_id" exact component={UserPage} />
             <Route path="/page/:user_id/library" exact component={Main} />
             <Route path="/page/:user_id/curation-list" exact component={Main} />
             <Route path="/review" exact component={Main} />

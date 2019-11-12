@@ -187,7 +187,6 @@ def specific_article(request,review_id):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-@csrf_exempt
 def article(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -219,7 +218,6 @@ def article(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
 
-@csrf_exempt
 def curation(request): 
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -352,6 +350,26 @@ def book_in_library(request):
         pass
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'DELETE']) 
+
+def specific_user(request, user_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'GET':
+        try:
+            user = User.objects.get(id=user_id)
+            user_dict = {
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
+            }
+            return JsonResponse(user_dict)
+        except: 
+            return HttpResponse(status=404)
+
+    else:
+        return HttpResponseNotAllowed(['GET',])
 
 @ensure_csrf_cookie
 def token(request):
