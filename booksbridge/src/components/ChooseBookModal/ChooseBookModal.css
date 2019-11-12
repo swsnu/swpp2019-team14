@@ -1,70 +1,32 @@
 .select-book-button {
-    margin-top: 30px !important;
-    margin-bottom: 3% !important;
+  margin-top: 30px !important;
+  margin-bottom: 3% !important;
 }
 
 .close-select-book-button {
-    margin-top: 30px !important;
-    margin-bottom: 3% !important;
+  margin-top: 0% !important;
+  margin-bottom: 3% !important;
+  top: 92%;
+  position: fixed !important;
+  right: 5%;
 }
 
-.ui.modal .scrolling.content {
-    max-height: calc(100vh) !important;
-    overflow: auto !important;
+.choose-book-modal {
+  margin-left: 25% !important;
+  height: 96% !important;
+}
+.choose-book-input {
+  max-width: 70%;
+  align-self: center;
+}
+.choose-book-modal button {
+  align-self: center;
+  min-height: auto !important;
 }
 
-.ui.modal>.content {
-    display: block;
-    width: 100%;
-    font-size: 1em;
-    line-height: 1.4;
-    padding: 1.5rem;
-    height: 100% !important;
-    background: #fff;
-}
-
-.ui.modal {
-    height: 90% !important;
-    display: flex !important;
-    z-index: 1001 !important;
-    text-align: center !important;
-    margin-top: 2% !important;
-    margin-left: 20% !important;
-    margin-right: 20% !important;
-    background-color: white !important;
-    border: none !important;
-    box-shadow: 1px 3px 3px 0 rgba(0,0,0,.2), 1px 3px 15px 2px rgba(0,0,0,.2) !important;
-    transform-origin: 50% 25% !important;
-    flex: 0 0 auto !important;
-    border-radius: .28571429rem !important;
-    -webkit-user-select: text !important;
-    -moz-user-select: text !important;
-    user-select: text !important;
-    will-change: top,left,margin,transform,opacity !important;
-}
-
-.ui.dimmer {
-    display: flex!important;
-    top: 0!important;
-    left: 0!important;
-    text-align: center;
-    vertical-align: middle;
-    background-color: rgba(0,0,0,.35) !important;
-    opacity: 0;
-    line-height: 1;
-    animation-fill-mode: both;
-    animation-duration: .5s;
-    transition: .5s linear;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: center !important;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-    will-change: opacity;
-    z-index: 1000;
-}
-
-.close-button {
-    text-align: right !important;
+.choose-book-modal-content {
+  height: inherit;
+  max-height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
 }

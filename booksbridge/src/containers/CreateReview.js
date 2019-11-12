@@ -5,7 +5,7 @@ import { Button, Form, TextArea } from 'semantic-ui-react';
 
 import Header from '../components/Header';
 import OcrModal from '../components/OcrModal/OcrModal';
-import ChooseBookModal from '../components/ChooseBookModal/ChooseBookModal';
+import ReviewChooseBookModal from '../components/ReviewChooseBookModal';
 import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from '../components/BookResultSummary/BookResultSummary';
 
@@ -120,7 +120,7 @@ class CreateReview extends Component {
 
         <div>
           <div className="SelectedBook">{book}</div>
-          <ChooseBookModal id="choose-book-modal" />
+          <ReviewChooseBookModal id="choose-book-modal" />
           <div className="ReviewCreateForm">
             <Form className="ui form">
               {this.state.type === 'long-review' ? (
