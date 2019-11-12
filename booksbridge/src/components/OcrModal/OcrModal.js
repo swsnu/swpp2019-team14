@@ -32,6 +32,14 @@ class OcrModal extends Component {
     this.runOcrOnFiles = this.runOcrOnFiles.bind(this);
   }
 
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.quote != prevProps.quote) {
+  //     console.log('quote: ', this.props.quote);
+  //     this.setState({ content: this.props.quote });
+  //     console.log('content', this.state.content);
+  //   }
+  // }
+
   onFilesAdded = files => {
     this.setState(prevState => ({ files: prevState.files.concat(files) }));
   };
@@ -46,7 +54,6 @@ class OcrModal extends Component {
       let formData = new FormData();
       formData.append('image', file);
       promises.push(this.props.onRunOcr(formData));
-      this.setState({ content: this.props.quote });
     });
     try {
       await Promise.all(promises);

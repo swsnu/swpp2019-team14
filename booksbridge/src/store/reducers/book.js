@@ -22,6 +22,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.EMPTY_SEARCHED_BOOKS:
       return { ...state, searchedBooks: [] };
     case actionTypes.RUN_OCR:
+      console.log(action.quote);
       return { ...state, quote: action.quote };
   }
 

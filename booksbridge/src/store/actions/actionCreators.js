@@ -418,6 +418,6 @@ export const runOcr = formData => dispatch =>
     .then(res =>
       dispatch({
         type: actionTypes.RUN_OCR,
-        quote: res.quote,
+        quote: res.data.quote,
       }),
     );

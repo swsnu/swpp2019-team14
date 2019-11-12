@@ -4,7 +4,7 @@ import './Dropzone.css';
 class Dropzone extends Component {
   constructor(props) {
     super(props);
-    this.state = { hightlight: false };
+    this.state = { hightlight: false, image: null };
     this.fileInputRef = React.createRef();
 
     this.openFileDialog = this.openFileDialog.bind(this);
@@ -19,9 +19,19 @@ class Dropzone extends Component {
     this.fileInputRef.current.click();
   }
 
-  onFilesAdded(evt) {
+  onFilesAdded(event) {
     if (this.props.disabled) return;
-    const { files } = evt.target;
+
+    const { files } = event.target;
+
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      reader.onload = e => {
+        this.setState({ image: e.target.result });
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
     if (this.props.onFilesAdded) {
       const array = this.fileListToArray(files);
       this.props.onFilesAdded(array);
@@ -63,24 +73,27 @@ class Dropzone extends Component {
 
   render() {
     return (
-      <div
-        className={`Dropzone ${this.state.hightlight ? 'Highlight' : ''}`}
-        onDragOver={this.onDragOver}
-        onDragLeave={this.onDragLeave}
-        onDrop={this.onDrop}
-        onClick={this.openFileDialog}
-        style={{ cursor: this.props.disabled ? 'default' : 'pointer' }}
-      >
-        <input
-          ref={this.fileInputRef}
-          className="FileInput"
-          type="file"
-          accept=".jpg, .jpeg, .png"
-          multiple
-          onChange={this.onFilesAdded}
-        />
-        <img alt="upload" className="Icon" src="../../../upload.png" />
-        <span>Upload Files</span>
+      <div className="dropzone">
+        <div
+          className={`Dropzone ${this.state.hightlight ? 'Highlight' : ''}`}
+          onDragOver={this.onDragOver}
+          onDragLeave={this.onDragLeave}
+          onDrop={this.onDrop}
+          onClick={this.openFileDialog}
+          style={{ cursor: this.props.disabled ? 'default' : 'pointer' }}
+        >
+          <input
+            ref={this.fileInputRef}
+            className="FileInput"
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            multiple
+            onChange={this.onFilesAdded}
+          />
+          <img alt="upload" className="Icon" src="../../../upload.png" />
+          <span>Upload Files</span>
+        </div>
+        <img id="target" src={this.state.image} width={300} height={300} />
       </div>
     );
   }
