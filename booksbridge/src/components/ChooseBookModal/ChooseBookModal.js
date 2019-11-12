@@ -72,6 +72,7 @@ class ChooseBookModal extends Component {
       <Modal.Content scrolling className="choose-book-modal-content">
         <InputGroup className="choose-book-input">
           <FormControl
+            id="search-form"
             aria-describedby="basic-addon2"
             type="text"
             onChange={event => this.setState({ keyword: event.target.value })}
@@ -82,7 +83,9 @@ class ChooseBookModal extends Component {
             }}
           />
           <InputGroup.Append>
-            <Button onClick={this.searchHandler}>Search!</Button>
+            <Button className="search-button" onClick={this.searchHandler}>
+              Search!
+            </Button>
           </InputGroup.Append>
         </InputGroup>
         <Button className="close-select-book-button" onClick={this.props.close}>
