@@ -4,6 +4,7 @@ import { Button, Comment, Form, Header } from 'semantic-ui-react';
 import ReplyUnit from './ReplyUnit';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
+import Time from '../Time';
 
 import './CommentUnit.css';
 
@@ -53,15 +54,6 @@ class CommentUnit extends Component {
     const onChangeInput = e => {
       this.setState({ ...this.state, content: e.target.value });
     };
-    const timeDiff = () => {
-      const pTime = this.props.date;
-      if (pTime[0]) return pTime[0] + ' years ago';
-      else if (pTime[1]) return pTime[1] + ' months ago';
-      else if (pTime[2]) return pTime[2] + ' days ago';
-      else if (pTime[3]) return pTime[3] + ' hours ago';
-      else if (pTime[4]) return pTime[4] + ' minutes ago';
-      else return '방금 전';
-    };
     const replyForm = (
       <Form reply>
         <Form.TextArea value={this.state.content} onChange={onChangeInput} />
@@ -83,7 +75,9 @@ class CommentUnit extends Component {
         <Comment.Content>
           <Comment.Author as="a">{this.props.author.nickname}</Comment.Author>
           <Comment.Metadata>
-            <span>{timeDiff()}</span>
+            <span>
+              <Time date={this.props.date} />
+            </span>
           </Comment.Metadata>
           <Comment.Text>{this.props.content}</Comment.Text>
           <Comment.Actions>

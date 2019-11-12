@@ -4,19 +4,12 @@ import { UI, Feed, Button, Modal, Input, Grid, Image } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/actionCreators';
 import './Article.css';
 import Alert from 'react-bootstrap/Alert';
+import Time from './Time';
 import ProfileSummary from './ProfileSummary/ProfileSummary';
 
 const Article = props => {
   const Author = <ProfileSummary user={props.author} />;
-  const timeDiff = () => {
-    const pTime = props.date;
-    if (pTime[0]) return pTime[0] + ' years ago';
-    else if (pTime[1]) return pTime[1] + ' months ago';
-    else if (pTime[2]) return pTime[2] + ' days ago';
-    else if (pTime[3]) return pTime[3] + ' hours ago';
-    else if (pTime[4]) return pTime[4] + ' minutes ago';
-    else return '방금 전';
-  };
+
   return (
     <Alert variant="secondary" className="article">
       <div className="ui feed">
@@ -24,7 +17,7 @@ const Article = props => {
           <div className="AuthorProfileMain">
             <div>{Author}</div>
             <div className="summary">
-              <div className="date">{timeDiff()}</div>
+              <Time date={props.date} />
             </div>
           </div>
           <div className="ui items">
