@@ -11,10 +11,11 @@ import Main from './containers/Main';
 import BookDetail from './containers/BookDetail';
 import SearchResultBook from './containers/SearchResultBook/SearchResultBook';
 import 'bootstrap/dist/css/bootstrap.css';
-import 'semantic-ui-css/semantic.min.css';
+import 'semantic-ui-css/semantic.css';
 import ReviewDetailPage from './containers/ReviewDetailPage/ReviewDetailPage';
 import storage from './lib/storage';
 import * as actionTypes from './store/actions/actionTypes';
+import CreateCuration from './containers/CreateCuration';
 
 class App extends Component {
   componentDidMount() {
@@ -57,7 +58,7 @@ class App extends Component {
             />
             <Route path="/book/:book_id" exact component={BookDetail} />
             <Route path="/curation" exact component={Main} />
-            <Route path="/curation/create" exact component={Main} />
+            <Route path="/curation/create" exact component={CreateCuration} />
             <Route
               path="/curation/:user_id/:curation_id"
               exact
