@@ -26,7 +26,7 @@ class BookDetail extends Component {
 
   render() {
     if (!this.props.currentBook) {
-      return <Spinner animation="border" classNAme="Spinner" />;
+      return <Spinner animation="border" className="Spinner" />;
     }
 
     const isbn = this.props.match.params.book_id;
