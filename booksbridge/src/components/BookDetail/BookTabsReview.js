@@ -11,7 +11,7 @@ const BookTabsReview = props => {
   return (
     <div className="Review">
       <Alert variant="light" className="article">
-        <div className="ui feed">
+        <div>
           <div>
             <div className="AuthorProfileMain">
               <div>{Author}</div>

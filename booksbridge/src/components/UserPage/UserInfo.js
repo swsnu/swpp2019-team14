@@ -14,33 +14,41 @@ class UserInfo extends Component {
 
     if (!profile_user) return null;
 
-    console.log('[debug] ' + profile_user.username);
-    console.log('[debug] ' + profile_user.nickname);
-    console.log('[debug] ' + profile_user);
-
     const nickname = profile_user.nickname;
     const username = profile_user.username;
+    const profile_text = profile_user.profile_text;
     const profile_picture = (
       <Image src={profile_user.profile_photo} className="ProfilePicture" />
     );
-
+    // TODO: replace SignOut with a proper button, link it to the database so that one can sign out properly.
     return (
       <div className="Wrapper">
-        <div className="Edit">Edit</div>
+        <div className="Header">
+          <div className="Edit">Edit</div>
+        </div>
         <div className="Upper">
-          <div className="ProfilePicture">{profile_picture}</div>
-          <div className="Names">
-            {username}
-            <br />
-            {nickname}
+          <p className="UpperLeft">
+            <p className="ProfilePictureContainer">
+              <div className="ProfilePicture">{profile_picture}</div>
+            </p>
+          </p>
+          <div className="UpperRight">
+            <div className="NameContainer">
+              <div className="Username">{username}</div>
+              <div className="Nickname">@{nickname}</div>
+            </div>
           </div>
         </div>
-        <div className="userInfoLower">
-          <div className="StatusMsg"></div>
+        <div className="Lower">
+          <div className="Profile_Text">{profile_text}</div>
         </div>
         <div className="Footer">
-          <div className="SignOut"></div>
-          <div className="Follow"></div>
+          <div className="FooterLeft">
+            <div className="SignOut-Deprecated"></div>
+          </div>
+          <div className="FooterRight">
+            <div className="Follow">Follow</div>
+          </div>
         </div>
       </div>
     );
