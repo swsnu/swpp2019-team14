@@ -13,6 +13,29 @@ class UserReviewList extends Component {
 
     console.log('[DEBUG]' + this.props.user_reviews);
 
+    const reviews = this.props.user_reviews.map(review => {
+      return (
+        <Article
+          author={review.author}
+          book_isbn={review.book_isbn}
+          book_title={review.book_title}
+          book_thumbnail={review.book_thumbnail}
+          id={review.id}
+          title={review.title}
+          content={review.content}
+          date={review.date}
+          is_long={review.is_long}
+          is_short={review.is_short}
+          is_phrase={review.is_phrase}
+        />
+      );
+    });
+
+    const shortReviewList = reviews.filter(review => review.props.is_short);
+    const longReviewList = reviews.filter(review => review.props.is_long);
+    const phraseList = reviews.filter(review => review.is_phrase);
+
+    /*
     const shortReviewList = this.props.user_reviews
       .filter(review => review.is_short)
       .map(review => {
