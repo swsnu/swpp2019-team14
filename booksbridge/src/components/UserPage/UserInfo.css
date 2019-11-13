@@ -23,8 +23,8 @@
   position: relative;
 }
 .ProfilePictureContainer {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -37,19 +37,24 @@
   border-radius: 5px;
 }
 .UpperRight {
-  width: 50px;
-  height: 100px;
+  width: 50%;
+  height: 100%;
   position: relative;
-  top: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+.NameContainer {
+  font-family: 'Noto Sans KR', sans-serif;
+
+  text-align: left;
 }
 .Username {
-  font-size: 40px;
+  font-size: 30px;
   color: black;
 }
 .Nickname {
-  font-size: 25px;
+  font-size: 20px;
   color: gray;
 }
 .Lower {
@@ -58,8 +63,8 @@
   padding: 10px 20px 10px 20px;
 }
 .Profile_Text {
-  font-size: 20px;
-  padding: 5px 10px 5px 10px;
+  font-size: 25px;
+  padding: 10px 30px 10px 30px;
   background-color: lightgray;
   border-radius: 5px;
 }

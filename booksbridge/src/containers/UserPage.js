@@ -14,6 +14,7 @@ class UserPage extends Component {
   constructor(params) {
     super(params);
     this.props.onLoadUser(this.props.match.params.user_id);
+    this.props.onLoadUserReviews(this.props.match.params.user_id);
   }
 
   componentDidMount() {}
@@ -34,8 +35,14 @@ class UserPage extends Component {
         <div className="UserInfo">
           <UserInfo profile_user={this.props.profile_user} />
         </div>
-        <div className="UserReviewList">
-          <UserReviewList profile_user={this.props.profile_user} />
+        <div className="ArmisticeLine"></div>
+        <div className="Tab">
+          <div className="UserReviewList">
+            <UserReviewList
+              profile_user={this.props.profile_user}
+              user_reviews={this.props.articles_by_userID}
+            />
+          </div>
         </div>
       </div>
     );
@@ -44,11 +51,17 @@ class UserPage extends Component {
 
 const mapStateToProps = state => ({
   profile_user: state.user.profile_user,
+  articles_by_userID: state.article.articlesByUserID,
 });
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadUser: user_id => dispatch(actionCreators.getSpecificUser(user_id)),
+    onLoadUser: user_id => {
+      dispatch(actionCreators.getSpecificUser(user_id));
+    },
+    onLoadUserReviews: user_id => {
+      dispatch(actionCreators.getArticlesByUserId(user_id));
+    },
   };
 };
 

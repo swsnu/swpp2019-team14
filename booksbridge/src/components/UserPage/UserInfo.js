@@ -33,8 +33,10 @@ class UserInfo extends Component {
             </p>
           </p>
           <div className="UpperRight">
-            <div className="Username">{username}</div>
-            <div className="Nickname">@{nickname}</div>
+            <div className="NameContainer">
+              <div className="Username">{username}</div>
+              <div className="Nickname">@{nickname}</div>
+            </div>
           </div>
         </div>
         <div className="Lower">
@@ -42,7 +44,7 @@ class UserInfo extends Component {
         </div>
         <div className="Footer">
           <div className="FooterLeft">
-            <div className="SignOut">Sign Out</div>
+            <div className="SignOut-Deprecated"></div>
           </div>
           <div className="FooterRight">
             <div className="Follow">Follow</div>

@@ -173,6 +173,41 @@ def search_article(request, isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+def search_article_by_userID(request, user_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    if request.method == 'GET':
+        articles = list()
+        for article in Article.objects.filter(author=user_id):
+            deltatime = datetime.now() - article.date
+            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
+            user = get_object_or_404(User, id=article.author_id)
+            user_dict = {
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
+            }
+            article_dict = {
+                'author': user_dict,
+                'book_isbn': article.book.isbn,
+                'book_title': article.book.title,
+                'book_thumbnail': article.book.thumbnail,
+                'id': article.id,
+                'title': article.title,
+                'content': article.content,
+                'date': time_array,
+                'is_long': article.is_long,
+                'is_short': article.is_short,
+                'is_phrase': article.is_phrase
+            }
+            articles.append(article_dict)
+        
+        return JsonResponse(articles, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
 def specific_article(request,review_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)

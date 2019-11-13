@@ -1,4 +1,22 @@
+.UserPage {
+  align-content: center;
+}
+
 .UserInfo {
   display: flex;
   justify-content: center;
+}
+.ArmisticeLine {
+  height: 40px;
+}
+
+.Tab {
+  display: flex;
+  justify-content: center;
+}
+
+.UserReviewList {
+  width: 800px;
+  margin: 10px;
+  white-space: pre-wrap;
 }
