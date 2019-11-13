@@ -57,7 +57,11 @@ class CommentUnit extends Component {
     };
     const replyForm = (
       <Form reply>
-        <Form.TextArea value={this.state.content} onChange={onChangeInput} />
+        <Form.TextArea
+          id="reply-input"
+          value={this.state.content}
+          onChange={onChangeInput}
+        />
         <div className="ReplyButton">
           <Button
             className="ReplyButton"
@@ -71,29 +75,32 @@ class CommentUnit extends Component {
       </Form>
     );
     return (
-      <Comment>
-        <Comment.Avatar as="a" src={profile_photo} />
-        <Comment.Content>
-          <Comment.Author as="a">{this.props.author.nickname}</Comment.Author>
-          <Comment.Metadata>
-            <span>
-              <Time date={this.props.date} />
-            </span>
-          </Comment.Metadata>
-          <Comment.Text>{this.props.content}</Comment.Text>
-          <Comment.Actions>
-            <a
-              onClick={() => {
-                this.setState({ ...this.state, reply: !this.state.reply });
-              }}
-            >
-              Reply
-            </a>
-          </Comment.Actions>
-        </Comment.Content>
-        <Comment.Group>{replies}</Comment.Group>
-        {this.state.reply == true ? replyForm : null}
-      </Comment>
+      <div className="CommentUnit">
+        <Comment>
+          <Comment.Avatar as="a" src={profile_photo} />
+          <Comment.Content>
+            <Comment.Author as="a">{this.props.author.nickname}</Comment.Author>
+            <Comment.Metadata>
+              <span>
+                <Time date={this.props.date} />
+              </span>
+            </Comment.Metadata>
+            <Comment.Text>{this.props.content}</Comment.Text>
+            <Comment.Actions>
+              <a
+                id="show-reply-form"
+                onClick={() => {
+                  this.setState({ ...this.state, reply: !this.state.reply });
+                }}
+              >
+                Reply
+              </a>
+            </Comment.Actions>
+          </Comment.Content>
+          <Comment.Group>{replies}</Comment.Group>
+          {this.state.reply == true ? replyForm : null}
+        </Comment>
+      </div>
     );
   }
 }
