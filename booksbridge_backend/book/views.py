@@ -365,7 +365,6 @@ def ocr(request):
                         result += word_text + " "
         '''
         result_dict = { 'quote': result }
-        print(result_dict)
         return JsonResponse(result_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST'])

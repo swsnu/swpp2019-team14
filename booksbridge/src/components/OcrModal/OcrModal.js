@@ -14,7 +14,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onRunOcr: formData => dispatch(actionCreators.runOcr(formData)), // ocr actioncreator to be created
+    onRunOcr: formData => dispatch(actionCreators.runOcr(formData)),
   };
 };
 
@@ -26,31 +26,47 @@ class OcrModal extends Component {
       files: [],
       open: false,
       content: '',
+      imageShow: true,
+      image: null,
     };
 
+    this.fileInputRef = React.createRef();
     this.onFilesAdded = this.onFilesAdded.bind(this);
     this.runOcrOnFiles = this.runOcrOnFiles.bind(this);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.quote != prevProps.quote) {
-  //     console.log('quote: ', this.props.quote);
-  //     this.setState({ content: this.props.quote });
-  //     console.log('content', this.state.content);
-  //   }
-  // }
+  onFilesAdded(event) {
+    const { files } = event.target;
 
-  onFilesAdded = files => {
-    this.setState(prevState => ({ files: prevState.files.concat(files) }));
-  };
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      reader.onload = e => {
+        this.setState({ image: e.target.result });
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    const array = this.fileListToArray(files);
+    //this.setState(prevState => ({ files: prevState.files.concat(array) }));
+    this.setState({
+      ...this.state,
+      files: this.state.files.concat(array),
+      imageShow: true,
+    });
+  }
+
+  fileListToArray(list) {
+    const array = [];
+    for (let i = 0; i < list.length; i++) {
+      array.push(list.item(i));
+    }
+    return array;
+  }
 
   async runOcrOnFiles() {
-    // this.setState({ uploading: true });
-
     const promises = [];
 
     this.state.files.forEach(file => {
-      console.log(file);
       let formData = new FormData();
       formData.append('image', file);
       promises.push(this.props.onRunOcr(formData));
@@ -60,32 +76,36 @@ class OcrModal extends Component {
       this.setState({
         content: this.props.quote,
       });
-      // this.setState({
-      //   uploaded: true,
-      //   uploading: false
-      // })
     } catch (e) {
       this.setState({
-        // right?
         files: [],
-        // uploaded: false,
-        // uploading: false
+        imageShow: false,
       });
       window.alert('running ocr on file has failed');
     }
   }
 
   render() {
+    const image = this.state.imageShow && (
+      <img id="target" src={this.state.image} width={300} height={300} />
+    );
+
     return (
       <div className="ocr-modal">
         <Button
-          onClick={() => this.setState({ files: [], open: true, content: '' })}
+          onClick={() =>
+            this.setState({
+              files: [],
+              open: true,
+              content: '',
+              imageShow: false,
+            })
+          }
         >
           Quote
         </Button>
         <Modal open={this.state.open}>
           <Modal.Content>
-            <Dropzone onFilesAdded={this.onFilesAdded} disabled={false} />
             {this.state.files.map(file => {
               return (
                 <div key={file.name} className="Row">
@@ -94,15 +114,37 @@ class OcrModal extends Component {
               );
             })}
 
+            <div
+              id="choose-file"
+              onClick={() => this.fileInputRef.current.click()}
+            >
+              <Button>Upload</Button>
+              <input
+                ref={this.fileInputRef}
+                className="FileInput"
+                type="file"
+                accept=".jpg, .jpeg, .png"
+                multiple
+                onChange={this.onFilesAdded}
+              />
+            </div>
+            {image}
+
             <Button id="run-ocr" onClick={this.runOcrOnFiles}>
               Extract
             </Button>
             <CopyToClipboard text={this.state.content}>
-              <Button>Copy to the Clipboard</Button>
+              <Button
+                onClick={() => this.setState({ ...this.state, open: false })}
+              >
+                Copy to the Clipboard
+              </Button>
             </CopyToClipboard>
             <Button
               id="clear"
-              onClick={() => this.setState({ files: [], content: '' })}
+              onClick={() =>
+                this.setState({ files: [], content: '', imageShow: false })
+              }
             >
               Clear
             </Button>
