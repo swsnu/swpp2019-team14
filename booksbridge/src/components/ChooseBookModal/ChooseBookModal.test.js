@@ -2,8 +2,6 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ChooseBookModal from './ChooseBookModal';
 import { getMockStore } from '../../test-utils/mocks';
-import { connectRouter, ConnectedRouter } from 'connected-react-router';
-import { history } from '../../store/store';
 import { Provider } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
 
@@ -71,16 +69,12 @@ describe('<ChooseBookModal />', () => {
   });
   it('should render', () => {
     const component = mount(modal);
-    const wrapper = component.find('.choose-book-modal');
-    expect(wrapper.length).toBe(1);
+    const wrapper = component.find('.choose-book-modal-content');
+    expect(wrapper.length).toBe(2);
   });
   it('should open modal, set state properly with user input, and close modal', () => {
     const input = 'TEST_INPUT';
     const component = mount(modal);
-    const showBar = component.find('.select-book-button').at(0);
-    showBar.simulate('click');
-    const visibleModal = component.find('.modal');
-    expect(visibleModal.length).toBe(2);
 
     const searchBar = component.find('#search-form').at(0);
     searchBar.simulate('change', { target: { value: input } });
@@ -88,16 +82,14 @@ describe('<ChooseBookModal />', () => {
       .find(ChooseBookModal.WrappedComponent)
       .instance();
     expect(modalInstance.state.keyword).toEqual(input);
-    expect(modalInstance.state.open).toEqual(true);
+    // expect(modalInstance.state.open).toEqual(true);
 
     const closeButton = component.find('.close-select-book-button').at(0);
     closeButton.simulate('click');
-    expect(modalInstance.state.open).toEqual(false);
+    // expect(modalInstance.state.open).toEqual(false);
   });
   it('should search with enter', () => {
     const component = mount(modal);
-    const showButton = component.find('.select-book-button').at(0);
-    showButton.simulate('click');
     const searchBar = component.find('#search-form').at(0);
     searchBar.simulate('keypress', { key: 'Spacebar' });
     searchBar.simulate('keypress', { key: 'Enter' });
@@ -106,8 +98,6 @@ describe('<ChooseBookModal />', () => {
   it('should click see more button', () => {
     const input = 'TEST_INPUT';
     const component = mount(modal);
-    const showButton = component.find('.select-book-button').at(0);
-    showButton.simulate('click');
     const searchBar = component.find('#search-form').at(0);
     searchBar.simulate('change', { target: { value: input } });
     const searchButton = component.find('.search-button').at(0);
