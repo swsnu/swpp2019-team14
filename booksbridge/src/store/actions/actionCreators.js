@@ -40,11 +40,13 @@ export const loginUser = user => {
 
 // export const LOGOUT_USER = 'LOGOUT_USER'
 export const logoutUser = () => dispatch =>
-  axios.post('/api/sign_out/').then(res =>
+  axios.get('/api/sign_out/').then(res => {
     dispatch({
       type: actionTypes.LOGOUT_USER,
-    }),
-  );
+    });
+    storage.remove('logged_in_user');
+    dispatch(push('/sign-in/'));
+  });
 // export const GET_SIGNED_IN_USER = 'GET_SIGNED_IN_USER'
 // 일단은 필요없어 보임 - 한결
 

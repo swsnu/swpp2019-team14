@@ -16,3 +16,7 @@
 .username{
     font-size: .85714286em;
 }
+
+.ProfileSummary{
+    display: flex;
+}

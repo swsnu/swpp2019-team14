@@ -46,10 +46,14 @@ body {
 
 .headerProfile{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 30%;
     align-items: center;
-    justify-content: center;
+}
+
+.Profile{
+    height: 80px;
+    background-color: yellow;
 }
 
 .profileName{
@@ -64,7 +68,13 @@ body {
     display: flex !important;
 }
 
-.ProfileSummary{
-    display: flex;
-    flex-direction: row;
+.HeaderProfileSummary{
+    height: 80px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+
+.ui.vertical.menu {
+    position: relative;
 }
