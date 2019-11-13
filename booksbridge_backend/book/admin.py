@@ -16,5 +16,6 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(Book, BookAdmin)
 admin.site.register(Article)
+admin.site.register(Comment)
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)

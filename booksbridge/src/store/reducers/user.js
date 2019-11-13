@@ -12,6 +12,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, logged_in_user: action.user };
     case actionTypes.SET_LOGGED_IN_USER:
       return { ...state, logged_in_user: action.user };
+    case actionTypes.LOGOUT_USER:
+      return { ...state, logged_in_user: null };
     // const modified = state.users.map((user) => {
     //   if (user.id === action.targetID) {
     //     state.logged_in_user = state.logged_in_user ? null : user;
@@ -21,8 +23,6 @@ const reducer = (state = initialState, action) => {
     //   }
     // });
     // return { ...state, users: modified };
-    case actionTypes.LOGOUT_USER:
-      return { state };
     //     action.users.map((user) => {
     //       if (user.logged_in)
     //         state.logged_in_user = user;

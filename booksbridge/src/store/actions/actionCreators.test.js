@@ -49,7 +49,7 @@ describe('ActionCreators', () => {
   });
 
   //   postUser,
-  it(`'postUsers,loginUser,logoutUser'`, done => {
+  it(`'postUsers,loginUser'`, done => {
     const stubUsers = [stubUser];
     const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
       return new Promise((resolve, reject) => {
@@ -64,17 +64,12 @@ describe('ActionCreators', () => {
     store.dispatch(actionCreators.loginUser()).then(() => {
       const newState = store.getState();
       expect(newState.user.logged_in_user).toBe(stubUsers);
-      expect(spy).toHaveBeenCalledTimes(3);
+      expect(spy).toHaveBeenCalledTimes(2);
       done();
     });
 
     store.dispatch(actionCreators.postUser()).then(() => {
-      expect(spy).toHaveBeenCalledTimes(3);
-      done();
-    });
-
-    store.dispatch(actionCreators.logoutUser()).then(() => {
-      expect(spy).toHaveBeenCalledTimes(3);
+      expect(spy).toHaveBeenCalledTimes(2);
       done();
     });
   });
