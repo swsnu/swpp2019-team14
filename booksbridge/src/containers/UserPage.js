@@ -29,12 +29,12 @@ class UserPage extends Component {
     console.log('[DEBUG from userpage] user: ' + this.props.profile_user);
 
     return (
-      <div className="userPage">
+      <div className="UserPage">
         <Header />
-        <div className="userInfo">
+        <div className="UserInfo">
           <UserInfo profile_user={this.props.profile_user} />
         </div>
-        <div className="userReviewList">
+        <div className="UserReviewList">
           <UserReviewList profile_user={this.props.profile_user} />
         </div>
       </div>

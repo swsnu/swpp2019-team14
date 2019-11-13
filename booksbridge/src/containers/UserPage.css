@@ -1,3 +1,4 @@
-.userInfo {
-  align-items: center;
+.UserInfo {
+  display: flex;
+  justify-content: center;
 }

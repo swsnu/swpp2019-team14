@@ -359,10 +359,11 @@ def specific_user(request, user_id):
         try:
             user = User.objects.get(id=user_id)
             user_dict = {
-                'id':user.id,
-                'username':user.username,
-                'profile_photo':user.profile.profile_photo.name,
-                'nickname':user.profile.nickname,
+                'id': user.id,
+                'username': user.username,
+                'profile_photo': user.profile.profile_photo.name,
+                'nickname': user.profile.nickname,
+                'profile_text': user.profile.profile_text,
             }
             return JsonResponse(user_dict)
         except: 
