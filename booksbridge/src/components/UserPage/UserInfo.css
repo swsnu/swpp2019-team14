@@ -1,0 +1,11 @@
+.Wrapper {
+  align-self: center;
+  border: 1px solid gray;
+  width: 800px;
+  height: 400px;
+}
+
+.ProfilePicture {
+  width: 50%;
+  height: 50%;
+}

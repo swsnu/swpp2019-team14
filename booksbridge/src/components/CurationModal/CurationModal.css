@@ -1,0 +1,42 @@
+#curation-modal {
+  max-height: 96%;
+  margin-left: 20% !important;
+  display: flex !important;
+}
+
+.search-book-tab {
+  overflow: hidden;
+  height: 100%;
+  box-shadow: 3px 5px 25px 0 rgba(0, 0, 0, 0.5),
+    1px 3px 25px 2px rgba(0, 0, 0, 0.3) !important;
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  padding-top: 2%;
+}
+.selected-book-tab {
+  width: 48%;
+  left: 50%;
+  box-shadow: 3px 5px 25px 0 rgba(0, 0, 0, 0.5),
+    1px 3px 25px 2px rgba(0, 0, 0, 0.3) !important;
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  padding-top: 2%;
+}
+
+.left-page {
+  position: relative;
+  width: 52%;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.curation-modal-tabs {
+  padding: 0;
+}
+.curation-modal-tab-contents {
+  padding: 0;
+  height: 100%;
+}
+.curation-modal-tab-first {
+  height: 100%;
+}

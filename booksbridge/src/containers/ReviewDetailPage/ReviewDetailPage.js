@@ -63,7 +63,10 @@ class ReviewDetailPage extends Component {
             </div>
           </div>
           <div className="ReviewComments">
-            <Comments />
+            <Comments
+              comments={this.props.currentArticle.comments}
+              article_id={this.props.match.params.review_id}
+            />
           </div>
         </div>
       </div>

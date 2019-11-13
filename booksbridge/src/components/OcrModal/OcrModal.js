@@ -147,7 +147,10 @@ class OcrModal extends Component {
             >
               Clear
             </Button>
-            <Button onClick={() => this.setState({ open: false })}>
+            <Button
+              id="close-ocr"
+              onClick={() => this.setState({ open: false })}
+            >
               Close
             </Button>
             <TextArea

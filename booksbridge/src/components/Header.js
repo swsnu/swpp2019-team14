@@ -16,9 +16,9 @@ const Header = props => {
   };
 
   return (
-    <div className="header">
+    <div className="MainHeader">
       <a className="logo" onClick={() => props.history.push('/main')}>
-        <img src="/images/logo.png" width="170px" />
+        <img src="/images/logo2.png" height="80px" />
       </a>
       <div className="search">
         <InputGroup>

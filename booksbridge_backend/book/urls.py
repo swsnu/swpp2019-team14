@@ -4,6 +4,7 @@ from book import views
 urlpatterns = [
     path('user/', views.signup, name='signup'),
     path('user/profile/', views.profile_update, name='profile_update'),
+    path('user/<user_id>/', views.specific_user, name='specific_user'),
     path('sign_in/', views.signin, name='signin'),
     # path('sign_out/', views.signout, name='signout'),
     # path('book/', views.books, name='book'),
@@ -11,8 +12,8 @@ urlpatterns = [
     path('book/<keyword>/<page>/', views.searchbooks, name='searchbooks'),
     path('article/bookID=<isbn>/', views.search_article, name='searchArticle'),
     path('article/<review_id>/', views.specific_article, name='specific_article'),
+    path('comment/article/', views.comment, name='comment'),
     path('token/', views.token, name='token'),
     path('article/', views.article, name='article'),
     path('article/page/<page>/', views.article_page, name='article_page'),
     path('ocr/', views.ocr, name='ocr'),
-]
