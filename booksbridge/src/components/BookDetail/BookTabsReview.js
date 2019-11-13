@@ -3,19 +3,11 @@ import { withRouter } from 'react-router';
 import * as actionCreators from '../../store/actions/actionCreators';
 import './BookTabsReview.css';
 import Alert from 'react-bootstrap/Alert';
+import Time from '../Time';
 import ProfileSummary from '../ProfileSummary/ProfileSummary';
 
 const BookTabsReview = props => {
   const Author = <ProfileSummary user={props.author} />;
-  const timeDiff = () => {
-    const pTime = props.date;
-    if (pTime[0]) return pTime[0] + ' years ago';
-    else if (pTime[1]) return pTime[1] + ' months ago';
-    else if (pTime[2]) return pTime[2] + ' days ago';
-    else if (pTime[3]) return pTime[3] + ' hours ago';
-    else if (pTime[4]) return pTime[4] + ' minutes ago';
-    else return '방금 전';
-  };
   return (
     <div className="Review">
       <Alert variant="light" className="article">
@@ -24,7 +16,7 @@ const BookTabsReview = props => {
             <div className="AuthorProfileMain">
               <div>{Author}</div>
               <div className="summary">
-                <div className="date">{timeDiff()}</div>
+                <Time date={props.date} />
               </div>
             </div>
             <div className="content">
