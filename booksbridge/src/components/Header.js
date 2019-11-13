@@ -66,8 +66,8 @@ const Header = props => {
           </InputGroup.Append>
         </InputGroup>
       </div>
-      <div className="headerProfile" onClick={onClickProfile}>
-        <div className="HeaderProfileSummary">
+      <div className="headerProfile">
+        <div className="HeaderProfileSummary" onClick={onClickProfile}>
           <ProfileSummary user={props.logged_in_user} />
         </div>
         {show_menu == true ? menu : null}

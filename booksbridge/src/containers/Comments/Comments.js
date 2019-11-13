@@ -1,4 +1,3 @@
-import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 import { Button, Comment, Form, Header } from 'semantic-ui-react';
 import { connect } from 'react-redux';
@@ -28,8 +27,8 @@ class Comments extends Component {
     const comments = this.props.comments.map(comment => {
       return (
         <CommentUnit
+          key={comment.id}
           article_id={this.props.article_id}
-          comment_id={comment.id}
           author={comment.author}
           date={comment.date}
           content={comment.content}
@@ -38,7 +37,7 @@ class Comments extends Component {
       );
     });
     return (
-      <div>
+      <div className="Comments">
         <Comment.Group threaded>
           <Header className="CommentHeader" as="h3" dividing>
             Comments
@@ -46,6 +45,7 @@ class Comments extends Component {
           {comments}
           <Form reply>
             <Form.TextArea
+              id="comment-input"
               value={this.state.content}
               onChange={({ target: { value } }) =>
                 this.setState({ content: value })
@@ -82,4 +82,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRouter(Comments));
+)(Comments);
