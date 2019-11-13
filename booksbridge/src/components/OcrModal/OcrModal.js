@@ -1,7 +1,6 @@
 import React, { Component, useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, TextArea } from 'semantic-ui-react';
-import Dropzone from '../Dropzone/Dropzone';
 import './OcrModal.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as actionCreators from '../../store/actions/actionCreators';
