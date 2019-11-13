@@ -13,6 +13,99 @@ class UserReviewList extends Component {
 
     console.log('[DEBUG]' + this.props.user_reviews);
 
+    const shortReviewList = this.props.user_reviews
+      .filter(review => review.is_short)
+      .map(review => {
+        return (
+          <Article
+            author={review.author}
+            book_isbn={review.book_isbn}
+            book_title={review.book_title}
+            book_thumbnail={review.book_thumbnail}
+            id={review.id}
+            title={review.title}
+            content={review.content}
+            date={review.date}
+            is_long={review.is_long}
+            is_short={review.is_short}
+            is_phrase={review.is_phrase}
+          />
+        );
+      });
+    const longReviewList = this.props.user_reviews
+      .filter(review => review.is_long)
+      .map(review => {
+        return (
+          <Article
+            author={review.author}
+            book_isbn={review.book_isbn}
+            book_title={review.book_title}
+            book_thumbnail={review.book_thumbnail}
+            id={review.id}
+            title={review.title}
+            content={review.content}
+            date={review.date}
+            is_long={review.is_long}
+            is_short={review.is_short}
+            is_phrase={review.is_phrase}
+          />
+        );
+      });
+    const phraseList = this.props.user_reviews
+      .filter(review => review.is_phrase)
+      .map(review => {
+        return (
+          <Article
+            author={review.author}
+            book_isbn={review.book_isbn}
+            book_title={review.book_title}
+            book_thumbnail={review.book_thumbnail}
+            id={review.id}
+            title={review.title}
+            content={review.content}
+            date={review.date}
+            is_long={review.is_long}
+            is_short={review.is_short}
+            is_phrase={review.is_phrase}
+          />
+        );
+      });
+
+    /*
+        this.props.user_reviews.forEach(review => {
+          console.log('[DEBUG] in forEach');
+          const article = (
+            <Article
+              author={review.author}
+              book_isbn={review.book_isbn}
+              book_title={review.book_title}
+              book_thumbnail={review.book_thumbnail}
+              id={review.id}
+              title={review.title}
+              content={review.content}
+              date={review.date}
+              is_long={review.is_long}
+              is_short={review.is_short}
+              is_phrase={review.is_phrase}
+            />
+          );
+    
+          if (review.is_short) {
+            console.log('[DEBUG] review is short');
+            shortReviewList.concat(article);
+            console.log(shortReviewList);
+          } else if (review.is_long) {
+            console.log('[DEBUG] review is long');
+            longReviewList.concat(article);
+            console.log(shortReviewList);
+          } else phraseList.concat(article);
+        });
+    
+        console.log('[DEBUG]' + shortReviewList);
+        console.log('[DEBUG]' + longReviewList);
+        console.log('[DEBUG]' + phraseList);
+    */
+    /*
     const shortReviewList = this.props.user_reviews.reduce(function(
       accumulator,
       currentValue,
@@ -90,6 +183,7 @@ class UserReviewList extends Component {
       }
     },
     []);
+  */
 
     const panes = [
       {
