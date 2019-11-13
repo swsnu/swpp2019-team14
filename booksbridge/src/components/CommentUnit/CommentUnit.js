@@ -20,7 +20,7 @@ class CommentUnit extends Component {
       const comment = {
         article_id: this.props.article_id,
         content: this.state.content,
-        parent_id: this.props.comment_id,
+        parent_id: this.props.id,
       };
       console.log(comment);
       this.props.onPostComment(comment);
@@ -43,6 +43,7 @@ class CommentUnit extends Component {
       replies = this.props.replies.map(reply => {
         return (
           <ReplyUnit
+            key={reply.id}
             author={reply.author}
             date={reply.date}
             content={reply.content}
