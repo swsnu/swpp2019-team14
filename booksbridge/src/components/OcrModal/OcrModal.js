@@ -100,6 +100,8 @@ class OcrModal extends Component {
               imageShow: false,
             })
           }
+          id="open-ocr"
+          onClick={() => this.setState({ files: [], open: true, content: '' })}
         >
           Quote
         </Button>
@@ -112,7 +114,6 @@ class OcrModal extends Component {
                 </div>
               );
             })}
-
             <div
               id="choose-file"
               onClick={() => this.fileInputRef.current.click()}
@@ -147,7 +148,10 @@ class OcrModal extends Component {
             >
               Clear
             </Button>
-            <Button onClick={() => this.setState({ open: false })}>
+            <Button
+              id="close-ocr"
+              onClick={() => this.setState({ open: false })}
+            >
               Close
             </Button>
             <TextArea

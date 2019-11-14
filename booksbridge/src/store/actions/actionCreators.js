@@ -40,22 +40,25 @@ export const loginUser = user => {
 
 // export const LOGOUT_USER = 'LOGOUT_USER'
 export const logoutUser = () => dispatch =>
-  axios.post('/api/sign_out/').then(res =>
+  axios.get('/api/sign_out/').then(res => {
     dispatch({
       type: actionTypes.LOGOUT_USER,
-    }),
-  );
+    });
+    storage.remove('logged_in_user');
+    dispatch(push('/sign-in/'));
+  });
 // export const GET_SIGNED_IN_USER = 'GET_SIGNED_IN_USER'
 // 일단은 필요없어 보임 - 한결
 
 // export const GET_SPECIFIC_USER = 'GET_SPECIFIC_USER'
 export const getSpecificUser = id => dispatch =>
-  axios.get(`/api/user/${id}/`).then(res =>
+  axios.get(`/api/user/${id}/`).then(res => {
+    console.log('[debug]');
     dispatch({
       type: actionTypes.GET_SPECIFIC_USER,
       user: res.data,
-    }),
-  );
+    });
+  });
 // export const GET_SEARCHED_USERS = 'GET_SEARCHED_USERS'
 export const getSearchedUsers = keyword => dispatch =>
   axios.get(`/api/user/searchWord=${keyword}/`).then(res =>
@@ -248,19 +251,19 @@ export const getCurationsByUserId = id => dispatch =>
     }),
   );
 
-// //////////////////////////////////// CURATION //////////////////////////////////////
+// //////////////////////////////////// COMMENT //////////////////////////////////////
 
 // export const POST_LONG_REVIEW_COMMENT = 'POST_LONG_REVIEW_COMMENT'
 export const postLongReviewComment = comment => dispatch =>
-  axios.post('/api/comment/long_review/', comment).then(res =>
+  axios.post('/api/comment/article/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_LONG_REVIEW_COMMENT,
-      comment: res.data,
+      article: res.data,
     }),
   );
 // export const GET_SPECIFIC_LONG_REVIEW_COMMENT = 'GET_SPECIFIC_LONG_REVIEW_COMMENT'
 export const getSpecificLongReviewComment = id => dispatch =>
-  axios.get(`/api/comment/long_review/${id}/`).then(res =>
+  axios.get(`/api/comment/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SPECIFIC_LONG_REVIEW_COMMENT,
       comment: res.data,
@@ -268,7 +271,7 @@ export const getSpecificLongReviewComment = id => dispatch =>
   );
 // export const EDIT_SPECIFIC_LONG_REVIEW_COMMENT  = 'EDIT_SPECIFIC_LONG_REVIEW_COMMENT'
 export const editSpecificLongReviewComment = comment => dispatch =>
-  axios.put(`/api/comment/long_review/${comment.id}/`, comment).then(res =>
+  axios.put(`/api/comment/article/${comment.id}/`, comment).then(res =>
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_LONG_REVIEW_COMMENT,
       comment: res.data,
@@ -276,14 +279,14 @@ export const editSpecificLongReviewComment = comment => dispatch =>
   );
 // export const DELETE_SPECIFIC_LONG_REVIEW_COMMNET = 'DELETE_SPECIFIC_LONG_REVIEW_COMMNET'
 export const deleteSpecificLongReviewComment = id => dispatch =>
-  axios.delete(`/api/comment/long_review/${id}/`).then(res =>
+  axios.delete(`/api/comment/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_SPECIFIC_LONG_REVIEW_COMMNET,
     }),
   );
 // export const GET_COMMENTS_BY_REVIEWID = 'GET_COMMENTS_BY_REVIEWID'
 export const getCommentsByReviewID = id => dispatch =>
-  axios.get(`/api/comment/long_review/reviewID=${id}/`).then(res =>
+  axios.get(`/api/${id}/comment`).then(res =>
     dispatch({
       type: actionTypes.GET_COMMENTS_BY_REVIEWID,
       comments: res.data,

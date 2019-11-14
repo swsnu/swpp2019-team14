@@ -1,6 +1,5 @@
 import React from 'react';
 import './ProfileSummary.css';
-import { withRouter } from 'react-router-dom';
 
 const ProfileSummary = props => {
   let userload = false;
@@ -27,4 +26,4 @@ const ProfileSummary = props => {
   );
 };
 
-export default withRouter(ProfileSummary);
+export default ProfileSummary;

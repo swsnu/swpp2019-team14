@@ -1,0 +1,32 @@
+.select-book-button {
+  margin-top: 30px !important;
+  margin-bottom: 3% !important;
+}
+
+.close-select-book-button {
+  margin-top: 0% !important;
+  margin-bottom: 3% !important;
+  top: 92%;
+  position: fixed !important;
+  right: 5%;
+}
+
+.choose-book-modal {
+  margin-left: 25% !important;
+  height: 96% !important;
+}
+.choose-book-input {
+  max-width: 70%;
+  align-self: center;
+}
+.choose-book-modal button {
+  align-self: center;
+  min-height: auto !important;
+}
+
+.choose-book-modal-content {
+  height: inherit;
+  max-height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}

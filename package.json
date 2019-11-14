@@ -11,6 +11,7 @@
     "test": "cd booksbridge && ./node_modules/.bin/react-scripts test --coverage --watchAll=false && cd ../booksbridge_backend && coverage run --branch --source='./book' manage.py test && coverage report && coverage html",
     "eject": "react-scripts eject",
     "installb": "pip3 install -r booksbridge_backend/requirements.txt",
-    "install": "cd booksbridge && ./node_modules/.bin/react-scripts install"
+    "install": "cd booksbridge && ./node_modules/.bin/react-scripts install",
+    "migrate": "cd booksbridge_backend && python manage.py makemigrations && python manage.py migrate && python manage.py makemigrations book && python manage.py migrate book"
   }
 }

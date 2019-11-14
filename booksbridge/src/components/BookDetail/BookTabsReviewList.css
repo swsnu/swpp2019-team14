@@ -1,24 +1,13 @@
-.containerStyle {
+.ui.attached.tabular.menu {
   display: flex;
   justify-content: center;
 }
 
-.DetailTabStyle {
-  width: 800px;
-  margin: 10px;
-  white-space: pre-wrap;
-}
-
-.ui.attached.tabular.menu{
-  display: flex;
-  justify-content: center;
-}
-
-.ui.tabular.menu>.item{
+.ui.tabular.menu > .item {
   display: flex;
   justify-content: center;
   width: 200px;
 }
-.BookTabsReviewWrapper{
+.BookTabsReviewWrapper {
   margin-bottom: 15px;
 }
