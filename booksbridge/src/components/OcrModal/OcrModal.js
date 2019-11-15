@@ -4,6 +4,7 @@ import { Button, Modal, TextArea } from 'semantic-ui-react';
 import './OcrModal.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as actionCreators from '../../store/actions/actionCreators';
+import Copy from './CopyToClipboard';
 
 const mapStateToProps = state => {
   return {
@@ -88,7 +89,6 @@ class OcrModal extends Component {
     const image = this.state.imageShow && (
       <img id="target" src={this.state.image} width={300} height={300} />
     );
-
     return (
       <div className="ocr-modal">
         <Button
@@ -101,7 +101,6 @@ class OcrModal extends Component {
             })
           }
           id="open-ocr"
-          onClick={() => this.setState({ files: [], open: true, content: '' })}
         >
           Quote
         </Button>
@@ -116,9 +115,8 @@ class OcrModal extends Component {
             })}
             <div
               id="choose-file"
-              onClick={() => this.fileInputRef.current.click()}
+              // onClick={() => this.fileInputRef.current.click()}
             >
-              <Button>Upload</Button>
               <input
                 ref={this.fileInputRef}
                 className="FileInput"
@@ -133,13 +131,18 @@ class OcrModal extends Component {
             <Button id="run-ocr" onClick={this.runOcrOnFiles}>
               Extract
             </Button>
-            <CopyToClipboard text={this.state.content}>
+            <Copy
+              text={this.state.content}
+              clickCopy={() => this.setState({ ...this.state, open: false })}
+            />
+            {/* <CopyToClipboard text={this.state.content}>
               <Button
+                id="copy"
                 onClick={() => this.setState({ ...this.state, open: false })}
               >
                 Copy to the Clipboard
               </Button>
-            </CopyToClipboard>
+            </CopyToClipboard> */}
             <Button
               id="clear"
               onClick={() =>
