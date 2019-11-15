@@ -52,9 +52,8 @@ matrix:
         - cd ..
       script:
         - yarn test
-        - cd booksbridge_backend
         # - pylint ./*/
       after_success:
-        - coveralls
-        - cd ..
         - sonar-scanner
+        - cd booksbridge_backend
+        - coveralls
