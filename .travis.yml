@@ -4,7 +4,7 @@ matrix:
       node_js:
         - "10" # node_js version
       python:
-        - "3.6.8"
+        - "3.6.3"
       dist: trusty
       addons:
         sonarcloud:
