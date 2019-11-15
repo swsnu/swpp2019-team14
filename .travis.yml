@@ -9,7 +9,7 @@ matrix:
         - "10" # node_js version
       python:
         - "3.6.8"
-      dist: xenial
+      dist: trusty
       services:
         - sqlite3
       addons:
