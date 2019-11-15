@@ -14,7 +14,6 @@ describe('<BookTabs />', () => {
       />,
     );
     const wrapper = component.find('.DetailTabStyle');
-    console.log(component.debug());
     expect(wrapper.length).toBe(1);
     component.find('MenuItem[content="Short Review"]').simulate('click');
     component.find('MenuItem[content="Long Review"]').simulate('click');
