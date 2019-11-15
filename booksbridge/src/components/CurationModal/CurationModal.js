@@ -14,7 +14,6 @@ class CurationModal extends Component {
     this.state = {
       open: false,
       selectedBooks: [],
-      searchedBooksCount: 0,
       delete: false,
     };
   }

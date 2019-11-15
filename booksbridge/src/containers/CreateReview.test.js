@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import CreateReview from './CreateReview';
 import { getMockStore } from '../test-utils/mocks';
-import { connectRouter, ConnectedRouter } from 'connected-react-router';
+import { ConnectedRouter } from 'connected-react-router';
 import { history } from '../store/store';
 import { Provider } from 'react-redux';
 import * as actionCreators from '../store/actions/actionCreators';

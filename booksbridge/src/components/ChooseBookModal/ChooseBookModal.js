@@ -49,6 +49,7 @@ class ChooseBookModal extends Component {
       ? this.props.searchedBooks.map(book => {
           return (
             <BookResultSummary
+              key={book.isbn}
               cover={book.thumbnail}
               title={book.title}
               authors={book.authors}

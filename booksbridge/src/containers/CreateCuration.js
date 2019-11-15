@@ -59,7 +59,7 @@ class CreateCuration extends Component {
 
   render() {
     return (
-      <div className="CreateReview">
+      <div className="create-curation">
         <Header />
         <div>
           <CurationModal
@@ -86,20 +86,18 @@ class CreateCuration extends Component {
             : null}
           <div className="ReviewCreateForm">
             <Form className="ui form">
-              {this.state.type === 'long-review' ? (
-                <div className="field">
-                  <label className="FormLabel">Title</label>
-                  <input
-                    id="review-title"
-                    type="text"
-                    name="title"
-                    placeholder="Enter Title"
-                    onChange={event =>
-                      this.setState({ title: event.target.value })
-                    }
-                  />
-                </div>
-              ) : null}
+              <div className="field">
+                <label className="FormLabel">Title</label>
+                <input
+                  id="review-title"
+                  type="text"
+                  name="title"
+                  placeholder="Enter Title"
+                  onChange={event =>
+                    this.setState({ title: event.target.value })
+                  }
+                />
+              </div>
               <br />
               <div className="field">
                 <label className="FormLabel">Content</label>
@@ -129,18 +127,11 @@ class CreateCuration extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    selectedBook: state.book.selectedBook,
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    onSearchBooks: (keyword, page) =>
-      dispatch(actionCreators.getSearchedBooks(keyword, page)),
-    onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
-    onPostArticle: review => dispatch(actionCreators.postArticle(review)),
-  };
+  return {};
 };
 
 export default connect(
