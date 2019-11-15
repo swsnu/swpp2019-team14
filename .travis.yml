@@ -24,7 +24,14 @@ matrix:
       script: # Script to test your build
         - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
+        - cd ../booksbridge_backend
+        - pip3 install -r requirements.txt
+        - coverage run --branch --source='./book' manage.py test
+        - coverage xml
       after_success:
+        - cd ..
+        - sonar-scanner
+        - cd booksbridge
         - cat ./coverage/lcov.info | coveralls
 
     - language: python
@@ -52,5 +59,3 @@ matrix:
         # - pylint ./*/
       after_success:
         - coveralls
-        - cd ..
-        - sonar-scanner
