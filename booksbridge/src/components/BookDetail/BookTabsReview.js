@@ -1,10 +1,9 @@
 import React from 'react';
-import { withRouter } from 'react-router';
-import * as actionCreators from '../../store/actions/actionCreators';
 import './BookTabsReview.css';
 import Alert from 'react-bootstrap/Alert';
 import Time from '../Time';
 import ProfileSummary from '../ProfileSummary/ProfileSummary';
+import { withRouter } from 'react-router';
 
 const BookTabsReview = props => {
   const Author = <ProfileSummary user={props.author} />;
@@ -56,15 +55,10 @@ const BookTabsReview = props => {
               )}
             </div>
           </div>
-          {/*props.is_long ? ( 
-            <div className="ui comments">
-              <h3 className="ui dividing header">Comments</h3>
-            </div>
-          ) : null*/}
         </div>
       </Alert>
     </div>
   );
 };
 
-export default BookTabsReview;
+export default withRouter(BookTabsReview);

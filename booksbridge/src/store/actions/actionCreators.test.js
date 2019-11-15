@@ -27,6 +27,17 @@ const stubArticle = {
   is_phrase: false,
 };
 
+const stubShortArticle = {
+  id: 11,
+  book_id: 123456789101,
+  author_id: 2,
+  title: 'TEST_TITLE',
+  content: 'TEST_CONTENT',
+  is_long: false,
+  is_short: false,
+  is_phrase: false,
+};
+
 const stubCuration = {
   id: 11,
   author_id: 2,
@@ -61,6 +72,7 @@ describe('ActionCreators', () => {
       });
     });
 
+
     store.dispatch(actionCreators.loginUser()).then(() => {
       const newState = store.getState();
       expect(newState.user.logged_in_user).toBe(stubUsers);
@@ -70,6 +82,42 @@ describe('ActionCreators', () => {
 
     store.dispatch(actionCreators.postUser()).then(() => {
       expect(spy).toHaveBeenCalledTimes(2);
+      done();
+    });
+  });
+
+  it(`'login error when id or password is wrong'`, done => {
+
+    const spyAlert = jest.spyOn(window, 'alert')
+      .mockImplementation(() => { });
+
+    const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
+      return new Promise((resolve, reject) => {
+        const result = {
+          status: 400,
+        };
+        reject(result);
+      });
+    });
+    store.dispatch(actionCreators.loginUser()).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spyAlert).toHaveBeenCalledWith('Username or Password is incorrect.');
+      done();
+    });
+  });
+
+  //sign out
+  it(`'sign out'`, done => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
+      return new Promise((resolve, reject) => {
+        const result = {
+          status: 204,
+        };
+        resolve(result);
+      });
+    });
+    store.dispatch(actionCreators.logoutUser()).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
   });
@@ -221,6 +269,24 @@ describe('ActionCreators', () => {
       done();
     });
   });
+
+  //postArticle(short),
+  it(`'postArticle' should post short article correctly`, done => {
+    const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
+      return new Promise((resolve, reject) => {
+        const result = {
+          status: 200,
+          data: stubShortArticle,
+        };
+        resolve(result);
+      });
+    });
+    store.dispatch(actionCreators.postArticle(stubShortArticle)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
   //   getSpecificArticle,
   it(`'getSpecificArticle'`, done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(url => {

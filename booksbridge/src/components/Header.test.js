@@ -5,6 +5,7 @@ import { getMockStore } from '../test-utils/mocks';
 import { Provider } from 'react-redux';
 import { connectRouter, ConnectedRouter } from 'connected-react-router';
 import { history } from '../store/store';
+import * as actionCreators from '../store/actions/actionCreators';
 
 const stubInitialState = {
   logged_in_user: {
@@ -79,5 +80,37 @@ describe('<Header/>', () => {
     const wrapper = component.find('.logo').at(0);
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/main');
+  });
+
+  it(`'should redirect to my page`, () => {
+    const spyHistoryPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(user => {
+        return dispatch => {};
+      });
+    const component = mount(header);
+    const wrapper = component.find('.HeaderProfileSummary');
+    wrapper.simulate('click');
+    component
+      .find('MenuItem')
+      .at(0)
+      .simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/page/TEST_USER');
+  });
+
+  it(`'should log out`, () => {
+    const spyLogout = jest
+      .spyOn(actionCreators, 'logoutUser')
+      .mockImplementation(() => {
+        return dispatch => {};
+      });
+    const component = mount(header);
+    const wrapper = component.find('.HeaderProfileSummary');
+    wrapper.simulate('click');
+    component
+      .find('MenuItem')
+      .at(1)
+      .simulate('click');
+    expect(spyLogout).toBeCalledTimes(1);
   });
 });
