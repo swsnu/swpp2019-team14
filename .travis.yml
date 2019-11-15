@@ -10,7 +10,7 @@ matrix:
         - "10"
       dist: trusty
       env:
-      - COVERALLS_PARALLEL=true
+        - COVERALLS_PARALLEL=true
       addons:
         sonarcloud:
           organization: "swsnu"
@@ -25,7 +25,6 @@ matrix:
         - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
       after_success:
-        - sonar-scanner
         - cat ./coverage/lcov.info | coveralls
 
     - language: python
@@ -36,7 +35,7 @@ matrix:
       # services:
       #   - mysql
       env:
-      - COVERALLS_PARALLEL=true
+        - COVERALLS_PARALLEL=true
       addons:
         sonarcloud:
           organization: "swsnu"
@@ -52,5 +51,6 @@ matrix:
         - coverage xml
         # - pylint ./*/
       after_success:
-        - sonar-scanner
         - coveralls
+        - cd ..
+        - sonar-scanner
