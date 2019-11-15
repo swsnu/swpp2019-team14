@@ -1,6 +1,7 @@
 matrix:
   include:
-    - language: node_js # Your language e.g. node_js, python
+    - language:
+        - python3 # Your language e.g. node_js, python
       node_js:
         - "10" # node_js version
       python:
