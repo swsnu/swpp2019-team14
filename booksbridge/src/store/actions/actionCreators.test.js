@@ -72,7 +72,6 @@ describe('ActionCreators', () => {
       });
     });
 
-
     store.dispatch(actionCreators.loginUser()).then(() => {
       const newState = store.getState();
       expect(newState.user.logged_in_user).toBe(stubUsers);
@@ -87,9 +86,7 @@ describe('ActionCreators', () => {
   });
 
   it(`'login error when id or password is wrong'`, done => {
-
-    const spyAlert = jest.spyOn(window, 'alert')
-      .mockImplementation(() => { });
+    const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
     const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
       return new Promise((resolve, reject) => {
@@ -101,7 +98,9 @@ describe('ActionCreators', () => {
     });
     store.dispatch(actionCreators.loginUser()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spyAlert).toHaveBeenCalledWith('Username or Password is incorrect.');
+      expect(spyAlert).toHaveBeenCalledWith(
+        'Username or Password is incorrect.',
+      );
       done();
     });
   });
