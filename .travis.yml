@@ -1,3 +1,6 @@
+notifications:
+  webhooks: https://coveralls.io/webhook
+
 matrix:
   include:
     - language: node_js
