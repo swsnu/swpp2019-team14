@@ -17,19 +17,11 @@ class ReviewDetailPage extends Component {
     this.props.onLoadArticle(this.props.match.params.review_id);
   }
 
-  onCreateReview = () => {
-    this.props.history.push('/review/create');
-  };
-
   render() {
-    if (!this.props.currentArticle) {
-      return <div>LOADING...</div>;
-    }
-
-    const { book } = this.props.currentArticle;
+    const book = this.props.currentArticle;
 
     return (
-      <div>
+      <div className="ReviewDetailPage">
         <Header />
         <div className="ReviewTitleStyle">
           <h1>{this.props.currentArticle.title}</h1>
@@ -48,7 +40,10 @@ class ReviewDetailPage extends Component {
           />
         </div>
         <div>
-          <Button onClick={() => this.props.history.push(`/book/${book.isbn}`)}>
+          <Button
+            id="check-book-button"
+            onClick={() => this.props.history.push(`/book/${book.isbn}`)}
+          >
             Check this book!
           </Button>
         </div>
@@ -77,14 +72,12 @@ class ReviewDetailPage extends Component {
 const mapStateToProps = state => {
   return {
     currentArticle: state.article.selectedArticle,
-    currentBook: state.article.selectedBook,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onLoadArticle: id => dispatch(actionCreators.getSpecificArticle(id)),
-    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
   };
 };
 
