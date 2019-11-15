@@ -1,9 +1,13 @@
 matrix:
   include:
     - language: node_js
+      cache:
+        yarn: true
       node_js:
         - "10"
       dist: trusty
+      env:
+      - COVERALLS_PARALLEL=true
       addons:
         sonarcloud:
           organization: "swsnu"
@@ -17,15 +21,19 @@ matrix:
       script: # Script to test your build
         - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
-        - sonar-scanner
       after_success:
-        - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+        - sonar-scanner
+        - cat ./coverage/lcov.info | coveralls
 
     - language: python
+      cache:
+        pip: true
       python: 3.7.4
       dist: xenial
       # services:
       #   - mysql
+      env:
+      - COVERALLS_PARALLEL=true
       addons:
         sonarcloud:
           organization: "swsnu"
@@ -40,6 +48,6 @@ matrix:
         - coverage run --branch --source='./book' manage.py test
         - coverage xml
         # - pylint ./*/
-        - sonar-scanner
       after_success:
+        - sonar-scanner
         - coveralls
