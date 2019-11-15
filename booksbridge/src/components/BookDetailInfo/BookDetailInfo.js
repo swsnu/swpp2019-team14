@@ -1,4 +1,3 @@
-import { withRouter } from 'react-router-dom';
 import React from 'react';
 
 import './BookDetailInfo.css';
@@ -16,4 +15,4 @@ const BookDetailInfo = props => (
   </div>
 );
 
-export default withRouter(BookDetailInfo);
+export default BookDetailInfo;

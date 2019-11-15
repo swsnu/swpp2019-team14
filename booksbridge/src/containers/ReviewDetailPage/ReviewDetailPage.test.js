@@ -10,12 +10,14 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 
 const stubInitialState = {
   selectedArticle: {
-    isbn: '1',
-    title: 'TITLE',
-    authors: 'AUTHOR',
-    publisher: 'PUBLISHER',
-    publishedDate: '20190101',
-    thumbnail: '',
+    book: {
+      isbn: 1,
+      title: 'TITLE',
+      authors: 'AUTHOR',
+      publisher: 'PUBLISHER',
+      publishedDate: '20190101',
+      thumbnail: '',
+    },
     content: 'REVIEW CONTENT',
     title: 'REVIEW TITLE',
     comments: [],
@@ -57,5 +59,19 @@ describe('<ReviewDetailPage />', () => {
     const wrapper = component.find('.ReviewDetailPage');
     component.find('button#check-book-button').simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/book/1');
+  });
+
+  it(`show loading`, () => {
+    const InitialStore = getMockStore({
+      selectedArticle: null,
+    });
+    const component = mount(
+      <Provider store={InitialStore}>
+        <ConnectedRouter history={history}>
+          <ReviewDetailPage />
+        </ConnectedRouter>
+      </Provider>,
+    );
+    expect(component.find('.loading').length).toBe(1);
   });
 });

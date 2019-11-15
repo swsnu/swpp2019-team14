@@ -18,7 +18,11 @@ class ReviewDetailPage extends Component {
   }
 
   render() {
-    const book = this.props.currentArticle;
+    if (!this.props.currentArticle) {
+      return <div className="loading">LOADING...</div>;
+    }
+
+    const book = this.props.currentArticle.book;
 
     return (
       <div className="ReviewDetailPage">

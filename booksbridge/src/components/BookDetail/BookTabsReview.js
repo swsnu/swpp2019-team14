@@ -67,4 +67,4 @@ const BookTabsReview = props => {
   );
 };
 
-export default withRouter(BookTabsReview);
+export default BookTabsReview;
