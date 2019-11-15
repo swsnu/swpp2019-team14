@@ -19,7 +19,7 @@ class CurationModal extends Component {
     };
   }
 
-  componentWillUpdate(nextProps, nextState, snapshot) {
+  UNSAFE_componentWillUpdate(nextProps, nextState, snapshot) {
     if (this.state.open) {
       if (this.state.delete && this.state.selectedBooks.length > 0) {
         this.setState({
@@ -41,14 +41,9 @@ class CurationModal extends Component {
     this.props.onEmptySearchedBooks();
   };
 
-  seeMoreHandler = () => {
-    this.props.onSearchBooks(this.state.keyword, this.state.requestNum);
-    this.setState({ requestNum: this.state.requestNum + 1 });
-  };
-
   render() {
     return (
-      <div>
+      <div className="curation-modal-all">
         <Button className="select-book-button" onClick={this.openHandler}>
           Select Book
         </Button>
@@ -132,9 +127,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    onSearchBooks: (keyword, page) =>
-      dispatch(actionCreators.getSearchedBooks(keyword, page)),
-    onGetSpecificBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
     onEmptySearchedBooks: () => dispatch(actionCreators.emptySearchedBooks()),
   };
 };
