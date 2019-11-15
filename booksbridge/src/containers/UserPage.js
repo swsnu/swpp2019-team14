@@ -13,8 +13,8 @@ import './UserPage.css';
 class UserPage extends Component {
   constructor(params) {
     super(params);
-    this.props.onLoadUser(this.props.match.params.user_id);
-    this.props.onLoadUserReviews(this.props.match.params.user_id);
+    this.props.onLoadUser(this.props.match.params.username);
+    this.props.onLoadUserReviews(this.props.match.params.username);
   }
 
   componentDidMount() {}
@@ -25,7 +25,7 @@ class UserPage extends Component {
     // need to implement whether user_id from url is valid or not
 
     console.log(
-      '[DEBUG from userpage] user_id: ' + this.props.match.params.user_id,
+      '[DEBUG from userpage] user_id: ' + this.props.match.params.username,
     );
     console.log('[DEBUG from userpage] user: ' + this.props.profile_user);
 
@@ -56,11 +56,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadUser: user_id => {
-      dispatch(actionCreators.getSpecificUser(user_id));
+    onLoadUser: username => {
+      dispatch(actionCreators.getSpecificUser(username));
     },
-    onLoadUserReviews: user_id => {
-      dispatch(actionCreators.getArticlesByUserId(user_id));
+    onLoadUserReviews: username => {
+      dispatch(actionCreators.getArticlesByUserId(username));
     },
   };
 };
