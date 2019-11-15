@@ -40,4 +40,4 @@ matrix:
         - cd ..
         - sonar-scanner
       after_success:
-        - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+        - cat ./booksbridge/coverage/lcov.info | ./booksbridge/node_modules/coveralls/bin/coveralls.js
