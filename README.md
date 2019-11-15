@@ -1,7 +1,7 @@
 # Booksbridge
-[![Build Status](https://travis-ci.org/swsnu/swpp2019-team14.png?branch=master&kill_cache=1&service=github)](https://travis-ci.org/swsnu/swpp2019-team14) 
-[![Coverage Status](https://coveralls.io/repos/github/swsnu/swpp2019-team14/badge.svg?branch=master&kill_cache=1&service=github)](https://coveralls.io/github/swsnu/swpp2019-team14?branch=master)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=swsnu_swpp2019-team14&metric=alert_status&kill_cache=1&service=github)](https://sonarcloud.io/dashboard?id=swsnu_swpp2019-team14)
+[![Build Status](https://travis-ci.org/swsnu/swpp2019-team14.png?branch=master&kill_cache=1&service=github&style=flat-square)](https://travis-ci.org/swsnu/swpp2019-team14) 
+[![Coverage Status](https://coveralls.io/repos/github/swsnu/swpp2019-team14/badge.svg?branch=master&kill_cache=1&service=github&style=flat-square)](https://coveralls.io/github/swsnu/swpp2019-team14?branch=master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=swsnu_swpp2019-team14&metric=alert_status&kill_cache=1&service=github&style=flat-square)](https://sonarcloud.io/dashboard?id=swsnu_swpp2019-team14)
 ## Revision (2019.11.02) : sprint 3 submission
 ## Revision (2019.11.03 00:57) : added sonarcloud badge
 
