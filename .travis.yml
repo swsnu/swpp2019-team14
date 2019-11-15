@@ -35,9 +35,9 @@ matrix:
         - cd ..
         - cd booksbridge_backend
         - coverage run --branch --source='./book' manage.py test
-        - coverage report
-        - coverage html
+        - coverage xml
         - cd ..
         - sonar-scanner
       after_success:
+        - cd booksbridge
         - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
