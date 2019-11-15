@@ -22,7 +22,7 @@ matrix:
       install: # Script to install required packages
         - cd booksbridge
         - yarn install
-        - yarn add coveralls
+        - npm install coveralls
         - cd ..
         - cd booksbridge_backend
         - pip3 install -r requirements.txt
@@ -35,9 +35,13 @@ matrix:
         - cd ..
         - cd booksbridge_backend
         - coverage run --branch --source='./book' manage.py test
-        - coverage report
-        - coverage html
+        - coverage xml
         - cd ..
         - sonar-scanner
       after_success:
+        - cd booksbridge
         - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+        - coveralls-lcov -v -n coverage/lcov.info > coverage.json
+        - cd ..
+        - cd booksbridge_backend
+        - coveralls --merge=../frontend/coverage.json
