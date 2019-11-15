@@ -67,11 +67,13 @@ describe('<ChooseBookModal />', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
+
   it('should render', () => {
     const component = mount(modal);
     const wrapper = component.find('.choose-book-modal-content');
     expect(wrapper.length).toBe(2);
   });
+
   it('should open modal, set state properly with user input, and close modal', () => {
     const input = 'TEST_INPUT';
     const component = mount(modal);
@@ -82,12 +84,10 @@ describe('<ChooseBookModal />', () => {
       .find(ChooseBookModal.WrappedComponent)
       .instance();
     expect(modalInstance.state.keyword).toEqual(input);
-    // expect(modalInstance.state.open).toEqual(true);
-
     const closeButton = component.find('.close-select-book-button').at(0);
     closeButton.simulate('click');
-    // expect(modalInstance.state.open).toEqual(false);
   });
+
   it('should search with enter', () => {
     const component = mount(modal);
     const searchBar = component.find('#search-form').at(0);
@@ -95,6 +95,7 @@ describe('<ChooseBookModal />', () => {
     searchBar.simulate('keypress', { key: 'Enter' });
     expect(spySearchBooks).toHaveBeenCalledTimes(1);
   });
+
   it('should click see more button', () => {
     const input = 'TEST_INPUT';
     const component = mount(modal);
