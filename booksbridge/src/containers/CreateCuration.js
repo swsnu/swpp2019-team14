@@ -58,17 +58,6 @@ class CreateCuration extends Component {
   };
 
   render() {
-    const book = this.props.selectedBook ? (
-      <BookResultSummary
-        cover={this.props.selectedBook.thumbnail}
-        title={this.props.selectedBook.title}
-        authors={this.props.selectedBook.authors}
-        publisher={this.props.selectedBook.publisher}
-        isbn={this.props.selectedBook.isbn}
-        direct={false}
-        click={() => {}}
-      />
-    ) : null;
     return (
       <div className="CreateReview">
         <Header />
@@ -81,15 +70,17 @@ class CreateCuration extends Component {
           {this.state.selectedBooks
             ? this.state.selectedBooks.map(book => {
                 return (
-                  <BookResultSummary
-                    cover={book.thumbnail}
-                    title={book.title}
-                    authors={book.authors}
-                    publisher={book.publisher}
-                    isbn={book.isbn}
-                    direct={false}
-                    click={() => {}}
-                  />
+                  <div className="bookdetail-container">
+                    <BookResultSummary
+                      cover={book.thumbnail}
+                      title={book.title}
+                      authors={book.authors}
+                      publisher={book.publisher}
+                      isbn={book.isbn}
+                      direct={false}
+                      click={() => {}}
+                    />
+                  </div>
                 );
               })
             : null}
