@@ -1,7 +1,10 @@
 matrix:
   include:
     - language:
-        - python3 # Your language e.g. node_js, python
+        - python # Your language e.g. node_js, python
+      cache:
+        yarn: true
+        pip: true
       node_js:
         - "10" # node_js version
       python:
