@@ -45,22 +45,21 @@ class ChooseBookModal extends Component {
   };
 
   render() {
-    const result =
-      this.props.searchedBooks.length > 1
-        ? this.props.searchedBooks.map(book => {
-            return (
-              <BookResultSummary
-                cover={book.thumbnail}
-                title={book.title}
-                authors={book.authors}
-                publisher={book.publisher}
-                isbn={book.isbn}
-                direct={false}
-                click={this.props.selected}
-              />
-            );
-          })
-        : null;
+    const result = this.props.searchedBooks
+      ? this.props.searchedBooks.map(book => {
+          return (
+            <BookResultSummary
+              cover={book.thumbnail}
+              title={book.title}
+              authors={book.authors}
+              publisher={book.publisher}
+              isbn={book.isbn}
+              direct={false}
+              click={this.props.selected}
+            />
+          );
+        })
+      : null;
 
     const moreButton = this.state.search && (
       <Button className="more-button" onClick={this.seeMoreHandler}>

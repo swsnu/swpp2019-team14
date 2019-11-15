@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { connectRouter, ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect, Switch } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 
 import BookDetail from './BookDetail';
 import { getMockStore } from '../test-utils/mocks';
@@ -115,8 +116,8 @@ describe('<BookDetail />', () => {
         </ConnectedRouter>
       </Provider>,
     );
-    const wrapper = component.find('.loading');
-    expect(wrapper.length).toBe(1);
+    const wrapper = component.find('.Spinner');
+    expect(wrapper.length).toBe(2);
   });
 
   it(`'should render loading page`, () => {

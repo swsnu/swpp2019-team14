@@ -1,11 +1,92 @@
 .Wrapper {
-  align-self: center;
   border: 1px solid gray;
-  width: 800px;
-  height: 400px;
+  width: 500px;
+  border-radius: 10px;
 }
-
-.ProfilePicture {
+.Header {
+  width: 100%;
+  height: 30px;
+  text-align: right;
+}
+.Edit {
+  padding: 5px 20px 0px 0px;
+  font-size: 20px;
+}
+.Upper {
+  width: 100%;
+  height: 180px;
+  display: flex;
+}
+.UpperLeft {
   width: 50%;
-  height: 50%;
+  height: 100%;
+  position: relative;
+}
+.ProfilePictureContainer {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.ProfilePicture {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 5px;
+}
+.UpperRight {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+.NameContainer {
+  font-family: 'Noto Sans KR', sans-serif;
+
+  text-align: left;
+}
+.Username {
+  font-size: 30px;
+  color: black;
+}
+.Nickname {
+  font-size: 20px;
+  color: gray;
+}
+.Lower {
+  height: auto;
+  text-align: left;
+  padding: 10px 20px 10px 20px;
+}
+.Profile_Text {
+  font-size: 25px;
+  padding: 10px 30px 10px 30px;
+  background-color: lightgray;
+  border-radius: 5px;
+}
+.Footer {
+  height: 30px;
+  display: flex;
+}
+.FooterLeft {
+  width: 50%;
+  align-content: left;
+}
+.FooterRight {
+  width: 50%;
+  align-content: right;
+}
+.SignOut {
+  font-size: 20px;
+  text-align: left;
+  padding-left: 20px;
+}
+.Follow {
+  font-size: 20px;
+  text-align: right;
+  padding-right: 20px;
 }

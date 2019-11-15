@@ -133,9 +133,9 @@ def specific_book(request,isbn):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     elif request.method == 'GET':
-        book_in_db = Book.objects.get(isbn = isbn)
-        book_dict = model_to_dict(book_in_db)
         try:
+            book_in_db = Book.objects.get(isbn = isbn)
+            book_dict = model_to_dict(book_in_db)
             response = requests.get('https://m.search.daum.net/search'+book_in_db.url[30:]).text
         except:
             return HttpResponse(status=400)
@@ -179,6 +179,41 @@ def search_article(request, isbn):
                 'is_phrase': article.is_phrase
             }
             articles.append(article_dict)
+        return JsonResponse(articles, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def search_article_by_userID(request, user_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    if request.method == 'GET':
+        articles = list()
+        for article in Article.objects.filter(author=user_id):
+            deltatime = datetime.now() - article.date
+            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
+            user = get_object_or_404(User, id=article.author_id)
+            user_dict = {
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
+            }
+            article_dict = {
+                'author': user_dict,
+                'book_isbn': article.book.isbn,
+                'book_title': article.book.title,
+                'book_thumbnail': article.book.thumbnail,
+                'id': article.id,
+                'title': article.title,
+                'content': article.content,
+                'date': time_array,
+                'is_long': article.is_long,
+                'is_short': article.is_short,
+                'is_phrase': article.is_phrase
+            }
+            articles.append(article_dict)
+        
         return JsonResponse(articles, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -264,10 +299,10 @@ def comment(request):
         user_dict = {'id':user.id, 'username':user.username,'nickname':user.profile.nickname,'profile_photo':user.profile.profile_photo.name}
         response_dict = {'id':article.id, 'author':user_dict, 'book':book_dict, 'title':article.title, 'content':article.content, 'date':article.date, 'comments': comments}
         return JsonResponse(response_dict, status=201)
-    elif request.method == 'PUT':
-        pass
-    elif request.method == 'DELETE':
-        pass
+    # TODO elif request.method == 'PUT':
+    #    pass
+    # TODO elif request.method == 'DELETE':
+    #    pass
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
 
@@ -296,10 +331,10 @@ def article(request):
         article.save()
         article_dict = model_to_dict(article)
         return JsonResponse(article_dict, status=201)
-    elif request.method == 'PUT':
-        pass
-    elif request.method == 'DELETE':
-        pass
+    # TODO elif request.method == 'PUT':
+    #    pass
+    # TODO elif request.method == 'DELETE':
+    #    pass
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
 
@@ -311,7 +346,6 @@ def curation(request):
     elif request.method == 'POST':
         try:
             req_data = json.loads(request.body.decode())
-            isbn = int(req_data['isbn'])
             title = req_data['title']
             content = req_data['content']
             isbn_content_list = req_data['isbn_content_pairs'] 
@@ -320,7 +354,7 @@ def curation(request):
             return HttpResponse(status=400)
 
         try:
-            book_content_list = [(Book.object.get(isbn=int(isbn)), content) for (isbn, content) in isbn_content_list]  
+            book_content_list = [(Book.objects.get(isbn=int(isbn)), content) for (isbn, content) in isbn_content_list]  
         except Book.DoesNotExist:
             return HttpResponse(status=404)
     
@@ -345,14 +379,14 @@ def curation(request):
             
         result_dict = { "curation": curation_dict, "book_content": book_content_dict } 
         return JsonResponse(result_dict, status=201)
-    elif request.method == 'PUT':
-        pass
-    elif request.method == 'DELETE':
-        pass
+    # TODO elif request.method == 'PUT':
+    #    pass
+    # TODO elif request.method == 'DELETE':
+    #    pass
     else:
-        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
-
+        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
       
+
 def article_page(request, page):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -393,8 +427,8 @@ def article_page(request, page):
 def library(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
-    elif request.method == 'GET':
-        pass
+    # TODO elif request.method == 'GET':
+    #    pass
     elif request.method == 'POST':
         # { title }
         try:
@@ -403,36 +437,38 @@ def library(request):
         except (KeyError) as e:
             return HttpResponse(status=400) 
         library = Library(user=request.user, title=title)
-        libary.save()
+        library.save()
         library_dict = model_to_dict(library)
         return JsonResponse(library_dict, status=201)
-    elif request.method == 'PUT':
-        pass
-    elif request.method == 'DELETE':
-        pass
+    # TODO elif request.method == 'PUT':
+    #    pass
+    # TODO elif request.method == 'DELETE':
+    #    pass
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'PUT', 'DELETE']) 
 
 def book_in_library(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
-    elif request.method == 'GET':
-        pass
+    # TODO elif request.method == 'GET':
+    #    pass
     elif request.method == 'POST':
         # { isbn, library }: library means library_id (정수라고 가정)
         try:
             req_data = json.loads(request.body.decode())
-            isbn = int(req_data['isbn'])
-            library = int(req_data['library'])
+            book = Book.objects.get(isbn=int(req_data['isbn']))
+            library = Library.objects.get(id=int(req_data['library']))
         except (KeyError) as e:
             return HttpResponse(status=400) 
         
-        book_in_library = BookInLibrary(isbn=isbn, library=library)
+
+
+        book_in_library = BookInLibrary(book=book, library=library)
         book_in_library.save()
         result_dict = model_to_dict(book_in_library)
         return JsonResponse(result_dict, status=201)
-    elif request.method == 'DELETE':
-        pass
+    # TODO elif request.method == 'DELETE':
+    #    pass
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'DELETE']) 
 
@@ -444,10 +480,11 @@ def specific_user(request, user_id):
         try:
             user = User.objects.get(id=user_id)
             user_dict = {
-                'id':user.id,
-                'username':user.username,
-                'profile_photo':user.profile.profile_photo.name,
-                'nickname':user.profile.nickname,
+                'id': user.id,
+                'username': user.username,
+                'profile_photo': user.profile.profile_photo.name,
+                'nickname': user.profile.nickname,
+                'profile_text': user.profile.profile_text,
             }
             return JsonResponse(user_dict)
         except: 

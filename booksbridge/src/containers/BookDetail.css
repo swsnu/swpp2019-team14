@@ -1,15 +1,19 @@
 .infoStyle {
-    height: auto;
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  padding-top: 40px;
+  height: auto;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .tab {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  padding-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-
+.Spinner {
+  margin: 50px 0px 0px 0px;
+}

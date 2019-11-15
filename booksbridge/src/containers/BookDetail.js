@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Button } from 'semantic-ui-react';
 import Form from 'react-bootstrap/Form';
+import Spinner from 'react-bootstrap/Spinner';
 
 import Header from '../components/Header';
 import BookInfo from '../components/BookDetail/BookInfo';
@@ -25,7 +26,7 @@ class BookDetail extends Component {
 
   render() {
     if (!this.props.currentBook) {
-      return <div className="loading">LOADING...</div>;
+      return <Spinner animation="border" className="Spinner" />;
     }
 
     const isbn = this.props.match.params.book_id;
@@ -44,6 +45,7 @@ class BookDetail extends Component {
     return (
       <div className="bookDetail">
         <Header />
+        <div className="HeaderPadding" />
         <div className="infoStyle">
           <BookInfo
             isbn={isbn}

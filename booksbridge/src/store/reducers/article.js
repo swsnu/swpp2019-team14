@@ -29,6 +29,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedArticle: action.article,
       };
+    case actionTypes.GET_ARTICLES_BY_USERID:
+      return {
+        ...state,
+        articlesByUserID: action.articles,
+      };
     case actionTypes.POST_LONG_REVIEW_COMMENT:
       return {
         ...state,
