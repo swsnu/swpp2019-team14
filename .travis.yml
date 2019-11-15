@@ -9,12 +9,10 @@ matrix:
         - "10" # node_js version
       python:
         - "3.6.8"
-      dist: trusty
+      dist: xenial
+      services:
+        - sqlite3
       addons:
-        apt:
-          packages:
-            - "python3"
-            - "python3-pip"
         sonarcloud:
           organization: "swsnu"
           token:
