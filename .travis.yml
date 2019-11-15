@@ -37,6 +37,7 @@ matrix:
         - coverage run --branch --source='./book' manage.py test
         - coverage report
         - coverage html
+        - cd ..
         - sonar-scanner
       after_success:
         - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
