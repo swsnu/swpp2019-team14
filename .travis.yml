@@ -22,7 +22,7 @@ matrix:
       install: # Script to install required packages
         - cd booksbridge
         - yarn install
-        - npm install coveralls
+        - yarn add coveralls
         - cd ..
         - cd booksbridge_backend
         - pip3 install -r requirements.txt
