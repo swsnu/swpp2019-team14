@@ -17,7 +17,7 @@ matrix:
         - yarn add coveralls
         - cd ..
         - cd booksbridge_backend
-        - yarn installb
+        - pip3 install -r booksbridge_backend/requirements.txt
         - cd ..
       script: # Script to test your build
         - cd booksbridge
