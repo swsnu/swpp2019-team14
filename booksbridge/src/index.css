@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Nanum+Myeongjo:700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:700&display=swap');
+@import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
 body {
   margin: 0;

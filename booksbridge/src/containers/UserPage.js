@@ -24,16 +24,14 @@ class UserPage extends Component {
   render() {
     // need to implement whether user_id from url is valid or not
 
-    console.log(
-      '[DEBUG from userpage] user_id: ' + this.props.match.params.username,
-    );
-    console.log('[DEBUG from userpage] user: ' + this.props.profile_user);
-
     return (
       <div className="UserPage">
         <Header />
         <div className="UserInfo">
-          <UserInfo profile_user={this.props.profile_user} />
+          <UserInfo
+            profile_user={this.props.profile_user}
+            logged_in_user={this.props.logged_in_user}
+          />
         </div>
         <div className="ArmisticeLine"></div>
         <div className="Tab">
@@ -50,6 +48,7 @@ class UserPage extends Component {
 }
 
 const mapStateToProps = state => ({
+  logged_in_user: state.user.logged_in_user,
   profile_user: state.user.profile_user,
   articles_by_userID: state.article.articlesByUserID,
 });
