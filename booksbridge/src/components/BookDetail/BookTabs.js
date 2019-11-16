@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Tab } from 'semantic-ui-react';
 import BookTabsReviewList from './BookTabsReviewList';
@@ -8,8 +7,6 @@ import BookDetailInfo from '../BookDetailInfo/BookDetailInfo';
 import './BookTabs.css';
 
 class BookTabs extends Component {
-  componentDidMount() {}
-
   render() {
     const shortReviewList = (
       <BookTabsReviewList
@@ -55,7 +52,10 @@ class BookTabs extends Component {
         menuItem: 'Long Review',
         render: () => <Tab.Pane>{longReviewList}</Tab.Pane>,
       },
-      { menuItem: 'Phrase', render: () => <Tab.Pane>{phraseList}</Tab.Pane> },
+      {
+        menuItem: 'Phrase',
+        render: () => <Tab.Pane>{phraseList}</Tab.Pane>,
+      },
     ];
 
     return (
@@ -66,11 +66,4 @@ class BookTabs extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = dispatch => ({});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(BookTabs));
+export default BookTabs;

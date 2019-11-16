@@ -33,6 +33,7 @@ class UserReviewList extends Component {
     //const longReviewList = reviews.filter(review => review.props.is_long);
     //const phraseList = reviews.filter(review => review.is_phrase);
 
+    // need to pass in reverse order
     const panes = [
       {
         menuItem: 'Short Review',

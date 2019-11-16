@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 
 import Alert from 'react-bootstrap/Alert';
 import Image from 'react-bootstrap/Image';
@@ -49,15 +47,4 @@ class BookInfo extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  currentBook: state.book.selectedBook,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(BookInfo));
+export default BookInfo;
