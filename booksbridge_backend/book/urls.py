@@ -10,7 +10,7 @@ urlpatterns = [
     path('book/<isbn>/', views.specific_book, name='specific_book'),
     path('book/<keyword>/<page>/', views.searchbooks, name='searchbooks'),
     path('article/bookID=<isbn>/', views.search_article, name='searchArticle'),
-    path('article/userID=<username>/', views.search_article_by_username,
+    path('article/username=<username>/', views.search_article_by_username,
          name='search_article_by_username'),
     path('article/<review_id>/', views.specific_article, name='specific_article'),
     path('comment/article/', views.comment, name='comment'),
