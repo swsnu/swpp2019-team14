@@ -38,7 +38,7 @@ class Book(models.Model):
 
 class Article(models.Model):
     objects = models.Manager()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='articles')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='articles')
     title = models.TextField(blank=True)
     content = models.TextField()

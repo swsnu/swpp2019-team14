@@ -43,9 +43,13 @@ class App extends Component {
               exact
               component={SearchResultBook}
             />
-            <Route path="/page/:user_id" exact component={UserPage} />
-            <Route path="/page/:user_id/library" exact component={Main} />
-            <Route path="/page/:user_id/curation-list" exact component={Main} />
+            <Route path="/page/:username" exact component={UserPage} />
+            <Route path="/page/:username/library" exact component={Main} />
+            <Route
+              path="/page/:username/curation-list"
+              exact
+              component={Main}
+            />
             <Route path="/review" exact component={Main} />
             <Route path="/review/create" exact component={CreateReview} />
             <Route
@@ -62,12 +66,12 @@ class App extends Component {
             <Route path="/curation" exact component={Main} />
             <Route path="/curation/create" exact component={CreateCuration} />
             <Route
-              path="/curation/:user_id/:curation_id"
+              path="/curation/:username/:curation_id"
               exact
               component={Main}
             />
             <Route
-              path="/curation/:user_id/:curation_id/edit"
+              path="/curation/:username/:curation_id/edit"
               exact
               component={Main}
             />

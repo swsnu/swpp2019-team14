@@ -1,5 +1,6 @@
 import React from 'react';
 import './ProfileSummary.css';
+import { withRouter } from 'react-router';
 
 const ProfileSummary = props => {
   let userload = false;
@@ -17,7 +18,11 @@ const ProfileSummary = props => {
 
   return (
     <div className="ProfileSummary">
-      <img className="profilePic" src={profile_photo} />
+      <img
+        className="profilePic"
+        onClick={() => props.history.push('/page/' + user.username)}
+        src={profile_photo}
+      />
       <div className="profileName">
         <b className="nickname">{user.nickname}</b>
         <p className="username">@{user.username}</p>
@@ -26,4 +31,4 @@ const ProfileSummary = props => {
   );
 };
 
-export default ProfileSummary;
+export default withRouter(ProfileSummary);

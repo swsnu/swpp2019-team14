@@ -51,8 +51,8 @@ export const logoutUser = () => dispatch =>
 // 일단은 필요없어 보임 - 한결
 
 // export const GET_SPECIFIC_USER = 'GET_SPECIFIC_USER'
-export const getSpecificUser = id => dispatch =>
-  axios.get(`/api/user/${id}/`).then(res => {
+export const getSpecificUser = username => dispatch =>
+  axios.get(`/api/user/${username}/`).then(res => {
     console.log('[debug]');
     dispatch({
       type: actionTypes.GET_SPECIFIC_USER,
@@ -165,8 +165,8 @@ export const getArticlesByBookId = isbn => dispatch =>
     }),
   );
 // export const GET_ARTICLES_BY_USERID = 'GET_ARTICLES_BY_USERID'
-export const getArticlesByUserId = id => dispatch =>
-  axios.get(`/api/article/userID=${id}/`).then(res =>
+export const getArticlesByUserId = username => dispatch =>
+  axios.get(`/api/article/username=${username}/`).then(res =>
     dispatch({
       type: actionTypes.GET_ARTICLES_BY_USERID,
       articles: res.data,

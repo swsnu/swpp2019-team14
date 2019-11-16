@@ -184,13 +184,14 @@ def search_article(request, isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-def search_article_by_userID(request, user_id):
+def search_article_by_username(request, username):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
     if request.method == 'GET':
+        user = User.objects.get(username=username)
         articles = list()
-        for article in Article.objects.filter(author=user_id):
+        for article in user.articles.all():
             deltatime = datetime.now() - article.date
             time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
             user = get_object_or_404(User, id=article.author_id)
@@ -473,13 +474,13 @@ def book_in_library(request):
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'DELETE']) 
 
-def specific_user(request, user_id):
+def specific_user(request, username):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     
     elif request.method == 'GET':
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(username=username)
             user_dict = {
                 'id': user.id,
                 'username': user.username,

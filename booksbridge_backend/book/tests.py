@@ -891,7 +891,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -905,7 +905,7 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
@@ -917,7 +917,7 @@ class BookTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
 
         # GET
-        response = client.get('/api/user/1/',
+        response = client.get('/api/user/John/',
                               content_type='application/json')
 
         self.assertIsNotNone(response.content)
@@ -1028,19 +1028,19 @@ class BookTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
 
 
-    def test_search_article_by_userID(self):
+    def test_search_article_by_username(self):
         # Initialize
         client = Client()
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
 
         # GET before sign in
-        response = client.get('/api/article/userID=1/',
+        response = client.get('/api/article/username=1/',
                               content_type='application/json')
 
         self.assertEqual(response.status_code, 401)
@@ -1048,7 +1048,7 @@ class BookTestCase(TestCase):
         # Sign in
         client.post('/api/sign_in/',
                     json.dumps({
-                        'username': 'John Smith',
+                        'username': 'John',
                         'password': 'mypassword'
                     }),
                     content_type='application/json')
@@ -1081,26 +1081,26 @@ class BookTestCase(TestCase):
                     content_type='application/json')
 
         # GET
-        response = client.get('/api/article/userID=1/',
+        response = client.get('/api/article/username=John/',
                               content_type='application/json')
 
         self.assertIsNotNone(response.content)
         self.assertEqual(response.status_code, 200)
 
         # POST
-        response = client.post('/api/article/userID=1/',
+        response = client.post('/api/article/username=John/',
                                content_type='application/json')
 
         self.assertEqual(response.status_code, 405)
 
         # PUT
-        response = client.put('/api/article/userID=1/',
+        response = client.put('/api/article/username=John/',
                               content_type='application/json')
 
         self.assertEqual(response.status_code, 405)
 
         # DELETE
-        response = client.delete('/api/article/userID=1/',
+        response = client.delete('/api/article/username=John/',
                                  content_type='application/json')
 
         self.assertEqual(response.status_code, 405)
