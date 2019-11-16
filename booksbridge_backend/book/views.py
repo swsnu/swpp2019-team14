@@ -485,12 +485,11 @@ def ocr(request):
         return JsonResponse(result_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
-
 def library(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
-    # TODO elif request.method == 'GET':
-    #    pass
+    elif request.method == 'GET':
+        pass
     elif request.method == 'POST':
         # { title }
         try:
@@ -499,38 +498,36 @@ def library(request):
         except (KeyError) as e:
             return HttpResponse(status=400) 
         library = Library(user=request.user, title=title)
-        library.save()
+        libary.save()
         library_dict = model_to_dict(library)
         return JsonResponse(library_dict, status=201)
-    # TODO elif request.method == 'PUT':
-    #    pass
-    # TODO elif request.method == 'DELETE':
-    #    pass
+    elif request.method == 'PUT':
+        pass
+    elif request.method == 'DELETE':
+        pass
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'PUT', 'DELETE']) 
 
 def book_in_library(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
-    # TODO elif request.method == 'GET':
-    #    pass
+    elif request.method == 'GET':
+        pass
     elif request.method == 'POST':
         # { isbn, library }: library means library_id (정수라고 가정)
         try:
             req_data = json.loads(request.body.decode())
-            book = Book.objects.get(isbn=int(req_data['isbn']))
-            library = Library.objects.get(id=int(req_data['library']))
+            isbn = int(req_data['isbn'])
+            library = int(req_data['library'])
         except (KeyError) as e:
             return HttpResponse(status=400) 
         
-
-
-        book_in_library = BookInLibrary(book=book, library=library)
+        book_in_library = BookInLibrary(isbn=isbn, library=library)
         book_in_library.save()
         result_dict = model_to_dict(book_in_library)
         return JsonResponse(result_dict, status=201)
-    # TODO elif request.method == 'DELETE':
-    #    pass
+    elif request.method == 'DELETE':
+        pass
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'DELETE']) 
 
@@ -542,11 +539,10 @@ def specific_user(request, user_id):
         try:
             user = User.objects.get(id=user_id)
             user_dict = {
-                'id': user.id,
-                'username': user.username,
-                'profile_photo': user.profile.profile_photo.name,
-                'nickname': user.profile.nickname,
-                'profile_text': user.profile.profile_text,
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
             }
             return JsonResponse(user_dict)
         except: 
