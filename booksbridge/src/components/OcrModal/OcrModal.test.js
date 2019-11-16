@@ -11,18 +11,35 @@ const stubInitialState = {};
 
 const mockStore = getMockStore(stubInitialState);
 
-describe('<ChooseBookModal />', () => {
-  let modal;
+jest.mock('./CopyToClipboard', () => {
+  return jest.fn(props => {
+    return (
+      <div id="copy-to-clipboard">
+        {props.text}
+        <button id="copy" onClick={props.clickCopy} />
+      </div>
+    );
+  });
+});
+
+describe('<OcrModal />', () => {
+  let modal, spyRunOcr;
   beforeEach(() => {
     modal = (
       <Provider store={mockStore}>
         <OcrModal />
       </Provider>
     );
+    spyRunOcr = jest
+      .spyOn(actionCreators, 'runOcr')
+      .mockImplementation(formData => {
+        return dispatch => {};
+      });
   });
   afterEach(() => {
     jest.clearAllMocks();
   });
+
   it('should render', () => {
     const component = mount(modal);
     const wrapper = component.find('.ocr-modal');
@@ -53,6 +70,29 @@ describe('<ChooseBookModal />', () => {
     expect(modalInstance.state.files).toEqual([]);
     expect(modalInstance.state.content).toEqual('');
   });
-  // should test promise regarding uploading file
-  // should test run ocr
+
+  it('should close modal when copy to clipboard', () => {
+    const component = mount(modal);
+    const openButton = component.find('#open-ocr').at(0);
+    openButton.simulate('click');
+    const copyButton = component.find('#copy').at(0);
+    copyButton.simulate('click');
+    const modalInstance = component.find(OcrModal.WrappedComponent).instance();
+    expect(modalInstance.state.open).toEqual(false);
+  });
+  xit('should run ocr', () => {
+    const component = mount(modal);
+    const openButton = component.find('#open-ocr').at(0);
+    openButton.simulate('click');
+    const runButton = component.find('#run-ocr').at(1);
+    runButton.simulate('click');
+
+    expect(spyRunOcr).toHaveBeenCalledTimes(1);
+  });
+  xit('should upload file with ref', () => {
+    // not this
+    const component = mount(modal);
+    const wrapper = component.find('.ocr-modal');
+    expect(wrapper.length).toBe(1);
+  });
 });
