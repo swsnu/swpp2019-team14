@@ -1,12 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-
+import { Form } from 'semantic-ui-react';
 import Alert from 'react-bootstrap/Alert';
+import * as actionCreators from '../../store/actions/actionCreators';
 
 import './UserInfo.css';
 class UserInfo extends Component {
-  componentDidMount() {}
+  state = {
+    onEdit: false,
+    nickname: '',
+    comment: '',
+  };
+
+  onEditProfile(user) {
+    if (this.state.nickname === '') {
+      window.alert('Nickname cannot be empty!');
+    } else {
+      this.props.onEditProfile({
+        id: user.id,
+        nickname: this.state.nickname,
+        profile_text: user.profile_text,
+        profile_photo: user.profile_photo,
+      });
+      this.setState(state => ({ ...this.state, onEdit: false }));
+    }
+  }
 
   render() {
     const profile_user = this.props.profile_user;
@@ -20,13 +39,32 @@ class UserInfo extends Component {
     if (profile_user.profile_photo.startsWith('resources/image/profile'))
       profile_photo = '/static/' + profile_user.profile_photo.substr(24);
     else profile_photo = profile_user.profile_photo;
-    const edit_button = <img src="/images/edit_button.png" width="30"></img>;
+    let edit_button;
+    if (!this.state.onEdit) {
+      edit_button = (
+        <img
+          src="/images/edit_button.png"
+          width="30"
+          onClick={() =>
+            this.setState(state => ({ ...this.state, onEdit: true }))
+          }
+        ></img>
+      );
+    } else {
+      edit_button = (
+        <img
+          src="/images/tick.png"
+          width="30"
+          onClick={() => this.onEditProfile(profile_user)}
+        ></img>
+      );
+    }
 
     const profile_picture = (
       <img src={profile_photo} className="ProfilePicture" />
     );
 
-    // TODO: replace SignOut with a proper button, link it to the database so that one can sign out properly.
+    // TODO: 글자수 제한, 사진 변경
     return (
       <div className="Wrapper">
         <div className="Header">
@@ -44,7 +82,29 @@ class UserInfo extends Component {
           </p>
           <div className="UpperRight">
             <div className="NameContainer">
-              <div className="Username">{nickname}</div>
+              <div className="NicknameContainer">
+                {this.state.onEdit === true ? (
+                  <div>
+                    <div className="NicknameForm">
+                      <Form size={'medium'}>
+                        <Form.Input
+                          type="text"
+                          value={this.state.nickname}
+                          placeholder={nickname}
+                          onChange={event =>
+                            this.setState({
+                              ...this.state,
+                              nickname: event.target.value,
+                            })
+                          }
+                        />
+                      </Form>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="Username">{nickname}</div>
+                )}
+              </div>
               <div className="Nickname">@{username}</div>
               <div className="ProfileComment">{profile_text}</div>
             </div>
@@ -64,4 +124,13 @@ class UserInfo extends Component {
   }
 }
 
-export default UserInfo;
+const mapDispatchToProps = dispatch => {
+  return {
+    onEditProfile: profile => dispatch(actionCreators.editUserProfile(profile)),
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(UserInfo);

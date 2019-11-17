@@ -25,20 +25,18 @@ def signup(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-def profile_update(request):
+def profile(request, userid):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     elif request.method == 'PUT':
         profile = request.user.profile
         req_data = json.loads(request.body.decode())
-        nickname = req_data['nickname']
-        profile_text = req_data['profile_text']
-        profile_photo = req_data['profile_photo']
-        profile.nickname = nickname
-        profile.profile_text = profile_text
-        profile.profile_photo = profile_photo
-        profile.save()  
-        return HttpResponse(status=200)
+        profile.nickname = req_data['nickname']
+        profile.profile_text = req_data['profile_text']
+        profile.profile_photo = req_data['profile_photo']
+        profile.save()
+        user_dict = {'id':request.user.id, 'username':request.user.username, 'nickname':profile.nickname, 'profile_photo':profile.profile_photo.name, 'profile_text': profile.profile_text}
+        return JsonResponse(user_dict, status=200)
     else:
         return HttpResponseNotAllowed(['PUT'])
 
@@ -51,7 +49,7 @@ def signin(request):
         if user is not None:
             login(request, user)
             user.save()
-            user_dict = {'username':user.username, 'nickname':user.profile.nickname, 'profile_photo':user.profile.profile_photo.name, 'profile_text': user.profile.profile_text}
+            user_dict = {'id':user.id, 'username':user.username, 'nickname':user.profile.nickname, 'profile_photo':user.profile.profile_photo.name, 'profile_text': user.profile.profile_text}
             return JsonResponse(user_dict, status=200)
         else:
             return HttpResponse(status=400)
