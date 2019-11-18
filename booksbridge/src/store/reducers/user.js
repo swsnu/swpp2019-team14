@@ -13,7 +13,16 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_LOGGED_IN_USER:
       return { ...state, logged_in_user: action.user };
     case actionTypes.LOGOUT_USER:
-      return { ...state, logged_in_user: null };
+      return {
+        ...state,
+        logged_in_user: {
+          id: '',
+          username: '',
+          nickname: '',
+          profile_photo: '',
+          profile_text: '',
+        },
+      };
     case actionTypes.GET_SPECIFIC_USER:
       return { ...state, profile_user: action.user };
     case actionTypes.EDIT_USER_PROFILE:

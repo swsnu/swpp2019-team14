@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Form } from 'semantic-ui-react';
+import { Form, TextArea } from 'semantic-ui-react';
 import Alert from 'react-bootstrap/Alert';
 import * as actionCreators from '../../store/actions/actionCreators';
 
@@ -13,21 +13,49 @@ class UserInfo extends Component {
     comment: '',
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.profile_user) return;
+    this.setState({
+      onEdit: false,
+      nickname: nextProps.profile_user.nickname,
+      comment: nextProps.profile_user.profile_text,
+    });
+  }
+
   onEditProfile(user) {
     if (this.state.nickname === '') {
       window.alert('Nickname cannot be empty!');
+      return;
+    } else if (
+      this.state.nickname === this.props.logged_in_user.nickname &&
+      this.state.comment === this.props.logged_in_user.profile_text
+    ) {
+      this.setState(state => ({ ...this.state, onEdit: false }));
+      return;
+    } else if (this.state.nickname.search(/\s/) > -1) {
+      window.alert('닉네임엔 공백을 입력할 수 없습니다.');
+      return;
+    } else if (this.state.nickname.length > 8) {
+      window.alert('닉네임은 8글자를 넘을 수 없습니다.');
+      return;
+    } else if (this.state.comment.length > 120) {
+      window.alert('자기소개는 120글자를 넘을 수 없습니다.');
+      return;
     } else {
-      this.props.onEditProfile({
+      const profile = {
         id: user.id,
         nickname: this.state.nickname,
-        profile_text: user.profile_text,
+        profile_text: this.state.comment,
         profile_photo: user.profile_photo,
-      });
+      };
+      this.props.onEditProfile(profile);
       this.setState(state => ({ ...this.state, onEdit: false }));
     }
   }
 
   render() {
+    const tempcomment =
+      '안녕하세요. 독서를 사랑하는 어쩌구저쩌구 배유빈입니다. 스릴러 장르 좋아합니다. 최애 책은 해리포터 시리즈예요. 팔로우 감사합니다~';
     const profile_user = this.props.profile_user;
     const logged_in_user = this.props.logged_in_user;
     if (!profile_user) return null;
@@ -85,20 +113,19 @@ class UserInfo extends Component {
               <div className="NicknameContainer">
                 {this.state.onEdit === true ? (
                   <div>
-                    <div className="NicknameForm">
-                      <Form size={'medium'}>
-                        <Form.Input
-                          type="text"
-                          value={this.state.nickname}
-                          placeholder={nickname}
-                          onChange={event =>
-                            this.setState({
-                              ...this.state,
-                              nickname: event.target.value,
-                            })
-                          }
-                        />
-                      </Form>
+                    <div>
+                      <input
+                        className="NicknameForm"
+                        type="text"
+                        value={this.state.nickname}
+                        placeholder={nickname}
+                        onChange={event =>
+                          this.setState({
+                            ...this.state,
+                            nickname: event.target.value,
+                          })
+                        }
+                      />
                     </div>
                   </div>
                 ) : (
@@ -106,7 +133,26 @@ class UserInfo extends Component {
                 )}
               </div>
               <div className="Nickname">@{username}</div>
-              <div className="ProfileComment">{profile_text}</div>
+              <div className="ProfileComment">
+                {this.state.onEdit === true ? (
+                  <div>
+                    <TextArea
+                      className="commentForm"
+                      type="textbox"
+                      value={this.state.comment}
+                      placeholder={profile_text}
+                      onChange={event =>
+                        this.setState({
+                          ...this.state,
+                          comment: event.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                ) : (
+                  <div className="Comment">{profile_text}</div>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -29,7 +29,7 @@
 }
 .UpperRight {
   width: 60%;
-  height: 100%;
+  height: 200px;
   position: relative;
   display: flex;
   align-items: center;
@@ -43,18 +43,36 @@
   font-weight: 700;
   font-size: 25px;
   color: black;
+  margin-left: 6px;
 }
 .Nickname {
+  padding-left: 6px;
   font-family: 'NanumSquare', sans-serif;
   font-size: 15px;
   color: gray;
 }
 .NicknameContainer{
   display: flex;
-  height: 40px;
+  height: 45px;
   align-items: center;
 }
+.NicknameForm{
+  height: 45px;
+  padding-left: 5px;
+  width: 200px;
+  font-family: 'NanumSquare', sans-serif;
+  font-weight: 700;
+  font-size: 25px;
+  border: 1px solid rgba(34,36,38,.15);
+  border-radius: .28571429rem;
+}
+.Comment{
+  padding-top: 3px;
+  padding-left: 3px;
+  font-family: 'Nanum Gothic', sans-serif;
+}
 .ProfileComment {
+  height: 80px;
   font-family: 'Nanum Gothic', sans-serif;
   margin-top: 5px;
   font-size: 12px;
@@ -65,6 +83,16 @@
   text-align: left;
   padding: 10px 20px 10px 20px;
 }
+.commentForm{
+  font-family: 'Nanum Gothic', sans-serif;
+  font-size: 12px;
+  color: gray;
+  height: 100px;
+  border: 1px solid rgba(34,36,38,.15);
+  border-radius: .28571429rem;
+  resize: none;
+  width:273px;
+}
 .Profile_Text {
   font-size: 25px;
   padding: 10px 30px 10px 30px;
@@ -73,14 +101,19 @@
 }
 .Footer {
   display: flex;
+  height: 120px;
 }
 .FooterLeft {
   width: 50%;
   align-content: left;
+  
 }
 .FooterRight {
   width: 50%;
+  display: flex;
   align-content: right;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 .FollowStatus {
   font-family: 'NanumSquare', sans-serif;
