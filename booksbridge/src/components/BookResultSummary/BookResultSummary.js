@@ -28,6 +28,7 @@ const BookResultSummary = props => {
         className={props.size === 'small' ? 'Summary-small' : 'Summary'}
       >
         <div
+          id="inside"
           className={props.size === 'small' ? 'inside-small' : 'inside'}
           onClick={clickHandler}
         >

@@ -104,10 +104,10 @@ class CurationModal extends Component {
                         publisher={book.publisher}
                         isbn={book.isbn}
                         direct={false}
+                        size="small"
                         click={() => {
                           this.setState({ delete: true });
                         }}
-                        size="small"
                       />
                     );
                   })
