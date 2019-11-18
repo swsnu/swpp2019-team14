@@ -344,8 +344,8 @@ def curation(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
-    # {title, content, isbn_content_pairs} from frontend
     elif request.method == 'POST':
+        # {title, content, isbn_content_pairs} from frontend
         try:
             req_data = json.loads(request.body.decode())
             title = req_data['title']
@@ -356,7 +356,7 @@ def curation(request):
             return HttpResponse(status=400)
 
         try:
-            book_content_list = [(Book.objects.get(isbn=int(isbn)), content) for (isbn, content) in isbn_content_list]  
+            book_content_list = [(Book.objects.get(isbn=int(isbn)), content) for (isbn, content) in isbn_content_list]  # 
         except Book.DoesNotExist:
             return HttpResponse(status=404)
     
@@ -381,13 +381,74 @@ def curation(request):
             
         result_dict = { "curation": curation_dict, "book_content": book_content_dict } 
         return JsonResponse(result_dict, status=201)
+    
     # TODO elif request.method == 'PUT':
     #    pass
     # TODO elif request.method == 'DELETE':
     #    pass
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
-      
+
+
+def make_curation_dict(curation):
+    # TODO: comments
+    ''' input: curation object  ->   output: curation dict '''
+    deltatime = (datetime.now() - curation.date)
+    time_array = [deltatime.days//365, deltatime.days//30, deltatime.days, deltatime.seconds//3600, deltatime.seconds//60]
+
+    user = get_object_or_404(User, id=curation.author_id)  # author_id? author.id? what happened with article?
+    user_dict = {
+        'id':user.id,
+        'username':user.username,
+        'profile_photo':user.profile.profile_photo.name,
+        'nickname':user.profile.nickname,
+    }
+
+    book_in_curation = BookInCuration.objects.filter(curation=curation).values()
+    book_list = [{'book': book.book, 'content': book.content} for book in book_in_curation]  # book: Book 그 자체
+
+    curation_dict = {
+        'author': user_dict,
+        'books': book_list,    # list of Book instances
+        'id': curation.id,
+        'title': curation.title,
+        'content': curation.content,
+        'date': time_array,
+    }
+    return curation_dict
+
+
+def specific_curation(request, curation_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    elif request.method == 'GET':
+        curation = get_object_or_404(Curation, id=curation_id)
+        return JsonResponse(make_curation_dict(curation))
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
+def curation_page(request, page):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    elif request.method == 'GET':
+        curations_all = Curation.objects.all().order_by('-id')
+        paginator = Paginator(curations_all, 10)
+        requested_list = paginator.page(page).object_list
+
+        curations = [] 
+        for curation in requested_list:
+            curations.append(make_curation_dict(curation))
+
+        response_body = {'curations': curations, 'has_next': paginator.page(page).has_next()}
+        return JsonResponse(response_body, status=200)
+    
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
 
 def article_page(request, page):
     if not request.user.is_authenticated:
@@ -554,6 +615,44 @@ def ocr(request):
         return JsonResponse(result_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
+
+def follow(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'POST':
+        # { user_id } 
+        try:
+            req_data = json.loads(request.body.decode())
+            followee_id = int(req_data['user_id'])
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        followee = User.objects.get(id=followee_id)
+        follow = Follow(follower=request.user, followee=followee) 
+        follow.save()
+        follow_dict = model_to_dict(follow)
+        return JsonResponse(follow_dict, status=201)
+    elif request.method == 'GET':
+        try:
+            req_data = json.loads(request.body.decode())
+            followee_id = int(req_data['user_id'])
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        # followers of the requesting user
+        follower_list = [follower for follower in Follow.objects.filter(followee=request.user).values()]   
+        # users that requesting user follows
+        following_list = [followee for followee in Follow.objects.filter(follower=request.user).values()]  
+        
+        result_dict = {'follower_list': follower_list, 'following_list': following_list}
+        return JsonResponse(result_dict, status=200)
+    # TODO elif request.method == 'DELETE':
+    # pass
+
+    else:
+        return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
+
+
 
 @ensure_csrf_cookie
 def token(request):
