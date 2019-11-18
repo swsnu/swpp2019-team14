@@ -67,12 +67,16 @@ class Curation(models.Model):
     title = models.TextField()
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
+    def __str__(self):
+        return str(self.title)
 
 
 class BookInCuration(models.Model):
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     content = models.TextField()
+    def __str__(self):
+        return str(self.curation)
 
 
 class Library(models.Model):

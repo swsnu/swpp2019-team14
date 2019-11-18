@@ -107,6 +107,7 @@ class CurationModal extends Component {
                         click={() => {
                           this.setState({ delete: true });
                         }}
+                        size="small"
                       />
                     );
                   })
