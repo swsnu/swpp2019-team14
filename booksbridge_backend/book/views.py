@@ -362,7 +362,10 @@ def curation(request):
             book_content_list=[]
 
             for each_content in isbn_content_list:
-                new_book_in_curation = BookInCuration(curation=curation, book=Book.objects.get(isbn=each_content['isbn']), content=each_content['content']) 
+                try:
+                    new_book_in_curation = BookInCuration(curation=curation, book=Book.objects.get(isbn=each_content['isbn']), content=each_content['content']) 
+                except Book.DoesNotExist:
+                    return HttpResponse(status=404)
                 new_book_in_curation.save()
                 book_content_list.append(model_to_dict(new_book_in_curation))
             
