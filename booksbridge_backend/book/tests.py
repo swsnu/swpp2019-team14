@@ -173,7 +173,7 @@ class BookTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
 
-    def test_profile_update(self):
+    def test_profile(self):
         # Initialize
         client = Client()
 
@@ -184,8 +184,13 @@ class BookTestCase(TestCase):
 
         Profile.objects.create(user=user)
 
-        # GET before sign in
-        response = client.get('/api/user/profile/',
+        # before sign in
+        response = client.put('/api/profile/1/',
+                                json.dumps({
+                                  'nickname': 'John Smith',
+                                  'profile_text': 'mypassword',
+                                  'profile_photo': 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
+                              }),
                               content_type='application/json')
 
         self.assertEqual(response.status_code, 401)
@@ -198,22 +203,12 @@ class BookTestCase(TestCase):
                                content_type='application/json')
 
         # GET
-        response = client.get('/api/user/profile/',
+        response = client.get('/api/profile/1/',
                               content_type='application/json',)
         self.assertEqual(response.status_code, 405)
 
-        # POST
-        response = client.post('/api/user/profile/',
-                               json.dumps({
-                                   'nickname': 'John Smith',
-                                   'profile_text': 'mypassword',
-                                   'profile_photo': 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
-                               }),
-                               content_type='application/json')
-        self.assertEqual(response.status_code, 405)
-
         # PUT
-        response = client.put('/api/user/profile/',
+        response = client.put('/api/profile/1/',
                               json.dumps({
                                   'nickname': 'John Smith',
                                   'profile_text': 'mypassword',
@@ -221,11 +216,6 @@ class BookTestCase(TestCase):
                               }),
                               content_type='application/json')
         self.assertEqual(response.status_code, 200)
-
-        # DELETE
-        response = client.delete('/api/user/profile/',
-                                 content_type='application/json')
-        self.assertEqual(response.status_code, 405)
 
     def test_specific_book(self):
         # Initialize

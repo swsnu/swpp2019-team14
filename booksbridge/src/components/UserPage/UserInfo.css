@@ -49,6 +49,11 @@
   font-size: 15px;
   color: gray;
 }
+.NicknameContainer{
+  display: flex;
+  height: 40px;
+  align-items: center;
+}
 .ProfileComment {
   font-family: 'Nanum Gothic', sans-serif;
   margin-top: 5px;
