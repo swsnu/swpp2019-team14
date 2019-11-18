@@ -33,11 +33,14 @@ class BookTabs extends Component {
       />
     );
 
-    // for debugging
-    // shortReviewList = this.props.shortReviews[0];
+    // To fix an issue addressed in github issue #51.
+    var content = this.props.contents.endsWith('더보기 ')
+      ? this.props.contents.slice(0, -5)
+      : this.props.contents;
+
     const contents = (
       <BookDetailInfo
-        contents={this.props.contents} // console.log("[DEBUG] shortReviewList[0] == " + shortReviewList)
+        contents={content}
         author_contents={this.props.author_contents}
       />
     );

@@ -58,3 +58,4 @@ export const GET_FOLLOWERS = 'GET_FOLLOWERS';
 export const GET_FOLLOWEES = 'GET_FOLLOWEES';
 
 export const EMPTY_SEARCHED_BOOKS = 'EMPTY_SEARCHED_BOOKS';
+export const RUN_OCR = 'RUN_OCR';

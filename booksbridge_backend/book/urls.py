@@ -18,6 +18,7 @@ urlpatterns = [
     path('token/', views.token, name='token'),
     path('article/', views.article, name='article'),
     path('article/page/<page>/', views.article_page, name='article_page'),
+    path('ocr/', views.ocr, name='ocr'),
     path('curation/', views.curation, name='curation'),
     path('library/', views.library, name='library'),
     path('library/book/', views.book_in_library, name='book_in_library'),

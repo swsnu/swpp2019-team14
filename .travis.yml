@@ -30,10 +30,11 @@ matrix:
     - language: python
       cache:
         pip: true
+        yarn: true
       python: 3.7.4
       dist: xenial
       # services:
-      #   - mysql
+      #   - sqlite3
       env:
         - COVERALLS_PARALLEL=true
       addons:
@@ -42,15 +43,17 @@ matrix:
           token:
             secure: "RnXCoy83suPhfDs8mMyHDoReMZekdF98mMNzQY/6kHKjYFY19HN/BcbBKr1hKTJm2fJs6pw86aXs35eiu4gGh1FBwfk2ZI+AKJHNY7Aqy/sor02Gw4UmgDVvt1/aQetlhvmyK3WuQMkeBd0mjTDV3A6LTbaUzpNQEzVkuESNJw4wXSakFsySnGyfbQCneklGtjwmS+HRxKTVzekc3AITArRUUt4OQruHxbgJmeB/IV42QpW63+k2XUf49JOBJ+1J53lcWcjdPPOH/WiV/Yum9KEWCOinHbIj1E1wVDwt6wiDVqNGrmA1KP/si1Y7BnBEOHBdS03OPDfzccw6n8Ue4J6BAfi0xMBc90Up9ou602JbxqxIBtFY9YW84nGpk8eSzTQvd6TRQw3oSbbz3z1Il+c8uGQEWClLbP/W3xKIBP+AVwR6VrOBmYjAY0XlOJ5xltOd0oXSpupKlAC4+8kXuEKLlTvqccBaFFaG78UWZvCb41OejneTiN9AQDaiy7Twi0m5/w3KmceGS6gfVEQZ5BgJZwJhmXMW422+1kQxebOzue2+WJTD8fIoe0mC+uLbRM1LwRXbPQuP16kxUTBQDk+YCleM4PtH9lN+VfSzatvVdF7t17u8WcerwFPExv++FQIrdJF5Qw7aB00wd47ZjEaafPjWjnYctolwzrqm7qA="
       before_install:
-        - cd booksbridge_backend
       install:
-        - pip3 install -r requirements.txt
+        - yarn installb
+        - cd booksbridge
+        - yarn install
+        - cd ../booksbridge_backend
         - pip install coveralls
+        - cd ..
       script:
-        - coverage run --branch --source='./book' manage.py test
-        - coverage xml
+        - yarn test
         # - pylint ./*/
       after_success:
-        - coveralls
-        - cd ..
         - sonar-scanner
+        - cd booksbridge_backend
+        - coveralls

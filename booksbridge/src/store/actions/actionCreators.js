@@ -419,3 +419,17 @@ export const getFollowees = userid => dispatch =>
 export const emptySearchedBooks = () => ({
   type: actionTypes.EMPTY_SEARCHED_BOOKS,
 });
+
+export const runOcr = formData => dispatch =>
+  axios
+    .post('/api/ocr/', formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    })
+    .then(res =>
+      dispatch({
+        type: actionTypes.RUN_OCR,
+        quote: res.data.quote,
+      }),
+    );

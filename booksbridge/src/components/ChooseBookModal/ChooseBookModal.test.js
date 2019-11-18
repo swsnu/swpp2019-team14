@@ -32,15 +32,17 @@ const mockStore = getMockStore(stubInitialState);
 jest.mock('../BookResultSummary/BookResultSummary', () => {
   return jest.fn(props => {
     return (
-      <div className="spyBookResultSummary">
-        {props.cover}
-        {props.title}
-        {props.authors}
-        {props.publisher}
-        {props.isbn}
-        {props.direct}
-        {props.click}
-      </div>
+      <div
+        className="spyBookResultSummary"
+        cover={props.cover}
+        title={props.title}
+        authors={props.authors}
+        published={props.published}
+        isbn={props.isbn}
+        isbn={props.isbn}
+        direct={props.direct}
+        click={props.click}
+      ></div>
     );
   });
 });
@@ -110,5 +112,75 @@ describe('<ChooseBookModal />', () => {
       .find(ChooseBookModal.WrappedComponent)
       .instance();
     expect(modalInstance.state.keyword).toEqual(input);
+  });
+  it('with some searched books', () => {
+    const stubInitialState1 = {
+      selectedBook: {
+        author: {
+          id: 1,
+          username: 'TEST_USER',
+          profile_photo: '',
+          nickname: 'TEST_USER',
+        },
+        book_isbn: 9788915092044,
+        book_title: 'TEST_BOOK',
+        book_thumbnail: '',
+        id: 1,
+        title: 'TEST_ARTICLE',
+        content: 'TEST_ARTICLE',
+        date: [0, 0, 0, 0, 454],
+        is_long: true,
+        is_short: false,
+        is_phrase: false,
+      },
+      searchedBooks: [
+        {
+          author: {
+            id: 1,
+            username: 'TEST_USER',
+            profile_photo: '',
+            nickname: 'TEST_USER',
+          },
+          book_isbn: 9788915092044,
+          book_title: 'TEST_BOOK',
+          book_thumbnail: '',
+          id: 1,
+          title: 'TEST_ARTICLE',
+          content: 'TEST_ARTICLE',
+          date: [0, 0, 0, 0, 454],
+          is_long: true,
+          is_short: false,
+          is_phrase: false,
+        },
+        {
+          author: {
+            id: 2,
+            username: 'TEST_USER',
+            profile_photo: '',
+            nickname: 'TEST_USER',
+          },
+          book_isbn: 9788915092044,
+          book_title: 'TEST_BOOK',
+          book_thumbnail: '',
+          id: 2,
+          title: 'TEST_ARTICLE',
+          content: 'TEST_ARTICLE',
+          date: [0, 0, 0, 0, 454],
+          is_long: true,
+          is_short: false,
+          is_phrase: false,
+        },
+      ],
+    };
+
+    const mockStore1 = getMockStore(stubInitialState1);
+    const modal1 = (
+      <Provider store={mockStore1}>
+        <ChooseBookModal />
+      </Provider>
+    );
+    const component = mount(modal1);
+    const wrapper = component.find('.choose-book-modal-content');
+    expect(wrapper.length).toBe(2);
   });
 });
