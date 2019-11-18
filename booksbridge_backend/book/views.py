@@ -41,6 +41,12 @@ def profile(request, userid):
     else:
         return HttpResponseNotAllowed(['PUT'])
 
+def photo_upload(request):
+    if request.method == 'POST':
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
 def signin(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
