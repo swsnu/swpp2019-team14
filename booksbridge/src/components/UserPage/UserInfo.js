@@ -4,14 +4,22 @@ import { withRouter } from 'react-router';
 import { Form, TextArea } from 'semantic-ui-react';
 import Alert from 'react-bootstrap/Alert';
 import * as actionCreators from '../../store/actions/actionCreators';
+import axios from 'axios';
 
 import './UserInfo.css';
 class UserInfo extends Component {
-  state = {
-    onEdit: false,
-    nickname: '',
-    comment: '',
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      onEdit: false,
+      onUpload: false,
+      nickname: '',
+      comment: '',
+    };
+
+    this.inputRef = React.createRef();
+  }
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.profile_user) return;
@@ -19,8 +27,11 @@ class UserInfo extends Component {
       onEdit: false,
       nickname: nextProps.profile_user.nickname,
       comment: nextProps.profile_user.profile_text,
+      profile_photo: nextProps.profile_user.profile_photo,
     });
   }
+
+  onUploadPhoto() {}
 
   onEditProfile(user) {
     if (this.state.nickname === '') {
@@ -51,6 +62,26 @@ class UserInfo extends Component {
       this.props.onEditProfile(profile);
       this.setState(state => ({ ...this.state, onEdit: false }));
     }
+  }
+
+  handleFileInput(e) {
+    e.preventDefault();
+    console.log(this.inputRef.current.files[0]);
+    const formData = new FormData();
+    formData.append('file', this.inputRef.current.files[0]);
+    return axios
+      .post({
+        method: 'POST',
+        url: 'http://127.0.0.1:8000/api/profile/upload/',
+        data: formData,
+        config: {
+          headers: {
+            'Content-Type': 'multipart/form-data, boundary=${form._boundary}',
+          },
+        },
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log('Error', err));
   }
 
   render() {
@@ -95,6 +126,16 @@ class UserInfo extends Component {
     // TODO: 글자수 제한, 사진 변경
     return (
       <div className="Wrapper">
+        <div className="UploadBox">
+          <form>
+            <input
+              type="file"
+              onChange={event => this.handleFileInput(event)}
+              ref={this.inputRef}
+              style={{ display: 'none' }}
+            />
+          </form>
+        </div>
         <div className="Header">
           <div className="Edit">
             {profile_user.username === logged_in_user.username
@@ -104,9 +145,24 @@ class UserInfo extends Component {
         </div>
         <div className="Upper">
           <p className="UpperLeft">
-            <p className="ProfilePictureContainer">
-              <div className="ProfilePicture">{profile_picture}</div>
-            </p>
+            <div className="ProfilePictureContainer">
+              {this.state.onEdit === true ? (
+                <div>
+                  <div className="ProfilePictureEdit">
+                    <img
+                      className="ProfilePicture"
+                      src="/images/profile_edit.png"
+                      onClick={() => {
+                        this.inputRef.current.click();
+                      }}
+                    ></img>
+                  </div>
+                  <div className="ProfilePicture">{profile_picture}</div>
+                </div>
+              ) : (
+                <div className="ProfilePicture">{profile_picture}</div>
+              )}
+            </div>
           </p>
           <div className="UpperRight">
             <div className="NameContainer">

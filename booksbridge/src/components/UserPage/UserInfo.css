@@ -21,6 +21,20 @@
   height: 100%;
   position: relative;
 }
+.UploadBox.label
+{ display: inline-block; padding: .5em .75em; color: #999; font-size: inherit; line-height: normal; vertical-align: middle; background-color: #fdfdfd; cursor: pointer; border: 1px solid #ebebeb; border-bottom-color: #e2e2e2; border-radius: .25em; }
+
+.UploadBox.input[type="file"]
+{background-color: red!important;
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip:rect(0,0,0,0); border: 0; }
+
+.ProfilePictureEdit {
+  position: absolute;
+  margin-left: 15px;
+  width: 150px;
+  height: 150px;
+  border-radius: 500rem;
+}
 .ProfilePicture {
   margin-left: 15px;
   width: 150px;
