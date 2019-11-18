@@ -153,33 +153,40 @@ def specific_book(request,isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+
+def make_article_dict(article):
+    ''' input: Article instance   ->  output: article dict  '''
+    deltatime = datetime.now() - article.date
+    time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
+    user = get_object_or_404(User, id=article.author_id)
+    user_dict = {
+        'id':user.id,
+        'username':user.username,
+        'profile_photo':user.profile.profile_photo.name,
+        'nickname':user.profile.nickname,
+    }
+    article_dict = {
+        'author': user_dict,
+        'book_isbn': article.book.isbn,
+        'book_title': article.book.title,
+        'book_thumbnail': article.book.thumbnail,
+        'id': article.id,
+        'title': article.title,
+        'content': article.content,
+        'date': time_array,
+        'is_long': article.is_long,
+        'is_short': article.is_short,
+        'is_phrase': article.is_phrase
+    }
+    return article_dict
+
+
 def search_article(request, isbn):
     if request.method == 'GET':
-        articles = list()
-        for article in Article.objects.filter(book_id=isbn).order_by('-id'):
-            deltatime = (datetime.now() - article.date)
-            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
-            user = get_object_or_404(User, id=article.author_id)
-            user_dict = {
-                'id':user.id,
-                'username':user.username,
-                'profile_photo':user.profile.profile_photo.name,
-                'nickname':user.profile.nickname,
-            }
-            article_dict = {
-                'author': user_dict,
-                'book_isbn': article.book.isbn,
-                'book_title': article.book.title,
-                'book_thumbnail': article.book.thumbnail,
-                'id': article.id,
-                'title': article.title,
-                'content': article.content,
-                'date': time_array,
-                'is_long': article.is_long,
-                'is_short': article.is_short,
-                'is_phrase': article.is_phrase
-            }
-            articles.append(article_dict)
+        articles = [] 
+        articles_list = Article.objects.filter(book_id=isbn).order_by('-id')
+        for article in articles_list:
+            articles.append(make_article_dict(article))
         return JsonResponse(articles, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -190,32 +197,10 @@ def search_article_by_username(request, username):
 
     if request.method == 'GET':
         user = User.objects.get(username=username)
-        articles = list()
-        for article in user.articles.all():
-            deltatime = datetime.now() - article.date
-            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
-            user = get_object_or_404(User, id=article.author_id)
-            user_dict = {
-                'id':user.id,
-                'username':user.username,
-                'profile_photo':user.profile.profile_photo.name,
-                'nickname':user.profile.nickname,
-            }
-            article_dict = {
-                'author': user_dict,
-                'book_isbn': article.book.isbn,
-                'book_title': article.book.title,
-                'book_thumbnail': article.book.thumbnail,
-                'id': article.id,
-                'title': article.title,
-                'content': article.content,
-                'date': time_array,
-                'is_long': article.is_long,
-                'is_short': article.is_short,
-                'is_phrase': article.is_phrase
-            }
-            articles.append(article_dict)
-        
+        articles = []
+        articles_list = user.articles.all() 
+        for article in articles_list:
+           articles.append(make_article_dict(article))
         return JsonResponse(articles, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -247,7 +232,7 @@ def get_comments(article):
             'profile_photo':comment_author.profile.profile_photo.name,
             'nickname':comment_author.profile.nickname,
         }
-        if(comment.parent==None):
+        if comment.parent == None:
             replies = list()
             for reply in comment.replies.all():
                 reply_deltatime = (datetime.now() - reply.date)
@@ -351,12 +336,11 @@ def curation(request):
             title = req_data['title']
             content = req_data['content']
             isbn_content_list = req_data['isbn_content_pairs'] 
-            # isbn_content_list = [(isbn, content) for (isbn, content) in isbn_content_pairs]
         except (KeyError) as e:
             return HttpResponse(status=400)
 
         try:
-            book_content_list = [(Book.objects.get(isbn=int(isbn)), content) for (isbn, content) in isbn_content_list]  # 
+            book_content_list = [(Book.objects.get(isbn=int(isbn)), content) for (isbn, content) in isbn_content_list]   
         except Book.DoesNotExist:
             return HttpResponse(status=404)
     
@@ -392,7 +376,7 @@ def curation(request):
 
 def make_curation_dict(curation):
     # TODO: comments
-    ''' input: curation object  ->   output: curation dict '''
+    ''' input: Curation object  ->   output: curation dict '''
     deltatime = (datetime.now() - curation.date)
     time_array = [deltatime.days//365, deltatime.days//30, deltatime.days, deltatime.seconds//3600, deltatime.seconds//60]
 
