@@ -1273,6 +1273,12 @@ class BookTestCase(TestCase):
         self.assertIsNot(response.content, b'{}')
         self.assertEqual(response.status_code, 200)
          
+        # unallowed requests 
+        response = client.put('/api/follow/1/', 
+                              json.dumps({ 'none': 'none' }),  
+                              content_type='application/json')
+        self.assertEqual(response.status_code, 405)                        
+
 
 
         

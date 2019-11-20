@@ -54,6 +54,10 @@ const stubLibrary = {
   author_id: 2,
 };
 
+const stubQuote = {
+  quote: 'EXTRACTED FROM BOOK',
+};
+
 describe('ActionCreators', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -797,4 +801,23 @@ describe('ActionCreators', () => {
     });
   });
   //   emptySearchedBooks,
+
+  //   runOcr
+  it(`'runOcr'`, done => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
+      return new Promise((resolve, reject) => {
+        const result = {
+          status: 200,
+          data: stubQuote,
+        };
+        resolve(result);
+      });
+    });
+    store.dispatch(actionCreators.runOcr()).then(() => {
+      const newState = store.getState();
+      expect(newState.book.quote).toBe(stubQuote);
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
 });
