@@ -213,12 +213,41 @@ def specific_article(request,review_id):
         book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
         book_dict = model_to_dict(book_in_db)
         user = get_object_or_404(User, id=article.author_id)
-        user_dict = {'id':user.id, 'username':user.username,'nickname':user.profile.nickname,'profile_photo':user.profile.profile_photo.name}
+        user_dict = {
+            'id':user.id, 
+            'username':user.username,
+            'nickname':user.profile.nickname,
+            'profile_photo':user.profile.profile_photo.name
+        }
         comments = get_comments(article)
-        response_dict = {'id':article.id, 'author':user_dict, 'book':book_dict, 'title':article.title, 'content':article.content, 'date':article.date, 'comments': comments}
+        response_dict = {
+            'id':article.id, 
+            'author':user_dict, 
+            'book':book_dict, 
+            'title':article.title, 
+            'content':article.content, 
+            'date':article.date, 
+            'comments': comments
+        }
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
+
+def article_page(request, page):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'GET':
+        articles_all = Article.objects.all().order_by('-id')
+        paginator = Paginator(articles_all, 10)
+        articles_list = paginator.page(page).object_list
+        articles = []
+        for article in articles_list:
+            articles.append(make_article_dict(article))
+        # articles = list(articles_all.values())
+        # response_body={'articles':articles,'count': Article.objects.count()} 
+        response_body={'articles': articles, 'has_next': paginator.page(page).has_next()}
+        return JsonResponse(response_body)
+
 
 def get_comments(article):
     comments = list()
@@ -283,8 +312,21 @@ def comment(request):
         book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
         book_dict = model_to_dict(book_in_db)
         user = get_object_or_404(User, id=article.author_id)
-        user_dict = {'id':user.id, 'username':user.username,'nickname':user.profile.nickname,'profile_photo':user.profile.profile_photo.name}
-        response_dict = {'id':article.id, 'author':user_dict, 'book':book_dict, 'title':article.title, 'content':article.content, 'date':article.date, 'comments': comments}
+        user_dict = {
+            'id':user.id, 
+            'username':user.username,
+            'nickname':user.profile.nickname,
+            'profile_photo':user.profile.profile_photo.name
+        }
+        response_dict = {
+            'id':article.id, 
+            'author':user_dict, 
+            'book':book_dict, 
+            'title':article.title, 
+            'content':article.content, 
+            'date':article.date, 
+            'comments': comments
+        }
         return JsonResponse(response_dict, status=201)
     # TODO elif request.method == 'PUT':
     #    pass
@@ -380,7 +422,7 @@ def make_curation_dict(curation):
     deltatime = (datetime.now() - curation.date)
     time_array = [deltatime.days//365, deltatime.days//30, deltatime.days, deltatime.seconds//3600, deltatime.seconds//60]
 
-    user = get_object_or_404(User, id=curation.author_id)  # author_id? author.id? what happened with article?
+    user = get_object_or_404(User, id=curation.author_id)  # why becomes author_id, not author.id? 
     user_dict = {
         'id':user.id,
         'username':user.username,
@@ -388,12 +430,12 @@ def make_curation_dict(curation):
         'nickname':user.profile.nickname,
     }
 
-    book_in_curation = BookInCuration.objects.filter(curation=curation).values()
-    book_list = [{'book': book.book, 'content': book.content} for book in book_in_curation]  # book: Book 그 자체
+    book_in_curation = BookInCuration.objects.filter(curation=curation)
+    book_list = [{'book': book.book_id, 'content': book.content} for book in book_in_curation]  # book_id: isbn 
 
     curation_dict = {
         'author': user_dict,
-        'books': book_list,    # list of Book instances
+        'books': book_list,    
         'id': curation.id,
         'title': curation.title,
         'content': curation.content,
@@ -408,7 +450,7 @@ def specific_curation(request, curation_id):
 
     elif request.method == 'GET':
         curation = get_object_or_404(Curation, id=curation_id)
-        return JsonResponse(make_curation_dict(curation))
+        return JsonResponse(make_curation_dict(curation), status=200)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -433,43 +475,6 @@ def curation_page(request, page):
         return HttpResponseNotAllowed(['GET'])
 
 
-
-def article_page(request, page):
-    if not request.user.is_authenticated:
-        return HttpResponse(status=401)
-    elif request.method == 'GET':
-        articles_all = Article.objects.all().order_by('-id')
-        paginator = Paginator(articles_all, 10)
-        articles_list = paginator.page(page).object_list
-        articles = list()
-        for article in articles_list:
-            deltatime = (datetime.now() - article.date)
-            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
-            user = get_object_or_404(User, id=article.author_id)
-            user_dict = {
-                'id':user.id,
-                'username':user.username,
-                'profile_photo':user.profile.profile_photo.name,
-                'nickname':user.profile.nickname,
-            }
-            article_dict = {
-                'author': user_dict,
-                'book_isbn': article.book.isbn,
-                'book_title': article.book.title,
-                'book_thumbnail': article.book.thumbnail,
-                'id': article.id,
-                'title': article.title,
-                'content': article.content,
-                'date': time_array,
-                'is_long': article.is_long,
-                'is_short': article.is_short,
-                'is_phrase': article.is_phrase
-            }
-            articles.append(article_dict)
-        # articles = list(articles_all.values())
-        # response_body={'articles':articles,'count': Article.objects.count()} 
-        response_body={'articles': articles, 'has_next': paginator.page(page).has_next()}
-        return JsonResponse(response_body)
 
 def library(request):
     if not request.user.is_authenticated:
@@ -600,42 +605,49 @@ def ocr(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-def follow(request):
+def follow(request, user_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
+
     elif request.method == 'POST':
         # { user_id } 
-        try:
-            req_data = json.loads(request.body.decode())
-            followee_id = int(req_data['user_id'])
-        except (KeyError) as e:
-            return HttpResponse(status=400)
+        # try:
+        #     req_data = json.loads(request.body.decode())
+        #     followee_id = int(req_data['user_id'])
+        # except (KeyError) as e:
+        #     return HttpResponse(status=400)
 
-        followee = User.objects.get(id=followee_id)
+        followee = get_object_or_404(User, id=user_id)  
         follow = Follow(follower=request.user, followee=followee) 
         follow.save()
         follow_dict = model_to_dict(follow)
         return JsonResponse(follow_dict, status=201)
-    elif request.method == 'GET':
-        try:
-            req_data = json.loads(request.body.decode())
-            followee_id = int(req_data['user_id'])
-        except (KeyError) as e:
-            return HttpResponse(status=400)
 
+    elif request.method == 'GET':
         # followers of the requesting user
-        follower_list = [follower for follower in Follow.objects.filter(followee=request.user).values()]   
+        follower_list = [get_object_or_404(User, id=x.follower_id) 
+                         for x in Follow.objects.filter(followee=request.user)]   
+        follower_list = [{'id': user.id,
+                         'username':user.username,
+                         'profile_photo':user.profile.profile_photo.name,
+                         'nickname':user.profile.nickname } for user in follower_list]
+
         # users that requesting user follows
-        following_list = [followee for followee in Follow.objects.filter(follower=request.user).values()]  
-        
+        following_list = [get_object_or_404(User, id=x.followee_id) 
+                          for x in Follow.objects.filter(follower=request.user)]  
+        following_list = [{'id': user.id,
+                         'username':user.username,
+                         'profile_photo':user.profile.profile_photo.name,
+                         'nickname':user.profile.nickname } for user in following_list]
+
         result_dict = {'follower_list': follower_list, 'following_list': following_list}
         return JsonResponse(result_dict, status=200)
+
     # TODO elif request.method == 'DELETE':
     # pass
 
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
-
 
 
 @ensure_csrf_cookie
