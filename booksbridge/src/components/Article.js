@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { UI, Feed, Button, Modal, Input, Grid, Image } from 'semantic-ui-react';
+import { Button, Feed, Icon } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/actionCreators';
 import './Article.css';
 import Alert from 'react-bootstrap/Alert';
@@ -63,19 +63,18 @@ const Article = props => {
                       props.history.push(`/review/${props.id}`);
                     }}
                   >
-                    View Full Review
+                    더 보기
                   </a>
                 ) : null}
               </div>
             </div>
           </div>
           <div className="MainLikeButton">
-            <div className="ui labeled button" tabIndex="0">
-              <div className="ui red button">
-                <i className="heart icon" /> Like
-              </div>
-              <a className="ui basic red left pointing label">0</a>
-            </div>
+            <Feed.Meta>
+              <Feed.Like>
+                <Icon name="like" />4 Likes
+              </Feed.Like>
+            </Feed.Meta>
           </div>
         </div>
       </div>

@@ -6,18 +6,14 @@ import BookTabsReview from './BookTabsReview';
 import './BookTabsReviewList.css';
 
 class BookTabsReviewList extends Component {
-  componentDidMount() {}
+  componentDidMount() { }
 
   render() {
     if (this.props.reviews.length == 0) {
-      return <div>아직 리뷰가 없어요... 하나 작성해보시면 어떨까요?</div>;
+      return <div>작성된 리뷰가 없습니다.</div>;
     }
 
     const reviews = this.props.reviews.map((review, index) => {
-      console.log(
-        `[DEBUG] review.title: ${review.title}review.content: ${review.content}`,
-      );
-
       return (
         <div className="BookTabsReviewWrapper" key={index}>
           <BookTabsReview

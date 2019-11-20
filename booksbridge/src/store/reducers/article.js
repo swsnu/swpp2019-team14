@@ -7,6 +7,7 @@ const initialState = {
   articles: [],
   hasNext: [],
   selectedArticle: null,
+  articlesByUserID: [],
 };
 
 const reducer = (state = initialState, action) => {

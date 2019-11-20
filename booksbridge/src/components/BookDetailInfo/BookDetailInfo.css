@@ -1,4 +1,6 @@
 .BookSummary{
+    font-family: 'NanumSquare', sans-serif;
+    font-size: 15px;
     text-align: left;
     margin: 10px 10px 50px 10px;
     line-height: 2;
@@ -6,6 +8,8 @@
 }
 
 .AuthorInfo{
+    font-family: 'NanumSquare', sans-serif;
+    font-size: 15px;
     text-align: left;
     margin: 10px;
     line-height: 2;
@@ -13,5 +17,9 @@
 }
 
 .Label{
-    padding-bottom: 10px;
+    
+  font-family: 'NanumSquare', sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+padding-bottom: 10px;
 }
