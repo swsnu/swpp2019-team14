@@ -32,12 +32,8 @@ describe('<BookTabsReview />', () => {
     const wrapper = component.find('.Review');
     expect(wrapper.length).toBe(1);
     component
-      .find('a')
+      .find('.box')
       .at(0)
-      .simulate('click');
-    component
-      .find('a')
-      .at(1)
       .simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/review/1');
   });
