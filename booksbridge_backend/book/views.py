@@ -371,8 +371,8 @@ def curation(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
+    # {title, content, isbn_content_pairs} from frontend
     elif request.method == 'POST':
-        # {title, content, isbn_content_pairs} from frontend
         try:
             req_data = json.loads(request.body.decode())
             title = req_data['title']
@@ -381,11 +381,6 @@ def curation(request):
         except (KeyError) as e:
             return HttpResponse(status=400)
 
-        try:
-            book_content_list = [(Book.objects.get(isbn=int(isbn)), content) for (isbn, content) in isbn_content_list]   
-        except Book.DoesNotExist:
-            return HttpResponse(status=404)
-    
         # TRANSACTION FORM!
         sid = transaction.savepoint()
 
@@ -393,21 +388,23 @@ def curation(request):
             curation = Curation(author=request.user, title=title, content=content)
             curation.save()
             curation_dict = model_to_dict(curation)
+            book_content_list=[]
 
-            book_content_dict = []
-            for (book, content) in book_content_list:
-                new_book_in_curation = BookInCuration(curation=curation, book=book, content=content) 
+            for each_content in isbn_content_list:
+                try:
+                    new_book_in_curation = BookInCuration(curation=curation, book=Book.objects.get(isbn=each_content['isbn']), content=each_content['content']) 
+                except Book.DoesNotExist:
+                    return HttpResponse(status=404)
                 new_book_in_curation.save()
-                book_content_dict.append(model_to_dict(new_book_in_curation))
+                book_content_list.append(model_to_dict(new_book_in_curation))
             
             transaction.savepoint_commit(sid)
         except:
             transaction.savepoint_rollback(sid)
             return HttpResponse(status=400)
             
-        result_dict = { "curation": curation_dict, "book_content": book_content_dict } 
+        result_dict = { "curation": curation_dict, "book_content": book_content_list } 
         return JsonResponse(result_dict, status=201)
-    
     # TODO elif request.method == 'PUT':
     #    pass
     # TODO elif request.method == 'DELETE':
@@ -416,6 +413,7 @@ def curation(request):
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
 
 
+    
 def make_curation_dict(curation):
     # TODO: comments
     ''' input: Curation object  ->   output: curation dict '''

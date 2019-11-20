@@ -621,7 +621,7 @@ class BookTestCase(TestCase):
 
     # [NOTE: curation not yet implemented]
     def test_curation(self):
-        # Initialize
+         # Initialize
         client = Client()
 
         user = User.objects.create_user(
@@ -637,9 +637,9 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       ('9780393912470', 'test_content1'),
-                                       ('9780140447934', 'test_content2'),
-                                       ('9780131103627', 'test_content3'),
+                                       {'isbn': 9780393912470, 'content':'test_content1'},
+                                       {'isbn': 9780140447934, 'content':'test_content2'},
+                                       {'isbn': 9780131103627, 'content':'test_content3'},
                                    ],
                                }),
                                content_type='application/json')
@@ -685,11 +685,10 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       ('9781292101767', 'nonexistingindb'),
+                                       {'isbn': 9781292101767, 'content':'nonexistingindb'},
                                    ],
                                }),
                                content_type='application/json')
-
         self.assertEqual(response.status_code, 404)
 
         # POST
@@ -698,14 +697,16 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       ('9780393912470', 'test_content1'),
-                                       ('9780140447934', 'test_content2'),
-                                       ('9780131103627', 'test_content3'),
+                                       {'isbn': 9780393912470, 'content':'test_content1'},
+                                       {'isbn': 9780140447934, 'content':'test_content2'},
+                                       {'isbn': 9780131103627, 'content':'test_content3'},
                                    ],
                                }),
                                content_type='application/json')
 
         self.assertEqual(response.status_code, 201)
+
+
 
     def test_article_page(self):
         # Initialize
@@ -1146,9 +1147,9 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       ('9780393912470', 'test_content1'),
-                                       ('9780140447934', 'test_content2'),
-                                       ('9780131103627', 'test_content3'),
+                                       { 'isbn' : '9780393912470', 'content': 'test_content1'},
+                                       { 'isbn' : '9780140447934', 'content': 'test_content2'},
+                                       { 'isbn' : '9780131103627', 'content': 'test_content3'},
                                    ],
                                }),
                                content_type='application/json')
@@ -1207,9 +1208,9 @@ class BookTestCase(TestCase):
                             'title': 'test_title',
                             'content': 'test_content',
                             'isbn_content_pairs': [
-                                ('9780393912470', 'test_content1'),
-                                ('9780140447934', 'test_content2'),
-                                ('9780131103627', 'test_content3'),
+                                { 'isbn' : '9780393912470', 'content': 'test_content1'},
+                                { 'isbn' : '9780140447934', 'content': 'test_content2'},
+                                { 'isbn' : '9780131103627', 'content': 'test_content3'},
                             ],
                         }),
                         content_type='application/json')

@@ -18,13 +18,11 @@ class CurationDetailPage extends Component {
   //   }
 
   render() {
-    return ( "hey");
+    return <div>Yes</div>;
     // if (!this.props.currentCuration) {
     //   return <div className="loading">LOADING...</div>;
     // }
-
     // const book = this.props.currentCuration.book;
-
     // return (
     //   <div className="CurationDetailPage">
     //     <Header />
