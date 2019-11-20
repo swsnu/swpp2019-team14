@@ -21,4 +21,6 @@ urlpatterns = [
     path('curation/', views.curation, name='curation'),
     path('library/', views.library, name='library'),
     path('library/book/', views.book_in_library, name='book_in_library'),
+    path('library/username=<username>/', views.search_library_by_username,
+         name='search_library_by_username'),
 ]

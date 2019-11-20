@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-
-import Alert from 'react-bootstrap/Alert';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import Image from 'react-bootstrap/Image';
+import SelectLibraryModal from './SelectLibraryModal';
 
 import * as actionCreators from '../../store/actions/actionCreators';
 
@@ -12,16 +13,19 @@ class BookInfo extends Component {
     super(props);
   }
 
+  onClickAddToLibrary = () => {
+    return;
+  };
+
   render() {
     return (
       <div className="containerStyle">
-        <div style={{ textAlign: 'left' }}>
+        <div className="Left">
           <Image src={this.props.thumbnail} className="imageStyle" />
         </div>
-
-        <div style={{ textAlign: 'right' }}>
-          <div className="infoStyle">
-            <div>
+        <div className="Right">
+          <div className="outerInfo">
+            <div className="innerInfo">
               <p className="titleStyle">{this.props.title}</p>
               <p>
                 <b>AUTHOR(S) : </b>
@@ -40,6 +44,9 @@ class BookInfo extends Component {
                 {this.props.isbn}
               </p>
             </div>
+            <div className="LibraryButton">
+              <SelectLibraryModal isbn={this.props.isbn} />
+            </div>
           </div>
         </div>
       </div>
@@ -47,4 +54,10 @@ class BookInfo extends Component {
   }
 }
 
-export default BookInfo;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddToLibrary: isbn => dispatch(actionCreators.addBookToLibrary),
+  };
+};
+
+export default connect(mapDispatchToProps)(withRouter(BookInfo));

@@ -474,6 +474,28 @@ def book_in_library(request):
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'DELETE']) 
 
+def search_library_by_username(request, username):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    elif request.method == 'GET':
+        try:
+            user = User.objects.get(username=username)
+            libraries = list()
+            for library in Library.objects.filter(user=user):
+                # May implement first 5 books pictures
+                library_dict = {
+                    'title': library.title,
+                    'date': library.date,
+                }
+                libraries.append(library_dict)
+        except:
+            HttpResponse(status=404)
+        JsonResponse(libraries, safe=False)
+    else:
+        HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])    
+    
+
 def specific_user(request, username):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)

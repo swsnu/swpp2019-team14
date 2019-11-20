@@ -1,5 +1,6 @@
 .infoStyle {
   padding-top: 40px;
+  padding-bottom: 20px;
   height: auto;
   width: auto;
   display: flex;
@@ -8,7 +9,7 @@
 }
 
 .tab {
-  padding-top: 40px;
+  padding-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;

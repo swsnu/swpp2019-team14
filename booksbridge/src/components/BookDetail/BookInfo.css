@@ -3,25 +3,30 @@
   border-bottom: 3px dashed rgb(179, 179, 179);
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 1rem;
+  padding: 16px;
 }
 
 .imageStyle {
   border: 1px solid rgb(216, 216, 216);
   text-align: center;
-  padding: 1rem;
+  padding: 16px;
 }
 
+.outerInfo {
+  height: 100%;
+  padding-left: 20px;
+  padding-top: 0px;
+}
+
+.innerInfo {
+  text-align: left;
+}
+
+.LibraryButton {
+  height: auto;
+  padding: 10px 5px 0px 5px;
+}
 .titleStyle {
   font-size: 20px;
   font-weight: bold;
-  text-align: left;
 }
-
-.infoStyle {
-  height: 500px;
-  width: auto;
-  text-align: left;
-  padding: 20px;
-};

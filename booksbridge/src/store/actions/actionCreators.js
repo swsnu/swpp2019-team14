@@ -367,6 +367,24 @@ export const deleteSpecificLibrary = id => dispatch =>
     }),
   );
 
+// export const GET_LIBRARIES_BY_USERNAME = 'GET_LIBRARIES_BY_USERNAME'
+export const getLibrariesByUsername = username => dispatch =>
+  axios.get(`/api/library/username=${username}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_LIBRARIES_BY_USERNAME,
+      libraries: res.data,
+    }),
+  );
+
+// export const ADD_BOOK_TO_LIBRARY = 'ADD_BOOK_TO_LIBRARY';
+export const addBookToLibrary = isbn_library => dispatch =>
+  axios.post('/api/library/book/', isbn_library).then(res =>
+    dispatch({
+      type: actionTypes.ADD_BOOK_TO_LIBRARY,
+      isbn_library: isbn_library,
+    }),
+  );
+
 // //////////////////////////////////// FOLLOW ///////////////////////////////////
 
 // export const FOLLOW_USER = 'FOLLOW_USER'
