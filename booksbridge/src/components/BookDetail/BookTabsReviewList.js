@@ -6,7 +6,7 @@ import BookTabsReview from './BookTabsReview';
 import './BookTabsReviewList.css';
 
 class BookTabsReviewList extends Component {
-  componentDidMount() { }
+  componentDidMount() {}
 
   render() {
     if (this.props.reviews.length == 0) {
