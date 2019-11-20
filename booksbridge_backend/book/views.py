@@ -433,7 +433,8 @@ def make_curation_dict(curation):
     }
 
     book_in_curation = BookInCuration.objects.filter(curation=curation)
-    book_list = [{'book': book.book_id, 'content': book.content} for book in book_in_curation]  # book_id: isbn 
+    book_list = [{'book': model_to_dict(get_object_or_404(Book, isbn=book.book_id)), 'content': book.content} 
+                 for book in book_in_curation]  # book_id: isbn 
 
     curation_dict = {
         'author': user_dict,
@@ -477,7 +478,6 @@ def curation_page(request, page):
         return HttpResponseNotAllowed(['GET'])
 
 
-
 def library(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -514,8 +514,6 @@ def book_in_library(request):
             library = Library.objects.get(id=int(req_data['library']))
         except (KeyError) as e:
             return HttpResponse(status=400) 
-        
-
 
         book_in_library = BookInLibrary(book=book, library=library)
         book_in_library.save()
