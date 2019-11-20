@@ -31,8 +31,6 @@ class UserInfo extends Component {
     });
   }
 
-  onUploadPhoto() {}
-
   onEditProfile(user) {
     if (this.state.nickname === '') {
       window.alert('Nickname cannot be empty!');
