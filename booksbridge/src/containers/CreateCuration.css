@@ -1,2 +1,21 @@
 .curation-modal {
 }
+#curation-content {
+  width: 50%;
+  margin-bottom: 20px;
+}
+.curation-book-content {
+  margin-top: 2% !important;
+  width: 50% !important;
+  font-size: 12px !important;
+}
+#curation-title {
+  width: 50%;
+}
+.bookdetail-container {
+  margin-top: 2% !important;
+}
+
+.curation-field {
+  margin-bottom: 30px;
+}

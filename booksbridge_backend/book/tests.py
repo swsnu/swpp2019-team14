@@ -173,7 +173,7 @@ class BookTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
 
-    def test_profile_update(self):
+    def test_profile(self):
         # Initialize
         client = Client()
 
@@ -184,8 +184,13 @@ class BookTestCase(TestCase):
 
         Profile.objects.create(user=user)
 
-        # GET before sign in
-        response = client.get('/api/user/profile/',
+        # before sign in
+        response = client.put('/api/profile/1/',
+                                json.dumps({
+                                  'nickname': 'John Smith',
+                                  'profile_text': 'mypassword',
+                                  'profile_photo': 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
+                              }),
                               content_type='application/json')
 
         self.assertEqual(response.status_code, 401)
@@ -198,22 +203,12 @@ class BookTestCase(TestCase):
                                content_type='application/json')
 
         # GET
-        response = client.get('/api/user/profile/',
+        response = client.get('/api/profile/1/',
                               content_type='application/json',)
         self.assertEqual(response.status_code, 405)
 
-        # POST
-        response = client.post('/api/user/profile/',
-                               json.dumps({
-                                   'nickname': 'John Smith',
-                                   'profile_text': 'mypassword',
-                                   'profile_photo': 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
-                               }),
-                               content_type='application/json')
-        self.assertEqual(response.status_code, 405)
-
         # PUT
-        response = client.put('/api/user/profile/',
+        response = client.put('/api/profile/1/',
                               json.dumps({
                                   'nickname': 'John Smith',
                                   'profile_text': 'mypassword',
@@ -221,11 +216,6 @@ class BookTestCase(TestCase):
                               }),
                               content_type='application/json')
         self.assertEqual(response.status_code, 200)
-
-        # DELETE
-        response = client.delete('/api/user/profile/',
-                                 content_type='application/json')
-        self.assertEqual(response.status_code, 405)
 
     def test_specific_book(self):
         # Initialize
@@ -621,7 +611,7 @@ class BookTestCase(TestCase):
 
     # [NOTE: curation not yet implemented]
     def test_curation(self):
-        # Initialize
+         # Initialize
         client = Client()
 
         user = User.objects.create_user(
@@ -637,9 +627,9 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       ('9780393912470', 'test_content1'),
-                                       ('9780140447934', 'test_content2'),
-                                       ('9780131103627', 'test_content3'),
+                                       {'isbn': 9780393912470, 'content':'test_content1'},
+                                       {'isbn': 9780140447934, 'content':'test_content2'},
+                                       {'isbn': 9780131103627, 'content':'test_content3'},
                                    ],
                                }),
                                content_type='application/json')
@@ -685,11 +675,10 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       ('9781292101767', 'nonexistingindb'),
+                                       {'isbn': 9781292101767, 'content':'nonexistingindb'},
                                    ],
                                }),
                                content_type='application/json')
-
         self.assertEqual(response.status_code, 404)
 
         # POST
@@ -698,14 +687,16 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       ('9780393912470', 'test_content1'),
-                                       ('9780140447934', 'test_content2'),
-                                       ('9780131103627', 'test_content3'),
+                                       {'isbn': 9780393912470, 'content':'test_content1'},
+                                       {'isbn': 9780140447934, 'content':'test_content2'},
+                                       {'isbn': 9780131103627, 'content':'test_content3'},
                                    ],
                                }),
                                content_type='application/json')
 
         self.assertEqual(response.status_code, 201)
+
+
 
     def test_article_page(self):
         # Initialize
@@ -1104,6 +1095,183 @@ class BookTestCase(TestCase):
                                  content_type='application/json')
 
         self.assertEqual(response.status_code, 405)
+    
+    def test_specific_curation(self):
+        # Initialize
+        client = Client()
+
+        user = User.objects.create_user(
+            email='jsmith@snu.ac.kr',
+            username='John Smith',
+            password='mypassword')
+
+        Profile.objects.create(user=user)
+
+        # GET before sign in  (why this is 401)
+        response = client.get('/api/curation/1/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 401)
+
+        # Sign in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John Smith',
+                                   'password': 'mypassword'
+                               }),
+                               content_type='application/json')
+
+        # Book registration
+        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
+                   content_type='application/json')
+
+        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
+                   content_type='application/json')
+        
+        client.get('/api/book/' + parse.quote('C programming') + '/1/',
+                   content_type='application/json')
+
+        # Curation registration 
+        response = client.post('/api/curation/',
+                               json.dumps({
+                                   'title': 'test_title',
+                                   'content': 'test_content',
+                                   'isbn_content_pairs': [
+                                       { 'isbn' : '9780393912470', 'content': 'test_content1'},
+                                       { 'isbn' : '9780140447934', 'content': 'test_content2'},
+                                       { 'isbn' : '9780131103627', 'content': 'test_content3'},
+                                   ],
+                               }),
+                               content_type='application/json')
+        
+        # GET
+        response = client.get('/api/curation/1/',
+                              content_type='application/json')
+
+        self.assertIsNot(response.content, b'{}')
+        self.assertEqual(response.status_code, 200)
+
+        # unallowed requests 
+        response = client.delete('/api/curation/1/',
+                                 content_type='application/json')
+        self.assertEqual(response.status_code, 405)                        
+        
+ 
+
+    def test_curation_page(self):
+        # Initialize
+        client = Client()
+
+        user = User.objects.create_user(
+            email='jsmith@snu.ac.kr',
+            username='John Smith',
+            password='mypassword')
+
+        Profile.objects.create(user=user)
+
+        # GET before sign in
+        response = client.get('/api/article/page/1/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 401)
+
+        # Sign in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John Smith',
+                                   'password': 'mypassword'
+                               }),
+                               content_type='application/json')
+
+        # Book registration
+        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
+                    content_type='application/json')
+        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
+                    content_type='application/json')
+        client.get('/api/book/' + parse.quote('C programming') + '/1/',
+                   content_type='application/json')
+
+        # Curation registration 
+        for i in range(1, 22):
+            client.post('/api/curation/',
+                        json.dumps({
+                            'title': 'test_title',
+                            'content': 'test_content',
+                            'isbn_content_pairs': [
+                                { 'isbn' : '9780393912470', 'content': 'test_content1'},
+                                { 'isbn' : '9780140447934', 'content': 'test_content2'},
+                                { 'isbn' : '9780131103627', 'content': 'test_content3'},
+                            ],
+                        }),
+                        content_type='application/json')
+        
+        # GET
+        response = client.get('/api/curation/page/1/',
+                              content_type='application/json')      
+        
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 200)
+
+        # unallowed requests 
+        response = client.delete('/api/curation/page/1/',
+                                 content_type='application/json')
+        self.assertEqual(response.status_code, 405)                        
+
+
+    def test_follow(self):
+        client = Client()
+
+        # user 1
+        user = User.objects.create_user(
+            email='jsmith@snu.ac.kr',
+            username='John Smith',
+            password='mypassword')
+
+        Profile.objects.create(user=user)
+
+        # user 2
+        user = User.objects.create_user(
+            email='asmith@snu.ac.kr',
+            username='Adam Smith',
+            password='mypassword')
+
+        Profile.objects.create(user=user)
+
+        # GET before sign in 
+        response = client.get('/api/follow/',
+                              content_type='application/json')
+        self.assertEqual(response.status_code, 401)
+
+        # Sign in by user 1
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John Smith',
+                                   'password': 'mypassword'
+                               }),
+                               content_type='application/json')
+
+        # POST
+        response = client.post('/api/follow/',
+                               json.dumps({ 'user_id': 2 }),
+                               content_type='application/json') 
+        self.assertEqual(response.status_code, 201)
+
+        # GET 
+        response = client.get('/api/follow/',
+                              content_type='application/json')
+
+        self.assertIsNot(response.content, b'{}')
+        self.assertEqual(response.status_code, 200)
+         
+        # unallowed requests 
+        response = client.put('/api/follow/', 
+                              json.dumps({ 'none': 'none' }),  
+                              content_type='application/json')
+        self.assertEqual(response.status_code, 405)                        
+
+
+
+        
 
 
 

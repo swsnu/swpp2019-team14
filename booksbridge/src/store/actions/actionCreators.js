@@ -18,6 +18,7 @@ export const postUser = user => {
     });
   };
 };
+
 // export const LOGIN_USER = 'LOGIN_USER'
 
 export const loginUser = user => {
@@ -65,6 +66,14 @@ export const getSearchedUsers = keyword => dispatch =>
     dispatch({
       type: actionTypes.GET_SEARCHED_USERS,
       users: res.data,
+    }),
+  );
+
+export const editUserProfile = profile => dispatch =>
+  axios.put(`/api/profile/${profile.id}/`, profile).then(res =>
+    dispatch({
+      type: actionTypes.EDIT_USER_PROFILE,
+      user: res.data,
     }),
   );
 
