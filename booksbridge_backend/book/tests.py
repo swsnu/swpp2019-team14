@@ -1246,10 +1246,9 @@ class BookTestCase(TestCase):
 
         Profile.objects.create(user=user)
 
-        # GET before sign in: why 404
-        response = client.get('/api/follow/1/',
+        # GET before sign in 
+        response = client.get('/api/follow/',
                               content_type='application/json')
-
         self.assertEqual(response.status_code, 401)
 
         # Sign in by user 1
@@ -1261,20 +1260,20 @@ class BookTestCase(TestCase):
                                content_type='application/json')
 
         # POST
-        response = client.post('/api/follow/2',
+        response = client.post('/api/follow/',
+                               json.dumps({ 'user_id': 2 }),
                                content_type='application/json') 
         self.assertEqual(response.status_code, 201)
 
-
         # GET 
-        response = client.get('/api/follow/2',
+        response = client.get('/api/follow/',
                               content_type='application/json')
 
         self.assertIsNot(response.content, b'{}')
         self.assertEqual(response.status_code, 200)
          
         # unallowed requests 
-        response = client.put('/api/follow/1/', 
+        response = client.put('/api/follow/', 
                               json.dumps({ 'none': 'none' }),  
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)                        

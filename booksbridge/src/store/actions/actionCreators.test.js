@@ -804,7 +804,7 @@ describe('ActionCreators', () => {
 
   //   runOcr
   it(`'runOcr'`, done => {
-    const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
+    const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
@@ -815,7 +815,7 @@ describe('ActionCreators', () => {
     });
     store.dispatch(actionCreators.runOcr()).then(() => {
       const newState = store.getState();
-      expect(newState.book.quote).toBe(stubQuote);
+      expect(newState.book.quote).toBe(stubQuote.quote);
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });

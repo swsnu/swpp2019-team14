@@ -605,17 +605,17 @@ def ocr(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-def follow(request, user_id):
+def follow(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
     elif request.method == 'POST':
         # { user_id } 
-        # try:
-        #     req_data = json.loads(request.body.decode())
-        #     followee_id = int(req_data['user_id'])
-        # except (KeyError) as e:
-        #     return HttpResponse(status=400)
+        try:
+            req_data = json.loads(request.body.decode())
+            user_id = int(req_data['user_id'])
+        except (KeyError) as e:
+            return HttpResponse(status=400)
 
         followee = get_object_or_404(User, id=user_id)  
         follow = Follow(follower=request.user, followee=followee) 
@@ -645,9 +645,8 @@ def follow(request, user_id):
 
     # TODO elif request.method == 'DELETE':
     # pass
-
     else:
-        return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
+        return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
 
 
 @ensure_csrf_cookie
