@@ -7,16 +7,20 @@ import * as actionCreators from '../../store/actions/actionCreators';
 import BookResultSummary from '../../components/BookResultSummary/BookResultSummary';
 import './SearchResultBook.css';
 import ScrollUpButton from 'react-scroll-up-button';
-import { Button } from 'semantic-ui-react';
+import { Card, Button } from 'semantic-ui-react';
+import SearchUser from '../../components/SearchUser/SearchUser';
 
 const mapStateToProps = state => ({
   books: state.book.books,
   count: state.book.count,
+  users: state.user.users,
 });
 
 const mapDispatchToProps = dispatch => ({
   onSearchBooks: (keyword, page) =>
     dispatch(actionCreators.getSearchedBooks(keyword, page)),
+  onGetSearchedUser: keyword =>
+    dispatch(actionCreators.getSearchedUsers(keyword)),
 });
 
 class SearchResultBook extends Component {
@@ -25,6 +29,7 @@ class SearchResultBook extends Component {
       this.props.match.params.keyword,
       this.props.match.params.page,
     );
+    this.props.onGetSearchedUser(this.props.match.params.keyword);
   }
 
   componentDidUpdate(prevProps) {
@@ -102,7 +107,7 @@ class SearchResultBook extends Component {
       </div>
     );
 
-    const result = this.props.books.map(book => (
+    const book_result = this.props.books.map(book => (
       <BookResultSummary
         cover={book.thumbnail}
         title={book.title}
@@ -112,13 +117,23 @@ class SearchResultBook extends Component {
         direct
       />
     ));
+    const user_result = this.props.users.map(user => (
+      <SearchUser user={user} />
+    ));
 
     return (
       <div className="SearchResultBook">
         <Header />
+        <h2>유저</h2>
+        <div className="searched-user-section">
+          <Card.Group itemsPerRow={1} centered={true}>
+            {user_result}{' '}
+          </Card.Group>
+        </div>
+        <h2>책</h2>
         {this.props.count !== 0 ? (
           <div>
-            <div id="result">{result}</div>
+            <div id="result">{book_result}</div>
             {pagination}
             <div className="TopButton">
               <ScrollUpButton>

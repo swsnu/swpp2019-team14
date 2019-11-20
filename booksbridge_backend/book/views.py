@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie , csrf_exempt
 import json, re
-import urllib.request, requests
+import urllib, requests
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
@@ -495,6 +495,30 @@ def specific_user(request, username):
 
     else:
         return HttpResponseNotAllowed(['GET',])
+
+def search_user(request, keyword):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'GET':
+        decoded_keyword =urllib.parse.unquote(keyword)
+        result_users=[]
+        all_users = User.objects.all()
+        if all_users:
+            for user in all_users:
+                if decoded_keyword in user.get_username() or decoded_keyword in user.profile.nickname:
+                    user_dict = {
+                        'id': user.id,
+                        'username': user.username,
+                        'date_joined': user.date_joined.date(),
+                        'profile_photo': user.profile.profile_photo.name,
+                        'nickname': user.profile.nickname,
+                        'profile_text': user.profile.profile_text,
+                    }
+                    result_users.append(user_dict)
+        return JsonResponse(result_users, safe=False)
+
+
 
 def ocr(request):
     if request.method == 'POST':

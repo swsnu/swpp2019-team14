@@ -54,7 +54,6 @@ export const logoutUser = () => dispatch =>
 // export const GET_SPECIFIC_USER = 'GET_SPECIFIC_USER'
 export const getSpecificUser = username => dispatch =>
   axios.get(`/api/user/${username}/`).then(res => {
-    console.log('[debug]');
     dispatch({
       type: actionTypes.GET_SPECIFIC_USER,
       user: res.data,
@@ -62,7 +61,7 @@ export const getSpecificUser = username => dispatch =>
   });
 // export const GET_SEARCHED_USERS = 'GET_SEARCHED_USERS'
 export const getSearchedUsers = keyword => dispatch =>
-  axios.get(`/api/user/searchWord=${keyword}/`).then(res =>
+  axios.get(`/api/user/search/${keyword}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SEARCHED_USERS,
       users: res.data,
