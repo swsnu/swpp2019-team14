@@ -1,6 +1,8 @@
-
+.alert-light {
+    color: black !important; 
+}
 .box{
-    padding: 20px 60px 20px 60px;
+    padding: 0px 60px 20px 60px;
     width: auto;
     text-align: left;
     color: black !important;
@@ -12,10 +14,19 @@
     height: auto;
 }
 .ReviewTitle{
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'NanumSquare', sans-serif;
     color: black !important;
+    font-weight: 900;
 }
 .ReviewContent{
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 7.5rem;
+    display: -webkit-box;
+    line-height: 1.5rem;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
     padding: 20px 0px 0px 0px;
     width: 100%;
     color: black !important;
@@ -43,6 +54,7 @@
     font-size: .85714286em !important;
 }
 .Review{
-    border: 1px solid gray;
+    border-radius: 0.5rem;
+    box-shadow: 0.3px 0.3px 5px 0px rgb(169, 169, 169);
     color: black !important;
 }

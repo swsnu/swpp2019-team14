@@ -35,12 +35,7 @@ class UserPage extends Component {
         </div>
         <div className="ArmisticeLine"></div>
         <div className="Tab">
-          <div className="UserReviewList">
-            <UserReviewList
-              profile_user={this.props.profile_user}
-              user_reviews={this.props.articles_by_userID}
-            />
-          </div>
+          <div className="UserReviewList"></div>
         </div>
       </div>
     );

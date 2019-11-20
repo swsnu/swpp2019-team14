@@ -5,11 +5,11 @@ import './BookDetailInfo.css';
 const BookDetailInfo = props => (
   <div className="BookDetailInfo">
     <div className="BookSummary">
-      <h1 className="Label">About Book</h1>
+      <p className="Label">About Book</p>
       {props.contents}
     </div>
     <div className="AuthorInfo">
-      <h1 className="Label">About Author(s)</h1>
+      <p className="Label">About Author(s)</p>
       {props.author_contents}
     </div>
   </div>

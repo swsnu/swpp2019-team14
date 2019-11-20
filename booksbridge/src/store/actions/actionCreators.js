@@ -70,12 +70,13 @@ export const getSearchedUsers = keyword => dispatch =>
   );
 
 export const editUserProfile = profile => dispatch =>
-  axios.put(`/api/profile/${profile.id}/`, profile).then(res =>
+  axios.put(`/api/profile/${profile.id}/`, profile).then(res => {
     dispatch({
       type: actionTypes.EDIT_USER_PROFILE,
       user: res.data,
-    }),
-  );
+    });
+    storage.set('logged_in_user', res.data);
+  });
 
 // export const GET_SEARCHED_BOOKS = 'GET_SEARCHED_BOOKS'
 export const getSearchedBooks = (keyword, page) => dispatch =>
