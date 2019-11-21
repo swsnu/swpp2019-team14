@@ -1,0 +1,23 @@
+[0;1;32m●[0m nginx.service - A high performance web server and a reverse proxy server
+   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+   Active: [0;1;32mactive (running)[0m since Thu 2019-11-21 20:01:37 KST; 8s ago
+     Docs: man:nginx(8)
+  Process: 10526 ExecStop=/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx.pid [0;1;31m(code=exited, status=1/FAILURE)[0m
+  Process: 10565 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+  Process: 10559 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+ Main PID: 10573 (nginx)
+    Tasks: 9 (limit: 4915)
+   Memory: 8.8M
+   CGroup: /system.slice/nginx.service
+           ├─10573 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+           ├─10575 nginx: worker process
+           ├─10576 nginx: worker process
+           ├─10577 nginx: worker process
+           ├─10578 nginx: worker process
+           ├─10580 nginx: worker process
+           ├─10581 nginx: worker process
+           ├─10582 nginx: worker process
+           └─10583 nginx: worker process
+
+11월 21 20:01:37 han-GS60-2QE systemd[1]: Starting A high performance web server and a reverse proxy server...
+11월 21 20:01:37 han-GS60-2QE systemd[1]: Started A high performance web server and a reverse proxy server.

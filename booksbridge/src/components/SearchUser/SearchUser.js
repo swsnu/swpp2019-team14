@@ -13,7 +13,7 @@ const SearchUser = props => {
   else profile_photo = user.profile_photo;
 
   return (
-    <div className="searched_user">
+    <a className="searched_user" href={'/page/' + username}>
       <Image
         className="user_picture"
         centered={true}
@@ -23,12 +23,16 @@ const SearchUser = props => {
       />
       <Card className="search_user_card">
         <Card.Content>
-          <Card.Header>{nickname}</Card.Header>
-          <span className="date">@{username}</span>
+          <Card.Header>
+            <a>{nickname}</a>
+          </Card.Header>
+          <a className="date">@{username}</a>
           <Card.Meta>
             <span className="date">Joined in {date_joined}</span>
           </Card.Meta>
-          <Card.Description>{text}</Card.Description>
+          <Card.Description className="card-description">
+            {text}
+          </Card.Description>
         </Card.Content>
         <Card.Content extra>
           <a>
@@ -37,7 +41,7 @@ const SearchUser = props => {
           </a>
         </Card.Content>
       </Card>
-    </div>
+    </a>
   );
 };
 

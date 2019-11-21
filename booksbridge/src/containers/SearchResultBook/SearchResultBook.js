@@ -7,7 +7,7 @@ import * as actionCreators from '../../store/actions/actionCreators';
 import BookResultSummary from '../../components/BookResultSummary/BookResultSummary';
 import './SearchResultBook.css';
 import ScrollUpButton from 'react-scroll-up-button';
-import { Card, Button, Menu, Segment, Tab } from 'semantic-ui-react';
+import { Card, Button, Tab } from 'semantic-ui-react';
 import SearchUser from '../../components/SearchUser/SearchUser';
 
 const mapStateToProps = state => ({
@@ -24,12 +24,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class SearchResultBook extends Component {
-  state = {
-    activeItem: 'book',
-  };
-
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
-
   componentDidMount() {
     this.props.onSearchBooks(
       this.props.match.params.keyword,
@@ -59,7 +53,6 @@ class SearchResultBook extends Component {
   }
 
   render() {
-    const { activeItem } = this.state;
     const active = parseInt(this.props.match.params.page);
     const items = [];
     let first = active - 2;
@@ -163,7 +156,7 @@ class SearchResultBook extends Component {
         ),
       },
       {
-        menuItem: { key: 'curations', icon: 'favorite', content: 'Curations' }, //tasks, archive, thumbs up, gift, shopping basket, favorite, shop
+        menuItem: { key: 'curations', icon: 'archive', content: 'Curations' }, //tasks, archive, thumbs up, gift, shopping basket, favorite, shop
         render: () => (
           <Tab.Pane className="tab-content" attached={false}>
             Tab 3 Content
