@@ -750,7 +750,7 @@ describe('ActionCreators', () => {
         resolve(result);
       });
     });
-    store.dispatch(actionCreators.followUser()).then(() => {
+    store.dispatch(actionCreators.followUser(stubUser.id)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -771,7 +771,7 @@ describe('ActionCreators', () => {
     });
   });
   //   getFollowers,
-  it(`'getFollowers'`, done => {
+  it(`'getFollows'`, done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
       return new Promise((resolve, reject) => {
         const result = {
@@ -780,11 +780,12 @@ describe('ActionCreators', () => {
         resolve(result);
       });
     });
-    store.dispatch(actionCreators.getFollowers()).then(() => {
+    store.dispatch(actionCreators.getFollows()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
   });
+  /*
   //   getFollowees,
   it(`'getFollowees'`, done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
@@ -799,7 +800,7 @@ describe('ActionCreators', () => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
-  });
+  });*/
   //   emptySearchedBooks,
 
   //   runOcr
