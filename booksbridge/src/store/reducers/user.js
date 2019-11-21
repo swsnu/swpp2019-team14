@@ -31,6 +31,11 @@ const reducer = (state = initialState, action) => {
         logged_in_user: action.user,
         profile_user: action.user,
       };
+    case actionTypes.GET_SEARCHED_USERS:
+      return {
+        ...state,
+        users: action.users,
+      };
   }
   return state;
 };
