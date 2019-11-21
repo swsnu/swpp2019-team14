@@ -16,6 +16,12 @@ const reducer = (state = initialState, action) => {
         selectedCuration: action.curation,
       };
 
+    case actionTypes.POST_CURATION_COMMENT:
+      return {
+        ...state,
+        selectedCuration: action.curation,
+      };
+
     case actionTypes.EDIT_SPECIFIC_CURATION:
       return {};
     case actionTypes.DELETE_SPECIFIC_CURATION:

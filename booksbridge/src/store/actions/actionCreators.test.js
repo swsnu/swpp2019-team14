@@ -41,7 +41,17 @@ const stubShortArticle = {
 const stubCuration = {
   id: 11,
   author_id: 2,
+  title: 'TEST_TITLE',
+  content: 'TEST_CONTENT',
 };
+
+const stubBookInCuration = {
+  id: 1,
+  curation_id: 11,
+  book_id: 123456789101,
+  content: 'TEST_CONTENT',
+};
+
 const stubComment = {
   id: 1,
   article_id: 1,
@@ -393,10 +403,12 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: { curation: stubCuration, book_content: stubBookInCuration },
         };
         resolve(result);
       });
     });
+
     store.dispatch(actionCreators.postCuration()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();

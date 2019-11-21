@@ -223,7 +223,7 @@ def specific_article(request,review_id):
             'nickname':user.profile.nickname,
             'profile_photo':user.profile.profile_photo.name
         }
-        comments = get_comments(article)
+        comments = get_comments(article, True)
         response_dict = {
             'id':article.id, 
             'author':user_dict, 
@@ -253,9 +253,14 @@ def article_page(request, page):
         return JsonResponse(response_body)
 
 
-def get_comments(article):
-    comments = list()
-    for comment in article.comments.all():
+def get_comments(post, is_article):
+    comments = []
+    if is_article:
+        iteration = post.comments.all()
+    else:
+        iteration = post.curation_comments.all()
+     
+    for comment in iteration:
         deltatime = (datetime.now() - comment.date)
         time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
         comment_author = get_object_or_404(User, id=comment.author_id)
@@ -312,7 +317,7 @@ def comment(request):
             parent = None
         comment = Comment(article=article, author=request.user, content=content, parent=parent)
         comment.save()
-        comments = get_comments(article)
+        comments = get_comments(article, True)
         book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
         book_dict = model_to_dict(book_in_db)
         user = get_object_or_404(User, id=article.author_id)
@@ -338,6 +343,59 @@ def comment(request):
     #    pass
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
+
+def curation_comment(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            curation_id = req_data['curation_id']
+            content = req_data['content']
+            parent_id = req_data['parent_id']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        curation = get_object_or_404(Curation, id=curation_id)
+        try:
+            parent = CurationComment.objects.get(id=parent_id)
+        except CurationComment.DoesNotExist:
+            parent = None
+
+        comment = CurationComment(curation=curation, author=request.user, content=content, parent=parent)
+        comment.save()
+        comments = get_comments(curation, False)
+
+        book_in_curation = BookInCuration.objects.filter(curation=curation)
+        book_list = [{'book': model_to_dict(get_object_or_404(Book, isbn=book.book_id)), 'content': book.content} 
+                    for book in book_in_curation]  # book_id: isbn 
+
+
+        user = get_object_or_404(User, id=curation.author_id)
+        user_dict = {
+            'id':user.id, 
+            'username':user.username,
+            'nickname':user.profile.nickname,
+            'profile_photo':user.profile.profile_photo.name
+        }
+        response_dict = {
+            'id': curation.id, 
+            'authors':user_dict, 
+            'books':book_list, 
+            'title':curation.title, 
+            'content':curation.content, 
+            'date':curation.date, 
+            'comments': comments
+        }
+        return JsonResponse(response_dict, status=201)
+    # TODO elif request.method == 'PUT':
+    #    pass
+    # TODO elif request.method == 'DELETE':
+    #    pass
+    else:
+        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
+
+
 
 @csrf_exempt
 def article(request):
@@ -436,14 +494,18 @@ def make_curation_dict(curation):
     book_list = [{'book': model_to_dict(get_object_or_404(Book, isbn=book.book_id)), 'content': book.content} 
                  for book in book_in_curation]  # book_id: isbn 
 
+    comments = get_comments(curation, False)
+
     curation_dict = {
+        'id': curation.id,
         'author': user_dict,
         'books': book_list,    
-        'id': curation.id,
         'title': curation.title,
         'content': curation.content,
         'date': time_array,
+        'comments': comments
     }
+ 
     return curation_dict
 
 

@@ -1,20 +1,21 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Button } from 'semantic-ui-react';
+import { Button, Container, Divider } from 'semantic-ui-react';
 
 import Header from '../../components/Header';
 import BookInfo from '../../components/BookDetail/BookInfo';
+import BookResultSummary from '../../components/BookResultSummary/BookResultSummary';
 import Comments from '../Comments/Comments';
 import ProfileSummary from '../../components/ProfileSummary/ProfileSummary';
-import BookResultSummary from '../../components/BookResultSummary/BookResultSummary';
+import BookListItem from '../../components/CurationDetailPage/BookListItem';
 
 import * as actionCreators from '../../store/actions/actionCreators';
 
 import './CurationDetailPage.css';
 
 /* 
-PATH    curation/:username/:curation_id"
+PATH    curation/:curation_id"
 
 RESOPNSE FROM BACKEND   curation_dict
 user_dict = {
@@ -44,48 +45,28 @@ class CurationDetailPage extends Component {
 
   render() {
     if (!this.props.currentCuration) {
-      return <div className="loading">LOADING...</div>;
+      return <div className="loading">LOADING..!</div>;
     }
 
     const bookAndContent = this.props.currentCuration.books.map(entry => {
       // { {book info}, content } list
       return (
-        <div key={entry.book.isbn}>
-          <div id="bookinfo">
-            {/* <BookInfo
-              isbn={entry.book.isbn}
-              title={entry.book.title}
-              authors={entry.book.authors}
-              publisher={entry.book.publisher}
-              publishedDate={entry.book.published_date}
-              thumbnail={entry.book.thumbnail}
-            /> */}
-            <BookResultSummary
-              cover={entry.book.thumbnail}
-              title={entry.book.title}
-              authors={entry.book.authors}
-              publisher={entry.book.publisher}
-              isbn={entry.book.isbn}
-              direct={true}
-              click={() => {}}
-              size="small"
-            />
-            {/* <Button
-              id="check-book-button"
-              onClick={() =>
-                this.props.history.push(`/book/${entry.book.isbn}`)
-              }
-            >
-              Check this book!
-            </Button> */}
-          </div>
-          <div id="content">{entry.content}</div>
-        </div>
+        <BookListItem
+          cover={entry.book.thumbnail}
+          title={entry.book.title}
+          authors={entry.book.authors}
+          publisher={entry.book.publisher}
+          isbn={entry.book.isbn}
+          direct={true}
+          click={() => {}}
+          size="big"
+          content={entry.content}
+        ></BookListItem>
       );
     });
 
     return (
-      <div className="CurationDetailPage">
+      <div className="curation-detail-page">
         <Header />
         <div className="AuthorProfile">
           <ProfileSummary user={this.props.currentCuration.author} />
@@ -94,8 +75,11 @@ class CurationDetailPage extends Component {
         <div className="curation-title">
           <h1>{this.props.currentCuration.title}</h1>
         </div>
+        <Divider />
         <div className="curation-content">
-          <h3>{this.props.currentCuration.content}</h3>
+          <Container>
+            <h5>{this.props.currentCuration.content}</h5>
+          </Container>
         </div>
         <div className="book-and-content">{bookAndContent}</div>
 
@@ -110,10 +94,10 @@ class CurationDetailPage extends Component {
           </div>
 
           <div className="CurationComments">
-            {/* <Comments
+            <Comments
               comments={this.props.currentCuration.comments}
-              article_id={this.props.match.params.review_id}
-            /> */}
+              curation_id={this.props.match.params.curation_id}
+            />
           </div>
         </div>
       </div>
