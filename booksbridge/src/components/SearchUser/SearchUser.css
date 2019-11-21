@@ -4,6 +4,8 @@
   box-shadow: none !important;
 }
 .searched_user {
+  margin: 1px;
+  margin-top: 30px;
   display: flex;
   height: 180px;
   border: none;

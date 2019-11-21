@@ -38,3 +38,11 @@
   display: flex;
   flex-direction: column;
 }
+.search-menu {
+  width: 50% !important;
+  align-self: center;
+}
+.tab-content {
+  border: none !important;
+  box-shadow: none !important;
+}
