@@ -607,46 +607,76 @@ def ocr(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-def follow(request):
+def follow(request, user_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
     elif request.method == 'POST':
         # { user_id } 
         try:
-            req_data = json.loads(request.body.decode())
-            user_id = int(req_data['user_id'])
-        except (KeyError) as e:
-            return HttpResponse(status=400)
-
-        followee = get_object_or_404(User, id=user_id)  
-        follow = Follow(follower=request.user, followee=followee) 
+            followee = get_object_or_404(User, id=user_id)  
+            follow = Follow(follower=request.user, followee=followee)
+        except:
+            HttpResponse(status=404)
+            
         follow.save()
-        follow_dict = model_to_dict(follow)
+        follower_dict = {'id': follow.follower.id,
+                         'username': follow.follower.username,
+                         'profile_photo': follow.follower.profile.profile_photo.name,
+                         'nickname': follow.follower.profile.nickname 
+                        }
+        followee_dict = {'id': follow.followee.id,
+                         'username': follow.followee.username,
+                         'profile_photo': follow.followee.profile.profile_photo.name,
+                         'nickname': follow.followee.profile.nickname 
+                        }
+        
+        follow_dict = {'follower_dict': follower_dict, 'followee_dict': followee_dict}
         return JsonResponse(follow_dict, status=201)
 
     elif request.method == 'GET':
-        # followers of the requesting user
+        # followers of the requested user
         follower_list = [get_object_or_404(User, id=x.follower_id) 
-                         for x in Follow.objects.filter(followee=request.user)]   
+                         for x in Follow.objects.filter(followee_id=user_id)]   
         follower_list = [{'id': user.id,
                          'username':user.username,
                          'profile_photo':user.profile.profile_photo.name,
                          'nickname':user.profile.nickname } for user in follower_list]
 
-        # users that requesting user follows
-        following_list = [get_object_or_404(User, id=x.followee_id) 
-                          for x in Follow.objects.filter(follower=request.user)]  
-        following_list = [{'id': user.id,
+        # users that requested user follows
+        followee_list = [get_object_or_404(User, id=x.followee_id) 
+                          for x in Follow.objects.filter(follower_id=user_id)]  
+        followee_list = [{'id': user.id,
                          'username':user.username,
                          'profile_photo':user.profile.profile_photo.name,
-                         'nickname':user.profile.nickname } for user in following_list]
+                         'nickname':user.profile.nickname } for user in followee_list]
 
-        result_dict = {'follower_list': follower_list, 'following_list': following_list}
+        result_dict = {'follower_list': follower_list, 'followee_list': followee_list}
         return JsonResponse(result_dict, status=200)
 
-    # TODO elif request.method == 'DELETE':
-    # pass
+    elif request.method == 'DELETE':
+        try:
+            followee = get_object_or_404(User, id=user_id)  
+            follow = Follow.objects.get(follower=request.user, followee=followee)
+        except:
+            HttpResponse(status=404)
+
+        follower_dict = {'id': follow.follower.id,
+                         'username': follow.follower.username,
+                         'profile_photo': follow.follower.profile.profile_photo.name,
+                         'nickname': follow.follower.profile.nickname 
+                        }
+        followee_dict = {'id': follow.followee.id,
+                         'username': follow.followee.username,
+                         'profile_photo': follow.followee.profile.profile_photo.name,
+                         'nickname': follow.followee.profile.nickname 
+                        }
+        
+        follow_dict = {'follower_dict': follower_dict, 'followee_dict': followee_dict}
+
+        follow.delete()
+
+        return JsonResponse(follow_dict, status=200)
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
 

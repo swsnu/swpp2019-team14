@@ -381,40 +381,38 @@ export const deleteSpecificLibrary = id => dispatch =>
 
 // export const FOLLOW_USER = 'FOLLOW_USER'
 export const followUser = userid => dispatch =>
-  axios
-    .post('/follow/', userid) // 변경해야함
-    .then(res =>
-      dispatch({
-        type: actionTypes.FOLLOW_USER,
-        user: res.data,
-      }),
-    );
-// export const UNFOLLOW_USER = 'UNFOLLOW_USER'
-export const unfollowUser = userid => dispatch =>
-  axios
-    .delete('/follow/', userid) // 변경해야함
-    .then(res =>
-      dispatch({
-        type: actionTypes.UNFOLLOW_USER,
-        user: res.data,
-      }),
-    );
-// export const GET_FOLLOWERS = 'GET_FOLLOWERS'
-export const getFollowers = userid => dispatch =>
-  axios.get(`/follow/?follower=${userid}/`).then(res =>
+  axios.post(`/api/follow/user_id=${userid}/`).then(res =>
     dispatch({
-      type: actionTypes.GET_FOLLOWERS,
-      users: res.data,
+      type: actionTypes.FOLLOW_USER,
+      follow: res.data,
     }),
   );
+// export const UNFOLLOW_USER = 'UNFOLLOW_USER'
+export const unfollowUser = userid => dispatch =>
+  axios.delete(`/api/follow/user_id=${userid}/`).then(res =>
+    dispatch({
+      type: actionTypes.UNFOLLOW_USER,
+      follow: res.data,
+    }),
+  );
+// export const GET_FOLLOWS = 'GET_FOLLOWS'
+export const getFollows = userid => dispatch =>
+  axios.get(`/api/follow/user_id=${userid}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_FOLLOWS,
+      followers_followees_pair: res.data,
+    }),
+  );
+
+// DEPRICATED: Incompatible request with backend
 // export const GET_FOLLOWEES = 'GET_FOLLOWEES'
-export const getFollowees = userid => dispatch =>
-  axios.get(`/follow/?followee=${userid}/`).then(res =>
+/*export const getFollowees = userid => dispatch =>
+  axios.get(`/follow/followee=${userid}/`).then(res =>
     dispatch({
       type: actionTypes.GET_FOLLOWEES,
       users: res.data,
     }),
-  );
+  );*/
 
 // ///////////////////////////////// EXTRA /////////////////////////////////////////
 export const emptySearchedBooks = () => ({
