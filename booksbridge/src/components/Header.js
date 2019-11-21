@@ -38,7 +38,7 @@ const Header = props => {
 
   return (
     <div className="MainHeader">
-      <a className="logo" onClick={() => props.history.push('/main')}>
+      <a className="logo" href="/main">
         <img src="/images/logo2.png" height="80px" />
       </a>
       <div className="search">
@@ -60,6 +60,7 @@ const Header = props => {
               id="search-button"
               variant="outline-secondary"
               onClick={() => onSearch()}
+              disabled={!search_input}
             >
               Search
             </Button>
