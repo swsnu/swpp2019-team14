@@ -51,6 +51,7 @@ const reducer = (state = initialState, action) => {
           follower =>
             !(follower.username == action.follow.follower_dict.username),
         ),
+      };
     case actionTypes.GET_SEARCHED_USERS:
       return {
         ...state,
