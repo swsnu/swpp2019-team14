@@ -175,8 +175,8 @@ export const getArticlesByBookId = isbn => dispatch =>
     }),
   );
 // export const GET_ARTICLES_BY_USERID = 'GET_ARTICLES_BY_USERID'
-export const getArticlesByUserId = username => dispatch =>
-  axios.get(`/api/article/username=${username}/`).then(res =>
+export const getArticlesByUserId = (page, username) => dispatch =>
+  axios.get(`/api/article/username=${username}/${page}/`).then(res =>
     dispatch({
       type: actionTypes.GET_ARTICLES_BY_USERID,
       articles: res.data,

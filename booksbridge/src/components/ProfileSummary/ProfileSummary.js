@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 
 const ProfileSummary = props => {
   let userload = false;
-  let user = { profile_photo: '', nickname: '', username: '' };
+  let user = { id: '', profile_photo: '', nickname: '', username: '' };
 
   let profile_photo = '';
 

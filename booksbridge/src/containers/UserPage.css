@@ -7,6 +7,15 @@
   display: flex;
   justify-content: center;
 }
+
+.ui.secondary.pointing.menu {
+  border-bottom: 0px !important;
+}
+
+.ui.secondary.pointing.menu>.active.item {
+  border-bottom: 0px;
+}
+
 .ArmisticeLine {
   height: 40px;
 }

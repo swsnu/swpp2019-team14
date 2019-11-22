@@ -188,28 +188,22 @@ def search_article(request, isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-def search_article_by_username(request, username):
+def search_article_by_author(request, page, username):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
     if request.method == 'GET':
-        user = User.objects.get(username=username)
-        articles = list()
-        for article in user.articles.all():
+        author = User.objects.get(username=username)
+        article_list = Article.objects.filter(author=author).order_by('-id')
+        paginator = Paginator(article_list, 5)
+        results = paginator.get_page(page)
+        articles=list()
+        for article in results:
             deltatime = datetime.now() - article.date
             time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
-            user = get_object_or_404(User, id=article.author_id)
-            user_dict = {
-                'id':user.id,
-                'username':user.username,
-                'profile_photo':user.profile.profile_photo.name,
-                'nickname':user.profile.nickname,
-            }
             article_dict = {
-                'author': user_dict,
                 'book_isbn': article.book.isbn,
                 'book_title': article.book.title,
-                'book_thumbnail': article.book.thumbnail,
                 'id': article.id,
                 'title': article.title,
                 'content': article.content,
@@ -218,9 +212,9 @@ def search_article_by_username(request, username):
                 'is_short': article.is_short,
                 'is_phrase': article.is_phrase
             }
-            articles.append(article_dict)
-        
-        return JsonResponse(articles, safe=False)
+            articles.append(article_dict) 
+        response_dict = {'articles':articles, 'length':article_list.count()}
+        return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
 
