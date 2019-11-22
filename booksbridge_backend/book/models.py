@@ -63,6 +63,7 @@ class Comment(models.Model):
         return str(self.content)
 
 class Curation(models.Model):
+    objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.TextField()
     content = models.TextField()
@@ -70,6 +71,17 @@ class Curation(models.Model):
     def __str__(self):
         return str(self.title)
 
+class CurationComment(models.Model):
+    objects = models.Manager()
+    curation = models.ForeignKey(Curation, on_delete=models.CASCADE, related_name='curation_comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+    class Meta:
+        ordering = ('date',)
+    def __str__(self):
+        return str(self.content)
 
 class BookInCuration(models.Model):
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE)
@@ -90,20 +102,6 @@ class BookInLibrary(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
 
-class LongReivewComment(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    long_review = models.ForeignKey(Article, on_delete=models.CASCADE)
-    content = models.TextField()
-    date = models.DateTimeField(default=datetime.now, blank=True)
-
-
-class CurationComment(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    curation = models.ForeignKey(Curation, on_delete=models.CASCADE)
-    content = models.TextField()
-    date = models.DateTimeField(default=datetime.now, blank=True)
-
-
 class ArticleLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
@@ -119,3 +117,17 @@ class Follow(models.Model):
         User, on_delete=models.CASCADE, related_name="follower")
     followee = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="followee")
+
+# class LongReivewComment(models.Model):
+#     author = models.ForeignKey(User, on_delete=models.CASCADE)
+#     long_review = models.ForeignKey(Article, on_delete=models.CASCADE)
+#     content = models.TextField()
+#     date = models.DateTimeField(default=datetime.now, blank=True)
+
+
+# class CurationComment(models.Model):
+#     author = models.ForeignKey(User, on_delete=models.CASCADE)
+#     curation = models.ForeignKey(Curation, on_delete=models.CASCADE)
+#     content = models.TextField()
+#     date = models.DateTimeField(default=datetime.now, blank=True)
+

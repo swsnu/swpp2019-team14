@@ -2,15 +2,26 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   hasNext: [],
-  selectedArticle: null,
+  selectedCuration: null,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.POST_CURATION:
-      return {};
+    // case actionTypes.POST_CURATION:
+    //   return {};
+
     case actionTypes.GET_SPECIFIC_CURATION:
-      return {};
+      return {
+        ...state,
+        selectedCuration: action.curation,
+      };
+
+    case actionTypes.POST_CURATION_COMMENT:
+      return {
+        ...state,
+        selectedCuration: action.curation,
+      };
+
     case actionTypes.EDIT_SPECIFIC_CURATION:
       return {};
     case actionTypes.DELETE_SPECIFIC_CURATION:

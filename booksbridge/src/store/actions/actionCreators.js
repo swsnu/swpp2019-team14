@@ -186,12 +186,13 @@ export const getArticlesByUserId = username => dispatch =>
 
 // export const POST_CURATION = 'POST_CURATION'
 export const postCuration = curation => dispatch =>
-  axios.post('/api/curation/', curation).then(res =>
+  axios.post('/api/curation/', curation).then(res => {
     dispatch({
       type: actionTypes.POST_CURATION,
       curation: res.data,
-    }),
-  );
+    });
+    dispatch(push('/curation/' + res.data.curation.id));
+  });
 
 // export const GET_SPECIFIC_CURATION = 'GET_SPECIFIC_CURATION'
 export const getSpecificCuration = id => dispatch =>
@@ -307,7 +308,7 @@ export const postCurationComment = comment => dispatch =>
   axios.post('/api/comment/curation/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_CURATION_COMMENT,
-      comment: res.data,
+      curation: res.data,
     }),
   );
 // export const GET_SPECIFIC_CURATION_COMMENT = 'GET_SPECIFIC_CURATION_COMMENT'
