@@ -80,6 +80,10 @@ const stubFollows = {
   followee_list: [],
 };
 
+const stubLikes = {
+  count: 1,
+};
+
 describe('ActionCreators', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -370,6 +374,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubLikes,
         };
         resolve(result);
       });
@@ -479,6 +484,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubLikes,
         };
         resolve(result);
       });
