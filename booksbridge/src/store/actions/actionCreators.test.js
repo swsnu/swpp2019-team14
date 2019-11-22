@@ -58,6 +58,18 @@ const stubQuote = {
   quote: 'EXTRACTED FROM BOOK',
 };
 
+const stubFollows = {
+  follower_list: [
+    {
+      id: 1,
+      username: 'test_name',
+      profile_photo: '',
+      nickname: 'test_nickname',
+    },
+  ],
+  followee_list: [],
+};
+
 describe('ActionCreators', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -90,7 +102,7 @@ describe('ActionCreators', () => {
   });
 
   it(`'login error when id or password is wrong'`, done => {
-    const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+    const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => { });
 
     const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
       return new Promise((resolve, reject) => {
@@ -746,11 +758,17 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: {
+            id: 1,
+            username: 'test_name',
+            profile_photo: '',
+            nickname: 'test_nickname',
+          },
         };
         resolve(result);
       });
     });
-    store.dispatch(actionCreators.followUser(stubUser.id)).then(() => {
+    store.dispatch(actionCreators.followUser()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -761,6 +779,12 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: {
+            id: 1,
+            username: 'test_name',
+            profile_photo: '',
+            nickname: 'test_nickname',
+          },
         };
         resolve(result);
       });
@@ -776,6 +800,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubFollows,
         };
         resolve(result);
       });
@@ -785,24 +810,6 @@ describe('ActionCreators', () => {
       done();
     });
   });
-  /*
-  //   getFollowees,
-  it(`'getFollowees'`, done => {
-    const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
-      return new Promise((resolve, reject) => {
-        const result = {
-          status: 200,
-        };
-        resolve(result);
-      });
-    });
-    store.dispatch(actionCreators.getFollowees()).then(() => {
-      expect(spy).toHaveBeenCalledTimes(1);
-      done();
-    });
-  });*/
-  //   emptySearchedBooks,
-
   //   runOcr
   it(`'runOcr'`, done => {
     const spy = jest.spyOn(axios, 'post').mockImplementation(url => {

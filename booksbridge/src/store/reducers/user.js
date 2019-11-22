@@ -47,10 +47,10 @@ const reducer = (state = initialState, action) => {
     case actionTypes.UNFOLLOW_USER:
       return {
         ...state,
-        follower_list: state.follower_list.filter(
-          follower =>
-            !(follower.username == action.follow.follower_dict.username),
-        ),
+        follower_list: state.follower_list.filter(follower => {
+          if (follower)
+            return !(follower.username == action.follow.follower_dict.username);
+        }),
       };
     case actionTypes.GET_SEARCHED_USERS:
       return {
