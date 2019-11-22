@@ -20,8 +20,8 @@ class BookInfo extends Component {
         </div>
 
         <div style={{ textAlign: 'right' }}>
-          <div className="infoStyle">
-            <div>
+          <div className="BookInfoStyle">
+            <div className="info">
               <p className="titleStyle">{this.props.title}</p>
               <p>
                 <b>AUTHOR(S) : </b>

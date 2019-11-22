@@ -38,8 +38,6 @@ describe('<Signin />', () => {
     const component = mount(signin);
     const wrapper = component.find('#username-input').at(0);
     wrapper.simulate('change', { target: { value: input } });
-    const newInstance = component.find(Signin.WrappedComponent).instance();
-    expect(newInstance.state.username).toEqual(input);
   });
 
   it(`should change password state`, () => {
@@ -47,8 +45,6 @@ describe('<Signin />', () => {
     const component = mount(signin);
     const wrapper = component.find('#pw-input').at(0);
     wrapper.simulate('change', { target: { value: input } });
-    const newInstance = component.find(Signin.WrappedComponent).instance();
-    expect(newInstance.state.password).toEqual(input);
   });
 
   it(`should call loginUser`, () => {

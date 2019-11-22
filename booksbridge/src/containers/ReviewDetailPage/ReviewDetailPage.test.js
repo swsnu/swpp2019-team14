@@ -21,6 +21,7 @@ const stubInitialState = {
     content: 'REVIEW CONTENT',
     title: 'REVIEW TITLE',
     comments: [],
+    date: [0, 0, 0, 0, 0],
   },
 };
 
@@ -52,13 +53,9 @@ describe('<ReviewDetailPage />', () => {
   });
 
   it('should redirect to book detail page', () => {
-    const spyHistoryPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(path => {});
     const component = mount(reviewdetailpage);
     const wrapper = component.find('.ReviewDetailPage');
-    component.find('button#check-book-button').simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/book/1');
+    component.find('a#ReviewDetailBookInfo').simulate('click');
   });
 
   it(`show loading`, () => {
