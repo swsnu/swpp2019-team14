@@ -12,6 +12,7 @@ import BookDetail from './containers/BookDetail';
 import SearchResultBook from './containers/SearchResultBook/SearchResultBook';
 import ReviewDetailPage from './containers/ReviewDetailPage/ReviewDetailPage';
 import UserPage from './containers/UserPage';
+import CurationDetailPage from './containers/CurationDetailPage/CurationDetailPage';
 import storage from './lib/storage';
 import * as actionTypes from './store/actions/actionTypes';
 import CreateCuration from './containers/CreateCuration';
@@ -66,9 +67,10 @@ class App extends Component {
             <Route path="/curation" exact component={Main} />
             <Route path="/curation/create" exact component={CreateCuration} />
             <Route
-              path="/curation/:username/:curation_id"
+              // path="/curation/:username/:curation_id"
+              path="/curation/:curation_id"
               exact
-              component={Main}
+              component={CurationDetailPage}
             />
             <Route
               path="/curation/:username/:curation_id/edit"

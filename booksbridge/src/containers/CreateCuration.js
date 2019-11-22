@@ -9,52 +9,27 @@ import * as actionCreators from '../store/actions/actionCreators';
 import BookResultSummary from '../components/BookResultSummary/BookResultSummary';
 
 import './CreateCuration.css';
+import { FormText, InputGroup, FormControl } from 'react-bootstrap';
 
 class CreateCuration extends Component {
   state = {
     title: '',
     content: '',
     selectedBooks: [],
-    type: 'long-review',
+    bookInCuration: [],
   };
 
   onClickCreateButton = () => {
-    if (!this.props.selectedBook) {
-      return;
-    }
-    if (this.state.type === 'long-review') {
-      if (this.state.title != '' && this.state.content != '') {
-        this.props.onPostArticle({
-          isbn: this.props.selectedBook.isbn,
-          title: this.state.title,
-          content: this.state.content,
-          is_long: true,
-          is_short: false,
-          is_phrase: false,
-        });
-        window.alert('Success!');
-      } else {
-        window.alert('Title or content is empty.');
-      }
+    if (this.state.title != '' && this.state.content != '') {
+      this.props.onPostCuration({
+        title: this.state.title,
+        content: this.state.content,
+        isbn_content_pairs: this.state.bookInCuration,
+      });
+      window.alert('Success!');
     } else {
-      if (this.state.content != '') {
-        this.props.onPostArticle({
-          isbn: this.props.selectedBook.isbn,
-          title: '',
-          content: this.state.content,
-          is_long: false,
-          is_short: this.state.type === 'short-review',
-          is_phrase: this.state.type === 'phrase',
-        });
-        window.alert('Success!');
-      } else {
-        window.alert('Content is empty.');
-      }
+      window.alert('Title or content is empty.');
     }
-  };
-
-  radioHandler = event => {
-    this.setState({ type: event.target.value });
   };
 
   render() {
@@ -64,32 +39,27 @@ class CreateCuration extends Component {
         <div>
           <CurationModal
             className="curation-modal"
-            update={list => this.setState({ selectedBooks: list })}
+            update={list => {
+              let bookInCuration = [];
+              list.map((book, index) => {
+                bookInCuration = bookInCuration.concat({
+                  isbn: book.isbn,
+                  content: '',
+                });
+              });
+              this.setState({
+                selectedBooks: list,
+                bookInCuration: bookInCuration,
+              });
+            }}
           />
 
-          {this.state.selectedBooks
-            ? this.state.selectedBooks.map(book => {
-                return (
-                  <div className="bookdetail-container">
-                    <BookResultSummary
-                      cover={book.thumbnail}
-                      title={book.title}
-                      authors={book.authors}
-                      publisher={book.publisher}
-                      isbn={book.isbn}
-                      direct={false}
-                      click={() => {}}
-                    />
-                  </div>
-                );
-              })
-            : null}
           <div className="ReviewCreateForm">
             <Form className="ui form">
               <div className="field">
                 <label className="FormLabel">Title</label>
                 <input
-                  id="review-title"
+                  id="curation-title"
                   type="text"
                   name="title"
                   placeholder="Enter Title"
@@ -102,7 +72,7 @@ class CreateCuration extends Component {
               <div className="field">
                 <label className="FormLabel">Content</label>
                 <TextArea
-                  id="review-content"
+                  id="curation-content"
                   name="content"
                   placeholder="Enter Content"
                   rows={this.state.type === 'long-review' ? '20' : '5'}
@@ -111,6 +81,42 @@ class CreateCuration extends Component {
                   }
                 />
               </div>
+              {this.state.selectedBooks
+                ? this.state.selectedBooks.map((book, index) => {
+                    return (
+                      <div className="bookdetail-container">
+                        <BookResultSummary
+                          cover={book.thumbnail}
+                          title={book.title}
+                          authors={book.authors}
+                          publisher={book.publisher}
+                          isbn={book.isbn}
+                          direct={false}
+                          click={() => {}}
+                          size="small"
+                        />
+                        <TextArea
+                          onChange={event => {
+                            let value = event.target.value;
+                            this.setState((state, props) => ({
+                              bookInCuration: state.bookInCuration.map(
+                                (bookInCuration, curationIndex) => {
+                                  if (curationIndex === index)
+                                    return {
+                                      ...bookInCuration,
+                                      content: value,
+                                    };
+                                  else return { ...bookInCuration };
+                                },
+                              ),
+                            }));
+                          }}
+                          className="curation-book-content"
+                        ></TextArea>
+                      </div>
+                    );
+                  })
+                : null}
 
               <Button
                 className="SubmitButton"
@@ -131,7 +137,12 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    onPostCuration: curation => {
+      console.log(curation);
+      dispatch(actionCreators.postCuration(curation));
+    },
+  };
 };
 
 export default connect(

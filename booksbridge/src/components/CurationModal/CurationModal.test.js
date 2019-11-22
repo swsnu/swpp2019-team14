@@ -75,6 +75,7 @@ describe('<CurationModal />', () => {
     closeButton.simulate('click');
     expect(modalInstance.state.open).toEqual(false);
   });
+
   it('should rendering another tab', () => {
     const component = mount(modal);
     const button = component.find('.select-book-button').at(0);
@@ -93,6 +94,7 @@ describe('<CurationModal />', () => {
     closeButton.simulate('click');
     expect(modalInstance.state.open).toEqual(false);
   });
+
   it('should add selected book', () => {
     const component = mount(modal);
     component
@@ -146,7 +148,7 @@ describe('<CurationModal />', () => {
       },
     ]);
     component
-      .find('.inside')
+      .find('#inside')
       .at(2)
       .simulate('click');
     component.setProps({

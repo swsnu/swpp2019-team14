@@ -5,7 +5,7 @@ import './containers.css';
 import { Button } from 'semantic-ui-react';
 import Form from 'react-bootstrap/Form';
 import * as actionCreators from '../store/actions/index';
-
+import './containers.css';
 class Signin extends Component {
   state = {
     username: '',
@@ -20,6 +20,10 @@ class Signin extends Component {
     e.preventDefault();
     this.props.onLoginUser(user);
   };
+
+  componentDidMount() {
+    on;
+  }
 
   render() {
     return (
@@ -68,19 +72,18 @@ class Signin extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {};
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     onLoginUser: user => {
       dispatch(actionCreators.loginUser(user));
     },
+    onGetToken: () => {
+      dispatch(actionCreators.getToken());
+    },
   };
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(withRouter(Signin));

@@ -6,6 +6,10 @@ import storage from '../../lib/storage';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
+export const getToken = () => {
+  return axios.get('/api/token');
+};
+
 // export const POST_NEW_USER = 'POST_NEW_USER'
 export const postUser = user => {
   return dispatch => {
@@ -54,7 +58,6 @@ export const logoutUser = () => dispatch =>
 // export const GET_SPECIFIC_USER = 'GET_SPECIFIC_USER'
 export const getSpecificUser = username => dispatch =>
   axios.get(`/api/user/${username}/`).then(res => {
-    console.log('[debug]');
     dispatch({
       type: actionTypes.GET_SPECIFIC_USER,
       user: res.data,
@@ -62,7 +65,7 @@ export const getSpecificUser = username => dispatch =>
   });
 // export const GET_SEARCHED_USERS = 'GET_SEARCHED_USERS'
 export const getSearchedUsers = keyword => dispatch =>
-  axios.get(`/api/user/searchWord=${keyword}/`).then(res =>
+  axios.get(`/api/user/search/${keyword}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SEARCHED_USERS,
       users: res.data,
@@ -187,12 +190,13 @@ export const getArticlesByUserId = (page, username) => dispatch =>
 
 // export const POST_CURATION = 'POST_CURATION'
 export const postCuration = curation => dispatch =>
-  axios.post('/api/curation/', curation).then(res =>
+  axios.post('/api/curation/', curation).then(res => {
     dispatch({
       type: actionTypes.POST_CURATION,
       curation: res.data,
-    }),
-  );
+    });
+    dispatch(push('/curation/' + res.data.curation.id));
+  });
 
 // export const GET_SPECIFIC_CURATION = 'GET_SPECIFIC_CURATION'
 export const getSpecificCuration = id => dispatch =>
@@ -308,7 +312,7 @@ export const postCurationComment = comment => dispatch =>
   axios.post('/api/comment/curation/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_CURATION_COMMENT,
-      comment: res.data,
+      curation: res.data,
     }),
   );
 // export const GET_SPECIFIC_CURATION_COMMENT = 'GET_SPECIFIC_CURATION_COMMENT'
@@ -381,40 +385,38 @@ export const deleteSpecificLibrary = id => dispatch =>
 
 // export const FOLLOW_USER = 'FOLLOW_USER'
 export const followUser = userid => dispatch =>
-  axios
-    .post('/follow/', userid) // 변경해야함
-    .then(res =>
-      dispatch({
-        type: actionTypes.FOLLOW_USER,
-        user: res.data,
-      }),
-    );
-// export const UNFOLLOW_USER = 'UNFOLLOW_USER'
-export const unfollowUser = userid => dispatch =>
-  axios
-    .delete('/follow/', userid) // 변경해야함
-    .then(res =>
-      dispatch({
-        type: actionTypes.UNFOLLOW_USER,
-        user: res.data,
-      }),
-    );
-// export const GET_FOLLOWERS = 'GET_FOLLOWERS'
-export const getFollowers = userid => dispatch =>
-  axios.get(`/follow/?follower=${userid}/`).then(res =>
+  axios.post(`/api/follow/user_id=${userid}/`).then(res =>
     dispatch({
-      type: actionTypes.GET_FOLLOWERS,
-      users: res.data,
+      type: actionTypes.FOLLOW_USER,
+      follow: res.data,
     }),
   );
+// export const UNFOLLOW_USER = 'UNFOLLOW_USER'
+export const unfollowUser = userid => dispatch =>
+  axios.delete(`/api/follow/user_id=${userid}/`).then(res =>
+    dispatch({
+      type: actionTypes.UNFOLLOW_USER,
+      follow: res.data,
+    }),
+  );
+// export const GET_FOLLOWS = 'GET_FOLLOWS'
+export const getFollows = userid => dispatch =>
+  axios.get(`/api/follow/user_id=${userid}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_FOLLOWS,
+      followers_followees_pair: res.data,
+    }),
+  );
+
+// DEPRICATED: Incompatible request with backend
 // export const GET_FOLLOWEES = 'GET_FOLLOWEES'
-export const getFollowees = userid => dispatch =>
-  axios.get(`/follow/?followee=${userid}/`).then(res =>
+/*export const getFollowees = userid => dispatch =>
+  axios.get(`/follow/followee=${userid}/`).then(res =>
     dispatch({
       type: actionTypes.GET_FOLLOWEES,
       users: res.data,
     }),
-  );
+  );*/
 
 // ///////////////////////////////// EXTRA /////////////////////////////////////////
 export const emptySearchedBooks = () => ({

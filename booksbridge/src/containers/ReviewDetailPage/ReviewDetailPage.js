@@ -19,7 +19,7 @@ class ReviewDetailPage extends Component {
 
   render() {
     if (!this.props.currentArticle) {
-      return <div className="loading">LOADING...</div>;
+      return <div className="loading">LOADING..!</div>;
     }
 
     const book = this.props.currentArticle.book;
@@ -65,6 +65,7 @@ class ReviewDetailPage extends Component {
             <Comments
               comments={this.props.currentArticle.comments}
               article_id={this.props.match.params.review_id}
+              is_article={true}
             />
           </div>
         </div>

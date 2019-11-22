@@ -1,0 +1,48 @@
+.curation-content {
+  white-space: pre-wrap;
+  text-align: left;
+}
+/* .curation-content {
+  /* display: "flex";
+  flex: 1;
+  flex-direction: "row"; */
+/* padding-top: 3%;
+  padding-left: 25%;
+  padding-right: 25%;
+  margin: 10px;
+  white-space: pre-wrap;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+
+.parent-component {
+
+}
+
+.big-component-a {
+    display: "flex";
+    flex: 1;
+    flex-direction: "column";
+    justify-content: "flex-start";
+    align-items: "center";
+}
+
+.big-component-b {
+    display: "flex";
+    flex: 1;
+    flex-direction: "column";
+    justify-content: "flex-start";
+    align-items: "center";
+} */
+
+.book-and-content {
+  display: 'flex';
+  flex: 1;
+}
+
+.curation-detail-page {
+  display: 'flex';
+  flex: 1;
+}
