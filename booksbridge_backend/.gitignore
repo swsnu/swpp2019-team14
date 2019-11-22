@@ -2,6 +2,7 @@
 booksbridge_env/
 venv/
 
+secret.json
 ./book/migrations/
 sapiens*
 messi*

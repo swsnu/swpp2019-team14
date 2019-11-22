@@ -11,16 +11,26 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
+import json
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+secret_file = os.path.join(BASE_DIR, 'secret.json') # secrets.json 파일 위치를 명시
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '9j0c$62#gne913)wz3g($xsf==(tj1cp*e7e3jitgwsmk-e2zr'
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

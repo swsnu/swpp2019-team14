@@ -16,6 +16,7 @@ import CurationDetailPage from './containers/CurationDetailPage/CurationDetailPa
 import storage from './lib/storage';
 import * as actionTypes from './store/actions/actionTypes';
 import CreateCuration from './containers/CreateCuration';
+import CurationMain from './containers/CurationMain/CurationMain';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -64,7 +65,7 @@ class App extends Component {
               component={ReviewDetailPage}
             />
             <Route path="/book/:book_id" exact component={BookDetail} />
-            <Route path="/curation" exact component={Main} />
+            <Route path="/curation" exact component={CurationMain} />
             <Route path="/curation/create" exact component={CreateCuration} />
             <Route
               // path="/curation/:username/:curation_id"

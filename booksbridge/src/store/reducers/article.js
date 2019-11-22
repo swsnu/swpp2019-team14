@@ -5,7 +5,7 @@ const initialState = {
   shortReviews: [],
   phrases: [],
   articles: [],
-  hasNext: [],
+  hasNext: null,
   selectedArticle: null,
   articlesByUserID: [],
   length: 0,
