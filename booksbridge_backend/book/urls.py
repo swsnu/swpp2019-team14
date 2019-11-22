@@ -27,4 +27,6 @@ urlpatterns = [
     path('library/book/', views.book_in_library, name='book_in_library'),
     path('follow/', views.follow, name='follow'),
     path('ocr/', views.ocr, name='ocr'),
+    path('like/article/<article_id>/', views.article_like, name='article_like'),
+    path('like/curation/<curation_id>/', views.curation_like, name='curation_like'),
 ]

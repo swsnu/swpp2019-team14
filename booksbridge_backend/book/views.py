@@ -6,7 +6,7 @@ import urllib.request, requests
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.paginator import Paginator
 from bs4 import BeautifulSoup
 from django.db import transaction
@@ -709,6 +709,70 @@ def follow(request):
     # pass
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
+
+def article_like(request, article_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
+        like = ArticleLike(user=request.user, article_id=article_id) 
+        like.save()
+        like_dict = model_to_dict(like)
+        return JsonResponse(like_dict, status=201)
+    
+    elif request.method == 'GET':
+        like_count = ArticleLike.objects.filter(article_id=article_id).count()
+        like_dict = { 'count': like_count }
+        return JsonResponse(like_dict, status=200)
+    
+    elif request.method == 'DELETE':
+        # { user_id }
+        try:
+            req_data = json.loads(request.body.decode())
+            user_id = int(req_data['user_id'])
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+        like = get_object_or_404(ArticleLike, article_id=article_id, user_id=user_id)
+        like_dict = model_to_dict(like)
+        like.delete()
+        return JsonResponse(like_dict, status=200)
+
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
+
+
+
+def curation_like(request, curation_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
+        like = CurationLike(user=request.user, curation_id=curation_id) 
+        like.save()
+        like_dict = model_to_dict(like)
+        return JsonResponse(like_dict, status=201)
+    
+    elif request.method == 'GET':
+        like_count = CurationLike.objects.filter(curation_id=curation_id).count()
+        like_dict = { 'count': like_count }
+        return JsonResponse(like_dict, status=200)
+    
+    elif request.method == 'DELETE':
+        # { user_id }
+        try:
+            req_data = json.loads(request.body.decode())
+            user_id = int(req_data['user_id'])
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+        like = get_object_or_404(CurationLike, curation_id=curation_id, user_id=user_id)
+        like_dict = model_to_dict(like)
+        like.delete()
+        return JsonResponse(like_dict, status=200)
+
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
+
+
 
 
 @ensure_csrf_cookie
