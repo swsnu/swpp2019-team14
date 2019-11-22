@@ -8,6 +8,7 @@ const initialState = {
   hasNext: [],
   selectedArticle: null,
   articlesByUserID: [],
+  likes: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -36,6 +37,23 @@ const reducer = (state = initialState, action) => {
         articlesByUserID: action.articles,
       };
     case actionTypes.POST_LONG_REVIEW_COMMENT:
+      return {
+        ...state,
+        selectedArticle: action.article,
+      };
+    case actionTypes.POST_ARTICLE_LIKE:
+      return {
+        ...state,
+        selectedArticle: action.article,
+      };
+
+    case actionTypes.GET_ARTICLE_LIKE:
+      return {
+        ...state,
+        likes: action.likes.count,
+      };
+
+    case actionTypes.DELETE_ARTICLE_LIKE:
       return {
         ...state,
         selectedArticle: action.article,

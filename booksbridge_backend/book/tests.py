@@ -1331,16 +1331,14 @@ class BookTestCase(TestCase):
 
         # DELETE
         response = client.delete('/api/like/article/1/',
-                               json.dumps({
-                                   'user_id': 1
-                               }),
+                               json.dumps({ }),
                                content_type='application/json')
         self.assertIsNot(response.content, b'{}')
         self.assertEqual(response.status_code, 200)
 
         # unallowed requests 
         response = client.put('/api/like/article/1/', 
-                              json.dumps({ 'none': 'none' }),  
+                              json.dumps({ }),  
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)                        
     
@@ -1408,16 +1406,14 @@ class BookTestCase(TestCase):
 
         # DELETE
         response = client.delete('/api/like/curation/1/',
-                               json.dumps({
-                                   'user_id': 1
-                               }),
+                               json.dumps({}),
                                content_type='application/json')
         self.assertIsNot(response.content, b'{}')
         self.assertEqual(response.status_code, 200)
 
         # unallowed requests 
         response = client.put('/api/like/curation/1/', 
-                              json.dumps({ 'none': 'none' }),  
+                              json.dumps({ }),  
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)                        
     
