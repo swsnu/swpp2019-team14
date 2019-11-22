@@ -23,16 +23,47 @@ const BookResultSummary = props => {
   else cover = props.cover;
 
   return (
-    <div className="outer">
-      <Container className="Summary">
-        <div className="inside" onClick={clickHandler}>
+    <div className={props.size === 'small' ? 'outer-small' : 'outer'}>
+      <Container
+        className={props.size === 'small' ? 'Summary-small' : 'Summary'}
+      >
+        <div
+          id="inside"
+          className={props.size === 'small' ? 'inside-small' : 'inside'}
+          onClick={clickHandler}
+        >
           <Row>
-            <Col md="auto" className="book_cover">
-              <Image src={cover} />
+            <Col
+              md="auto"
+              className={
+                props.size === 'small' ? 'book_cover-small' : 'book_cover'
+              }
+            >
+              <Image
+                src={cover}
+                className={
+                  props.size === 'small' ? 'book_image-small' : 'book_image'
+                }
+                fluid={props.size === 'small'}
+              />
             </Col>
-            <Col className="book_info">
-              <div className="book_title">{props.title}</div>
-              <div className="book_summary">
+            <Col
+              className={
+                props.size === 'small' ? 'book_info-small' : 'book_info'
+              }
+            >
+              <div
+                className={
+                  props.size === 'small' ? 'book_title-small' : 'book_title'
+                }
+              >
+                {props.title}
+              </div>
+              <div
+                className={
+                  props.size === 'small' ? 'book_summary-small' : 'book_summary'
+                }
+              >
                 {props.authors}
                 <br />
                 {props.publisher}

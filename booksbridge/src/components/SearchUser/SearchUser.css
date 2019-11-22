@@ -1,0 +1,22 @@
+.search_user_card {
+  margin-top: 0 !important;
+  text-align: left !important;
+  box-shadow: none !important;
+}
+.searched_user {
+  margin: 1px;
+  margin-top: 30px;
+  display: flex;
+  height: 180px;
+  border: none;
+  border-radius: 0.28571429rem;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+}
+.user_picture {
+  height: 100%;
+  border-radius: 0.28571429rem;
+}
+.card-description {
+  height: 42px !important;
+  overflow: hidden !important;
+}

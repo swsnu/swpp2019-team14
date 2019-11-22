@@ -1,0 +1,16 @@
+.book-list-item {
+  display: 'flex' !important;
+  flex: 1 !important;
+  flex-direction: 'row' !important;
+  justify-content: 'flex-start' !important;
+  align-items: 'center' !important;
+}
+
+.book {
+  display: 'flex' !important;
+  flex: 1 !important;
+}
+.content {
+  display: 'flex' !important;
+  flex: 1 !important;
+}

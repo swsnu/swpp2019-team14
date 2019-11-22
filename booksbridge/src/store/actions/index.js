@@ -41,8 +41,7 @@ export {
   deleteSpecificLibrary,
   followUser,
   unfollowUser,
-  getFollowers,
-  getFollowees,
+  getFollows,
   emptySearchedBooks,
   runOcr,
 } from './actionCreators';

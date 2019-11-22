@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Form, TextArea } from 'semantic-ui-react';
+import { Form, TextArea, Icon } from 'semantic-ui-react';
 import Alert from 'react-bootstrap/Alert';
 import * as actionCreators from '../../store/actions/actionCreators';
 import axios from 'axios';
@@ -21,14 +21,15 @@ class UserInfo extends Component {
     this.inputRef = React.createRef();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.profile_user) return;
-    this.setState({
-      onEdit: false,
-      nickname: nextProps.profile_user.nickname,
-      comment: nextProps.profile_user.profile_text,
-      profile_photo: nextProps.profile_user.profile_photo,
-    });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.profile_user) {
+      return {
+        onEdit: false,
+        nickname: nextProps.profile_user.nickname,
+        comment: nextProps.profile_user.profile_text,
+        profile_photo: nextProps.profile_user.profile_photo,
+      };
+    }
   }
 
   onEditProfile(user) {
@@ -82,6 +83,14 @@ class UserInfo extends Component {
       .catch(err => console.log('Error', err));
   }
 
+  handleFollowToggle(isFollowing) {
+    if (!isFollowing) {
+      this.props.onFollow(this.props.profile_user.id);
+    } else {
+      this.props.onUnfollow(this.props.profile_user.id);
+    }
+  }
+
   render() {
     const tempcomment =
       '안녕하세요. 독서를 사랑하는 어쩌구저쩌구 배유빈입니다. 스릴러 장르 좋아합니다. 최애 책은 해리포터 시리즈예요. 팔로우 감사합니다~';
@@ -93,6 +102,40 @@ class UserInfo extends Component {
     const username = profile_user.username;
     const profile_text = profile_user.profile_text;
     let profile_photo = '';
+    const followers = this.props.followers;
+    const followees = this.props.followees;
+    const isFollowing =
+      followers &&
+      followers
+        .map(follower => follower.id)
+        .includes(this.props.logged_in_user.id)
+        ? true
+        : false;
+
+    let follow_button = (
+      <Icon
+        name="heart outline"
+        size="big"
+        link
+        onClick={() => this.handleFollowToggle(isFollowing)}
+      />
+    );
+
+    if (isFollowing) {
+      follow_button = (
+        <Icon
+          name="heart"
+          size="big"
+          color="red"
+          link
+          onClick={() => this.handleFollowToggle(isFollowing)}
+        />
+      );
+    }
+
+    if (this.props.logged_in_user.id === this.props.profile_user.id)
+      follow_button = null;
+
     if (profile_user.profile_photo.startsWith('resources/image/profile'))
       profile_photo = '/static/' + profile_user.profile_photo.substr(24);
     else profile_photo = profile_user.profile_photo;
@@ -214,8 +257,11 @@ class UserInfo extends Component {
           <div className="FooterLeft"></div>
           <div className="FooterRight">
             <div className="Follow">
-              <img src="/images/emptyheart.png" width="30"></img>
-              <p className="FollowStatus">104 팔로워 104 팔로잉</p>
+              {follow_button}
+              <p className="FollowStatus">
+                {followers ? followers.length : 0} 팔로워{' '}
+                {followees ? followees.length : 0} 팔로잉
+              </p>
             </div>
           </div>
         </div>
@@ -224,13 +270,22 @@ class UserInfo extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  logged_in_user: state.user.logged_in_user,
+  followers: state.user.follower_list,
+  followees: state.user.followee_list,
+});
+
 const mapDispatchToProps = dispatch => {
   return {
     onEditProfile: profile => dispatch(actionCreators.editUserProfile(profile)),
+    onFollow: followee_id => dispatch(actionCreators.followUser(followee_id)),
+    onUnfollow: followee_id =>
+      dispatch(actionCreators.unfollowUser(followee_id)),
   };
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(UserInfo);

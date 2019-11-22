@@ -70,18 +70,6 @@ describe('<Header/>', () => {
     );
   });
 
-  it(`'should redirect to main page`, () => {
-    const spyHistoryPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(user => {
-        return dispatch => {};
-      });
-    const component = mount(header);
-    const wrapper = component.find('.logo').at(0);
-    wrapper.simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/main');
-  });
-
   it(`'should redirect to my page`, () => {
     const spyHistoryPush = jest
       .spyOn(history, 'push')

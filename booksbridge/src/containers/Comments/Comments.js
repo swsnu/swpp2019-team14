@@ -12,11 +12,19 @@ class Comments extends Component {
   };
   onClickPostComment = () => {
     if (this.state.content != '') {
-      this.props.onPostComment({
-        article_id: this.props.article_id,
-        content: this.state.content,
-        parent_id: -1,
-      });
+      if (this.props.is_article) {
+        this.props.onPostComment({
+          article_id: this.props.article_id,
+          content: this.state.content,
+          parent_id: -1,
+        });
+      } else {
+        this.props.onPostCurationComment({
+          curation_id: this.props.curation_id,
+          content: this.state.content,
+          parent_id: -1,
+        });
+      }
       this.setState({ content: '' });
     } else {
       window.alert('Content is empty.');
@@ -76,6 +84,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onPostComment: comment =>
       dispatch(actionCreators.postLongReviewComment(comment)),
+    onPostCurationComment: comment =>
+      dispatch(actionCreators.postCurationComment(comment)),
   };
 };
 
