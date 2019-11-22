@@ -8,6 +8,7 @@ const initialState = {
   hasNext: [],
   selectedArticle: null,
   articlesByUserID: [],
+  length: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -33,7 +34,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_ARTICLES_BY_USERID:
       return {
         ...state,
-        articlesByUserID: action.articles,
+        articlesByUserID: action.articles.articles,
+        length: action.articles.length,
       };
     case actionTypes.POST_LONG_REVIEW_COMMENT:
       return {
