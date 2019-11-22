@@ -21,6 +21,10 @@ class Signin extends Component {
     this.props.onLoginUser(user);
   };
 
+  componentDidMount() {
+    on;
+  }
+
   render() {
     return (
       <div className="login_page">
@@ -68,19 +72,18 @@ class Signin extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {};
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     onLoginUser: user => {
       dispatch(actionCreators.loginUser(user));
     },
+    onGetToken: () => {
+      dispatch(actionCreators.getToken());
+    },
   };
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(withRouter(Signin));
