@@ -1030,7 +1030,7 @@ class BookTestCase(TestCase):
         Profile.objects.create(user=user)
 
         # GET before sign in
-        response = client.get('/api/article/username=1/',
+        response = client.get('/api/article/username=1/1/',
                               content_type='application/json')
 
         self.assertEqual(response.status_code, 401)
@@ -1071,26 +1071,26 @@ class BookTestCase(TestCase):
                     content_type='application/json')
 
         # GET
-        response = client.get('/api/article/username=John/',
+        response = client.get('/api/article/username=John/1/',
                               content_type='application/json')
 
         self.assertIsNotNone(response.content)
         self.assertEqual(response.status_code, 200)
 
         # POST
-        response = client.post('/api/article/username=John/',
+        response = client.post('/api/article/username=John/1/',
                                content_type='application/json')
 
         self.assertEqual(response.status_code, 405)
 
         # PUT
-        response = client.put('/api/article/username=John/',
+        response = client.put('/api/article/username=John/1/',
                               content_type='application/json')
 
         self.assertEqual(response.status_code, 405)
 
         # DELETE
-        response = client.delete('/api/article/username=John/',
+        response = client.delete('/api/article/username=John/1/',
                                  content_type='application/json')
 
         self.assertEqual(response.status_code, 405)

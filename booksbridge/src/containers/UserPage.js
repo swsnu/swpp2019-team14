@@ -25,7 +25,19 @@ class UserPage extends Component {
   };
 
   render() {
-    // need to implement whether user_id from url is valid or not
+    // Ensures rerendering when moving from userpage to userpage
+    if (
+      this.props.profile_user &&
+      this.props.match.params.username !== this.props.profile_user.username
+    ) {
+      this.props.onLoadUser(this.props.match.params.username);
+      this.props.onLoadUserReviews(this.props.match.params.username);
+    }
+
+    // Ensures UserInfo gets proper follower-followee arrays before its rendering
+    if (this.props.profile_user) {
+      this.props.onGetFollows(this.props.profile_user.id);
+    }
 
     let final =
       this.props.length % 5 === 0
@@ -103,6 +115,8 @@ const mapDispatchToProps = dispatch => {
     onLoadUserReviews: (page, username) => {
       dispatch(actionCreators.getArticlesByUserId(page, username));
     },
+    onGetFollows: profile_user_id =>
+      dispatch(actionCreators.getFollows(profile_user_id)),
   };
 };
 
