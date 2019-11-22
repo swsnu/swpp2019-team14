@@ -21,9 +21,9 @@ class Signin extends Component {
     this.props.onLoginUser(user);
   };
 
-  componentDidMount() {
-    this.props.onGetToken();
-  }
+  // componentDidMount() {
+  //   this.props.onGetToken();
+  // }
 
   render() {
     return (
@@ -77,9 +77,9 @@ const mapDispatchToProps = dispatch => {
     onLoginUser: user => {
       dispatch(actionCreators.loginUser(user));
     },
-    onGetToken: () => {
-      dispatch(actionCreators.getToken());
-    },
+    // onGetToken: () => {
+    //   dispatch(actionCreators.getToken());
+    // },
   };
 };
 
