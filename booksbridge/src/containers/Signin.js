@@ -22,7 +22,7 @@ class Signin extends Component {
   };
 
   componentDidMount() {
-    onGetToken();
+    this.props.onGetToken();
   }
 
   render() {
