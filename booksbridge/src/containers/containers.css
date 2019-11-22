@@ -1,24 +1,14 @@
-.login_form {
-  padding: 20%;
-  padding-top: 10%;
-}
+
 .Login {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.Login input {
-  align-self: center;
-}
-.Login label {
-  position: absolute;
-  left: 30%;
-}
-.Login button {
-  align-items: center;
-  margin-top: 20px;
-  width: 70%;
+.login_page{
+  width: 80%;
+  padding-top: 5%;
+  padding-left: 20%;
 }
 .list {
   display: flex;
