@@ -3,7 +3,6 @@ import './BookTabsReview.css';
 import Alert from 'react-bootstrap/Alert';
 import Time from '../Time';
 import ProfileSummary from '../ProfileSummary/ProfileSummary';
-import { withRouter } from 'react-router';
 import { Button, Feed, Icon } from 'semantic-ui-react';
 
 const BookTabsReview = props => {
@@ -20,13 +19,12 @@ const BookTabsReview = props => {
               </div>
             </div>
             <div className="content">
-              <div
-                className="box"
-                onClick={() => {
-                  props.history.push(`/review/${props.id}`);
-                }}
-              >
-                <h3 className="ReviewTitle">{props.title}</h3>
+              <div className="box">
+                {props.is_long ? (
+                  <a href={'/review/' + props.id}>
+                    <h3 className="ReviewTitle">{props.title}</h3>
+                  </a>
+                ) : null}
                 <div>
                   <span>{props.book_title}</span>
                 </div>
@@ -49,4 +47,4 @@ const BookTabsReview = props => {
   );
 };
 
-export default withRouter(BookTabsReview);
+export default BookTabsReview;
