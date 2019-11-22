@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import './containers.css';
 import { Button } from 'semantic-ui-react';
 import Form from 'react-bootstrap/Form';
-import * as actionCreators from '../store/actions/index';
+import * as actionCreators from '../store/actions/actionCreators';
 import './containers.css';
 class Signin extends Component {
   state = {

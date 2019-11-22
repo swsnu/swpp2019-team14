@@ -84,7 +84,7 @@ class CurationComment(models.Model):
         return str(self.content)
 
 class BookInCuration(models.Model):
-    curation = models.ForeignKey(Curation, on_delete=models.CASCADE)
+    curation = models.ForeignKey(Curation, on_delete=models.CASCADE, related_name='book_in_curation')
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     content = models.TextField()
     def __str__(self):

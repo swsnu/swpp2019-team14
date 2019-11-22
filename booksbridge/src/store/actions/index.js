@@ -1,5 +1,4 @@
 export {
-  getToken,
   postUser,
   loginUser,
   logoutUser,
@@ -21,6 +20,7 @@ export {
   getSpecificCuration,
   editSpecificCuration,
   deleteSpecificCuration,
+  getCurations,
   getCurationLike,
   postCurationLike,
   deleteCurationLike,

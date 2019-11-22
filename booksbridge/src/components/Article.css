@@ -47,7 +47,6 @@
   font-size: 0.85714286em;
 }
 .MainArticle {
-  
   text-align: left;
   padding: 0px 20px 20px 50px;
 }
@@ -63,4 +62,10 @@
 
   margin: 0.5rem 0 0;
   font-size: 15px !important;
+}
+#article-title :hover {
+  color: black;
+}
+#article-title {
+  color: black;
 }

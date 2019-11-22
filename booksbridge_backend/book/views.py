@@ -547,8 +547,17 @@ def curation_page(request, page):
 
         curations = [] 
         for curation in requested_list:
-            curations.append(make_curation_dict(curation))
-
+            books = []
+            for books_in_cur in curation.book_in_curation.all():
+                books.append(model_to_dict(books_in_cur.book))
+            curation_dict = {
+                'books': books,
+                'author': curation.author.id,
+                'title': curation.title,
+                'content': curation.content,
+                'date': curation.date,
+            }
+            curations.append(curation_dict)
         response_body = {'curations': curations, 'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body, status=200)
     

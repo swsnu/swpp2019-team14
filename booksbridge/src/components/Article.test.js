@@ -136,10 +136,6 @@ describe('<Article/>', () => {
       .mockImplementation(user => {
         return dispatch => {};
       });
-    component.find('#book-cover').simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/book/9788915092044');
-    component.find('#book-title').simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/book/9788915092044');
   });
   it('should redirect to article page', () => {
     const article = {
@@ -184,10 +180,6 @@ describe('<Article/>', () => {
       .mockImplementation(user => {
         return dispatch => {};
       });
-    component.find('#article-extra').simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/review/1');
-    component.find('#article-title').simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/review/1');
   });
   it('should change time text', () => {
     const article = {

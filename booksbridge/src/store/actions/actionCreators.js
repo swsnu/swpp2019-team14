@@ -6,14 +6,6 @@ import storage from '../../lib/storage';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
-export const getToken = () => {
-  //   return axios.get('/api/token/').then(res => {
-  //     dispatch({
-  //       type: actionTypes.
-  //     })
-  //   });
-};
-
 // export const POST_NEW_USER = 'POST_NEW_USER'
 export const postUser = user => {
   return dispatch => {
@@ -192,6 +184,15 @@ export const getArticlesByUserId = (page, username) => dispatch =>
 
 // //////////////////////////////////// CURATION //////////////////////////////////////
 
+export const getCurations = page => dispatch =>
+  axios.get(`/api/curation/page/${page}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_CURATIONS,
+      curations: res.data.curations,
+      has_next: res.data.has_next,
+    }),
+  );
+
 // export const POST_CURATION = 'POST_CURATION'
 export const postCuration = curation => dispatch =>
   axios.post('/api/curation/', curation).then(res => {
@@ -316,7 +317,7 @@ export const postCurationComment = comment => dispatch =>
   axios.post('/api/comment/curation/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_CURATION_COMMENT,
-      curation: res.data,
+      comment: res.data,
     }),
   );
 // export const GET_SPECIFIC_CURATION_COMMENT = 'GET_SPECIFIC_CURATION_COMMENT'
@@ -440,3 +441,11 @@ export const runOcr = formData => dispatch =>
         quote: res.data.quote,
       }),
     );
+
+export const getToken = () => {
+  //   return axios.get('/api/token/').then(res => {
+  //     dispatch({
+  //       type: actionTypes.
+  //     })
+  //   });
+};
