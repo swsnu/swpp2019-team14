@@ -7,7 +7,11 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
 export const getToken = () => {
-  return axios.get('/api/token');
+  //   return axios.get('/api/token/').then(res => {
+  //     dispatch({
+  //       type: actionTypes.
+  //     })
+  //   });
 };
 
 // export const POST_NEW_USER = 'POST_NEW_USER'
