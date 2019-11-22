@@ -17,12 +17,20 @@ class UserPage extends Component {
     this.props.onLoadUserReviews(this.props.match.params.username);
   }
 
-  componentDidMount() {}
-
-  // Q. how to enforce reendering after loading props state?
-
   render() {
-    // need to implement whether user_id from url is valid or not
+    // Ensures rerendering when moving from userpage to userpage
+    if (
+      this.props.profile_user &&
+      this.props.match.params.username !== this.props.profile_user.username
+    ) {
+      this.props.onLoadUser(this.props.match.params.username);
+      this.props.onLoadUserReviews(this.props.match.params.username);
+    }
+
+    // Ensures UserInfo gets proper follower-followee arrays before its rendering
+    if (this.props.profile_user) {
+      this.props.onGetFollows(this.props.profile_user.id);
+    }
 
     return (
       <div className="UserPage">
@@ -35,12 +43,7 @@ class UserPage extends Component {
         </div>
         <div className="ArmisticeLine"></div>
         <div className="Tab">
-          <div className="UserReviewList">
-            <UserReviewList
-              profile_user={this.props.profile_user}
-              user_reviews={this.props.articles_by_userID}
-            />
-          </div>
+          <div className="UserReviewList"></div>
         </div>
       </div>
     );
@@ -61,6 +64,8 @@ const mapDispatchToProps = dispatch => {
     onLoadUserReviews: username => {
       dispatch(actionCreators.getArticlesByUserId(username));
     },
+    onGetFollows: profile_user_id =>
+      dispatch(actionCreators.getFollows(profile_user_id)),
   };
 };
 

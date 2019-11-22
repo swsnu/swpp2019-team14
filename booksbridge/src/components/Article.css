@@ -10,10 +10,16 @@
 }
 .article {
   background-color: white;
+  margin-bottom: 1rem !important;
 }
 .text-box {
   height: 100px;
   overflow: hidden;
+}
+.alert-secondary {
+  color: #383d41;
+  background-color: #f6f6f6 !important;
+  border-color: #ffffff !important;
 }
 .AuthorProfileMain {
   display: flex;
@@ -33,21 +39,24 @@
   font-size: 0.85714286em !important;
 }
 .MainArticleTitle {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'NanumSquare', sans-serif;
+  font-weight: 700;
+  padding-bottom: 5px;
 }
 .MainBookTitle {
   font-size: 0.85714286em;
 }
 .MainArticle {
+  
   text-align: left;
   padding: 0px 20px 20px 50px;
 }
 .MainArticleContent {
   display: inline-block;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
+  display: -webkit-box;
   line-height: 1.2;
   -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;

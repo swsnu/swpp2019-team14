@@ -1,29 +1,48 @@
-
-.pagination{
-    margin-top:3rem;
-    margin-bottom:1rem;
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+.pagination {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
-.page-item.active .page-link{
-    background-color: rgb(119, 119, 119) !important;
-    border-color: white !important;
-    color: white !important;
+.page-item.active .page-link {
+  background-color: rgb(119, 119, 119) !important;
+  border-color: white !important;
+  color: white !important;
 }
 
 .page-link {
-    position: relative;
-    display: block;
-    padding: 0.5rem 0.75rem;
-    margin-left: -1px;
-    line-height: 1.25;
-    color: #000000 !important;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #000000 !important;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
 }
 .TopButton {
-    text-align: right !important;
+  text-align: right !important;
+}
+.searched-user-section {
+  width: 60%;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  margin: 30px;
+}
+.SearchResultBook {
+  display: flex;
+  flex-direction: column;
+}
+.search-menu {
+  width: 50% !important;
+  align-self: center;
+}
+.tab-content {
+  border: none !important;
+  box-shadow: none !important;
 }

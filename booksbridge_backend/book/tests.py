@@ -1222,23 +1222,26 @@ class BookTestCase(TestCase):
         client = Client()
 
         # user 1
-        user = User.objects.create_user(
+        user1 = User.objects.create_user(
             email='jsmith@snu.ac.kr',
             username='John Smith',
             password='mypassword')
 
-        Profile.objects.create(user=user)
+        Profile.objects.create(user=user1)
 
         # user 2
-        user = User.objects.create_user(
+        user2 = User.objects.create_user(
             email='asmith@snu.ac.kr',
             username='Adam Smith',
             password='mypassword')
 
-        Profile.objects.create(user=user)
+        Profile.objects.create(user=user2)
+
+        # user1 follows user2
+        follow = Follow(follower=user1, followee=user2)
 
         # GET before sign in 
-        response = client.get('/api/follow/',
+        response = client.get('/api/follow/user_id=2/',
                               content_type='application/json')
         self.assertEqual(response.status_code, 401)
 
@@ -1250,25 +1253,28 @@ class BookTestCase(TestCase):
                                }),
                                content_type='application/json')
 
-        # POST
-        response = client.post('/api/follow/',
-                               json.dumps({ 'user_id': 2 }),
-                               content_type='application/json') 
-        self.assertEqual(response.status_code, 201)
-
         # GET 
-        response = client.get('/api/follow/',
+        response = client.get('/api/follow/user_id=2/',
                               content_type='application/json')
 
         self.assertIsNot(response.content, b'{}')
         self.assertEqual(response.status_code, 200)
-         
-        # unallowed requests 
-        response = client.put('/api/follow/', 
-                              json.dumps({ 'none': 'none' }),  
+
+        # POST
+        response = client.post('/api/follow/user_id=2/',
+                               content_type='application/json') 
+        self.assertEqual(response.status_code, 201)
+
+        # PUT
+        response = client.put('/api/follow/user_id=2/', 
                               content_type='application/json')
-        self.assertEqual(response.status_code, 405)                        
-    
+        self.assertEqual(response.status_code, 405)                                  
+
+        # DELETE
+        response = client.delete('/api/follow/user_id=2/',
+                                 content_type='application/json')
+        self.assertEqual(response.status_code, 200)            
+
 
     def test_article_like(self):
         # Initialize

@@ -14,12 +14,14 @@
 }
 
 .titleStyle {
+  font-family: 'NanumSquare', sans-serif;
+  font-weight: 900;
   font-size: 20px;
-  font-weight: bold;
   text-align: left;
 }
 
 .infoStyle {
+  font-family: 'NanumSquare', sans-serif;
   height: 500px;
   width: auto;
   text-align: left;
