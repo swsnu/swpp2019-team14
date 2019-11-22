@@ -4,6 +4,8 @@ const initialState = {
   users: [],
   logged_in_user: null,
   profile_user: null,
+  follower_list: [],
+  followee_list: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -30,6 +32,25 @@ const reducer = (state = initialState, action) => {
         ...state,
         logged_in_user: action.user,
         profile_user: action.user,
+      };
+    case actionTypes.GET_FOLLOWS:
+      return {
+        ...state,
+        follower_list: action.followers_followees_pair.follower_list,
+        followee_list: action.followers_followees_pair.followee_list,
+      };
+    case actionTypes.FOLLOW_USER:
+      return {
+        ...state,
+        follower_list: state.follower_list.concat(action.follow.follower_dict),
+      };
+    case actionTypes.UNFOLLOW_USER:
+      return {
+        ...state,
+        follower_list: state.follower_list.filter(follower => {
+          if (follower)
+            return !(follower.username == action.follow.follower_dict.username);
+        }),
       };
     case actionTypes.GET_SEARCHED_USERS:
       return {

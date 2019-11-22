@@ -58,6 +58,18 @@ const stubQuote = {
   quote: 'EXTRACTED FROM BOOK',
 };
 
+const stubFollows = {
+  follower_list: [
+    {
+      id: 1,
+      username: 'test_name',
+      profile_photo: '',
+      nickname: 'test_nickname',
+    },
+  ],
+  followee_list: [],
+};
+
 describe('ActionCreators', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -746,6 +758,12 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: {
+            id: 1,
+            username: 'test_name',
+            profile_photo: '',
+            nickname: 'test_nickname',
+          },
         };
         resolve(result);
       });
@@ -761,6 +779,12 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: {
+            id: 1,
+            username: 'test_name',
+            profile_photo: '',
+            nickname: 'test_nickname',
+          },
         };
         resolve(result);
       });
@@ -771,37 +795,21 @@ describe('ActionCreators', () => {
     });
   });
   //   getFollowers,
-  it(`'getFollowers'`, done => {
+  it(`'getFollows'`, done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubFollows,
         };
         resolve(result);
       });
     });
-    store.dispatch(actionCreators.getFollowers()).then(() => {
+    store.dispatch(actionCreators.getFollows()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
   });
-  //   getFollowees,
-  it(`'getFollowees'`, done => {
-    const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
-      return new Promise((resolve, reject) => {
-        const result = {
-          status: 200,
-        };
-        resolve(result);
-      });
-    });
-    store.dispatch(actionCreators.getFollowees()).then(() => {
-      expect(spy).toHaveBeenCalledTimes(1);
-      done();
-    });
-  });
-  //   emptySearchedBooks,
-
   //   runOcr
   it(`'runOcr'`, done => {
     const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
