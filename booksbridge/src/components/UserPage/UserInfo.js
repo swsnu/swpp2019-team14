@@ -126,6 +126,7 @@ class UserInfo extends Component {
         <Icon
           name="heart"
           size="big"
+          color="red"
           link
           onClick={() => this.handleFollowToggle(isFollowing)}
         />
