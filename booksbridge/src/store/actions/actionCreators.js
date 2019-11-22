@@ -6,6 +6,10 @@ import storage from '../../lib/storage';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
+export const getToken = () => {
+  return axios.get('/api/token');
+};
+
 // export const POST_NEW_USER = 'POST_NEW_USER'
 export const postUser = user => {
   return dispatch => {
