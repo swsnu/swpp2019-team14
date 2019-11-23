@@ -22,9 +22,8 @@ class CommentUnit extends Component {
         content: this.state.content,
         parent_id: this.props.id,
       };
-      console.log(comment);
       this.props.onPostComment(comment);
-      this.setState({ content: '' });
+      this.setState({ reply: false, content: '' });
     } else {
       window.alert('Content is empty.');
     }
