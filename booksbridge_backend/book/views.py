@@ -563,6 +563,7 @@ def curation_page(request, page):
                 'nickname':user.profile.nickname,
             }
             curation_dict = {
+                'id': curation.id,
                 'books': books,
                 'author': user_dict,
                 'title': curation.title,

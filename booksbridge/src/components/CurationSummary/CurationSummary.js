@@ -14,26 +14,16 @@ const CurationSummary = props => {
     return (
       <Carousel.Item className="curation-summary-items">
         <Image.Group className="curation-summary-images">
-          {book_set[0] ? (
-            <Image
-              href="http://google.com"
-              src={book_set[0].thumbnail}
-              alt="First slide"
-              centered
-            />
-          ) : null}
-          {book_set[1] ? (
-            <Image src={book_set[1].thumbnail} alt="First slide" centered />
-          ) : null}
-          {book_set[2] ? (
-            <Image src={book_set[2].thumbnail} alt="First slide" centered />
-          ) : null}
-          {book_set[3] ? (
-            <Image src={book_set[3].thumbnail} alt="First slide" centered />
-          ) : null}
-          {book_set[4] ? (
-            <Image src={book_set[4].thumbnail} alt="First slide" centered />
-          ) : null}
+          {book_set.map(book => {
+            return (
+              <Image
+                href={'/book/' + book.isbn}
+                src={book.thumbnail}
+                alt="First slide"
+                centered
+              />
+            );
+          })}
         </Image.Group>
         <Carousel.Caption>
           <h3>First slide label</h3>
@@ -56,7 +46,7 @@ const CurationSummary = props => {
           <div className="ui items">
             <div className="item">
               <div className="MainArticle">
-                <a id="article-title" href={'/review/'}>
+                <a id="article-title" href={'/curation/' + props.id}>
                   <h3 className="MainArticleTitle">{props.title}</h3>
                 </a>
                 <div className="MainArticleContent">

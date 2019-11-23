@@ -60,6 +60,7 @@ class CurationMain extends React.Component {
             {this.state.curations.map(curation => (
               <div>
                 <CurationSummary
+                  id={curation.id}
                   books={curation.books}
                   author={curation.author}
                   title={curation.title}
