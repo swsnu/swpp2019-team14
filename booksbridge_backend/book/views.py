@@ -548,11 +548,24 @@ def curation_page(request, page):
         curations = [] 
         for curation in requested_list:
             books = []
+            book_set= []
             for books_in_cur in curation.book_in_curation.all():
-                books.append(model_to_dict(books_in_cur.book))
+                if(len(book_set)==4):
+                    books.append(book_set)
+                    book_set=[]
+                book_set.append(model_to_dict(books_in_cur.book))
+            books.append(book_set)
+            user=curation.author
+            user_dict = {
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
+            }
             curation_dict = {
+                'id': curation.id,
                 'books': books,
-                'author': curation.author.id,
+                'author': user_dict,
                 'title': curation.title,
                 'content': curation.content,
                 'date': curation.date,

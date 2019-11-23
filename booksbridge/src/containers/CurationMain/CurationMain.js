@@ -43,12 +43,7 @@ class CurationMain extends React.Component {
         <Header />
         <div className="articles">
           <a href="/curation/create">
-            <img
-              id="createReviewLogo"
-              className="createReviewLogo"
-              src="/images/reviewcreate.jpg"
-              width="600"
-            />
+            <h1>큐레이션 만들러 가기 ㅎㅎ</h1>
           </a>
           <InfiniteScroll
             className="scroll"
@@ -65,6 +60,7 @@ class CurationMain extends React.Component {
             {this.state.curations.map(curation => (
               <div>
                 <CurationSummary
+                  id={curation.id}
                   books={curation.books}
                   author={curation.author}
                   title={curation.title}

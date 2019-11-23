@@ -1,29 +1,37 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Feed, Icon } from 'semantic-ui-react';
+import { Button, Feed, Icon, Image } from 'semantic-ui-react';
 import Alert from 'react-bootstrap/Alert';
 import Time from '../Time';
 import ProfileSummary from '../ProfileSummary/ProfileSummary';
 import Carousel from 'react-bootstrap/Carousel';
+import './CurationSummary.css';
 
 const CurationSummary = props => {
   const Author = <ProfileSummary user={props.author} />;
 
-  // const Books = props.curations.books.map(book => {
-  //   return (
-  //     <Carousel.Item>
-  //       <img
-  //         className="d-block w-100"
-  //         src={book.book_thumbnail}
-  //         alt="First slide"
-  //       />
-  //       <Carousel.Caption>
-  //         <h3>First slide label</h3>
-  //         <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-  //       </Carousel.Caption>
-  //     </Carousel.Item>
-  //   );
-  // });
+  const Books = props.books.map(book_set => {
+    return (
+      <Carousel.Item className="curation-summary-items">
+        <Image.Group className="curation-summary-images">
+          {book_set.map(book => {
+            return (
+              <Image
+                href={'/book/' + book.isbn}
+                src={book.thumbnail}
+                alt="First slide"
+                centered
+              />
+            );
+          })}
+        </Image.Group>
+        <Carousel.Caption>
+          <h3>First slide label</h3>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+    );
+  });
 
   return (
     <Alert variant="secondary" className="article">
@@ -38,12 +46,22 @@ const CurationSummary = props => {
           <div className="ui items">
             <div className="item">
               <div className="MainArticle">
-                <a id="article-title" href={'/review/'}>
+                <a id="article-title" href={'/curation/' + props.id}>
                   <h3 className="MainArticleTitle">{props.title}</h3>
                 </a>
                 <div className="MainArticleContent">
-                  <div className="content">
-                    {/* <Carousel>{Books}</Carousel> */}
+                  <div className="curation-summary-content">
+                    <Carousel
+                      className="carousel-items"
+                      prevIcon={
+                        <Icon color="black" name="angle left" size="large" />
+                      }
+                      nextIcon={
+                        <Icon color="black" name="angle right" size="large" />
+                      }
+                    >
+                      {Books}
+                    </Carousel>
                   </div>
                 </div>
               </div>
