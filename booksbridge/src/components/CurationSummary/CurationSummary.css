@@ -1,0 +1,19 @@
+.curation-summary-images {
+  text-align: center;
+}
+.carousel-items {
+  background-color: rgba(221, 236, 228, 0.13) !important;
+  padding-left: 10%;
+  padding-right: 10%;
+  align-content: center;
+  width: 100% !important;
+}
+.carousel-caption {
+  color: black !important;
+  bottom: 10px !important;
+}
+.curation-summary-items {
+  width: 100% !important;
+  padding-top: 10px;
+  padding-bottom: 120px;
+}
