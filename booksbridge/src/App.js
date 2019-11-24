@@ -15,6 +15,7 @@ import UserPage from './containers/UserPage';
 import storage from './lib/storage';
 import * as actionTypes from './store/actions/actionTypes';
 import CreateCuration from './containers/CreateCuration';
+import Library from './containers/Library/Library';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -75,6 +76,7 @@ class App extends Component {
               exact
               component={Main}
             />
+            <Route path="/library" exact component={Library} />
             <Redirect from="/" to="/sign-in" />
           </Switch>
         </div>

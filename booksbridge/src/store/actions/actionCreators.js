@@ -375,6 +375,14 @@ export const deleteSpecificLibrary = id => dispatch =>
       type: actionTypes.DELETE_SPECIFIC_LIBRARY,
     }),
   );
+// export const GET_LIBRARIES_BY_USERID = 'GET_LIBRARIES_BY_USERID'
+export const getLibrariesByUserID = user_id => dispatch =>
+  axios.get(`/api/library/userID=${user_id}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_LIBRARIES_BY_USERID,
+      libraries: res.data,
+    }),
+  );
 
 // //////////////////////////////////// FOLLOW ///////////////////////////////////
 
@@ -416,6 +424,10 @@ export const getFollows = userid => dispatch =>
 // ///////////////////////////////// EXTRA /////////////////////////////////////////
 export const emptySearchedBooks = () => ({
   type: actionTypes.EMPTY_SEARCHED_BOOKS,
+});
+
+export const emptySelectedBook = () => ({
+  type: actionTypes.EMPTY_SELECTED_BOOK,
 });
 
 export const runOcr = formData => dispatch =>

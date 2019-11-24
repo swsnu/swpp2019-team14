@@ -476,7 +476,38 @@ def curation_page(request, page):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+def libraries(request, user_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
 
+    elif request.method == 'GET':
+        try:
+            user = User.objects.get(id=user_id)
+            libraries = list()
+            for library in Library.objects.filter(user=user):
+                library_dict = {
+                    'title': library.title,
+                    'date': library.date,
+                    'books': [],
+                }
+                  
+                for book_in_library in BookInLibrar.objects.filter(library=library):
+                    book = {
+                        'isbn': book_in_library.book.isbn,
+                        'title': book_in_library.book.title,
+                        'thumbnail': book_in_library.book.thumbnail,
+                    }
+                    library_dict['books'].append(book)
+
+                libraries.append(library_dict)
+        except:
+            return HttpResponse(status=404)
+
+        return JsonResponse(libraries, status=200)
+        
+    else:
+        return HttpResponseNotAllowed(['GET'])
+        
 
 def library(request):
     if not request.user.is_authenticated:

@@ -1,0 +1,57 @@
+.AddLibraryModal {
+  height: 750px !important;
+  width: 600px !important;
+}
+
+.LibraryBookSearch {
+  border-top: 1px solid lightgray !important;
+}
+
+.LibraryBookSearchHeader {
+  height: 40px;
+  display: flex;
+}
+
+.LibraryChooseBookModal {
+  width: 50%;
+  text-align: left;
+}
+
+.AddToLibrary_Button {
+  width: 50%;
+  text-align: right;
+}
+
+.LibraryBookSearchContent {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.LibraryAddedBooks {
+  border-top: 1px solid lightgray !important;
+}
+.dimmed.dimmable > .ui.animating.dimmer,
+.dimmed.dimmable > .ui.visible.dimmer,
+.ui.active.dimmer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ui.modal,
+.ui.active.modal {
+  margin: 0 auto !important;
+  top: auto !important;
+  left: auto !important;
+  transform-origin: center !important;
+  transition: all ease 0.5s;
+}
+
+.select-book-button {
+  height: 40px !important;
+}
+
+.ReviewChooseBookModal {
+  height: 100% !important;
+}
