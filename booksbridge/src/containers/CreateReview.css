@@ -1,20 +1,21 @@
 .ReviewCreateForm {
-    padding-left: 20%;
-    padding-right: 20%;
-    padding-bottom: 0.5%;
-    margin: 10px;
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-bottom: 0.5%;
+  margin: 10px;
 }
 
-.FormLabel{
-    font-size: 20px !important;
+.FormLabel {
+  font-size: 20px !important;
 }
 
-.ReviewTypeCheckbox{
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
+.ReviewTypeCheckbox {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
 }
 
-.SubmitButton{
-    margin-top:30px !important;
+.SubmitButton {
+  margin-top: 30px !important;
 }

@@ -86,6 +86,22 @@ describe('<Header/>', () => {
     expect(spyHistoryPush).toHaveBeenCalledWith('/page/TEST_USER');
   });
 
+  it('should redirect to my library', () => {
+    const spyHistoryPushLibrary = jest
+      .spyOn(history, 'push')
+      .mockImplementation(user => {
+        return dispatch => {};
+      });
+    const component = mount(header);
+    const wrapper = component.find('.HeaderProfileSummary');
+    wrapper.simulate('click');
+    component
+      .find('MenuItem')
+      .at(1)
+      .simulate('click');
+    expect(spyHistoryPushLibrary).toHaveBeenCalledWith('/library/');
+  });
+
   it(`'should log out`, () => {
     const spyLogout = jest
       .spyOn(actionCreators, 'logoutUser')
@@ -97,7 +113,7 @@ describe('<Header/>', () => {
     wrapper.simulate('click');
     component
       .find('MenuItem')
-      .at(1)
+      .at(2)
       .simulate('click');
     expect(spyLogout).toBeCalledTimes(1);
   });

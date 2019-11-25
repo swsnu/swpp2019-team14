@@ -757,7 +757,7 @@ class BookTestCase(TestCase):
         Profile.objects.create(user=user)
 
         # POST before sign in
-        response = client.post('/api/library/',
+        response = client.post('/api/library/9999/',
                                json.dumps({
                                    'title': 'test_title',
                                }),
@@ -773,8 +773,12 @@ class BookTestCase(TestCase):
                                }),
                                content_type='application/json')
 
+        # Book registration
+        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
+                   content_type='application/json')
+
         # KeyError
-        response = client.post('/api/library/',
+        response = client.post('/api/library/9999/',
                                json.dumps({
                                    'notgoodkey': 'notgoodvalue',
                                }),
@@ -783,22 +787,45 @@ class BookTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
 
         # POST
-        response = client.post('/api/library/',
+        response = client.post('/api/library/9999/',
                                json.dumps({
                                    'title': 'test_title',
+                                   'books': [],
                                }),
                                content_type='application/json')
 
         self.assertIsNotNone(response.content)
         self.assertEqual(response.status_code, 201)
 
-        # PATCH
-        response = client.patch('/api/library/',
-                                content_type='application/json')
+        # GET
+        response = client.get('/api/library/1/',
+                              content_type='application/json')
 
-        self.assertEqual(response.status_code, 405)
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 200)   
+
+
+        # PUT
+        response = client.put('/api/library/1/',
+                              json.dumps({
+                                   'title': 'test_title',
+                                   'books': [],
+                              }),
+                              content_type='application/json')
+
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 201)
+
+        # DELETE
+        response = client.delete('/api/library/1/',
+                              content_type='application/json')
+
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 200)   
         
 
+    """
+    THERE IS ABSOLUTELY NO NEED FOR IMPLEMENTATION OF BOOK IN LIBRARY, THUS NO NEED FOR TEST OF IT
     def test_book_in_library(self):
         # Initialize
         client = Client()
@@ -844,10 +871,13 @@ class BookTestCase(TestCase):
                                }),
                                content_type='application/json')
         
+        self.assertEqual(response.status_code, 400)
+
         # library generation
-        response = client.post('/api/library/',
+        response = client.post('/api/library/9999/',
                                json.dumps({
                                    'title': 'test_title',
+                                   'books': [],
                                }),
                                content_type='application/json')
 
@@ -856,11 +886,11 @@ class BookTestCase(TestCase):
         response = client.post('/api/library/book/',
                                json.dumps({
                                    'isbn': '9780393912470',
-                                   'library': '1',
+                                   'library': '2'
                                }),
                                content_type='application/json')
 
-        self.assertJSONEqual(response.content, {'id': 1, 'library': 1, 'book': 9780393912470})
+        self.assertIsNotNone(response.content)
         self.assertEqual(response.status_code, 201)
 
         # PUT
@@ -872,7 +902,7 @@ class BookTestCase(TestCase):
                               content_type='application/json')
 
         self.assertEqual(response.status_code, 405)
-
+"""
 
     def test_specific_user(self):
         # Initialize
