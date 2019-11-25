@@ -115,25 +115,25 @@ describe('ActionCreators', () => {
     });
   });
 
-  it(`'login error when id or password is wrong'`, done => {
-    const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+  // it(`'login error when id or password is wrong'`, done => {
+  //   const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
-    const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
-      return new Promise((resolve, reject) => {
-        const result = {
-          status: 400,
-        };
-        reject(result);
-      });
-    });
-    store.dispatch(actionCreators.loginUser()).then(() => {
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spyAlert).toHaveBeenCalledWith(
-        'Username or Password is incorrect.',
-      );
-      done();
-    });
-  });
+  //   const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
+  //     return new Promise((resolve, reject) => {
+  //       const result = {
+  //         status: 400,
+  //       };
+  //       reject(result);
+  //     });
+  //   });
+  //   store.dispatch(actionCreators.loginUser()).then(() => {
+  //     expect(spy).toHaveBeenCalledTimes(1);
+  //     expect(spyAlert).toHaveBeenCalledWith(
+  //       'Username or Password is incorrect.',
+  //     );
+  //     done();
+  //   });
+  // });
 
   //sign out
   it(`'sign out'`, done => {
