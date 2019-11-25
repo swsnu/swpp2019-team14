@@ -1418,6 +1418,75 @@ class BookTestCase(TestCase):
         self.assertEqual(response.status_code, 405)                        
     
 
+    def test_article_like(self):
+        # Initialize
+        client = Client()
+
+        user = User.objects.create_user(
+            email='jsmith@snu.ac.kr',
+            username='John Smith',
+            password='mypassword')
+
+        Profile.objects.create(user=user)
+
+        # GET before sign in
+        response = client.get('/api/like/article/1/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 401)
+
+        # Sign in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John Smith',
+                                   'password': 'mypassword'
+                               }),
+                               content_type='application/json')
+
+        # Book registration
+        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
+                   content_type='application/json')
+
+        # Article registration
+        client.post('/api/article/',
+                    json.dumps({
+                        'isbn': '9780393912470',
+                        'title': 'test_title',
+                        'content': 'test_content',
+                        'is_long': True,
+                        'is_short': False,
+                        'is_phrase': False
+                    }),
+                    content_type='application/json')
+
+        # POST
+        response = client.post('/api/like/article/1/',
+                    json.dumps({ }),  
+                    content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        # GET
+        response = client.get('/api/like/article/1/',
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNot(response.content, { 'count': 1})
+
+        # DELETE
+        response = client.delete('/api/like/article/1/',
+                               json.dumps({}),
+                               content_type='application/json')
+        self.assertIsNot(response.content, b'{}')
+        self.assertEqual(response.status_code, 200)
+
+        # unallowed requests 
+        response = client.put('/api/like/article/1/', 
+                              json.dumps({ }),  
+                              content_type='application/json')
+        self.assertEqual(response.status_code, 405)                        
+    
+
+
+
 
 
 
