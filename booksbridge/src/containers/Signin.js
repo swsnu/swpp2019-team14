@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import './containers.css';
 import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/index';
+import axios from 'axios';
 import './containers.css';
 class Signin extends Component {
   state = {
@@ -21,7 +22,7 @@ class Signin extends Component {
   };
 
   componentDidMount() {
-    this.props.onGetToken();
+    axios.get('/api/token/');
   }
 
   render() {
@@ -89,9 +90,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onLoginUser: user => {
       dispatch(actionCreators.loginUser(user));
-    },
-    onGetToken: () => {
-      dispatch(actionCreators.getToken());
     },
   };
 };

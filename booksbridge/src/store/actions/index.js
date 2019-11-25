@@ -1,5 +1,4 @@
 export {
-  getToken,
   postUser,
   loginUser,
   logoutUser,
