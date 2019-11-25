@@ -79,7 +79,7 @@ describe('<CreateReview/>', () => {
     content_space.simulate('change', { target: { value: content } });
     const submitbutton = component.find('.SubmitButton').at(0);
     submitbutton.simulate('click');
-    expect(spyPostArticle).toHaveBeenCalledTimes(1);
+    expect(spyPostArticle).toHaveBeenCalledTimes(0);
     const instance = component.find(CreateReview.WrappedComponent).instance();
     expect(instance.state.title).toEqual(title);
     expect(instance.state.content).toEqual(content);

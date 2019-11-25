@@ -20,6 +20,7 @@ export {
   getSpecificCuration,
   editSpecificCuration,
   deleteSpecificCuration,
+  getCurations,
   getCurationLike,
   postCurationLike,
   deleteCurationLike,

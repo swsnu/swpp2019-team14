@@ -1,7 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  hasNext: [],
+  hasNext: null,
+  curations: [],
   selectedCuration: null,
   likes: null,
 };
@@ -10,6 +11,12 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     // case actionTypes.POST_CURATION:
     //   return {};
+    case actionTypes.GET_CURATIONS:
+      return {
+        ...state,
+        curations: action.curations,
+        hasNext: action.hasNext,
+      };
 
     case actionTypes.GET_SPECIFIC_CURATION:
       return {

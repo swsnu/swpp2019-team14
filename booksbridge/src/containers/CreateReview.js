@@ -23,7 +23,9 @@ class CreateReview extends Component {
       return;
     }
     if (this.state.type === 'long-review') {
-      if (this.state.title != '' && this.state.content != '') {
+      if (this.state.content.length < 140) {
+        window.alert('긴 리뷰는 140자 이상 작성해야 합니다.');
+      } else if (this.state.title != '' && this.state.content != '') {
         this.props.onPostArticle({
           isbn: this.props.selectedBook.isbn,
           title: this.state.title,

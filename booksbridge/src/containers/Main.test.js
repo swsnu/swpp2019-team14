@@ -54,17 +54,4 @@ describe('<Main />', () => {
     const wrapper = component.find('.main');
     expect(wrapper.length).toBe(1);
   });
-
-  it('should redirect to create review page', () => {
-    const spyHistoryPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(user => {
-        return dispatch => {};
-      });
-    const component = mount(main);
-    const wrapper = component.find('#createReviewLogo');
-    expect(wrapper.length).toBe(1);
-    wrapper.simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-  });
 });

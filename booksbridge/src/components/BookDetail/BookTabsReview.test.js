@@ -6,9 +6,6 @@ import { Router } from 'react-router-dom';
 
 describe('<BookTabsReview />', () => {
   it('should render long review summary without errors', () => {
-    const spyHistoryPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(path => {});
     const author = {
       username: 'ybzzang',
       profile_photo: 'resources/image/profile/ybzzang',
@@ -35,7 +32,6 @@ describe('<BookTabsReview />', () => {
       .find('.box')
       .at(0)
       .simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/review/1');
   });
   it('should render short review summary without errors', () => {
     const author = {

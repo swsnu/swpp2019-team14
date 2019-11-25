@@ -36,6 +36,7 @@ class Comments extends Component {
       return (
         <CommentUnit
           key={comment.id}
+          id={comment.id}
           article_id={this.props.article_id}
           author={comment.author}
           date={comment.date}
