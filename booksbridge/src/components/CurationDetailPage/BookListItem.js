@@ -19,22 +19,19 @@ class BookListItem extends Component {
     } = this.props;
 
     return (
-      <div key={isbn} className="book-list-item">
-        <div className="book">
-          <BookResultSummary
-            cover={cover}
-            title={title}
-            authors={authors}
-            publisher={publisher}
-            isbn={isbn}
-            direct={direct}
-            click={click}
-            size={size}
-          />
-        </div>
-        <div className="content">
-          <h5>{content}</h5>
-        </div>
+      <div key={isbn} className="book-content-list">
+        <BookResultSummary
+          id="book"
+          cover={cover}
+          title={title}
+          authors={authors}
+          publisher={publisher}
+          isbn={isbn}
+          direct={direct}
+          click={click}
+          size={size}
+        />
+        <h5 id="content">{content}</h5>
       </div>
     );
   }

@@ -23,9 +23,8 @@ class OcrModal extends Component {
     super(props);
 
     this.state = {
-      files: [],
+      file: null,
       open: false,
-      content: '',
       imageShow: true,
       image: null,
     };
@@ -46,49 +45,24 @@ class OcrModal extends Component {
       reader.readAsDataURL(event.target.files[0]);
     }
 
-    const array = this.fileListToArray(files);
-    //this.setState(prevState => ({ files: prevState.files.concat(array) }));
     this.setState({
       ...this.state,
-      files: this.state.files.concat(array),
+      file: files[0],
       imageShow: true,
     });
   }
 
-  fileListToArray(list) {
-    const array = [];
-    for (let i = 0; i < list.length; i++) {
-      array.push(list.item(i));
-    }
-    return array;
-  }
-
   async runOcrOnFiles() {
-    const promises = [];
-
-    this.state.files.forEach(file => {
-      let formData = new FormData();
-      formData.append('image', file);
-      promises.push(this.props.onRunOcr(formData));
-    });
-    try {
-      await Promise.all(promises);
-      this.setState({
-        content: this.props.quote,
-      });
-    } catch (e) {
-      this.setState({
-        files: [],
-        imageShow: false,
-      });
-      window.alert('running ocr on file has failed');
-    }
+    const formData = new FormData();
+    formData.append('image', this.state.file);
+    this.props.onRunOcr(formData);
   }
 
   render() {
     const image = this.state.imageShow && (
       <img id="target" src={this.state.image} width={300} height={300} />
     );
+
     return (
       <div className="ocr-modal">
         <Button
@@ -106,17 +80,7 @@ class OcrModal extends Component {
         </Button>
         <Modal open={this.state.open}>
           <Modal.Content>
-            {this.state.files.map(file => {
-              return (
-                <div key={file.name} className="Row">
-                  <span className="Filename">{file.name}</span>
-                </div>
-              );
-            })}
-            <div
-              id="choose-file"
-              // onClick={() => this.fileInputRef.current.click()}
-            >
+            <div id="choose-file">
               <input
                 ref={this.fileInputRef}
                 className="FileInput"
@@ -132,17 +96,9 @@ class OcrModal extends Component {
               Extract
             </Button>
             <Copy
-              text={this.state.content}
+              text={this.props.quote}
               clickCopy={() => this.setState({ ...this.state, open: false })}
             />
-            {/* <CopyToClipboard text={this.state.content}>
-              <Button
-                id="copy"
-                onClick={() => this.setState({ ...this.state, open: false })}
-              >
-                Copy to the Clipboard
-              </Button>
-            </CopyToClipboard> */}
             <Button
               id="clear"
               onClick={() =>
@@ -159,7 +115,7 @@ class OcrModal extends Component {
             </Button>
             <TextArea
               id="ocr-text"
-              value={this.state.content} // this.state.content  vs this.props.quote
+              value={this.props.quote} // this.state.content  vs this.props.quote
               style={{ minHeight: 500, minWidth: 1000 }}
             />
           </Modal.Content>

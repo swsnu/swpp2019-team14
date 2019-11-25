@@ -679,6 +679,31 @@ def search_user(request, keyword):
                     result_users.append(user_dict)
         return JsonResponse(result_users, safe=False)
 
+def run_text_detection(path):
+    from google.cloud import vision
+    client = vision.ImageAnnotatorClient()
+
+    try:
+        with io.open(path, 'rb') as image_file:
+            content = image_file.read()
+    except:
+        print("couldn't open file")
+        return HttpResponse(status=400)
+
+    image = vision.types.Image(content=content)
+
+    response = client.document_text_detection(image=image)
+
+    result = ""
+    for page in response.full_text_annotation.pages:
+        for block in page.blocks:
+            for paragraph in block.paragraphs:
+                for word in paragraph.words:
+                    word_text = ''.join([
+                        symbol.text for symbol in word.symbols
+                    ])
+                    result += word_text + ' '
+    return result
 
 
 def ocr(request):
@@ -693,30 +718,10 @@ def ocr(request):
         filename = fs.save(image.name, image)
         path = fs.url(filename)
 
-        from google.cloud import vision
-        client = vision.ImageAnnotatorClient()
+        result = run_text_detection(path)
+        result_dict = { 'quote': result }
+        return JsonResponse(result_dict, status=200)                       
 
-        try:
-            with io.open(path, 'rb') as image_file:
-                content = image_file.read()
-        except:
-            print("couldn't open file")
-            return HttpResponse(status=400)
-
-        image = vision.types.Image(content=content)
-
-        response = client.document_text_detection(image=image)
-
-        result = ""
-        for page in response.full_text_annotation.pages:
-            for block in page.blocks:
-                for paragraph in block.paragraphs:
-                    for word in paragraph.words:
-                        word_text = ''.join([
-                            symbol.text for symbol in word.symbols
-                        ])
-                        result += word_text + ' '
-                        
         '''
         #uri = 'http://127.0.0.1:8000/api/ocr/' + image.name
         url = image.temporary_file_path
@@ -736,8 +741,6 @@ def ocr(request):
                         ])
                         result += word_text + " "
         '''
-        result_dict = { 'quote': result }
-        return JsonResponse(result_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
 
