@@ -35,6 +35,7 @@ class EditLibraryModal extends Component {
       open: false,
     });
     this.props.onLoadLibrary(this.props.logged_in_user.id);
+    this.props.onEmptySelectedBook();
   };
   /////////////////////////////////////////////
   //////////* Logic for Title Input *//////////

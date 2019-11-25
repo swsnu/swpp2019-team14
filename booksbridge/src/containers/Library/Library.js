@@ -14,8 +14,7 @@ import * as actionCreators from '../../store/actions/actionCreators';
 class Library extends Component {
   constructor(props) {
     super(props);
-
-    //this.props.onLoadLibrary(this.props.logged_in_user.id);
+    this.props.onLoadLibrary(this.props.logged_in_user.id);
   }
 
   onDeleteLibrary = library_id => this.props.onDeleteLibrary(library_id);
@@ -25,7 +24,11 @@ class Library extends Component {
       let images_html = library_dict.books.slice(0, 5).map((book, _index) => {
         return (
           <div className="BookCoverWrapper" key={_index}>
-            <Image src={book.thumbnail} className="BookCover" />
+            <Image
+              src={book.thumbnail}
+              className="BookCover"
+              onClick={() => this.props.history.push('/book/' + book.isbn)}
+            />
           </div>
         );
       });
