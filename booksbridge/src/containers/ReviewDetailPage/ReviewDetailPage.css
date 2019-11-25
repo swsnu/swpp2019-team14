@@ -1,12 +1,20 @@
 .ReviewContainer {
-    padding-top:3%;
+    font-family: 'Nanum Gothic', sans-serif;
     padding-left: 25%;
     padding-right: 25%;
     margin: 10px;
     white-space: pre-wrap;
     text-align: left;
-    font-size: 16px;
     line-height: 1.5;
+    font-size: 14px;
+}
+
+#ReviewDetailBookInfo{
+    color: black;
+}
+
+.ReviewDetail{
+    padding-top: 1%;
 }
 
 .AuthorProfile{
@@ -15,11 +23,30 @@
     padding-left: 25%;
 }
 
+.AuthorDateInfo{
+    display: flex;
+    justify-content: space-between;
+}
+
+.ReviewDateInfo{
+    text-align: right;
+    padding-right: 25%;
+    font-size: 0.85714286em;
+  display: flex;
+  align-items: center;
+}
+
 .ReviewTitleStyle {
     padding-left: 25%;
     padding-right: 25%;
-    text-align: center;
+    text-align: justify;
     margin: 10px;
+}
+
+.ReviewDetailTitle {
+    font-family: 'NanumSquare', sans-serif;
+    font-weight: 700;
+    font-size: 35px;
 }
 
 .LikeButton {
@@ -28,4 +55,8 @@
     text-align: right;
 }
   
-  
+.ui.container {
+    width: 900px;
+    margin-left: auto!important;
+    margin-right: auto!important;
+}

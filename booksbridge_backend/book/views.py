@@ -6,7 +6,7 @@ import urllib, requests
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.paginator import Paginator
 from bs4 import BeautifulSoup
 from django.db import transaction
@@ -169,19 +169,27 @@ def make_article_dict(article):
         'profile_photo':user.profile.profile_photo.name,
         'nickname':user.profile.nickname,
     }
+
+    book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
+    book_dict = model_to_dict(book_in_db)
+
+    comments = get_comments(article, True)
     article_dict = {
         'author': user_dict,
-        'book_isbn': article.book.isbn,
-        'book_title': article.book.title,
-        'book_thumbnail': article.book.thumbnail,
+        'book':book_dict, 
+        # 'book_isbn': article.book.isbn,
+        # 'book_title': article.book.title,
+        # 'book_thumbnail': article.book.thumbnail,
         'id': article.id,
         'title': article.title,
         'content': article.content,
         'date': time_array,
         'is_long': article.is_long,
         'is_short': article.is_short,
-        'is_phrase': article.is_phrase
+        'is_phrase': article.is_phrase,
+        'comments': comments,
     }
+
     return article_dict
 
 
@@ -195,17 +203,33 @@ def search_article(request, isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-def search_article_by_username(request, username):
+def search_article_by_author(request, page, username):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
     if request.method == 'GET':
-        user = User.objects.get(username=username)
-        articles = []
-        articles_list = user.articles.all() 
-        for article in articles_list:
-           articles.append(make_article_dict(article))
-        return JsonResponse(articles, safe=False)
+        author = User.objects.get(username=username)
+        article_list = Article.objects.filter(author=author).order_by('-id')
+        paginator = Paginator(article_list, 5)
+        results = paginator.get_page(page)
+        articles=list()
+        for article in results:
+            deltatime = datetime.now() - article.date
+            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
+            article_dict = {
+                'book_isbn': article.book.isbn,
+                'book_title': article.book.title,
+                'id': article.id,
+                'title': article.title,
+                'content': article.content,
+                'date': time_array,
+                'is_long': article.is_long,
+                'is_short': article.is_short,
+                'is_phrase': article.is_phrase
+            }
+            articles.append(article_dict) 
+        response_dict = {'articles':articles, 'length':article_list.count()}
+        return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -214,26 +238,27 @@ def specific_article(request,review_id):
         return HttpResponse(status=401)
     elif request.method == 'GET':
         article = get_object_or_404(Article, id=review_id)
-        book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
-        book_dict = model_to_dict(book_in_db)
-        user = get_object_or_404(User, id=article.author_id)
-        user_dict = {
-            'id':user.id, 
-            'username':user.username,
-            'nickname':user.profile.nickname,
-            'profile_photo':user.profile.profile_photo.name
-        }
-        comments = get_comments(article)
-        response_dict = {
-            'id':article.id, 
-            'author':user_dict, 
-            'book':book_dict, 
-            'title':article.title, 
-            'content':article.content, 
-            'date':article.date, 
-            'comments': comments
-        }
-        return JsonResponse(response_dict)
+        return JsonResponse(make_article_dict(article))
+        # book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
+        # book_dict = model_to_dict(book_in_db)
+        # user = get_object_or_404(User, id=article.author_id)
+        # user_dict = {
+        #     'id':user.id, 
+        #     'username':user.username,
+        #     'nickname':user.profile.nickname,
+        #     'profile_photo':user.profile.profile_photo.name
+        # }
+        # comments = get_comments(article, True)
+        # response_dict = {
+        #     'id':article.id, 
+        #     'author':user_dict, 
+        #     'book':book_dict, 
+        #     'title':article.title, 
+        #     'content':article.content, 
+        #     'date':article.date, 
+        #     'comments': comments
+        # }
+        # return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -253,9 +278,14 @@ def article_page(request, page):
         return JsonResponse(response_body)
 
 
-def get_comments(article):
-    comments = list()
-    for comment in article.comments.all():
+def get_comments(post, is_article):
+    comments = []
+    if is_article:
+        iteration = post.comments.all()
+    else:
+        iteration = post.curation_comments.all()
+     
+    for comment in iteration:
         deltatime = (datetime.now() - comment.date)
         time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
         comment_author = get_object_or_404(User, id=comment.author_id)
@@ -312,7 +342,7 @@ def comment(request):
             parent = None
         comment = Comment(article=article, author=request.user, content=content, parent=parent)
         comment.save()
-        comments = get_comments(article)
+        comments = get_comments(article, True)
         book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
         book_dict = model_to_dict(book_in_db)
         user = get_object_or_404(User, id=article.author_id)
@@ -338,6 +368,59 @@ def comment(request):
     #    pass
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
+
+def curation_comment(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            curation_id = req_data['curation_id']
+            content = req_data['content']
+            parent_id = req_data['parent_id']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        curation = get_object_or_404(Curation, id=curation_id)
+        try:
+            parent = CurationComment.objects.get(id=parent_id)
+        except CurationComment.DoesNotExist:
+            parent = None
+
+        comment = CurationComment(curation=curation, author=request.user, content=content, parent=parent)
+        comment.save()
+        comments = get_comments(curation, False)
+
+        book_in_curation = BookInCuration.objects.filter(curation=curation)
+        book_list = [{'book': model_to_dict(get_object_or_404(Book, isbn=book.book_id)), 'content': book.content} 
+                    for book in book_in_curation]  # book_id: isbn 
+
+
+        user = get_object_or_404(User, id=curation.author_id)
+        user_dict = {
+            'id':user.id, 
+            'username':user.username,
+            'nickname':user.profile.nickname,
+            'profile_photo':user.profile.profile_photo.name
+        }
+        response_dict = {
+            'id': curation.id, 
+            'authors':user_dict, 
+            'books':book_list, 
+            'title':curation.title, 
+            'content':curation.content, 
+            'date':curation.date, 
+            'comments': comments
+        }
+        return JsonResponse(response_dict, status=201)
+    # TODO elif request.method == 'PUT':
+    #    pass
+    # TODO elif request.method == 'DELETE':
+    #    pass
+    else:
+        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
+
+
 
 @csrf_exempt
 def article(request):
@@ -433,16 +516,24 @@ def make_curation_dict(curation):
     }
 
     book_in_curation = BookInCuration.objects.filter(curation=curation)
-    book_list = [{'book': book.book_id, 'content': book.content} for book in book_in_curation]  # book_id: isbn 
+    book_list = [{'book': model_to_dict(get_object_or_404(Book, isbn=book.book_id)), 'content': book.content} 
+                 for book in book_in_curation]  # book_id: isbn 
+
+    comments = get_comments(curation, False)
+
+    likes = CurationLike.objects.filter(curation_id=curation.id).count()
 
     curation_dict = {
+        'id': curation.id,
         'author': user_dict,
         'books': book_list,    
-        'id': curation.id,
         'title': curation.title,
         'content': curation.content,
         'date': time_array,
+        'comments': comments,
+        'likes': likes
     }
+ 
     return curation_dict
 
 
@@ -468,8 +559,30 @@ def curation_page(request, page):
 
         curations = [] 
         for curation in requested_list:
-            curations.append(make_curation_dict(curation))
-
+            books = []
+            book_set= []
+            for books_in_cur in curation.book_in_curation.all():
+                if(len(book_set)==4):
+                    books.append(book_set)
+                    book_set=[]
+                book_set.append(model_to_dict(books_in_cur.book))
+            books.append(book_set)
+            user=curation.author
+            user_dict = {
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
+            }
+            curation_dict = {
+                'id': curation.id,
+                'books': books,
+                'author': user_dict,
+                'title': curation.title,
+                'content': curation.content,
+                'date': curation.date,
+            }
+            curations.append(curation_dict)
         response_body = {'curations': curations, 'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body, status=200)
     
@@ -617,8 +730,6 @@ def book_in_library(request):
             library = Library.objects.get(id=int(req_data['library']))
         except (KeyError) as e:
             return HttpResponse(status=400) 
-        
-
 
         book_in_library = BookInLibrary(book=book, library=library)
         book_in_library.save()
@@ -672,6 +783,31 @@ def search_user(request, keyword):
                     result_users.append(user_dict)
         return JsonResponse(result_users, safe=False)
 
+def run_text_detection(path):
+    from google.cloud import vision
+    client = vision.ImageAnnotatorClient()
+
+    try:
+        with io.open(path, 'rb') as image_file:
+            content = image_file.read()
+    except:
+        print("couldn't open file")
+        return HttpResponse(status=400)
+
+    image = vision.types.Image(content=content)
+
+    response = client.document_text_detection(image=image)
+
+    result = ""
+    for page in response.full_text_annotation.pages:
+        for block in page.blocks:
+            for paragraph in block.paragraphs:
+                for word in paragraph.words:
+                    word_text = ''.join([
+                        symbol.text for symbol in word.symbols
+                    ])
+                    result += word_text + ' '
+    return result
 
 
 def ocr(request):
@@ -686,30 +822,10 @@ def ocr(request):
         filename = fs.save(image.name, image)
         path = fs.url(filename)
 
-        from google.cloud import vision
-        client = vision.ImageAnnotatorClient()
+        result = run_text_detection(path)
+        result_dict = { 'quote': result }
+        return JsonResponse(result_dict, status=200)                       
 
-        try:
-            with io.open(path, 'rb') as image_file:
-                content = image_file.read()
-        except:
-            print("couldn't open file")
-            return HttpResponse(status=400)
-
-        image = vision.types.Image(content=content)
-
-        response = client.document_text_detection(image=image)
-
-        result = ""
-        for page in response.full_text_annotation.pages:
-            for block in page.blocks:
-                for paragraph in block.paragraphs:
-                    for word in paragraph.words:
-                        word_text = ''.join([
-                            symbol.text for symbol in word.symbols
-                        ])
-                        result += word_text + ' '
-                        
         '''
         #uri = 'http://127.0.0.1:8000/api/ocr/' + image.name
         url = image.temporary_file_path
@@ -729,8 +845,6 @@ def ocr(request):
                         ])
                         result += word_text + " "
         '''
-        result_dict = { 'quote': result }
-        return JsonResponse(result_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -806,6 +920,79 @@ def follow(request, user_id):
         return JsonResponse(follow_dict, status=200)
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
+
+def article_like(request, article_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
+        like = ArticleLike(user=request.user, article_id=article_id) 
+        like.save()
+        article = get_object_or_404(Article, id=article_id)
+        result_dict = make_article_dict(article)
+        return JsonResponse(result_dict, status=201)
+    
+    elif request.method == 'GET':
+        like_count = ArticleLike.objects.filter(article_id=article_id, user_id=request.user.id).count()  
+        like_dict = { 'count': like_count }
+        return JsonResponse(like_dict, status=200)
+    
+    elif request.method == 'DELETE':
+        like = get_object_or_404(ArticleLike, article_id=article_id, user_id=request.user.id)
+        like.delete()
+        article = get_object_or_404(Article, id=article_id)
+        result_dict = make_article_dict(article)
+        return JsonResponse(result_dict, status=200)
+
+    # elif request.method == 'POST':
+    #     like = ArticleLike(user=request.user, article_id=article_id) 
+    #     like.save()
+    #     like_dict = model_to_dict(like)
+    #     return JsonResponse(like_dict, status=201)
+    
+    # elif request.method == 'GET':
+    #     like_count = ArticleLike.objects.filter(article_id=article_id).count()
+    #     like_dict = { 'count': like_count }
+    #     return JsonResponse(like_dict, status=200)
+    
+    # elif request.method == 'DELETE':
+    #     like = get_object_or_404(ArticleLike, article_id=article_id, user_id=user_id)
+    #     like_dict = model_to_dict(like)
+    #     like.delete()
+    #     return JsonResponse(like_dict, status=200)
+
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
+
+
+
+def curation_like(request, curation_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
+        like = CurationLike(user=request.user, curation_id=curation_id) 
+        like.save()
+        curation = get_object_or_404(Curation, id=curation_id)
+        result_dict = make_curation_dict(curation)
+        return JsonResponse(result_dict, status=201)
+    
+    elif request.method == 'GET':
+        like_count = CurationLike.objects.filter(curation_id=curation_id, user_id=request.user.id).count()  
+        like_dict = { 'count': like_count }
+        return JsonResponse(like_dict, status=200)
+    
+    elif request.method == 'DELETE':
+        like = get_object_or_404(CurationLike, curation_id=curation_id, user_id=request.user.id)
+        like.delete()
+        curation = get_object_or_404(Curation, id=curation_id)
+        result_dict = make_curation_dict(curation)
+        return JsonResponse(result_dict, status=200)
+
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
+
+
 
 
 @ensure_csrf_cookie

@@ -5,9 +5,11 @@ const initialState = {
   shortReviews: [],
   phrases: [],
   articles: [],
-  hasNext: [],
+  hasNext: null,
   selectedArticle: null,
   articlesByUserID: [],
+  likes: null,
+  length: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -33,9 +35,27 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_ARTICLES_BY_USERID:
       return {
         ...state,
-        articlesByUserID: action.articles,
+        articlesByUserID: action.articles.articles,
+        length: action.articles.length,
       };
     case actionTypes.POST_LONG_REVIEW_COMMENT:
+      return {
+        ...state,
+        selectedArticle: action.article,
+      };
+    case actionTypes.POST_ARTICLE_LIKE:
+      return {
+        ...state,
+        selectedArticle: action.article,
+      };
+
+    case actionTypes.GET_ARTICLE_LIKE:
+      return {
+        ...state,
+        likes: action.likes.count,
+      };
+
+    case actionTypes.DELETE_ARTICLE_LIKE:
       return {
         ...state,
         selectedArticle: action.article,

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import Pagination from 'react-bootstrap/Pagination';
 import Header from '../../components/Header';
 import * as actionCreators from '../../store/actions/actionCreators';
 import BookResultSummary from '../../components/BookResultSummary/BookResultSummary';
 import './SearchResultBook.css';
 import ScrollUpButton from 'react-scroll-up-button';
+import { Pagination } from 'semantic-ui-react';
 import { Card, Button, Tab } from 'semantic-ui-react';
 import SearchUser from '../../components/SearchUser/SearchUser';
 
@@ -24,6 +24,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class SearchResultBook extends Component {
+  state = {
+    activePage: this.props.match.params.page,
+  };
   componentDidMount() {
     this.props.onSearchBooks(
       this.props.match.params.keyword,
@@ -52,6 +55,16 @@ class SearchResultBook extends Component {
     }
   }
 
+  handlePaginationChange = (e, { activePage }) => {
+    this.setState({ activePage });
+    this.props.history.push(
+      '/result/search=' +
+        this.props.match.params.keyword +
+        '/book/' +
+        activePage,
+    );
+  };
+
   render() {
     const active = parseInt(this.props.match.params.page);
     const items = [];
@@ -60,55 +73,7 @@ class SearchResultBook extends Component {
     let final = parseInt(this.props.count / 10) + 1;
     if (this.props.count % 10 === 0) final -= 1;
 
-    if (final < 5) {
-      for (let number = 1; number <= final; number++) {
-        items.push(
-          <Pagination.Item
-            key={number}
-            active={number === active}
-            onClick={() =>
-              this.props.history.push(
-                `/result/search=${this.props.match.params.keyword}/book/${number}`,
-              )
-            }
-          >
-            {number}
-          </Pagination.Item>,
-        );
-      }
-    } else {
-      if (active < 3) {
-        first = 1;
-        last = 5;
-      }
-      if (active > final - 2) {
-        first = final - 4;
-        last = final;
-      }
-      for (let number = first; number <= last; number++) {
-        items.push(
-          <Pagination.Item
-            key={number}
-            active={number === active}
-            onClick={() =>
-              this.props.history.push(
-                `/result/search=${this.props.match.params.keyword}/book/${number}`,
-              )
-            }
-          >
-            {number}
-          </Pagination.Item>,
-        );
-      }
-    }
-
-    const pagination = (
-      <div className="pagination">
-        <Pagination>{items}</Pagination>
-      </div>
-    );
-
-    const book_result = this.props.books.map(book => (
+    const result = this.props.books.map(book => (
       <BookResultSummary
         cover={book.thumbnail}
         title={book.title}
@@ -131,8 +96,12 @@ class SearchResultBook extends Component {
           <Tab.Pane className="tab-content">
             {this.props.count !== 0 ? (
               <div>
-                <div id="result">{book_result}</div>
-                {pagination}
+                <div id="result">{result}</div>
+                <Pagination
+                  activePage={this.state.activePage}
+                  onPageChange={this.handlePaginationChange}
+                  totalPages={final}
+                />
                 <div className="TopButton">
                   <ScrollUpButton>
                     <Button>Top</Button>

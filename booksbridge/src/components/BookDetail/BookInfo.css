@@ -1,6 +1,4 @@
 .containerStyle {
-  border-top: 3px dashed rgb(179, 179, 179);
-  border-bottom: 3px dashed rgb(179, 179, 179);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,10 +18,10 @@
   text-align: left;
 }
 
-.infoStyle {
+.BookInfoStyle {
+  display: flex;
+  align-items: center;
   font-family: 'NanumSquare', sans-serif;
-  height: 500px;
-  width: auto;
   text-align: left;
   padding: 20px;
 };

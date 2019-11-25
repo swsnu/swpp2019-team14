@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import './containers.css';
-import { Button } from 'semantic-ui-react';
-import Form from 'react-bootstrap/Form';
+import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/index';
 import './containers.css';
 class Signin extends Component {
@@ -21,66 +20,83 @@ class Signin extends Component {
     this.props.onLoginUser(user);
   };
 
+  // componentDidMount() {
+  //   this.props.onGetToken();
+  // }
+
   render() {
     return (
       <div className="login_page">
-        <Form className="login_form" onSubmit={this.onClickSignInButton}>
-          <h1>SIGN IN</h1>
-          <Form.Group>
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              id="username-input"
-              placeholder="Enter username"
-              value={this.state.username}
-              onChange={event =>
-                this.setState({ username: event.target.value })
-              }
-              required
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              id="pw-input"
-              placeholder="Enter password"
-              value={this.state.password}
-              onChange={event =>
-                this.setState({ password: event.target.value })
-              }
-              required
-            />
-          </Form.Group>
-          <Button variant="primary" id="login-button" type="submit">
-            Sign in
-          </Button>
-          <Button
-            variant="primary"
-            id="signup-button"
-            onClick={() => this.props.history.push('/sign-up/')}
-          >
-            Sign up
-          </Button>
-        </Form>
+        <img src="/images/MainLogo.png" width="400" />
+        <Segment placeholder>
+          <Grid columns={2} relaxed="very" stackable>
+            <Grid.Column>
+              <Form className="login_form" onSubmit={this.onClickSignInButton}>
+                <Form.Input
+                  icon="user"
+                  iconPosition="left"
+                  label="Username"
+                  id="username-input"
+                  placeholder="Enter username"
+                  value={this.state.username}
+                  onChange={event =>
+                    this.setState({ username: event.target.value })
+                  }
+                  required
+                />
+                <Form.Input
+                  icon="lock"
+                  iconPosition="left"
+                  label="Password"
+                  type="password"
+                  id="pw-input"
+                  placeholder="Enter password"
+                  value={this.state.password}
+                  onChange={event =>
+                    this.setState({ password: event.target.value })
+                  }
+                  required
+                />
+
+                <Button
+                  id="login-button"
+                  type="submit"
+                  content="Login"
+                  primary
+                />
+              </Form>
+            </Grid.Column>
+
+            <Grid.Column verticalAlign="middle">
+              <Button
+                content="Sign up"
+                icon="signup"
+                size="big"
+                id="signup-button"
+                onClick={() => this.props.history.push('/sign-up/')}
+              />
+            </Grid.Column>
+          </Grid>
+
+          <Divider vertical>Or</Divider>
+        </Segment>
       </div>
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {};
-};
 
 const mapDispatchToProps = dispatch => {
   return {
     onLoginUser: user => {
       dispatch(actionCreators.loginUser(user));
     },
+    // onGetToken: () => {
+    //   dispatch(actionCreators.getToken());
+    // },
   };
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(withRouter(Signin));

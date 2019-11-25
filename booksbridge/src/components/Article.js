@@ -23,31 +23,19 @@ const Article = props => {
           <div className="ui items">
             <div className="item">
               <div className="book_cover">
-                <a
-                  id="book-cover"
-                  onClick={() => {
-                    props.history.push(`/book/${props.book_isbn}`);
-                  }}
-                >
+                <a id="book-cover" href={'/book/' + props.book_isbn}>
                   <img src={props.book_thumbnail} />
                 </a>
               </div>
               <div className="MainArticle">
-                <a
-                  id="article-title"
-                  onClick={() => {
-                    props.history.push(`/review/${props.id}`);
-                  }}
-                >
+                <a id="article-title" href={'/review/' + props.id}>
                   <h3 className="MainArticleTitle">{props.title}</h3>
                 </a>
                 <div className="MainBookTitle">
                   <a
                     id="book-title"
                     className="meta"
-                    onClick={() => {
-                      props.history.push(`/book/${props.book_isbn}`);
-                    }}
+                    href={'/book/' + props.book_isbn}
                   >
                     <span>{props.book_title}</span>
                   </a>
@@ -59,9 +47,7 @@ const Article = props => {
                   <a
                     id="article-extra"
                     className="extra"
-                    onClick={() => {
-                      props.history.push(`/review/${props.id}`);
-                    }}
+                    href={'/review/' + props.id}
                   >
                     더 보기
                   </a>

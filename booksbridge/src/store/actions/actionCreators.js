@@ -144,25 +144,26 @@ export const deleteSpecificArticle = id => dispatch =>
   );
 // export const GET_ARTICLE_LIKE = 'GET_ARTICLE_LIKE'
 export const getArticleLike = id => dispatch =>
-  axios.get(`/api/article/${id}/`).then(res =>
+  axios.get(`/api/like/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_ARTICLE_LIKE,
-      like: res.data,
+      likes: res.data,
     }),
   );
 // export const POST_ARTICLE_LIKE = 'POST_ARTICLE_LIKE'
 export const postArticleLike = id => dispatch =>
-  axios.post(`/api/article/${id}/like/`).then(res =>
+  axios.post(`/api/like/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.POST_ARTICLE_LIKE,
-      like: res.data,
+      article: res.data,
     }),
   );
 // export const DELETE_ARTICLE_LIKE = 'DELETE_ARTICLE_LIKE'
 export const deleteArticleLike = id => dispatch =>
-  axios.delete(`/api/article/${id}/like/`).then(res =>
+  axios.delete(`/api/like/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_ARTICLE_LIKE,
+      article: res.data,
     }),
   );
 // export const GET_ARTICLES_BY_BOOKID = 'GET_ARTICLES_BY_BOOKID'
@@ -174,8 +175,8 @@ export const getArticlesByBookId = isbn => dispatch =>
     }),
   );
 // export const GET_ARTICLES_BY_USERID = 'GET_ARTICLES_BY_USERID'
-export const getArticlesByUserId = username => dispatch =>
-  axios.get(`/api/article/username=${username}/`).then(res =>
+export const getArticlesByUserId = (page, username) => dispatch =>
+  axios.get(`/api/article/username=${username}/${page}/`).then(res =>
     dispatch({
       type: actionTypes.GET_ARTICLES_BY_USERID,
       articles: res.data,
@@ -184,14 +185,24 @@ export const getArticlesByUserId = username => dispatch =>
 
 // //////////////////////////////////// CURATION //////////////////////////////////////
 
+export const getCurations = page => dispatch =>
+  axios.get(`/api/curation/page/${page}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_CURATIONS,
+      curations: res.data.curations,
+      has_next: res.data.has_next,
+    }),
+  );
+
 // export const POST_CURATION = 'POST_CURATION'
 export const postCuration = curation => dispatch =>
-  axios.post('/api/curation/', curation).then(res =>
+  axios.post('/api/curation/', curation).then(res => {
     dispatch({
       type: actionTypes.POST_CURATION,
       curation: res.data,
-    }),
-  );
+    });
+    dispatch(push('/curation/' + res.data.curation.id));
+  });
 
 // export const GET_SPECIFIC_CURATION = 'GET_SPECIFIC_CURATION'
 export const getSpecificCuration = id => dispatch =>
@@ -220,27 +231,28 @@ export const deleteSpecificCuration = id => dispatch =>
   );
 
 // export const GET_CURATION_LIKE = 'GET_CURATION_LIKE'
-export const getCurationLike = id => dispatch =>
-  axios.get(`/api/curation/${id}/`).then(res =>
+export const getCurationLike = curation_id => dispatch =>
+  axios.get(`/api/like/curation/${curation_id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_CURATION_LIKE,
-      like: res.data,
+      likes: res.data,
     }),
   );
 
 // export const POST_CURATION_LIKE = 'POST_CURATION_LIKE'
-export const postCurationLike = id => dispatch =>
-  axios.post(`/api/curation/${id}/like/`).then(res =>
+export const postCurationLike = curation_id => dispatch =>
+  axios.post(`/api/like/curation/${curation_id}/`).then(res =>
     dispatch({
       type: actionTypes.POST_CURATION_LIKE,
-      like: res.data,
+      curation: res.data,
     }),
   );
 // export const DELETE_CURATION_LIKE = 'DELETE_CURATION_LIKE'
-export const deleteCurationLike = id => dispatch =>
-  axios.delete(`/api/curation/${id}/like/`).then(res =>
+export const deleteCurationLike = curation_id => dispatch =>
+  axios.delete(`/api/like/curation/${curation_id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_CURATION_LIKE,
+      curation: res.data,
     }),
   );
 // export const GET_SEARCHED_CURATIONS = 'GET_SEARCHED_CURATIONS'
@@ -444,3 +456,11 @@ export const runOcr = formData => dispatch =>
         quote: res.data.quote,
       }),
     );
+
+export const getToken = () => {
+  //   return axios.get('/api/token/').then(res => {
+  //     dispatch({
+  //       type: actionTypes.
+  //     })
+  //   });
+};

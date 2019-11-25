@@ -1,0 +1,19 @@
+.curation-detail-page {
+  white-space: pre-wrap;
+  text-align: left;
+  display: 'flex';
+  flex-direction: 'row';
+  padding-top: 3%;
+  padding-left: 25%;
+  padding-right: 25%;
+  margin: 10px;
+  white-space: pre-wrap;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* .book-and-content {
+  display: 'flex';
+  flex-direction: 'row';
+} */
