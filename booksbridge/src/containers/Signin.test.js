@@ -25,11 +25,6 @@ describe('<Signin />', () => {
         </ConnectedRouter>
       </Provider>
     );
-    const spyGetToken = jest
-      .spyOn(actionCreators, 'getToken')
-      .mockImplementation(user => {
-        return dispatch => {};
-      });
   });
 
   it('should render Signin page', () => {
