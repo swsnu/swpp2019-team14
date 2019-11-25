@@ -76,7 +76,7 @@ class CurationDetailPage extends Component {
           isbn={entry.book.isbn}
           direct={true}
           click={() => {}}
-          size="big"
+          size="small"
           content={entry.content}
         ></BookListItem>
       );

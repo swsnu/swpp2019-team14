@@ -4,9 +4,7 @@ from .models import *
 from django.contrib.auth.models import User
 from urllib import parse
 import json
-
-# Create your tests here.
-
+from unittest.mock import MagicMock, patch
 
 class BookTestCase(TestCase):
     def test_csrf(self):
@@ -1483,7 +1481,48 @@ class BookTestCase(TestCase):
                               json.dumps({ }),  
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)                        
-    
+
+    '''
+    @patch('views.run_text_detection')
+    def test_ocr(self, mockarg):
+        # Initialize
+        client = Client()
+
+        user = User.objects.create_user(
+            email='jsmith@snu.ac.kr',
+            username='John Smith',
+            password='mypassword')
+
+        Profile.objects.create(user=user)
+
+        # POST before sign in
+        response = client.post('/api/ocr/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 401)
+
+        # Sign in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John Smith',
+                                   'password': 'mypassword'
+                               }),
+                               content_type='application/json')
+
+        # TODO: POST 
+        mockarg.return_value = 'TEST_QUOTE' 
+            
+        with open('../resources/sapiens.jpg', 'rb') as f:
+            response = client.post('/api/ocr/', { 'image': f}, 
+                                    content_type='application/json')
+            self.assertEqual(response.status_code, 200)                        
+
+        # unallowed requests 
+        response = client.get('/api/ocr/', 
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 405)                        
+    '''
+
 
 
 
