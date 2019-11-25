@@ -52,6 +52,8 @@ class Main extends React.Component {
               width="600"
             />
           </a>
+          <br />
+          <a href="/curation/">Curation page 이동</a>
           <InfiniteScroll
             className="scroll"
             dataLength={this.state.articles.length}
