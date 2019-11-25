@@ -499,7 +499,27 @@ def curation(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
 
-
+def search_curation(request, keyword):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'GET':
+        decoded_keyword =urllib.parse.unquote(keyword)
+        result_users=[]
+        all_users = User.objects.all()
+        if all_users:
+            for user in all_users:
+                if decoded_keyword in user.get_username() or decoded_keyword in user.profile.nickname:
+                    user_dict = {
+                        'id': user.id,
+                        'username': user.username,
+                        'date_joined': user.date_joined.date(),
+                        'profile_photo': user.profile.profile_photo.name,
+                        'nickname': user.profile.nickname,
+                        'profile_text': user.profile.profile_text,
+                    }
+                    result_users.append(user_dict)
+        return JsonResponse(result_users, safe=False)
     
 def make_curation_dict(curation):
     # TODO: comments
