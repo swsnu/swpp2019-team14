@@ -4,6 +4,7 @@ const initialState = {
   hasNext: null,
   curations: [],
   selectedCuration: null,
+  likes: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,11 +35,20 @@ const reducer = (state = initialState, action) => {
     case actionTypes.DELETE_SPECIFIC_CURATION:
       return {};
     case actionTypes.GET_CURATION_LIKE:
-      return {};
+      return {
+        ...state,
+        likes: action.likes.count,
+      };
     case actionTypes.POST_CURATION_LIKE:
-      return {};
+      return {
+        ...state,
+        selectedCuration: action.curation,
+      };
     case actionTypes.DELETE_CURATION_LIKE:
-      return {};
+      return {
+        ...state,
+        selectedCuration: action.curation,
+      };
     case actionTypes.GET_SEARCHED_CURATIONS:
       return {};
     case actionTypes.GET_CURATIONS_BY_USERID:

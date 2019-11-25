@@ -144,25 +144,26 @@ export const deleteSpecificArticle = id => dispatch =>
   );
 // export const GET_ARTICLE_LIKE = 'GET_ARTICLE_LIKE'
 export const getArticleLike = id => dispatch =>
-  axios.get(`/api/article/${id}/`).then(res =>
+  axios.get(`/api/like/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_ARTICLE_LIKE,
-      like: res.data,
+      likes: res.data,
     }),
   );
 // export const POST_ARTICLE_LIKE = 'POST_ARTICLE_LIKE'
 export const postArticleLike = id => dispatch =>
-  axios.post(`/api/article/${id}/like/`).then(res =>
+  axios.post(`/api/like/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.POST_ARTICLE_LIKE,
-      like: res.data,
+      article: res.data,
     }),
   );
 // export const DELETE_ARTICLE_LIKE = 'DELETE_ARTICLE_LIKE'
 export const deleteArticleLike = id => dispatch =>
-  axios.delete(`/api/article/${id}/like/`).then(res =>
+  axios.delete(`/api/like/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_ARTICLE_LIKE,
+      article: res.data,
     }),
   );
 // export const GET_ARTICLES_BY_BOOKID = 'GET_ARTICLES_BY_BOOKID'
@@ -230,27 +231,28 @@ export const deleteSpecificCuration = id => dispatch =>
   );
 
 // export const GET_CURATION_LIKE = 'GET_CURATION_LIKE'
-export const getCurationLike = id => dispatch =>
-  axios.get(`/api/curation/${id}/`).then(res =>
+export const getCurationLike = curation_id => dispatch =>
+  axios.get(`/api/like/curation/${curation_id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_CURATION_LIKE,
-      like: res.data,
+      likes: res.data,
     }),
   );
 
 // export const POST_CURATION_LIKE = 'POST_CURATION_LIKE'
-export const postCurationLike = id => dispatch =>
-  axios.post(`/api/curation/${id}/like/`).then(res =>
+export const postCurationLike = curation_id => dispatch =>
+  axios.post(`/api/like/curation/${curation_id}/`).then(res =>
     dispatch({
       type: actionTypes.POST_CURATION_LIKE,
-      like: res.data,
+      curation: res.data,
     }),
   );
 // export const DELETE_CURATION_LIKE = 'DELETE_CURATION_LIKE'
-export const deleteCurationLike = id => dispatch =>
-  axios.delete(`/api/curation/${id}/like/`).then(res =>
+export const deleteCurationLike = curation_id => dispatch =>
+  axios.delete(`/api/like/curation/${curation_id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_CURATION_LIKE,
+      curation: res.data,
     }),
   );
 // export const GET_SEARCHED_CURATIONS = 'GET_SEARCHED_CURATIONS'

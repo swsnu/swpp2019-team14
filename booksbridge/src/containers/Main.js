@@ -68,9 +68,9 @@ class Main extends React.Component {
               <div>
                 <Article
                   author={article.author}
-                  book_isbn={article.book_isbn}
-                  book_title={article.book_title}
-                  book_thumbnail={article.book_thumbnail}
+                  book_isbn={article.book.isbn}
+                  book_title={article.book.title}
+                  book_thumbnail={article.book.thumbnail}
                   id={article.id}
                   title={article.title}
                   content={article.content}

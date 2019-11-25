@@ -13,11 +13,27 @@ import * as actionCreators from '../../store/actions/actionCreators';
 import './ReviewDetailPage.css';
 
 class ReviewDetailPage extends Component {
-  componentDidMount() {
+  // componentDidMount() {
+  //   this.props.onLoadArticle(this.props.match.params.review_id);
+  // }
+
+  constructor(params) {
+    super(params);
     this.props.onLoadArticle(this.props.match.params.review_id);
   }
 
+  likeHandler = () => {
+    if (this.props.likes > 0) {
+      this.props.onDeleteLikeArticle(this.props.match.params.review_id);
+    } else {
+      this.props.onPostLikeArticle(this.props.match.params.review_id);
+    }
+  };
+
   render() {
+    this.props.onGetLikeArticle(this.props.match.params.review_id);
+    console.log('DEGUB ', this.props.currentArticle);
+
     if (!this.props.currentArticle) {
       return <div className="loading">LOADING...</div>;
     }
@@ -27,6 +43,7 @@ class ReviewDetailPage extends Component {
     return (
       <div className="ReviewDetailPage">
         <Header />
+
         <div className="ReviewDetail">
           <div className="ReviewTitleStyle">
             <p className="ReviewDetailTitle">
@@ -58,7 +75,8 @@ class ReviewDetailPage extends Component {
             <div className="LikeButton">
               <Feed.Meta>
                 <Feed.Like>
-                  <Icon name="like" />4 Likes
+                  <Icon name="like" onClick={this.likeHandler} />
+                  {this.props.likes}
                 </Feed.Like>
               </Feed.Meta>
             </div>
@@ -79,12 +97,20 @@ class ReviewDetailPage extends Component {
 const mapStateToProps = state => {
   return {
     currentArticle: state.article.selectedArticle,
+    likes: state.article.likes,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onLoadArticle: id => dispatch(actionCreators.getSpecificArticle(id)),
+    onLikeArticle: () => dispatch(actionCreators.postArticleLike()),
+    onPostLikeArticle: article_id =>
+      dispatch(actionCreators.postArticleLike(article_id)),
+    onGetLikeArticle: article_id =>
+      dispatch(actionCreators.getArticleLike(article_id)),
+    onDeleteLikeArticle: article_id =>
+      dispatch(actionCreators.deleteArticleLike(article_id)),
   };
 };
 
