@@ -27,7 +27,7 @@ urlpatterns = [
     path('library/<library_id>/', views.library, name='library'),
     path('comment/curation/', views.curation_comment, name='curation_comment'),
     path('library/', views.library, name='library'),
-    path('library/book/', views.book_in_library, name='book_in_library'),
+    # path('library/book/', views.book_in_library, name='book_in_library'), THERE IS ABSOLUTELY NO NEED FOR THIS. CONTACT PEACESONG FOR FURTHER DISCUSSION.
     path('libraries/', views.libraries, name='libraries'),
     path('follow/', views.follow, name='follow'),
     path('follow/user_id=<user_id>/', views.follow, name='follow'),

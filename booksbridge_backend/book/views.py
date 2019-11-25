@@ -716,7 +716,8 @@ def library(request, library_id):
         return JsonResponse(library_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'PUT', 'DELETE']) 
-
+"""
+////* THERE IS ABSOLUTELY NO NEED TO DEFINE THIS VIEW *///////
 def book_in_library(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -726,8 +727,10 @@ def book_in_library(request):
         # { isbn, library }: library means library_id (정수라고 가정)
         try:
             req_data = json.loads(request.body.decode())
-            book = Book.objects.get(isbn=int(req_data['isbn']))
-            library = Library.objects.get(id=int(req_data['library']))
+            isbn = req_data['isbn']
+            library_id = req_data['library']
+            book = Book.objects.get(isbn=int(isbn))
+            library = Library.objects.get(id=int(library_id))
         except (KeyError) as e:
             return HttpResponse(status=400) 
 
@@ -738,7 +741,8 @@ def book_in_library(request):
     # TODO elif request.method == 'DELETE':
     #    pass
     else:
-        return HttpResponseNotAllowed(['POST', 'GET', 'DELETE']) 
+        return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
+"""
 
 def specific_user(request, username):
     if not request.user.is_authenticated:
