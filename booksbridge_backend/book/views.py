@@ -476,22 +476,22 @@ def curation_page(request, page):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-def libraries(request, user_id):
+def libraries(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
     elif request.method == 'GET':
         try:
-            user = User.objects.get(id=user_id)
             libraries = list()
-            for library in Library.objects.filter(user=user):
+            for library in Library.objects.filter(user=request.user):
                 library_dict = {
                     'title': library.title,
                     'date': library.date,
                     'books': [],
+                    'id': library.id,
                 }
                   
-                for book_in_library in BookInLibrar.objects.filter(library=library):
+                for book_in_library in BookInLibrary.objects.filter(library=library):
                     book = {
                         'isbn': book_in_library.book.isbn,
                         'title': book_in_library.book.title,
@@ -503,32 +503,104 @@ def libraries(request, user_id):
         except:
             return HttpResponse(status=404)
 
-        return JsonResponse(libraries, status=200)
+        return JsonResponse(libraries, status=200, safe=False)
         
     else:
         return HttpResponseNotAllowed(['GET'])
         
 
-def library(request):
+def library(request, library_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
-    # TODO elif request.method == 'GET':
-    #    pass
+    elif request.method == 'GET':
+        library = Library.objects.get(id=library_id)
+        
+        library_dict = {
+            'title': library.title,
+            'date': library.date,
+            'books': [],
+            'id': library.id,
+        }
+
+        for book_in_library in BookInLibrary.objects.filter(library=library):
+            book = {
+                'isbn': book_in_library.book.isbn,
+                'title': book_in_library.book.title,
+                'thumbnail': book_in_library.book.thumbnail,
+            }
+            library_dict['books'].append(book)
+
+        return JsonResponse(library_dict, status=200)
     elif request.method == 'POST':
         # { title }
         try:
             req_data = json.loads(request.body.decode())
             title = req_data['title']
+            books = req_data['books']
         except (KeyError) as e:
             return HttpResponse(status=400) 
         library = Library(user=request.user, title=title)
         library.save()
-        library_dict = model_to_dict(library)
+        library_dict = {
+            'title': library.title,
+            'date': library.date,
+            'books': [],
+            'id': library.id,
+        }
+
+        for book in books:
+            __book = Book.objects.get(isbn=book['isbn'])
+            BIL = BookInLibrary(library=library, book=__book)
+            BIL.save()
+
+            _book = {
+                'isbn': __book.isbn,
+                'title': __book.title,
+                'thumbnail': __book.thumbnail
+            }
+            library_dict['books'].append(_book)
+
         return JsonResponse(library_dict, status=201)
-    # TODO elif request.method == 'PUT':
-    #    pass
-    # TODO elif request.method == 'DELETE':
-    #    pass
+
+    elif request.method == 'PUT':
+        try:
+            req_data = json.loads(request.body.decode())
+            title = req_data['title']
+            books = req_data['books']
+        except:
+            return HttpResponse(status=400)
+        try:
+            library = Library.objects.get(id=library_id)
+        except:
+            return HttpResponse(status=404)
+
+        library.title = title
+        library.save()
+        library_dict = {
+            'title': library.title,
+            'date': library.date,
+            'books': books,
+            'id': library.id,
+        }
+
+        for book_in_library in BookInLibrary.objects.filter(library=library):
+            if book_in_library.book.isbn not in list(map(lambda book: book['isbn'], books)):
+                book_in_library.delete()
+        
+        for book in books:
+            if book['isbn'] not in list(map(lambda book_in_library: book_in_library.book.isbn, BookInLibrary.objects.filter(library=library))):
+                _book = Book.objects.get(isbn=book['isbn'])
+                BIL = BookInLibrary(library=library, book=_book)
+                BIL.save()
+
+        return JsonResponse(library_dict, status=201)
+
+    elif request.method == 'DELETE':
+        library = Library.objects.get(id=library_id)
+        library_dict = model_to_dict(library)
+        library.delete()
+
+        return JsonResponse(library_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'PUT', 'DELETE']) 
 

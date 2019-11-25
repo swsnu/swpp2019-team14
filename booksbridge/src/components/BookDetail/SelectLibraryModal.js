@@ -9,7 +9,7 @@ import './SelectLibraryModal.css';
 class SelectLibraryModal extends Component {
   constructor(props) {
     super(props);
-    //this.props.onLoadUserLibrary('PeaceSong');
+    //this.props.onLoadUserLibrary(this.props.logged_in_user.id);
   }
 
   state = {
@@ -154,14 +154,15 @@ class SelectLibraryModal extends Component {
 
 const mapStateToProps = state => {
   return {
+    loggedin_user: state.user.loggedin_user,
     libraries_username: state.library.libraries_username,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadUserLibrary: username =>
-      dispatch(actionCreators.getLibrariesByUsername(username)),
+    onLoadUserLibrary: user_id =>
+      dispatch(actionCreators.getLibrariesByUserID(user_id)),
     onStoreBookToLibrary: isbn_library =>
       dispatch(actionCreators.addBookToLibrary(isbn_library)),
   };

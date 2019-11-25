@@ -25,9 +25,9 @@ urlpatterns = [
     path('curation/<curation_id>/',
          views.specific_curation, name='specific_curation'),
     path('curation/page/<page>/', views.curation_page, name='curation_page'),
-    path('library/', views.library, name='library'),
+    path('library/<library_id>/', views.library, name='library'),
     path('library/book/', views.book_in_library, name='book_in_library'),
-    path('library/userID=<user_id>/', views.libraries, name='library'),
+    path('libraries/', views.libraries, name='libraries'),
     path('follow/', views.follow, name='follow'),
     path('follow/user_id=<user_id>/', views.follow, name='follow'),
 ]

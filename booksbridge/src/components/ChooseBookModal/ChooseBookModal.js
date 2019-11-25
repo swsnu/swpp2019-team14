@@ -46,10 +46,10 @@ class ChooseBookModal extends Component {
 
   render() {
     const result = this.props.searchedBooks
-      ? this.props.searchedBooks.map(book => {
+      ? this.props.searchedBooks.map((book, index) => {
           return (
             <BookResultSummary
-              key={book.isbn}
+              key={index}
               cover={book.thumbnail}
               title={book.title}
               authors={book.authors}

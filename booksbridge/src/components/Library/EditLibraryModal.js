@@ -15,15 +15,15 @@ import { withRouter } from 'react-router';
 import LibraryChooseBookModal from './LibraryChooseBookModal';
 import BookInfo from '../BookDetail/BookInfo';
 
-import './AddLibraryModal.css';
+import './EditLibraryModal.css';
 
-class AddLibraryModal extends Component {
+class EditLibraryModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      title: '',
-      books: [],
+      title: this.props.title ? this.props.title : '',
+      books: this.props.books ? this.props.books : null,
     };
   }
 
@@ -32,8 +32,6 @@ class AddLibraryModal extends Component {
   close = () => {
     this.setState({
       ...this.state,
-      title: '',
-      books: [],
       open: false,
     });
     this.props.onLoadLibrary(this.props.logged_in_user.id);
@@ -45,7 +43,6 @@ class AddLibraryModal extends Component {
   /////////////////////////////////////////////
 
   onClickAddToLibrary = () => {
-    if (this.props.selectedBook == null) return;
     this.setState({
       ...this.state,
       books: this.state.books.concat(this.props.selectedBook),
@@ -65,16 +62,15 @@ class AddLibraryModal extends Component {
       title: this.state.title,
       books: this.state.books,
     };
-    this.props.onSaveLibrary(title_books_dict);
+    this.props.onEditLibrary(this.props.id, title_books_dict);
     this.close();
   };
 
   render() {
     const { open, title } = this.state;
     const libraryAddButton = (
-      <Button icon labelPosition="left">
-        <Icon name="plus" />
-        라이브러리 만들기
+      <Button size="mini" icon>
+        <Icon name="pencil" size="small" />
       </Button>
     );
 
@@ -102,35 +98,38 @@ class AddLibraryModal extends Component {
       '아직 선택한 책이 없어요. 책 고르기 버튼을 눌러 추가해보세요!'
     );
 
-    const booksHTML = this.state.books.map((book, index) => {
-      return (
-        <div className="AddedBookWrapper" key={index}>
-          <div className="AddedBookHeader">
-            <Button
-              icon
-              size="mini"
-              onClick={() => this.onClickDeleteFromSelectedBooks(book.isbn)}
-            >
-              <Icon name="times" size="small"></Icon>
-            </Button>
-          </div>
-          <div className="AddedBookContent">
-            <Image src={book.thumbnail} className="AddedBookCover" />
-          </div>
-        </div>
-      );
-    });
+    const booksHTML = this.state.books
+      ? this.state.books.map((book, index) => {
+          return (
+            <div className="AddedBookWrapper" key={index}>
+              <div className="AddedBookHeader">
+                <Button
+                  icon
+                  size="mini"
+                  onClick={() => this.onClickDeleteFromSelectedBooks(book.isbn)}
+                >
+                  <Icon name="times" size="small"></Icon>
+                </Button>
+              </div>
+              <div className="AddedBookContent">
+                <Image src={book.thumbnail} className="AddedBookCover" />
+              </div>
+            </div>
+          );
+        })
+      : null;
 
     let books_in_rows = [];
-    for (let i = 0; i < booksHTML.length; i += 1) {
-      if (i % 3 == 0) {
-        books_in_rows.push(
-          <div className="AddedBooks_by_3" key={i}>
-            {booksHTML.slice(i, i + 3)}
-          </div>,
-        );
+    if (booksHTML && booksHTML.length != 0)
+      for (let i = 0; i < booksHTML.length; i += 1) {
+        if (i % 3 == 0) {
+          books_in_rows.push(
+            <div className="AddedBooks_by_3" key={i}>
+              {booksHTML.slice(i, i + 3)}
+            </div>,
+          );
+        }
       }
-    }
 
     return (
       <div className="AddLibraryModalContainer">
@@ -141,7 +140,7 @@ class AddLibraryModal extends Component {
           onOpen={this.open}
           onClose={this.close}
         >
-          <Modal.Header>라이브러리 만들기</Modal.Header>
+          <Modal.Header>라이브러리 수정하기</Modal.Header>
           <Modal.Content scrolling className="LibraryContent">
             <Modal.Content className="LibraryTitleInput">
               <Form>
@@ -198,14 +197,17 @@ const mapStateToProps = state => {
     logged_in_user: state.user.logged_in_user,
     libraries: state.library.libraries,
     selectedBook: state.book.selectedBook,
+    selectedLibrary: state.library.selectedLibrary,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onEmptySelectedBook: () => dispatch(actionCreators.emptySelectedBook()),
-    onSaveLibrary: title_books_dict =>
-      dispatch(actionCreators.postLibrary(title_books_dict)),
+    onEditLibrary: (library_id, title_books_dict) =>
+      dispatch(
+        actionCreators.editSpecificLibrary(library_id, title_books_dict),
+      ),
     onLoadLibrary: user_id =>
       dispatch(actionCreators.getLibrariesByUserID(user_id)),
   };
@@ -214,4 +216,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRouter(AddLibraryModal));
+)(withRouter(EditLibraryModal));

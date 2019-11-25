@@ -345,39 +345,40 @@ export const getCommentsByCurationID = id => dispatch =>
 // ///////////////////////////////// Library ////////////////////////////////////
 
 // export const POST_LIBRARY = 'POST_LIBRARY'
-export const postLibrary = library => dispatch =>
-  axios.post('/api/library/', library).then(res =>
+export const postLibrary = title_books_dict => dispatch =>
+  axios.post(`/api/library/9999/`, title_books_dict).then(res =>
     dispatch({
       type: actionTypes.POST_LIBRARY,
       library: res.data,
     }),
   );
 // export const GET_SPECIFIC_LIBRARY = 'GET_SPECIFIC_LIBRARY'
-export const getSpecificLibrary = id => dispatch =>
-  axios.get(`/api/library/${id}/`).then(res =>
+export const getSpecificLibrary = library_id => dispatch =>
+  axios.get(`/api/library/${library_id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SPECIFIC_LIBRARY,
       library: res.data,
     }),
   );
 // export const EDIT_SPECIFIC_LIBRARY = 'EDIT_SPECIFIC_LIBRARY'
-export const editSpecificLibrary = library => dispatch =>
-  axios.put(`/api/library/${library.id}/`, library).then(res =>
+export const editSpecificLibrary = (library_id, title_books_dict) => dispatch =>
+  axios.put(`/api/library/${library_id}/`, title_books_dict).then(res =>
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_LIBRARY,
       library: res.data,
     }),
   );
 // export const DELETE_SPECIFIC_LIBRARY = 'DELETE_SPECIFIC_LIBRARY'
-export const deleteSpecificLibrary = id => dispatch =>
-  axios.delete(`/api/library/${id}/`).then(res =>
+export const deleteSpecificLibrary = library_id => dispatch =>
+  axios.delete(`/api/library/${library_id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_SPECIFIC_LIBRARY,
+      library: res.data,
     }),
   );
 // export const GET_LIBRARIES_BY_USERID = 'GET_LIBRARIES_BY_USERID'
 export const getLibrariesByUserID = user_id => dispatch =>
-  axios.get(`/api/library/userID=${user_id}/`).then(res =>
+  axios.get('/api/libraries/').then(res =>
     dispatch({
       type: actionTypes.GET_LIBRARIES_BY_USERID,
       libraries: res.data,
