@@ -6,18 +6,20 @@ import storage from '../../lib/storage';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
+export const getToken = () => {
+  return axios.get('/api/token/');
+};
+
 // export const POST_NEW_USER = 'POST_NEW_USER'
 export const postUser = user => {
   return dispatch => {
-    return axios.get('/api/token/').then(
-      axios.post('/api/user/', user).then(res => {
-        dispatch({
-          type: actionTypes.POST_NEW_USER,
-          user: res.data,
-        });
-        dispatch(push('/sign-in/'));
-      }),
-    );
+    return axios.post('/api/user/', user).then(res => {
+      dispatch({
+        type: actionTypes.POST_NEW_USER,
+        user: res.data,
+      });
+      dispatch(push('/sign-in/'));
+    });
   };
 };
 
@@ -25,21 +27,19 @@ export const postUser = user => {
 
 export const loginUser = user => {
   return dispatch => {
-    return axios.get('/api/token/').then(
-      axios
-        .post('/api/sign_in/', user)
-        .then(res => {
-          dispatch({
-            type: actionTypes.LOGIN_USER,
-            user: res.data,
-          });
-          storage.set('logged_in_user', res.data);
-          dispatch(push('/main/'));
-        })
-        .catch(err => {
-          alert('Username or Password is incorrect.');
-        }),
-    );
+    return axios
+      .post('/api/sign_in/', user)
+      .then(res => {
+        dispatch({
+          type: actionTypes.LOGIN_USER,
+          user: res.data,
+        });
+        storage.set('logged_in_user', res.data);
+        dispatch(push('/main/'));
+      })
+      .catch(err => {
+        alert('Username or Password is incorrect.');
+      });
   };
 };
 
@@ -447,11 +447,3 @@ export const runOcr = formData => dispatch =>
         quote: res.data.quote,
       }),
     );
-
-export const getToken = () => {
-  //   return axios.get('/api/token/').then(res => {
-  //     dispatch({
-  //       type: actionTypes.
-  //     })
-  //   });
-};

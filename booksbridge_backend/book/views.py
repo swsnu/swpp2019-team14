@@ -422,7 +422,6 @@ def curation_comment(request):
 
 
 
-@csrf_exempt
 def article(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
