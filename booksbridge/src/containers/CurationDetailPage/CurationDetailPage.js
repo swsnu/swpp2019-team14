@@ -83,40 +83,40 @@ class CurationDetailPage extends Component {
     });
 
     return (
-      <div className="curation-detail-page">
+      <div>
         <Header />
-        <div className="AuthorProfile">
+        <div className="curation-detail-page">
           <ProfileSummary user={this.props.currentCuration.author} />
-        </div>
 
-        <div className="curation-title">
-          <h1>{this.props.currentCuration.title}</h1>
-        </div>
-        <Divider />
-        <div className="curation-content">
-          <Container>
-            <h5>{this.props.currentCuration.content}</h5>
-          </Container>
-        </div>
-        <div className="book-and-content">{bookAndContent}</div>
-
-        <div className="CurationContainer">
-          <div className="LikeButton" onClick={this.likeHandler}>
-            <div className="ui labeled button" tabIndex="0">
-              <div className="ui red button">
-                <i className="heart icon" /> Like
-              </div>
-              <a className="ui basic red left pointing label">
-                {this.props.currentCuration.likes}
-              </a>
-            </div>
+          <div className="curation-title">
+            <h1>{this.props.currentCuration.title}</h1>
           </div>
+          <Divider />
+          <div className="curation-content">
+            <Container>
+              <h5>{this.props.currentCuration.content}</h5>
+            </Container>
+          </div>
+          <div className="book-and-content">{bookAndContent}</div>
 
-          <div className="CurationComments">
-            <Comments
-              comments={this.props.currentCuration.comments}
-              curation_id={this.props.match.params.curation_id}
-            />
+          <div className="CurationContainer">
+            <div className="LikeButton" onClick={this.likeHandler}>
+              <div className="ui labeled button" tabIndex="0">
+                <div className="ui red button">
+                  <i className="heart icon" /> Like
+                </div>
+                <a className="ui basic red left pointing label">
+                  {this.props.currentCuration.likes}
+                </a>
+              </div>
+            </div>
+
+            <div className="CurationComments">
+              <Comments
+                comments={this.props.currentCuration.comments}
+                curation_id={this.props.match.params.curation_id}
+              />
+            </div>
           </div>
         </div>
       </div>
