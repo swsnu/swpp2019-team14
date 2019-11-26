@@ -82,6 +82,7 @@ const stubInitialState = {
       is_phrase: true,
     },
   ],
+  libraries: [],
 };
 
 const mockStore = getMockStore(stubInitialState);

@@ -388,11 +388,11 @@ export const deleteSpecificLibrary = library_id => dispatch =>
       library: res.data,
     }),
   );
-// export const GET_LIBRARIES_BY_USERID = 'GET_LIBRARIES_BY_USERID'
-export const getLibrariesByUserID = user_id => dispatch =>
+// export const GET_LIBRARIES = 'GET_LIBRARIES'
+export const getLibraries = () => dispatch =>
   axios.get('/api/libraries/').then(res =>
     dispatch({
-      type: actionTypes.GET_LIBRARIES_BY_USERID,
+      type: actionTypes.GET_LIBRARIES,
       libraries: res.data,
     }),
   );

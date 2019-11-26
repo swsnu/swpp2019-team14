@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  Button,
-  Icon,
-  Modal,
-  Header,
-  Image,
-  Card,
-  Form,
-} from 'semantic-ui-react';
+import { Button, Icon, Modal, Image, Form } from 'semantic-ui-react';
 import * as actionCreators from '../../store/actions/actionCreators';
 import { withRouter } from 'react-router';
 
@@ -34,7 +26,7 @@ class EditLibraryModal extends Component {
       ...this.state,
       open: false,
     });
-    this.props.onLoadLibrary(this.props.logged_in_user.id);
+    this.props.onLoadLibrary();
     this.props.onEmptySelectedBook();
   };
   /////////////////////////////////////////////
@@ -209,8 +201,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         actionCreators.editSpecificLibrary(library_id, title_books_dict),
       ),
-    onLoadLibrary: user_id =>
-      dispatch(actionCreators.getLibrariesByUserID(user_id)),
+    onLoadLibrary: () => dispatch(actionCreators.getLibraries()),
   };
 };
 

@@ -7,7 +7,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.GET_LIBRARIES_BY_USERID:
+    case actionTypes.GET_LIBRARIES:
       return {
         ...state,
         libraries: action.libraries,

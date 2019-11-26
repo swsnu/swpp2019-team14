@@ -1,9 +1,12 @@
 .AddLibraryModal {
-  max-height: 750px !important;
+  height: 700px !important;
   width: 600px !important;
 }
 
 .LibraryContent {
+  height: 574px !important;
+  margin-right: 0px;
+  width: 600px !important;
 }
 
 .LibraryTitleInput {
@@ -22,24 +25,14 @@
 }
 
 .LibraryChooseBookModal {
-  width: 50%;
-  text-align: left;
-}
-
-.AddToLibrary_Button {
-  width: 50%;
   text-align: right;
 }
 
-.LibraryBookSearchContent {
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.LibraryBookSearchInner {
+  text-align: right;
 }
 
 .LibraryAddedBooks {
-  border-top: 1px solid lightgray !important;
   padding-top: 20px;
   justify-content: center;
 }

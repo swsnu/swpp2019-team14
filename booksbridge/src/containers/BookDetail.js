@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 
 import Header from '../components/Header';
 import BookInfo from '../components/BookDetail/BookInfo';
 import BookTabs from '../components/BookDetail/BookTabs';
+import SelectLibraryModal from '../components/BookDetail/SelectLibraryModal';
 
 import * as actionCreators from '../store/actions/actionCreators';
 
@@ -15,6 +16,9 @@ import './BookDetail.css';
 import './containers.css';
 
 class BookDetail extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
     this.props.onLoadBook(this.props.match.params.book_id);
     this.props.onLoadArticles(this.props.match.params.book_id);
@@ -56,9 +60,21 @@ class BookDetail extends Component {
             thumbnail={thumbnail}
           />
         </div>
-        <Button id="create_review_button" onClick={() => this.onCreateReview()}>
-          Create a Review!
-        </Button>
+        <div className="BookDetailButtons">
+          <Button
+            id="create_review_button"
+            icon
+            color="blue"
+            onClick={() => this.onCreateReview()}
+          >
+            <Icon name="pencil" />
+            리뷰 작성하기
+          </Button>
+          <SelectLibraryModal
+            libraries={this.props.libraries}
+            book={this.props.currentBook}
+          />
+        </div>
         <div className="tab">
           <BookTabs
             contents={contents}
@@ -75,6 +91,7 @@ class BookDetail extends Component {
 
 const mapStateToProps = state => {
   return {
+    logged_in_user: state.user.logged_in_user,
     currentBook: state.book.selectedBook,
     shortReviews: state.article.shortReviews,
     longReviews: state.article.longReviews,
@@ -86,6 +103,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
     onLoadArticles: isbn => dispatch(actionCreators.getArticlesByBookId(isbn)),
+    onLoadLibrary: () => dispatch(actionCreators.getLibraries()),
   };
 };
 

@@ -8,34 +8,38 @@
 }
 
 .LibraryContentWrapper {
+  height: auto;
   display: flex;
   justify-content: center;
   padding: 10px;
 }
 
 .LibraryContent {
-  height: 250px;
+  height: auto !important;
   width: 500px !important;
 }
 
 .LibraryArea {
   height: 35px;
   align-items: center;
+  text-align: left;
+  display: flex;
 }
 
 .LibraryTitle {
   font-size: 20px;
   font-weight: bold;
+  width: auto;
 }
 
 .BookCoverArea {
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .BookCoverList {
+  height: 100%;
   width: 100%;
   display: flex;
 }
@@ -47,8 +51,10 @@
 }
 
 .BookCover {
-  width: 100% !important;
-  height: 100% !important;
+  height: auto;
+  max-height: 160px;
+  width: 100%;
+  cursor: pointer;
 }
 
 .dimmed.dimmable > .ui.animating.dimmer,
