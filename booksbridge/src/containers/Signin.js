@@ -28,7 +28,7 @@ class Signin extends Component {
   render() {
     return (
       <div className="login_page">
-        <img src="/images/MainLogo.png" width="400" />
+        <img id="MainLogo" src="/images/MainLogo.png" />
         <Segment placeholder>
           <Grid columns={2} relaxed="very" stackable>
             <Grid.Column>
