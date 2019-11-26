@@ -43,7 +43,17 @@ def profile(request, userid):
 
 def photo_upload(request):
     if request.method == 'POST':
-        return HttpResponse(status=200)
+        print(request)
+        try:
+            image = request.FILES['image']
+        except:
+            print("could not get image")
+            return HttpResponse(status=400)
+        profile = request.user.profile
+        profile.profile_photo = image
+        profile.save()
+        user_dict = {'id':request.user.id, 'username':request.user.username, 'nickname':profile.nickname, 'profile_photo':profile.profile_photo.name, 'profile_text': profile.profile_text}
+        return JsonResponse(user_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
 

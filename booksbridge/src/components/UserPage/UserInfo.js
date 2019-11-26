@@ -4,7 +4,6 @@ import { withRouter } from 'react-router';
 import { Form, TextArea, Icon } from 'semantic-ui-react';
 import Alert from 'react-bootstrap/Alert';
 import * as actionCreators from '../../store/actions/actionCreators';
-import axios from 'axios';
 
 import './UserInfo.css';
 class UserInfo extends Component {
@@ -21,15 +20,14 @@ class UserInfo extends Component {
     this.inputRef = React.createRef();
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.profile_user) {
-      return {
-        onEdit: false,
-        nickname: nextProps.profile_user.nickname,
-        comment: nextProps.profile_user.profile_text,
-        profile_photo: nextProps.profile_user.profile_photo,
-      };
-    }
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.profile_user) return;
+    console.log('loop');
+    this.setState({
+      onEdit: false,
+      nickname: nextProps.profile_user.nickname,
+      comment: nextProps.profile_user.nickname,
+    });
   }
 
   onEditProfile(user) {
@@ -67,20 +65,8 @@ class UserInfo extends Component {
     e.preventDefault();
     console.log(this.inputRef.current.files[0]);
     const formData = new FormData();
-    formData.append('file', this.inputRef.current.files[0]);
-    return axios
-      .post({
-        method: 'POST',
-        url: 'http://127.0.0.1:8000/api/profile/upload/',
-        data: formData,
-        config: {
-          headers: {
-            'Content-Type': 'multipart/form-data, boundary=${form._boundary}',
-          },
-        },
-      })
-      .then(res => console.log(res))
-      .catch(err => console.log('Error', err));
+    formData.append('image', this.inputRef.current.files[0]);
+    this.props.onUploadProfileImage(formData);
   }
 
   handleFollowToggle(isFollowing) {
@@ -279,6 +265,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     onEditProfile: profile => dispatch(actionCreators.editUserProfile(profile)),
+    onUploadProfileImage: formdata =>
+      dispatch(actionCreators.uploadProfileImage(formdata)),
     onFollow: followee_id => dispatch(actionCreators.followUser(followee_id)),
     onUnfollow: followee_id =>
       dispatch(actionCreators.unfollowUser(followee_id)),

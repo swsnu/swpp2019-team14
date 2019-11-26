@@ -33,6 +33,12 @@ const reducer = (state = initialState, action) => {
         logged_in_user: action.user,
         profile_user: action.user,
       };
+    case actionTypes.UPLOAD_PROFILE_IMAGE:
+      return {
+        ...state,
+        logged_in_user: action.user,
+        profile_user: action.user,
+      };
     case actionTypes.GET_FOLLOWS:
       return {
         ...state,
