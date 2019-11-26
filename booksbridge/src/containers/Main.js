@@ -53,7 +53,7 @@ class Main extends React.Component {
             />
           </a>
           <br />
-          <a id="create-review-link" href={'/curation'}>
+          <a id="curation-link" href={'/curation'}>
             Curation page 이동
           </a>
           <InfiniteScroll

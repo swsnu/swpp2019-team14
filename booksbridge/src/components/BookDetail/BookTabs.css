@@ -8,3 +8,9 @@
   margin: 10px;
   white-space: pre-wrap;
 }
+
+@media only screen and (max-width: 600px) {
+  .DetailTabStyle .item {
+    width: 25% !important;
+  }
+}

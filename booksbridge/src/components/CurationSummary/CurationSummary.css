@@ -17,3 +17,9 @@
   padding-top: 10px;
   padding-bottom: 120px;
 }
+@media only screen and (max-width: 600px) {
+  .carousel-items {
+    padding-left: 0%;
+    padding-right: 0%;
+  }
+}

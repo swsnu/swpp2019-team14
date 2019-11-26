@@ -1,12 +1,20 @@
-.articles{
-    width: 41%;
-    align-self: center;
+.articles {
+  width: 41%;
+  align-self: center;
 }
-.main{
-    display: flex;
-    flex-direction: column;
+.main {
+  display: flex;
+  flex-direction: column;
 }
-.createReviewLogo{
-    margin-top: 20px;
-    margin-bottom: 20px;
+.createReviewLogo {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+@media only screen and (max-width: 600px) {
+  .articles {
+    width: 100%;
+  }
+  #createReviewLogo {
+    width: 90%;
+  }
 }
