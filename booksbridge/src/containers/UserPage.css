@@ -12,7 +12,7 @@
   border-bottom: 0px !important;
 }
 
-.ui.secondary.pointing.menu>.active.item {
+.ui.secondary.pointing.menu > .active.item {
   border-bottom: 0px;
 }
 
@@ -26,7 +26,12 @@
 }
 
 .UserReviewList {
-  width: 800px;
+  width: 60%;
   margin: 10px;
   white-space: pre-wrap;
+}
+@media only screen and (max-width: 600px) {
+  .UserReviewList {
+    width: 100%;
+  }
 }

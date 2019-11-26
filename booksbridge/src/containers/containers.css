@@ -1,11 +1,10 @@
-
 .Login {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.login_page{
+.login_page {
   width: 80%;
   padding-top: 5%;
   padding-left: 20%;
@@ -17,6 +16,10 @@
   justify-content: center;
 }
 
+#MainLogo {
+  width: 80% !important;
+  max-width: 600px;
+}
 .comments {
   box-shadow: inset 0 0 0 1px #383c43;
 }
@@ -35,4 +38,12 @@
   outline: none;
   font: inherit;
   margin: auto;
+}
+@media only screen and (max-width: 600px) {
+  #MainLogo {
+    width: 80% !important;
+  }
+  .login_page .divider {
+    visibility: hidden;
+  }
 }

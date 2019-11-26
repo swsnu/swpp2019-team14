@@ -457,6 +457,21 @@ export const runOcr = formData => dispatch =>
       }),
     );
 
+export const uploadProfileImage = formData => dispatch =>
+  axios
+    .post('/api/image/profile/', formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    })
+    .then(res => {
+      dispatch({
+        type: actionTypes.UPLOAD_PROFILE_IMAGE,
+        user: res.data,
+      });
+      storage.set('logged_in_user', res.data);
+    });
+
 export const getToken = () => {
   //   return axios.get('/api/token/').then(res => {
   //     dispatch({

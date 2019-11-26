@@ -46,7 +46,11 @@ class BookTabs extends Component {
     );
 
     const panes = [
-      { menuItem: 'Summary', render: () => <Tab.Pane>{contents}</Tab.Pane> },
+      {
+        menuItem: 'Summary',
+        id: 'Book-tabs-menu',
+        render: () => <Tab.Pane>{contents}</Tab.Pane>,
+      },
       {
         menuItem: 'Short Review',
         render: () => <Tab.Pane>{shortReviewList}</Tab.Pane>,

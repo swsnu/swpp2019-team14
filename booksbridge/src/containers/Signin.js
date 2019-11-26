@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import './containers.css';
 import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/index';
+import axios from 'axios';
 import './containers.css';
 class Signin extends Component {
   state = {
@@ -20,14 +21,14 @@ class Signin extends Component {
     this.props.onLoginUser(user);
   };
 
-  // componentDidMount() {
-  //   this.props.onGetToken();
-  // }
+  componentDidMount() {
+    axios.get('/api/token/');
+  }
 
   render() {
     return (
       <div className="login_page">
-        <img src="/images/MainLogo.png" width="400" />
+        <img id="MainLogo" src="/images/MainLogo.png" />
         <Segment placeholder>
           <Grid columns={2} relaxed="very" stackable>
             <Grid.Column>
@@ -90,9 +91,6 @@ const mapDispatchToProps = dispatch => {
     onLoginUser: user => {
       dispatch(actionCreators.loginUser(user));
     },
-    // onGetToken: () => {
-    //   dispatch(actionCreators.getToken());
-    // },
   };
 };
 

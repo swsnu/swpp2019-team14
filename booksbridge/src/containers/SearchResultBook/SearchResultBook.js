@@ -14,13 +14,16 @@ const mapStateToProps = state => ({
   books: state.book.books,
   count: state.book.count,
   users: state.user.users,
+  curations: state.curation.curations,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSearchBooks: (keyword, page) =>
+  onGetSearchedBooks: (keyword, page) =>
     dispatch(actionCreators.getSearchedBooks(keyword, page)),
-  onGetSearchedUser: keyword =>
+  onGetSearchedUsers: keyword =>
     dispatch(actionCreators.getSearchedUsers(keyword)),
+  ongetSearchedCurations: keyword =>
+    dispatch(actionCreators.getSearchedCurations(keyword)),
 });
 
 class SearchResultBook extends Component {
@@ -28,24 +31,24 @@ class SearchResultBook extends Component {
     activePage: this.props.match.params.page,
   };
   componentDidMount() {
-    this.props.onSearchBooks(
+    this.props.onGetSearchedBooks(
       this.props.match.params.keyword,
       this.props.match.params.page,
     );
-    this.props.onGetSearchedUser(this.props.match.params.keyword);
+    this.props.onGetSearchedUsers(this.props.match.params.keyword);
   }
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.match.params.keyword !== prevProps.match.params.keyword) {
-      this.props.onSearchBooks(
+      this.props.onGetSearchedBooks(
         this.props.match.params.keyword,
         this.props.match.params.page,
       );
-      this.props.onGetSearchedUser(this.props.match.params.keyword);
+      this.props.onGetSearchedUsers(this.props.match.params.keyword);
     }
     if (this.props.match.params.page !== prevProps.match.params.page) {
-      this.props.onSearchBooks(
+      this.props.onGetSearchedBooks(
         this.props.match.params.keyword,
         this.props.match.params.page,
       );
@@ -89,6 +92,12 @@ class SearchResultBook extends Component {
       <h4>검색 결과가 없습니다.</h4>
     );
 
+    const curation_result = this.props.curations.length ? (
+      this.props.curations.map(() => {})
+    ) : (
+      <h4>검색 결과가 없습니다.</h4>
+    );
+
     const panes = [
       {
         menuItem: { key: 'books', icon: 'book', content: 'Books' },
@@ -128,7 +137,7 @@ class SearchResultBook extends Component {
         menuItem: { key: 'curations', icon: 'archive', content: 'Curations' }, //tasks, archive, thumbs up, gift, shopping basket, favorite, shop
         render: () => (
           <Tab.Pane className="tab-content" attached={false}>
-            Tab 3 Content
+            {curation_result}
           </Tab.Pane>
         ),
       },

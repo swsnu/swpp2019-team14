@@ -44,13 +44,17 @@ class Main extends React.Component {
       <div className="main">
         <Header />
         <div className="articles">
-          <a href="/review/create">
+          <a id="create-review-link" href={'/review/create'}>
             <img
               id="createReviewLogo"
               className="createReviewLogo"
               src="/images/reviewcreate.jpg"
               width="600"
             />
+          </a>
+          <br />
+          <a id="curation-link" href={'/curation'}>
+            Curation page 이동
           </a>
           <InfiniteScroll
             className="scroll"
