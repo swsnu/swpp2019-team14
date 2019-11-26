@@ -1,22 +1,22 @@
-
-.profilePic{
-    border-radius: 500rem;
-    width: 50px;
-    height: 50px;
+.profilePic {
+  border-radius: 500rem;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
 }
 
-.profileName{
-    display: flex;
-    flex-direction: column;
-    padding-left: 1rem;
-    align-items: flex-start;
-    justify-content: center;
+.profileName {
+  display: flex;
+  flex-direction: column;
+  padding-left: 1rem;
+  align-items: flex-start;
+  justify-content: center;
 }
 
-.username{
-    font-size: .85714286em;
+.username {
+  font-size: 0.85714286em;
 }
 
-.ProfileSummary{
-    display: flex;
+.ProfileSummary {
+  display: flex;
 }

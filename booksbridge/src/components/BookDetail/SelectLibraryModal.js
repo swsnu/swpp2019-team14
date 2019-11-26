@@ -9,113 +9,68 @@ import './SelectLibraryModal.css';
 class SelectLibraryModal extends Component {
   constructor(props) {
     super(props);
-    //this.props.onLoadUserLibrary(this.props.logged_in_user.id);
+    this.state = {
+      open: false,
+    };
   }
-
-  state = {
-    open: false,
-  };
 
   open = () => this.setState({ open: true });
   close = () => this.setState({ open: false });
 
-  onClickAddToLibrary = () => {
-    console.log('[DEBUG] onClickAddTLibrary called.');
-    return;
-  };
-
-  LibraryClicked(title) {
-    console.log('[DEBUG] library clicked: ' + title);
-    console.log('[DEBUG] book to put to library: ' + this.props.isbn);
-    const library_id = 1;
-    const isbn_library = {
-      isbn: this.props.isbn,
-      library: library_id,
+  // need to check if the book is already in the library
+  onLibraryClicked = library => {
+    const book = {
+      isbn: this.props.book.isbn,
+      title: this.props.book.title,
+      thumbnail: this.props.book.thumbnail,
+    };
+    const title_books_dict = {
+      title: library.title,
+      books: library.books.concat(book),
     };
 
-    //need to check if a book is already on the library
-    //this.props.onStoreBookToLibrary(isbn_library);
+    this.props.onEditLibrary(library.id, title_books_dict);
     alert('Library에 책을 추가하였습니다!');
     this.close();
-  }
+  };
 
   render() {
-    const { open } = this.state;
+    if (this.props.libraries.length == 0) this.props.onLoadLibrary();
 
+    const { open } = this.state;
     const button = (
-      <Button
-        icon
-        labelPosition="left"
-        onClick={() => this.onClickAddToLibrary()}
-      >
+      <Button icon labelPosition="left">
         <Icon name="plus" />
-        Add to Library
+        라이브러리에 추가하기
       </Button>
     );
-
     // TODO: get username string by using loggedin_user state, make some libraries to test.
-    const mockLibrariesUsername = [
-      {
-        title: 'My library 1',
-        date: '2019-11-19 17:32:33',
-      },
-      {
-        title: 'My library 2',
-        date: '2019-11-17 13:31:03',
-      },
-      {
-        title: 'My library 3',
-        date: '2019-11-17 13:31:03',
-      },
-      {
-        title: 'My library 4',
-        date: '2019-11-17 13:31:03',
-      },
-      {
-        title: 'My library 5',
-        date: '2019-11-17 13:31:03',
-      },
-      {
-        title: 'My library 6',
-        date: '2019-11-17 13:31:03',
-      },
-      {
-        title: 'My library 7',
-        date: '2019-11-17 13:31:03',
-      },
-    ];
+    const libraries_html = this.props.libraries.map((library, index) => {
+      let images_html = library.books.slice(0, 5).map((book, _index) => {
+        return (
+          <div className="BookCoverWrapper" key={_index}>
+            <Image
+              src={book.thumbnail}
+              className="BookCover"
+              onClick={() => this.props.history.push('/book/' + book.isbn)}
+            />
+          </div>
+        );
+      });
 
-    const mockLibraryBookPickture = [
-      'https://search1.kakaocdn.net/thumb/C116x164.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F478524%3Ftimestamp%3D20190420101113%3Fmoddttm=201911201629',
-      'https://search1.kakaocdn.net/thumb/C116x164.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F478524%3Ftimestamp%3D20190420101113%3Fmoddttm=201911201629',
-      'https://search1.kakaocdn.net/thumb/C116x164.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F478524%3Ftimestamp%3D20190420101113%3Fmoddttm=201911201629',
-      'https://search1.kakaocdn.net/thumb/C116x164.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F478524%3Ftimestamp%3D20190420101113%3Fmoddttm=201911201629',
-      'https://search1.kakaocdn.net/thumb/C116x164.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F478524%3Ftimestamp%3D20190420101113%3Fmoddttm=201911201629',
-    ];
-
-    const images_html = mockLibraryBookPickture.map((picture_url, index) => {
       return (
-        <div className="BookCoverWrapper" key={index}>
-          <Image src={picture_url} className="BookCover" />
-        </div>
-      );
-    });
-
-    // Should change to proper library object, and change the argument of LibraryClicked to library_id
-    const libraries_html = mockLibrariesUsername.map(library_dict => {
-      return (
-        <div className="LibraryContentWrapper" key={library_dict.title}>
+        <div className="LibraryContentWrapper" key={index}>
           <Card
             link
             className="LibraryContent"
-            onClick={() => this.LibraryClicked(library_dict.title)}
+            onClick={() => this.onLibraryClicked(library)}
           >
             <Card.Content>
               <div className="LibraryArea">
                 <Card.Header>
-                  <div className="LibraryTitle">{library_dict.title}</div>
+                  <div className="LibraryTitle">{library.title}</div>
                 </Card.Header>
-                <Card.Meta>{library_dict.date}</Card.Meta>
+                <Card.Meta>{library.date}</Card.Meta>
               </div>
             </Card.Content>
             <Card.Content>
@@ -155,16 +110,17 @@ class SelectLibraryModal extends Component {
 const mapStateToProps = state => {
   return {
     loggedin_user: state.user.loggedin_user,
-    libraries_username: state.library.libraries_username,
+    libraries: state.library.libraries,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadUserLibrary: user_id =>
-      dispatch(actionCreators.getLibrariesByUserID(user_id)),
-    onStoreBookToLibrary: isbn_library =>
-      dispatch(actionCreators.addBookToLibrary(isbn_library)),
+    onLoadLibrary: () => dispatch(actionCreators.getLibraries()),
+    onEditLibrary: (library_id, title_books_dict) =>
+      dispatch(
+        actionCreators.editSpecificLibrary(library_id, title_books_dict),
+      ),
   };
 };
 

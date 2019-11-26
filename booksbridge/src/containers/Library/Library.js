@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Card, Image, Button, Icon } from 'semantic-ui-react';
+import { Card, Image } from 'semantic-ui-react';
 
 import Header from '../../components/Header';
 import AddLibraryModal from '../../components/Library/AddLibraryModal';
 import EditLibraryModal from '../../components/Library/EditLibraryModal';
+import ConfirmDelete from '../../components/Library/ConfirmDelete';
 
 import './Library.css';
 
@@ -14,10 +15,18 @@ import * as actionCreators from '../../store/actions/actionCreators';
 class Library extends Component {
   constructor(props) {
     super(props);
-    this.props.onLoadLibrary(this.props.logged_in_user.id);
+    this.props.onLoadLibrary();
+    this.state = {
+      openConfirm: false,
+    };
   }
 
-  onDeleteLibrary = library_id => this.props.onDeleteLibrary(library_id);
+  openConfirm = () => this.setState({ ...this.state, openConfirm: true });
+  closeConfirm = () => this.setState({ ...this.state, openConfirm: false });
+  onDeleteLibrary = library_id => {
+    this.props.onDeleteLibrary(library_id);
+    this.closeConfirm();
+  };
 
   render() {
     const libraries_html = this.props.libraries.map((library_dict, index) => {
@@ -50,14 +59,9 @@ class Library extends Component {
                     />
                   </div>
                   <div className="CardButton">
-                    <Button
-                      size="mini"
-                      icon
-                      color="red"
-                      onClick={() => this.onDeleteLibrary(library_dict.id)}
-                    >
-                      <Icon name="times" size="small" />
-                    </Button>
+                    <ConfirmDelete
+                      onConfirm={() => this.onDeleteLibrary(library_dict.id)}
+                    />
                   </div>
                 </div>
               </div>
@@ -100,8 +104,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onLoadUser: username => dispatch(actionCreators.getSpecificUser(username)),
-    onLoadLibrary: user_id =>
-      dispatch(actionCreators.getLibrariesByUserID(user_id)),
+    onLoadLibrary: () => dispatch(actionCreators.getLibraries()),
     onDeleteLibrary: library_id =>
       dispatch(actionCreators.deleteSpecificLibrary(library_id)),
   };

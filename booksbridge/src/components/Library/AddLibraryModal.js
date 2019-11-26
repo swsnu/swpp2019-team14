@@ -36,7 +36,7 @@ class AddLibraryModal extends Component {
       books: [],
       open: false,
     });
-    this.props.onLoadLibrary(this.props.logged_in_user.id);
+    this.props.onLoadLibrary();
     this.props.onEmptySelectedBook();
   };
   /////////////////////////////////////////////
@@ -207,8 +207,7 @@ const mapDispatchToProps = dispatch => {
     onEmptySelectedBook: () => dispatch(actionCreators.emptySelectedBook()),
     onSaveLibrary: title_books_dict =>
       dispatch(actionCreators.postLibrary(title_books_dict)),
-    onLoadLibrary: user_id =>
-      dispatch(actionCreators.getLibrariesByUserID(user_id)),
+    onLoadLibrary: () => dispatch(actionCreators.getLibraries()),
   };
 };
 

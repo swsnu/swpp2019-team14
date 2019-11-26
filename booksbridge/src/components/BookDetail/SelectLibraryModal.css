@@ -8,24 +8,27 @@
 }
 
 .LibraryContentWrapper {
+  height: auto;
   display: flex;
   justify-content: center;
   padding: 10px;
 }
 
 .LibraryContent {
-  height: 250px;
   width: 500px !important;
 }
 
 .LibraryArea {
   height: 35px;
   align-items: center;
+  text-align: left;
+  display: flex;
 }
 
 .LibraryTitle {
   font-size: 20px;
   font-weight: bold;
+  width: auto;
 }
 
 .BookCoverArea {

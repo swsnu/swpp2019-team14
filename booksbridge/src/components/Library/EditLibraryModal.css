@@ -1,9 +1,12 @@
 .AddLibraryModal {
-  max-height: 750px !important;
+  height: 700px !important;
   width: 600px !important;
 }
 
 .LibraryContent {
+  height: 574px !important;
+  margin-right: 0px;
+  width: 600px !important;
 }
 
 .LibraryTitleInput {

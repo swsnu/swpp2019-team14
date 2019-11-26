@@ -54,6 +54,10 @@
   margin-left: 5px;
 }
 
+.Confirm {
+  height: 130px;
+}
+
 .BookCoverArea {
   display: flex;
   align-items: center;
