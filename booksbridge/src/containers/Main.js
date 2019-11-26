@@ -44,7 +44,7 @@ class Main extends React.Component {
       <div className="main">
         <Header />
         <div className="articles">
-          <a href="/review/create">
+          <a id="create-review-link" href={'/review/create'}>
             <img
               id="createReviewLogo"
               className="createReviewLogo"
@@ -53,7 +53,9 @@ class Main extends React.Component {
             />
           </a>
           <br />
-          <a href="/curation/">Curation page 이동</a>
+          <a id="create-review-link" href={'/curation'}>
+            Curation page 이동
+          </a>
           <InfiniteScroll
             className="scroll"
             dataLength={this.state.articles.length}
