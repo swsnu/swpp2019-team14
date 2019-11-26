@@ -71,6 +71,8 @@ class AddLibraryModal extends Component {
   };
 
   render() {
+    if (this.props.selectedBook != null) this.onClickAddToLibrary();
+
     const { open, title } = this.state;
     const libraryAddButton = (
       <Button icon labelPosition="left">
@@ -90,6 +92,7 @@ class AddLibraryModal extends Component {
       </Button>
     );
 
+    /*  DEPRICATED
     const selectedBookHTML = this.props.selectedBook ? (
       <BookInfo
         isbn={this.props.selectedBook.isbn}
@@ -101,7 +104,7 @@ class AddLibraryModal extends Component {
       />
     ) : (
       '아직 선택한 책이 없어요. 책 고르기 버튼을 눌러 추가해보세요!'
-    );
+    );*/
 
     const booksHTML = this.state.books.map((book, index) => {
       return (
@@ -158,23 +161,8 @@ class AddLibraryModal extends Component {
             </Modal.Content>
             <Modal.Content className="LibraryBookSearch">
               <div className="LibraryBookSearchInner">
-                <div className="LibraryBookSearchHeader">
-                  <div className="LibraryChooseBookModal">
-                    <LibraryChooseBookModal id="choose-book-modal" />
-                  </div>
-                  <div className="AddToLibrary_Button">
-                    <Button
-                      icon
-                      labelPosition="right"
-                      onClick={this.onClickAddToLibrary}
-                    >
-                      <Icon name="plus" />
-                      라이브러리에 추가하기
-                    </Button>
-                  </div>
-                </div>
-                <div className="LibraryBookSearchContent">
-                  {selectedBookHTML}
+                <div className="LibraryChooseBookModal">
+                  <LibraryChooseBookModal id="choose-book-modal" />
                 </div>
               </div>
             </Modal.Content>

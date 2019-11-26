@@ -23,6 +23,7 @@ export const getMockStore = initialState => {
     user: mockReducer,
     curation: mockReducer,
     article: mockReducer,
+    library: mockReducer,
     router: connectRouter(history),
   });
   const composeEnhancers =

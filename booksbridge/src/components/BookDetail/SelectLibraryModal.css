@@ -15,6 +15,7 @@
 }
 
 .LibraryContent {
+  height: auto !important;
   width: 500px !important;
 }
 
@@ -32,13 +33,13 @@
 }
 
 .BookCoverArea {
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .BookCoverList {
+  height: 100%;
   width: 100%;
   display: flex;
 }
@@ -50,8 +51,10 @@
 }
 
 .BookCover {
-  width: 100% !important;
-  height: 100% !important;
+  height: auto;
+  max-height: 160px;
+  width: 100%;
+  cursor: pointer;
 }
 
 .dimmed.dimmable > .ui.animating.dimmer,

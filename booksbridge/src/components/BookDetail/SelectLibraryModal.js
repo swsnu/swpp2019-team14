@@ -59,18 +59,17 @@ class SelectLibraryModal extends Component {
       });
 
       return (
-        <div className="LibraryContentWrapper" key={index}>
+        <div className="CardContentWrapper" key={index}>
           <Card
             link
-            className="LibraryContent"
+            className="CardContent"
             onClick={() => this.onLibraryClicked(library)}
           >
             <Card.Content>
-              <div className="LibraryArea">
+              <div className="CardArea">
                 <Card.Header>
-                  <div className="LibraryTitle">{library.title}</div>
+                  <div className="CardTitle">{library.title}</div>
                 </Card.Header>
-                <Card.Meta>{library.date}</Card.Meta>
               </div>
             </Card.Content>
             <Card.Content>

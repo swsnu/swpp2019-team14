@@ -32,7 +32,6 @@ class BookDetail extends Component {
     if (!this.props.currentBook) {
       return <Spinner animation="border" className="Spinner" />;
     }
-    if (this.props.libraries.length == 0) this.props.onLoadLibrary();
 
     const isbn = this.props.match.params.book_id;
     const { title } = this.props.currentBook;
@@ -97,8 +96,6 @@ const mapStateToProps = state => {
     shortReviews: state.article.shortReviews,
     longReviews: state.article.longReviews,
     phrases: state.article.phrases,
-    selectedLibrary: state.library.selectedLibrary,
-    libraries: state.library.libraries,
   };
 };
 

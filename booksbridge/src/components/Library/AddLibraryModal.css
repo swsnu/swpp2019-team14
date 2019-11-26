@@ -25,24 +25,14 @@
 }
 
 .LibraryChooseBookModal {
-  width: 50%;
-  text-align: left;
-}
-
-.AddToLibrary_Button {
-  width: 50%;
   text-align: right;
 }
 
-.LibraryBookSearchContent {
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.LibraryBookSearchInner {
+  text-align: right;
 }
 
 .LibraryAddedBooks {
-  border-top: 1px solid lightgray !important;
   padding-top: 20px;
   justify-content: center;
 }
