@@ -16,6 +16,7 @@ import CurationDetailPage from './containers/CurationDetailPage/CurationDetailPa
 import storage from './lib/storage';
 import * as actionTypes from './store/actions/actionTypes';
 import CreateCuration from './containers/CreateCuration';
+import Library from './containers/Library/Library';
 import CurationMain from './containers/CurationMain/CurationMain';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -78,6 +79,7 @@ class App extends Component {
               exact
               component={Main}
             />
+            <Route path="/library" exact component={Library} />
             <Redirect from="/" to="/sign-in" />
           </Switch>
         </div>

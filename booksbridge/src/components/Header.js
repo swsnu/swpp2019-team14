@@ -31,6 +31,9 @@ const Header = props => {
         >
           My Page
         </Menu.Item>
+        <Menu.Item onClick={() => props.history.push('/library/')}>
+          My Library
+        </Menu.Item>
         <Menu.Item onClick={() => props.onLogout()}>LOGOUT</Menu.Item>
       </Menu>
     </div>

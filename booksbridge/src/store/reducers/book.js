@@ -21,6 +21,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, selectedBook: action.book };
     case actionTypes.EMPTY_SEARCHED_BOOKS:
       return { ...state, searchedBooks: [] };
+    case actionTypes.EMPTY_SELECTED_BOOK:
+      return { ...state, selectedBook: null };
     case actionTypes.RUN_OCR:
       return { ...state, quote: action.quote };
   }

@@ -144,25 +144,26 @@ export const deleteSpecificArticle = id => dispatch =>
   );
 // export const GET_ARTICLE_LIKE = 'GET_ARTICLE_LIKE'
 export const getArticleLike = id => dispatch =>
-  axios.get(`/api/article/${id}/`).then(res =>
+  axios.get(`/api/like/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_ARTICLE_LIKE,
-      like: res.data,
+      likes: res.data,
     }),
   );
 // export const POST_ARTICLE_LIKE = 'POST_ARTICLE_LIKE'
 export const postArticleLike = id => dispatch =>
-  axios.post(`/api/article/${id}/like/`).then(res =>
+  axios.post(`/api/like/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.POST_ARTICLE_LIKE,
-      like: res.data,
+      article: res.data,
     }),
   );
 // export const DELETE_ARTICLE_LIKE = 'DELETE_ARTICLE_LIKE'
 export const deleteArticleLike = id => dispatch =>
-  axios.delete(`/api/article/${id}/like/`).then(res =>
+  axios.delete(`/api/like/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_ARTICLE_LIKE,
+      article: res.data,
     }),
   );
 // export const GET_ARTICLES_BY_BOOKID = 'GET_ARTICLES_BY_BOOKID'
@@ -230,27 +231,28 @@ export const deleteSpecificCuration = id => dispatch =>
   );
 
 // export const GET_CURATION_LIKE = 'GET_CURATION_LIKE'
-export const getCurationLike = id => dispatch =>
-  axios.get(`/api/curation/${id}/`).then(res =>
+export const getCurationLike = curation_id => dispatch =>
+  axios.get(`/api/like/curation/${curation_id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_CURATION_LIKE,
-      like: res.data,
+      likes: res.data,
     }),
   );
 
 // export const POST_CURATION_LIKE = 'POST_CURATION_LIKE'
-export const postCurationLike = id => dispatch =>
-  axios.post(`/api/curation/${id}/like/`).then(res =>
+export const postCurationLike = curation_id => dispatch =>
+  axios.post(`/api/like/curation/${curation_id}/`).then(res =>
     dispatch({
       type: actionTypes.POST_CURATION_LIKE,
-      like: res.data,
+      curation: res.data,
     }),
   );
 // export const DELETE_CURATION_LIKE = 'DELETE_CURATION_LIKE'
-export const deleteCurationLike = id => dispatch =>
-  axios.delete(`/api/curation/${id}/like/`).then(res =>
+export const deleteCurationLike = curation_id => dispatch =>
+  axios.delete(`/api/like/curation/${curation_id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_CURATION_LIKE,
+      curation: res.data,
     }),
   );
 // export const GET_SEARCHED_CURATIONS = 'GET_SEARCHED_CURATIONS'
@@ -355,34 +357,43 @@ export const getCommentsByCurationID = id => dispatch =>
 // ///////////////////////////////// Library ////////////////////////////////////
 
 // export const POST_LIBRARY = 'POST_LIBRARY'
-export const postLibrary = library => dispatch =>
-  axios.post('/api/library/', library).then(res =>
+export const postLibrary = title_books_dict => dispatch =>
+  axios.post(`/api/library/9999/`, title_books_dict).then(res =>
     dispatch({
       type: actionTypes.POST_LIBRARY,
       library: res.data,
     }),
   );
 // export const GET_SPECIFIC_LIBRARY = 'GET_SPECIFIC_LIBRARY'
-export const getSpecificLibrary = id => dispatch =>
-  axios.get(`/api/library/${id}/`).then(res =>
+export const getSpecificLibrary = library_id => dispatch =>
+  axios.get(`/api/library/${library_id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SPECIFIC_LIBRARY,
       library: res.data,
     }),
   );
 // export const EDIT_SPECIFIC_LIBRARY = 'EDIT_SPECIFIC_LIBRARY'
-export const editSpecificLibrary = library => dispatch =>
-  axios.put(`/api/library/${library.id}/`, library).then(res =>
+export const editSpecificLibrary = (library_id, title_books_dict) => dispatch =>
+  axios.put(`/api/library/${library_id}/`, title_books_dict).then(res =>
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_LIBRARY,
       library: res.data,
     }),
   );
 // export const DELETE_SPECIFIC_LIBRARY = 'DELETE_SPECIFIC_LIBRARY'
-export const deleteSpecificLibrary = id => dispatch =>
-  axios.delete(`/api/library/${id}/`).then(res =>
+export const deleteSpecificLibrary = library_id => dispatch =>
+  axios.delete(`/api/library/${library_id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_SPECIFIC_LIBRARY,
+      library: res.data,
+    }),
+  );
+// export const GET_LIBRARIES_BY_USERID = 'GET_LIBRARIES_BY_USERID'
+export const getLibrariesByUserID = user_id => dispatch =>
+  axios.get('/api/libraries/').then(res =>
+    dispatch({
+      type: actionTypes.GET_LIBRARIES_BY_USERID,
+      libraries: res.data,
     }),
   );
 
@@ -426,6 +437,10 @@ export const getFollows = userid => dispatch =>
 // ///////////////////////////////// EXTRA /////////////////////////////////////////
 export const emptySearchedBooks = () => ({
   type: actionTypes.EMPTY_SEARCHED_BOOKS,
+});
+
+export const emptySelectedBook = () => ({
+  type: actionTypes.EMPTY_SELECTED_BOOK,
 });
 
 export const runOcr = formData => dispatch =>

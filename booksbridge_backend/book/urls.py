@@ -23,14 +23,17 @@ urlpatterns = [
     path('curation/<curation_id>/',
          views.specific_curation, name='specific_curation'),
     path('curation/page/<page>/', views.curation_page, name='curation_page'),
+    path('library/<library_id>/', views.library, name='library'),
     path('comment/curation/', views.curation_comment, name='curation_comment'),
     path('library/', views.library, name='library'),
-    path('library/book/', views.book_in_library, name='book_in_library'),
+    # path('library/book/', views.book_in_library, name='book_in_library'), THERE IS ABSOLUTELY NO NEED FOR THIS. CONTACT PEACESONG FOR FURTHER DISCUSSION.
+    path('libraries/', views.libraries, name='libraries'),
     path('follow/', views.follow, name='follow'),
     path('follow/user_id=<user_id>/', views.follow, name='follow'),
     path('ocr/', views.ocr, name='ocr'),
     path('image/profile/', views.photo_upload, name='propic_upload'),
     path('like/article/<article_id>/', views.article_like, name='article_like'),
-    path('like/curation/<curation_id>/', views.curation_like, name='curation_like'),
+    path('like/curation/<curation_id>/',
+         views.curation_like, name='curation_like'),
 
 ]

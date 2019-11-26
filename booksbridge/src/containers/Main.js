@@ -52,6 +52,8 @@ class Main extends React.Component {
               width="600"
             />
           </a>
+          <br />
+          <a href="/curation/">Curation page 이동</a>
           <InfiniteScroll
             className="scroll"
             dataLength={this.state.articles.length}
@@ -68,9 +70,9 @@ class Main extends React.Component {
               <div>
                 <Article
                   author={article.author}
-                  book_isbn={article.book_isbn}
-                  book_title={article.book_title}
-                  book_thumbnail={article.book_thumbnail}
+                  book_isbn={article.book.isbn}
+                  book_title={article.book.title}
+                  book_thumbnail={article.book.thumbnail}
                   id={article.id}
                   title={article.title}
                   content={article.content}

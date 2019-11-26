@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'booksbridge.urls'
+ROOT_URLCONF = 'booksbridge_backend.urls'
 
 TEMPLATES = [
     {
@@ -79,7 +79,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'booksbridge.wsgi.application'
+WSGI_APPLICATION = 'booksbridge_backend.wsgi.application'
 
 
 # Database

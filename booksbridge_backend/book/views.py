@@ -179,19 +179,27 @@ def make_article_dict(article):
         'profile_photo':user.profile.profile_photo.name,
         'nickname':user.profile.nickname,
     }
+
+    book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
+    book_dict = model_to_dict(book_in_db)
+
+    comments = get_comments(article, True)
     article_dict = {
         'author': user_dict,
-        'book_isbn': article.book.isbn,
-        'book_title': article.book.title,
-        'book_thumbnail': article.book.thumbnail,
+        'book':book_dict, 
+        # 'book_isbn': article.book.isbn,
+        # 'book_title': article.book.title,
+        # 'book_thumbnail': article.book.thumbnail,
         'id': article.id,
         'title': article.title,
         'content': article.content,
         'date': time_array,
         'is_long': article.is_long,
         'is_short': article.is_short,
-        'is_phrase': article.is_phrase
+        'is_phrase': article.is_phrase,
+        'comments': comments,
     }
+
     return article_dict
 
 
@@ -240,26 +248,27 @@ def specific_article(request,review_id):
         return HttpResponse(status=401)
     elif request.method == 'GET':
         article = get_object_or_404(Article, id=review_id)
-        book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
-        book_dict = model_to_dict(book_in_db)
-        user = get_object_or_404(User, id=article.author_id)
-        user_dict = {
-            'id':user.id, 
-            'username':user.username,
-            'nickname':user.profile.nickname,
-            'profile_photo':user.profile.profile_photo.name
-        }
-        comments = get_comments(article, True)
-        response_dict = {
-            'id':article.id, 
-            'author':user_dict, 
-            'book':book_dict, 
-            'title':article.title, 
-            'content':article.content, 
-            'date':article.date, 
-            'comments': comments
-        }
-        return JsonResponse(response_dict)
+        return JsonResponse(make_article_dict(article))
+        # book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
+        # book_dict = model_to_dict(book_in_db)
+        # user = get_object_or_404(User, id=article.author_id)
+        # user_dict = {
+        #     'id':user.id, 
+        #     'username':user.username,
+        #     'nickname':user.profile.nickname,
+        #     'profile_photo':user.profile.profile_photo.name
+        # }
+        # comments = get_comments(article, True)
+        # response_dict = {
+        #     'id':article.id, 
+        #     'author':user_dict, 
+        #     'book':book_dict, 
+        #     'title':article.title, 
+        #     'content':article.content, 
+        #     'date':article.date, 
+        #     'comments': comments
+        # }
+        # return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -423,7 +432,6 @@ def curation_comment(request):
 
 
 
-@csrf_exempt
 def article(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -500,7 +508,27 @@ def curation(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
 
-
+def search_curation(request, keyword):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'GET':
+        decoded_keyword =urllib.parse.unquote(keyword)
+        result_users=[]
+        all_users = User.objects.all()
+        if all_users:
+            for user in all_users:
+                if decoded_keyword in user.get_username() or decoded_keyword in user.profile.nickname:
+                    user_dict = {
+                        'id': user.id,
+                        'username': user.username,
+                        'date_joined': user.date_joined.date(),
+                        'profile_photo': user.profile.profile_photo.name,
+                        'nickname': user.profile.nickname,
+                        'profile_text': user.profile.profile_text,
+                    }
+                    result_users.append(user_dict)
+        return JsonResponse(result_users, safe=False)
     
 def make_curation_dict(curation):
     # TODO: comments
@@ -522,6 +550,8 @@ def make_curation_dict(curation):
 
     comments = get_comments(curation, False)
 
+    likes = CurationLike.objects.filter(curation_id=curation.id).count()
+
     curation_dict = {
         'id': curation.id,
         'author': user_dict,
@@ -529,7 +559,8 @@ def make_curation_dict(curation):
         'title': curation.title,
         'content': curation.content,
         'date': time_array,
-        'comments': comments
+        'comments': comments,
+        'likes': likes
     }
  
     return curation_dict
@@ -558,11 +589,24 @@ def curation_page(request, page):
         curations = [] 
         for curation in requested_list:
             books = []
+            book_set= []
             for books_in_cur in curation.book_in_curation.all():
-                books.append(model_to_dict(books_in_cur.book))
+                if(len(book_set)==4):
+                    books.append(book_set)
+                    book_set=[]
+                book_set.append(model_to_dict(books_in_cur.book))
+            books.append(book_set)
+            user=curation.author
+            user_dict = {
+                'id':user.id,
+                'username':user.username,
+                'profile_photo':user.profile.profile_photo.name,
+                'nickname':user.profile.nickname,
+            }
             curation_dict = {
+                'id': curation.id,
                 'books': books,
-                'author': curation.author.id,
+                'author': user_dict,
                 'title': curation.title,
                 'content': curation.content,
                 'date': curation.date,
@@ -574,30 +618,135 @@ def curation_page(request, page):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-
-def library(request):
+def libraries(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
-    # TODO elif request.method == 'GET':
-    #    pass
+
+    elif request.method == 'GET':
+        try:
+            libraries = list()
+            for library in Library.objects.filter(user=request.user):
+                library_dict = {
+                    'title': library.title,
+                    'date': library.date,
+                    'books': [],
+                    'id': library.id,
+                }
+                  
+                for book_in_library in BookInLibrary.objects.filter(library=library):
+                    book = {
+                        'isbn': book_in_library.book.isbn,
+                        'title': book_in_library.book.title,
+                        'thumbnail': book_in_library.book.thumbnail,
+                    }
+                    library_dict['books'].append(book)
+
+                libraries.append(library_dict)
+        except:
+            return HttpResponse(status=404)
+
+        return JsonResponse(libraries, status=200, safe=False)
+        
+    else:
+        return HttpResponseNotAllowed(['GET'])
+        
+
+def library(request, library_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'GET':
+        library = Library.objects.get(id=library_id)
+        
+        library_dict = {
+            'title': library.title,
+            'date': library.date,
+            'books': [],
+            'id': library.id,
+        }
+
+        for book_in_library in BookInLibrary.objects.filter(library=library):
+            book = {
+                'isbn': book_in_library.book.isbn,
+                'title': book_in_library.book.title,
+                'thumbnail': book_in_library.book.thumbnail,
+            }
+            library_dict['books'].append(book)
+
+        return JsonResponse(library_dict, status=200)
     elif request.method == 'POST':
         # { title }
         try:
             req_data = json.loads(request.body.decode())
             title = req_data['title']
+            books = req_data['books']
         except (KeyError) as e:
             return HttpResponse(status=400) 
         library = Library(user=request.user, title=title)
         library.save()
-        library_dict = model_to_dict(library)
+        library_dict = {
+            'title': library.title,
+            'date': library.date,
+            'books': [],
+            'id': library.id,
+        }
+
+        for book in books:
+            __book = Book.objects.get(isbn=book['isbn'])
+            BIL = BookInLibrary(library=library, book=__book)
+            BIL.save()
+
+            _book = {
+                'isbn': __book.isbn,
+                'title': __book.title,
+                'thumbnail': __book.thumbnail
+            }
+            library_dict['books'].append(_book)
+
         return JsonResponse(library_dict, status=201)
-    # TODO elif request.method == 'PUT':
-    #    pass
-    # TODO elif request.method == 'DELETE':
-    #    pass
+
+    elif request.method == 'PUT':
+        try:
+            req_data = json.loads(request.body.decode())
+            title = req_data['title']
+            books = req_data['books']
+        except:
+            return HttpResponse(status=400)
+        try:
+            library = Library.objects.get(id=library_id)
+        except:
+            return HttpResponse(status=404)
+
+        library.title = title
+        library.save()
+        library_dict = {
+            'title': library.title,
+            'date': library.date,
+            'books': books,
+            'id': library.id,
+        }
+
+        for book_in_library in BookInLibrary.objects.filter(library=library):
+            if book_in_library.book.isbn not in list(map(lambda book: book['isbn'], books)):
+                book_in_library.delete()
+        
+        for book in books:
+            if book['isbn'] not in list(map(lambda book_in_library: book_in_library.book.isbn, BookInLibrary.objects.filter(library=library))):
+                _book = Book.objects.get(isbn=book['isbn'])
+                BIL = BookInLibrary(library=library, book=_book)
+                BIL.save()
+
+        return JsonResponse(library_dict, status=201)
+
+    elif request.method == 'DELETE':
+        library = Library.objects.get(id=library_id)
+        library_dict = model_to_dict(library)
+        library.delete()
+
+        return JsonResponse(library_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'PUT', 'DELETE']) 
-
+"""
+////* THERE IS ABSOLUTELY NO NEED TO DEFINE THIS VIEW *///////
 def book_in_library(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -607,8 +756,10 @@ def book_in_library(request):
         # { isbn, library }: library means library_id (정수라고 가정)
         try:
             req_data = json.loads(request.body.decode())
-            book = Book.objects.get(isbn=int(req_data['isbn']))
-            library = Library.objects.get(id=int(req_data['library']))
+            isbn = req_data['isbn']
+            library_id = req_data['library']
+            book = Book.objects.get(isbn=int(isbn))
+            library = Library.objects.get(id=int(library_id))
         except (KeyError) as e:
             return HttpResponse(status=400) 
 
@@ -619,7 +770,8 @@ def book_in_library(request):
     # TODO elif request.method == 'DELETE':
     #    pass
     else:
-        return HttpResponseNotAllowed(['POST', 'GET', 'DELETE']) 
+        return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
+"""
 
 def specific_user(request, username):
     if not request.user.is_authenticated:
@@ -664,6 +816,31 @@ def search_user(request, keyword):
                     result_users.append(user_dict)
         return JsonResponse(result_users, safe=False)
 
+def run_text_detection(path):
+    from google.cloud import vision
+    client = vision.ImageAnnotatorClient()
+
+    try:
+        with io.open(path, 'rb') as image_file:
+            content = image_file.read()
+    except:
+        print("couldn't open file")
+        return HttpResponse(status=400)
+
+    image = vision.types.Image(content=content)
+
+    response = client.document_text_detection(image=image)
+
+    result = ""
+    for page in response.full_text_annotation.pages:
+        for block in page.blocks:
+            for paragraph in block.paragraphs:
+                for word in paragraph.words:
+                    word_text = ''.join([
+                        symbol.text for symbol in word.symbols
+                    ])
+                    result += word_text + ' '
+    return result
 
 
 def ocr(request):
@@ -678,30 +855,10 @@ def ocr(request):
         filename = fs.save(image.name, image)
         path = fs.url(filename)
 
-        from google.cloud import vision
-        client = vision.ImageAnnotatorClient()
+        result = run_text_detection(path)
+        result_dict = { 'quote': result }
+        return JsonResponse(result_dict, status=200)                       
 
-        try:
-            with io.open(path, 'rb') as image_file:
-                content = image_file.read()
-        except:
-            print("couldn't open file")
-            return HttpResponse(status=400)
-
-        image = vision.types.Image(content=content)
-
-        response = client.document_text_detection(image=image)
-
-        result = ""
-        for page in response.full_text_annotation.pages:
-            for block in page.blocks:
-                for paragraph in block.paragraphs:
-                    for word in paragraph.words:
-                        word_text = ''.join([
-                            symbol.text for symbol in word.symbols
-                        ])
-                        result += word_text + ' '
-                        
         '''
         #uri = 'http://127.0.0.1:8000/api/ocr/' + image.name
         url = image.temporary_file_path
@@ -721,8 +878,6 @@ def ocr(request):
                         ])
                         result += word_text + " "
         '''
-        result_dict = { 'quote': result }
-        return JsonResponse(result_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -806,25 +961,38 @@ def article_like(request, article_id):
     elif request.method == 'POST':
         like = ArticleLike(user=request.user, article_id=article_id) 
         like.save()
-        like_dict = model_to_dict(like)
-        return JsonResponse(like_dict, status=201)
+        article = get_object_or_404(Article, id=article_id)
+        result_dict = make_article_dict(article)
+        return JsonResponse(result_dict, status=201)
     
     elif request.method == 'GET':
-        like_count = ArticleLike.objects.filter(article_id=article_id).count()
+        like_count = ArticleLike.objects.filter(article_id=article_id, user_id=request.user.id).count()  
         like_dict = { 'count': like_count }
         return JsonResponse(like_dict, status=200)
     
     elif request.method == 'DELETE':
-        # { user_id }
-        try:
-            req_data = json.loads(request.body.decode())
-            user_id = int(req_data['user_id'])
-        except (KeyError) as e:
-            return HttpResponse(status=400)
-        like = get_object_or_404(ArticleLike, article_id=article_id, user_id=user_id)
-        like_dict = model_to_dict(like)
+        like = get_object_or_404(ArticleLike, article_id=article_id, user_id=request.user.id)
         like.delete()
-        return JsonResponse(like_dict, status=200)
+        article = get_object_or_404(Article, id=article_id)
+        result_dict = make_article_dict(article)
+        return JsonResponse(result_dict, status=200)
+
+    # elif request.method == 'POST':
+    #     like = ArticleLike(user=request.user, article_id=article_id) 
+    #     like.save()
+    #     like_dict = model_to_dict(like)
+    #     return JsonResponse(like_dict, status=201)
+    
+    # elif request.method == 'GET':
+    #     like_count = ArticleLike.objects.filter(article_id=article_id).count()
+    #     like_dict = { 'count': like_count }
+    #     return JsonResponse(like_dict, status=200)
+    
+    # elif request.method == 'DELETE':
+    #     like = get_object_or_404(ArticleLike, article_id=article_id, user_id=user_id)
+    #     like_dict = model_to_dict(like)
+    #     like.delete()
+    #     return JsonResponse(like_dict, status=200)
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
@@ -838,25 +1006,21 @@ def curation_like(request, curation_id):
     elif request.method == 'POST':
         like = CurationLike(user=request.user, curation_id=curation_id) 
         like.save()
-        like_dict = model_to_dict(like)
-        return JsonResponse(like_dict, status=201)
+        curation = get_object_or_404(Curation, id=curation_id)
+        result_dict = make_curation_dict(curation)
+        return JsonResponse(result_dict, status=201)
     
     elif request.method == 'GET':
-        like_count = CurationLike.objects.filter(curation_id=curation_id).count()
+        like_count = CurationLike.objects.filter(curation_id=curation_id, user_id=request.user.id).count()  
         like_dict = { 'count': like_count }
         return JsonResponse(like_dict, status=200)
     
     elif request.method == 'DELETE':
-        # { user_id }
-        try:
-            req_data = json.loads(request.body.decode())
-            user_id = int(req_data['user_id'])
-        except (KeyError) as e:
-            return HttpResponse(status=400)
-        like = get_object_or_404(CurationLike, curation_id=curation_id, user_id=user_id)
-        like_dict = model_to_dict(like)
+        like = get_object_or_404(CurationLike, curation_id=curation_id, user_id=request.user.id)
         like.delete()
-        return JsonResponse(like_dict, status=200)
+        curation = get_object_or_404(Curation, id=curation_id)
+        result_dict = make_curation_dict(curation)
+        return JsonResponse(result_dict, status=200)
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])

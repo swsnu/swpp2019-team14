@@ -1,0 +1,68 @@
+.LibraryModal {
+  height: 750px !important;
+  width: 600px !important;
+}
+
+.LibraryList {
+  padding: 20px 0px 20px 0px !important;
+}
+
+.LibraryContentWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.LibraryContent {
+  height: 250px;
+  width: 500px !important;
+}
+
+.LibraryArea {
+  height: 35px;
+  align-items: center;
+}
+
+.LibraryTitle {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.BookCoverArea {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.BookCoverList {
+  width: 100%;
+  display: flex;
+}
+
+.BookCoverWrapper {
+  margin-left: 5px;
+  margin-right: 5px;
+  max-width: 100px !important;
+}
+
+.BookCover {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.dimmed.dimmable > .ui.animating.dimmer,
+.dimmed.dimmable > .ui.visible.dimmer,
+.ui.active.dimmer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ui.modal,
+.ui.active.modal {
+  margin: 0 auto !important;
+  top: auto !important;
+  left: auto !important;
+  transform-origin: center !important;
+  transition: all ease 0.5s;
+}

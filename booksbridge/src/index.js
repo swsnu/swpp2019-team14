@@ -16,6 +16,7 @@ import curationReducer from './store/reducers/curation';
 import articleReducer from './store/reducers/article';
 import userReducer from './store/reducers/user';
 import bookReducer from './store/reducers/book';
+import libraryReducer from './store/reducers/library';
 
 const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   curation: curationReducer,
   article: articleReducer,
+  library: libraryReducer,
   router: connectRouter(history),
 });
 
