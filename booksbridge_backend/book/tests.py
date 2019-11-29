@@ -1549,7 +1549,7 @@ class BookTestCase(TestCase):
             self.assertEqual(response.status_code, 200)                        
         
         # POST with wrong request 
-        with open('sapiens.jpg', 'rb') as f:
+        with open('/sapiens.jpg', 'rb') as f:
             response = client.post('/api/ocr/', { })
             self.assertEqual(response.status_code, 400)                        
          
