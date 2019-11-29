@@ -18,7 +18,7 @@ urlpatterns = [
     path('token/', views.token, name='token'),
     path('article/', views.article, name='article'),
     path('article/page/<page>/', views.article_page, name='article_page'),
-    path('comment/article/', views.comment, name='long_review_comment'),
+    path('comment/article/', views.article_comment, name='long_review_comment'),
     path('curation/', views.curation, name='curation'),
     path('curation/<curation_id>/',
          views.specific_curation, name='specific_curation'),
