@@ -50,18 +50,6 @@ class Article(models.Model):
     def __str__(self):
         return str(self.content)
 
-class Comment(models.Model):
-    objects = models.Manager()
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
-    class Meta:
-        ordering = ('date',)
-    def __str__(self):
-        return str(self.content)
-
 class Curation(models.Model):
     objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -71,9 +59,8 @@ class Curation(models.Model):
     def __str__(self):
         return str(self.title)
 
-class CurationComment(models.Model):
+class Comment(models.Model):
     objects = models.Manager()
-    curation = models.ForeignKey(Curation, on_delete=models.CASCADE, related_name='curation_comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
@@ -82,6 +69,14 @@ class CurationComment(models.Model):
         ordering = ('date',)
     def __str__(self):
         return str(self.content)
+
+class ArticleComment(Comment):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
+
+class CurationComment(Comment):
+    curation = models.ForeignKey(Curation, on_delete=models.CASCADE, related_name='comments')
+
+
 
 class BookInCuration(models.Model):
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE, related_name='book_in_curation')

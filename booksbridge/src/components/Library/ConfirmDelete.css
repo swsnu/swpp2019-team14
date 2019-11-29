@@ -1,4 +1,4 @@
-.dimmed.dimmable > .ui.animating.dimmer,
+/* .dimmed.dimmable > .ui.animating.dimmer,
 .dimmed.dimmable > .ui.visible.dimmer,
 .ui.active.dimmer {
   display: flex;
@@ -13,4 +13,4 @@
   transform-origin: center !important;
   transition: all ease 0.5s;
   height: 130px;
-}
+} */

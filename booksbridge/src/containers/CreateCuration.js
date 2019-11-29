@@ -120,7 +120,7 @@ class CreateCuration extends Component {
 
               <Button
                 className="SubmitButton"
-                id="create-review"
+                id="create-curation"
                 content="Submit"
                 onClick={() => this.onClickCreateButton()}
               />
@@ -132,20 +132,15 @@ class CreateCuration extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {};
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     onPostCuration: curation => {
-      console.log(curation);
       dispatch(actionCreators.postCuration(curation));
     },
   };
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(withRouter(CreateCuration));
