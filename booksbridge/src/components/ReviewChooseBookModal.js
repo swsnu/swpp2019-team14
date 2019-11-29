@@ -30,7 +30,7 @@ class ReviewChooseBookModal extends Component {
     return (
       <div>
         <Button className="select-book-button" onClick={this.openHandler}>
-          Select Book
+          책 선택하기
         </Button>
 
         <Modal className="choose-book-modal" open={this.state.open}>

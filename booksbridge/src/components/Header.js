@@ -14,7 +14,8 @@ const Header = props => {
   const [search_input, setSearchInput] = useState('');
 
   const onSearch = () => {
-    props.history.push(`/result/search=${search_input}/book/1`);
+    if (search_input !== '')
+      props.history.push(`/result/search=${search_input}/1`);
   };
 
   const onClickProfile = () => {
@@ -63,7 +64,6 @@ const Header = props => {
               id="search-button"
               variant="outline-secondary"
               onClick={() => onSearch()}
-              disabled={!search_input}
             >
               Search
             </Button>

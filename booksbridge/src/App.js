@@ -42,7 +42,7 @@ class App extends Component {
             <Route path="/sign-up" exact component={Signup} />
             <Route path="/main" exact component={Main} />
             <Route
-              path="/result/search=:keyword/book/:page"
+              path="/result/search=:keyword/:page"
               exact
               component={SearchResultBook}
             />
