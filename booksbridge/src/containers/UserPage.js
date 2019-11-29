@@ -26,6 +26,7 @@ class UserPage extends Component {
 
   render() {
     // Ensures rerendering when moving from userpage to userpage
+    /*
     if (
       this.props.profile_user &&
       this.props.match.params.username !== this.props.profile_user.username
@@ -33,6 +34,7 @@ class UserPage extends Component {
       this.props.onLoadUser(this.props.match.params.username);
       this.props.onLoadUserReviews(this.props.match.params.username);
     }
+    */
 
     // Ensures UserInfo gets proper follower-followee arrays before its rendering
     if (this.props.profile_user) {
@@ -44,16 +46,11 @@ class UserPage extends Component {
         ? this.props.length / 5
         : parseInt(this.props.length / 5) + 1;
 
-    console.log(this.props.length);
-    console.log(final);
-
     const articles = this.props.articles_by_userID.map((article, index) => {
       return (
         <div key={index}>
           <UserReviewSummary
-            author={article.author}
             title={article.title}
-            book_thumbnail={article.book_thumbnail}
             book_isbn={article.book_isbn}
             book_title={article.book_title}
             content={article.content}
