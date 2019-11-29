@@ -844,11 +844,14 @@ def run_text_detection(path):
 
 
 def ocr(request):
-    if request.method == 'POST':
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
         try:
             image = request.FILES['image']
         except:
-            print("could not get image")
+            print("could not get image!!!")
             return HttpResponse(status=400)
 
         fs = FileSystemStorage()

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from urllib import parse
 import json
 from unittest.mock import MagicMock, patch
+from .views import run_text_detection
 
 class BookTestCase(TestCase):
     def test_csrf(self):
@@ -1512,9 +1513,11 @@ class BookTestCase(TestCase):
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)                        
 
-    '''
-    @patch('views.run_text_detection')
-    def test_ocr(self, mockarg):
+    def mock_run_text_detection(path):
+        return "TEST_QUOTE"
+
+    @patch('book.views.run_text_detection', side_effect=mock_run_text_detection) 
+    def test_ocr(self, arg):
         # Initialize
         client = Client()
 
@@ -1539,19 +1542,22 @@ class BookTestCase(TestCase):
                                }),
                                content_type='application/json')
 
-        # TODO: POST 
-        mockarg.return_value = 'TEST_QUOTE' 
-            
-        with open('../resources/sapiens.jpg', 'rb') as f:
-            response = client.post('/api/ocr/', { 'image': f}, 
-                                    content_type='application/json')
+        # POST 
+        with open('sapiens.jpg', 'rb') as f:
+            # response = client.post('/api/ocr/', json.dumps({ 'image': f}), content_type='multipart/form-data')
+            response = client.post('/api/ocr/', { 'image': f})
             self.assertEqual(response.status_code, 200)                        
-
+        
+        # POST with wrong request 
+        with open('sapiens.jpg', 'rb') as f:
+            response = client.post('/api/ocr/', { })
+            self.assertEqual(response.status_code, 400)                        
+         
         # unallowed requests 
         response = client.get('/api/ocr/', 
                                content_type='application/json')
         self.assertEqual(response.status_code, 405)                        
-    '''
+    
 
 
 
