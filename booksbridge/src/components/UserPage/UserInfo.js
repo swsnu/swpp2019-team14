@@ -22,7 +22,6 @@ class UserInfo extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.profile_user) return;
-    console.log('loop');
     this.setState({
       onEdit: false,
       nickname: nextProps.profile_user.nickname,
@@ -78,8 +77,6 @@ class UserInfo extends Component {
   }
 
   render() {
-    const tempcomment =
-      '안녕하세요. 독서를 사랑하는 어쩌구저쩌구 배유빈입니다. 스릴러 장르 좋아합니다. 최애 책은 해리포터 시리즈예요. 팔로우 감사합니다~';
     const profile_user = this.props.profile_user;
     const logged_in_user = this.props.logged_in_user;
     if (!profile_user) return null;
@@ -129,6 +126,7 @@ class UserInfo extends Component {
     if (!this.state.onEdit) {
       edit_button = (
         <img
+          className="EditButtonImage"
           src="/images/edit_button.png"
           width="30"
           onClick={() =>
@@ -139,6 +137,7 @@ class UserInfo extends Component {
     } else {
       edit_button = (
         <img
+          className="EditConfirmButtonImage"
           src="/images/tick.png"
           width="30"
           onClick={() => this.onEditProfile(profile_user)}
