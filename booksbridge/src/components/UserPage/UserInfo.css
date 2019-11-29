@@ -21,12 +21,31 @@
   height: 100%;
   position: relative;
 }
-.UploadBox.label
-{ display: inline-block; padding: .5em .75em; color: #999; font-size: inherit; line-height: normal; vertical-align: middle; background-color: #fdfdfd; cursor: pointer; border: 1px solid #ebebeb; border-bottom-color: #e2e2e2; border-radius: .25em; }
+.UploadBox.label {
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  color: #999;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: 0.25em;
+}
 
-.UploadBox.input[type="file"]
-{background-color: red!important;
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip:rect(0,0,0,0); border: 0; }
+.UploadBox.input[type='file'] {
+  background-color: red !important;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
 
 .ProfilePictureEdit {
   position: absolute;
@@ -65,22 +84,22 @@
   font-size: 15px;
   color: gray;
 }
-.NicknameContainer{
+.NicknameContainer {
   display: flex;
   height: 45px;
   align-items: center;
 }
-.NicknameForm{
+.NicknameForm {
   height: 45px;
   padding-left: 5px;
   width: 200px;
   font-family: 'NanumSquare', sans-serif;
   font-weight: 700;
   font-size: 25px;
-  border: 1px solid rgba(34,36,38,.15);
-  border-radius: .28571429rem;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  border-radius: 0.28571429rem;
 }
-.Comment{
+.Comment {
   padding-top: 3px;
   padding-left: 3px;
   font-family: 'Nanum Gothic', sans-serif;
@@ -97,15 +116,15 @@
   text-align: left;
   padding: 10px 20px 10px 20px;
 }
-.commentForm{
+.commentForm {
   font-family: 'Nanum Gothic', sans-serif;
   font-size: 12px;
   color: gray;
   height: 100px;
-  border: 1px solid rgba(34,36,38,.15);
-  border-radius: .28571429rem;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  border-radius: 0.28571429rem;
   resize: none;
-  width:273px;
+  width: 273px;
 }
 .Profile_Text {
   font-size: 25px;
@@ -120,7 +139,6 @@
 .FooterLeft {
   width: 50%;
   align-content: left;
-  
 }
 .FooterRight {
   width: 50%;
@@ -140,4 +158,10 @@
   padding-top: 10px;
   padding-right: 15px;
   padding-bottom: 10px;
+}
+.EditButtonImage {
+  cursor: pointer;
+}
+.EditConfirmButtonImage {
+  cursor: pointer;
 }
