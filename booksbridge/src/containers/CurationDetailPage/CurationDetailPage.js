@@ -115,6 +115,7 @@ class CurationDetailPage extends Component {
               <Comments
                 comments={this.props.currentCuration.comments}
                 curation_id={this.props.match.params.curation_id}
+                is_article={false}
               />
             </div>
           </div>

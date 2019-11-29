@@ -38,10 +38,12 @@ class Comments extends Component {
           key={comment.id}
           id={comment.id}
           article_id={this.props.article_id}
+          curation_id={this.props.curation_id}
           author={comment.author}
           date={comment.date}
           content={comment.content}
           replies={comment.replies}
+          is_article={this.props.is_article}
         />
       );
     });

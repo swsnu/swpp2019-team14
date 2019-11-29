@@ -1549,7 +1549,7 @@ class BookTestCase(TestCase):
             self.assertEqual(response.status_code, 200)                        
         
         # POST with wrong request 
-        with open('/sapiens.jpg', 'rb') as f:
+        with open('sapiens.jpg', 'rb') as f:
             response = client.post('/api/ocr/', { })
             self.assertEqual(response.status_code, 400)                        
          
@@ -1558,8 +1558,139 @@ class BookTestCase(TestCase):
                                content_type='application/json')
         self.assertEqual(response.status_code, 405)                        
     
+    def test_photo_upload(self):
+        # Initialize
+        client = Client()
 
+        user = User.objects.create_user(
+            email='jsmith@snu.ac.kr',
+            username='John Smith',
+            password='mypassword')
 
+        Profile.objects.create(user=user)
+
+        # POST before sign in
+        response = client.post('/api/image/profile/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 401)
+
+        # Sign in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John Smith',
+                                   'password': 'mypassword'
+                               }),
+                               content_type='application/json')
+
+        # POST 
+        with open('sapiens.jpg', 'rb') as f:
+            response = client.post('/api/image/profile/', { 'image': f})
+            self.assertEqual(response.status_code, 200)                        
+        
+        # POST with wrong request 
+        with open('sapiens.jpg', 'rb') as f:
+            response = client.post('/api/image/profile/', { })
+            self.assertEqual(response.status_code, 400)                        
+         
+        # unallowed requests 
+        response = client.get('/api/image/profile/', 
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 405) 
+
+    # search user, curation comment
+    def test_curation_comment(self):
+        # Initialize
+        client = Client()
+
+        user = User.objects.create_user(
+            email='jsmith@snu.ac.kr',
+            username='John Smith',
+            password='mypassword')
+
+        Profile.objects.create(user=user)
+
+        # POST before sign in
+        response = client.post('/api/comment/curation/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 401)
+
+        # Sign in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John Smith',
+                                   'password': 'mypassword'
+                               }),
+                               content_type='application/json')
+
+        # Book registration
+        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
+                   content_type='application/json')
+
+        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
+                   content_type='application/json')
+        
+        client.get('/api/book/' + parse.quote('C programming') + '/1/',
+                   content_type='application/json')
+
+        # Curation registration 
+        response = client.post('/api/curation/',
+                               json.dumps({
+                                   'title': 'test_title',
+                                   'content': 'test_content',
+                                   'isbn_content_pairs': [
+                                       { 'isbn' : '9780393912470', 'content': 'test_content1'},
+                                       { 'isbn' : '9780140447934', 'content': 'test_content2'},
+                                       { 'isbn' : '9780131103627', 'content': 'test_content3'},
+                                   ],
+                               }),
+                               content_type='application/json')
+        
+        # GET
+        response = client.get('/api/comment/curation/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 405)
+
+        # KeyError
+        response = client.post('/api/comment/curation/',
+                               json.dumps({
+                                    'notgoodkey': 'notgoodvalue',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 400)
+
+        # POST as comment
+        response = client.post('/api/comment/curation/',
+                               json.dumps({
+                                    'curation_id': 1,
+                                    'content': 'test_comment',
+                                    'parent_id': None
+                               }),
+                               content_type='application/json')
+
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 201)
+
+        # POST as reply
+        response = client.post('/api/comment/curation/',
+                               json.dumps({
+                                   'curation_id': 1,
+                                   'content': 'test_reply',
+                                   'parent_id': 1
+                               }),
+                               content_type='application/json')
+
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 201)
+
+        # unallowed requests 
+        response = client.get('/api/comment/curation/', 
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 405)  
+  
 
 
 

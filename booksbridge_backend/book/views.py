@@ -42,8 +42,10 @@ def profile(request, userid):
         return HttpResponseNotAllowed(['PUT'])
 
 def photo_upload(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
     if request.method == 'POST':
-        print(request)
+        # print(request)
         try:
             image = request.FILES['image']
         except:
@@ -352,26 +354,9 @@ def comment(request):
             parent = None
         comment = Comment(article=article, author=request.user, content=content, parent=parent)
         comment.save()
-        comments = get_comments(article, True)
-        book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
-        book_dict = model_to_dict(book_in_db)
-        user = get_object_or_404(User, id=article.author_id)
-        user_dict = {
-            'id':user.id, 
-            'username':user.username,
-            'nickname':user.profile.nickname,
-            'profile_photo':user.profile.profile_photo.name
-        }
-        response_dict = {
-            'id':article.id, 
-            'author':user_dict, 
-            'book':book_dict, 
-            'title':article.title, 
-            'content':article.content, 
-            'date':article.date, 
-            'comments': comments
-        }
-        return JsonResponse(response_dict, status=201)
+
+        return JsonResponse(make_article_dict(article), status=201)
+        
     # TODO elif request.method == 'PUT':
     #    pass
     # TODO elif request.method == 'DELETE':
@@ -399,30 +384,9 @@ def curation_comment(request):
 
         comment = CurationComment(curation=curation, author=request.user, content=content, parent=parent)
         comment.save()
-        comments = get_comments(curation, False)
 
-        book_in_curation = BookInCuration.objects.filter(curation=curation)
-        book_list = [{'book': model_to_dict(get_object_or_404(Book, isbn=book.book_id)), 'content': book.content} 
-                    for book in book_in_curation]  # book_id: isbn 
-
-
-        user = get_object_or_404(User, id=curation.author_id)
-        user_dict = {
-            'id':user.id, 
-            'username':user.username,
-            'nickname':user.profile.nickname,
-            'profile_photo':user.profile.profile_photo.name
-        }
-        response_dict = {
-            'id': curation.id, 
-            'authors':user_dict, 
-            'books':book_list, 
-            'title':curation.title, 
-            'content':curation.content, 
-            'date':curation.date, 
-            'comments': comments
-        }
-        return JsonResponse(response_dict, status=201)
+        return JsonResponse(make_curation_dict(curation), status=201)
+        
     # TODO elif request.method == 'PUT':
     #    pass
     # TODO elif request.method == 'DELETE':
