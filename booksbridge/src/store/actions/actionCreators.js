@@ -319,7 +319,7 @@ export const postCurationComment = comment => dispatch =>
   axios.post('/api/comment/curation/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_CURATION_COMMENT,
-      comment: res.data,
+      curation: res.data,
     }),
   );
 // export const GET_SPECIFIC_CURATION_COMMENT = 'GET_SPECIFIC_CURATION_COMMENT'

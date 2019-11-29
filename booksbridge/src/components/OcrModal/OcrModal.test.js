@@ -80,7 +80,7 @@ describe('<OcrModal />', () => {
     const modalInstance = component.find(OcrModal.WrappedComponent).instance();
     expect(modalInstance.state.open).toEqual(false);
   });
-  xit('should run ocr', () => {
+  it('should run ocr', () => {
     const component = mount(modal);
     const openButton = component.find('#open-ocr').at(0);
     openButton.simulate('click');

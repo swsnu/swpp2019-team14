@@ -3,7 +3,7 @@ booksbridge_env/
 venv/
 
 ./book/migrations/
-sapiens*
+sapiens_*
 messi*
 google_key.json
 
