@@ -11,7 +11,9 @@ const ProfileSummary = props => {
   if (!userload && props.user) {
     userload = true;
     user = props.user;
-    profile_photo = user.profile_photo;
+    if (profile_user.profile_photo.startsWith('http'))
+      profile_photo = profile_user.profile_photo;
+    else profile_photo = '/media/' + profile_user.profile_photo;
   }
 
   return (
