@@ -6,7 +6,7 @@ from imagekit.processors import ResizeToFill
 from django.conf import settings
 
 def profile_pic_path(instance, filename): 
-    return f'resources/image/profile/{instance.user.username}.jpg'
+    return f'{instance.user.username}.jpg'
 
 
 class Profile(models.Model):
