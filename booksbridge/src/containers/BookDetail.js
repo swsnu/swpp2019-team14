@@ -70,10 +70,7 @@ class BookDetail extends Component {
             <Icon name="pencil" />
             리뷰 작성하기
           </Button>
-          <SelectLibraryModal
-            libraries={this.props.libraries}
-            book={this.props.currentBook}
-          />
+          <SelectLibraryModal book={this.props.currentBook} />
         </div>
         <div className="tab">
           <BookTabs
@@ -103,7 +100,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
     onLoadArticles: isbn => dispatch(actionCreators.getArticlesByBookId(isbn)),
-    onLoadLibrary: () => dispatch(actionCreators.getLibraries()),
   };
 };
 

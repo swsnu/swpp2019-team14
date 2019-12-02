@@ -14,6 +14,10 @@ class SelectLibraryModal extends Component {
     };
   }
 
+  componentDidMount = () => {
+    this.props.onLoadLibrary();
+  };
+
   open = () => this.setState({ open: true });
   close = () => this.setState({ open: false });
 
@@ -35,8 +39,6 @@ class SelectLibraryModal extends Component {
   };
 
   render() {
-    if (this.props.libraries.length == 0) this.props.onLoadLibrary();
-
     const { open } = this.state;
     const button = (
       <Button icon labelPosition="left">
