@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { Form, TextArea, Icon } from 'semantic-ui-react';
 import Alert from 'react-bootstrap/Alert';
 import * as actionCreators from '../../store/actions/actionCreators';
@@ -118,7 +119,9 @@ class UserInfo extends Component {
     if (this.props.logged_in_user.id === this.props.profile_user.id)
       follow_button = null;
 
-    profile_photo = '/media/' + profile_user.profile_photo;
+    if (profile_user.profile_photo.startsWith('http'))
+      profile_photo = profile_user.profile_photo;
+    else profile_photo = '/media/' + profile_user.profile_photo;
     let edit_button;
     if (!this.state.onEdit) {
       edit_button = (
