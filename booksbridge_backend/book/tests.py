@@ -7,7 +7,18 @@ import json
 from unittest.mock import MagicMock, patch
 from .views import run_text_detection
 
+
+
 class BookTestCase(TestCase):
+
+    def setUp(self):
+        book1 = Book(isbn='1', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
+        book1.save()
+        book2 = Book(isbn='2', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
+        book2.save()
+        book3 = Book(isbn='3', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
+        book3.save()
+    
     def test_csrf(self):
         client = Client(enforce_csrf_checks=True)
         response = client.post('/api/user/',
@@ -643,16 +654,6 @@ class BookTestCase(TestCase):
                                }),
                                content_type='application/json')
 
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
-                   content_type='application/json')
-        
-        client.get('/api/book/' + parse.quote('C programming') + '/1/',
-                   content_type='application/json')
-
         # GET
         response = client.get('/api/curation/',
                                content_type='application/json')
@@ -674,7 +675,7 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       {'isbn': 9781292101767, 'content':'nonexistingindb'},
+                                       {'isbn': 4, 'content':'nonexistingindb'},
                                    ],
                                }),
                                content_type='application/json')
@@ -686,13 +687,12 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       {'isbn': 9780393912470, 'content':'test_content1'},
-                                       {'isbn': 9780140447934, 'content':'test_content2'},
-                                       {'isbn': 9780131103627, 'content':'test_content3'},
+                                       {'isbn': 1, 'content':'test_content1'},
+                                       {'isbn': 2, 'content':'test_content2'},
+                                       {'isbn': 3, 'content':'test_content3'},
                                    ],
                                }),
                                content_type='application/json')
-
         self.assertEqual(response.status_code, 201)
 
 
