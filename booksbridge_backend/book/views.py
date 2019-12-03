@@ -13,6 +13,7 @@ from django.db import transaction
 import io, os
 from django.core.files.storage import FileSystemStorage
 
+
 def signup(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
