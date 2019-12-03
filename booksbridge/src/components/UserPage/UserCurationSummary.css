@@ -1,0 +1,48 @@
+.UserCurationSummary {
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px 20px 10px;
+    border-radius: 0.5rem;
+    box-shadow: 0.3px 0.3px 5px 0px rgb(169, 169, 169);
+    color: black !important;
+    text-align: left;
+  }
+  .BookTitle {
+    font-size: 0.85714286em;
+    margin-bottom: 5px;
+    color: rgb(72, 72, 72);
+  }
+  .CurationTitle {
+    font-family: 'NanumSquare', sans-serif;
+    color: black !important;
+    font-weight: 900;
+  }
+  .CurationContent {
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 0.85714286em;
+    padding-top: 0px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    height: 28px;
+    line-height: 1.2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  @media only screen and (max-width: 600px) {
+    .AuthorProfile {
+      padding-left: 3%;
+    }
+    .ReviewDateInfo {
+      padding-right: 3%;
+    }
+    .ReviewTitleStyle {
+      padding-left: 0%;
+      padding-right: 0%;
+    }
+    .ReviewContainer {
+      padding-left: 0%;
+      padding-right: 0%;
+    }
+  }
+  
