@@ -49,6 +49,33 @@ const stubInitialState = {
       is_phrase: true,
     },
   ],
+  curationsByUserID: [
+    {
+      id: 1,
+      author: {
+        id: 2,
+        username: 'TEST_USER',
+        profile_photo: '',
+        nickname: 'TEST_USER',
+      },
+      books: [
+        {
+          book: {
+            title: 'TEST_TITLE',
+          },
+        },
+        {
+          book: {
+            title: 'TEST_TITLE2',
+          },
+        },
+      ],
+      title: 'TEST_TITLE',
+      content: 'TEST_CONTENT',
+      date: 'TEST_DATE',
+      likes: 1,
+    },
+  ],
   length: 6,
 };
 
@@ -93,6 +120,9 @@ describe('<UserPage />', () => {
   it('should pagination', () => {
     const component = mount(userpage);
     const wrapper = component.find('.UserPage');
-    wrapper.find('PaginationItem[content=2]').simulate('click');
+    wrapper
+      .find('PaginationItem[content=2]')
+      .at(0)
+      .simulate('click');
   });
 });
