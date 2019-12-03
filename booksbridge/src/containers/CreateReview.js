@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Popup, Button, Form, TextArea } from 'semantic-ui-react';
+import { Popup, Button, Form, TextArea, Confirm } from 'semantic-ui-react';
 
 import Header from '../components/Header';
 import OcrModal from '../components/OcrModal/OcrModal';
@@ -16,6 +16,7 @@ class CreateReview extends Component {
     title: '',
     content: '',
     type: 'long-review',
+    confirm: false,
   };
 
   onClickCreateButton = () => {
@@ -54,6 +55,9 @@ class CreateReview extends Component {
   radioHandler = event => {
     this.setState({ type: event.target.value });
   };
+
+  confirm_open = () => this.setState({ ...this.state, confirm: true });
+  confirm_close = () => this.setState({ ...this.state, confirm: false });
 
   render() {
     const book = this.props.selectedBook ? (
@@ -180,7 +184,17 @@ class CreateReview extends Component {
                 className="SubmitButton"
                 id="create-review"
                 content="Submit"
-                onClick={() => this.onClickCreateButton()}
+                onClick={this.confirm_open}
+              />
+              <Confirm
+                className="CreateReviewConfirm"
+                open={this.state.confirm}
+                onCancel={this.confirm_close}
+                onConfirm={() => this.onClickCreateButton()}
+                size={'large'}
+                cancelButton="취소"
+                confirmButton="작성"
+                content="이대로 리뷰를 올리시겠습니까? 올린 후, 리뷰의 종류(Long Review/Short Reivew/Phrase)는 수정할 수 없습니다."
               />
             </Form>
           </div>

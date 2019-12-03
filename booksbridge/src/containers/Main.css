@@ -10,6 +10,9 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
+.createCurationLogo {
+  margin-bottom: 20px;
+}
 @media only screen and (max-width: 600px) {
   .articles {
     width: 100%;
