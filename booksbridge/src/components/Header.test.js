@@ -46,9 +46,7 @@ describe('<Header/>', () => {
     wrapper.simulate('change', { target: { value: input } });
     component.find('input').simulate('keypress', { key: 'Spacebar' });
     component.find('input').simulate('keypress', { key: 'Enter' });
-    expect(spyHistoryPush).toHaveBeenCalledWith(
-      '/result/search=TEST_INPUT/book/1',
-    );
+    expect(spyHistoryPush).toHaveBeenCalledWith('/result/search=TEST_INPUT/1');
   });
 
   it(`'should redirect to search result page(click)`, () => {
@@ -65,9 +63,7 @@ describe('<Header/>', () => {
       .find('#search-button')
       .at(0)
       .simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith(
-      '/result/search=TEST_INPUT/book/1',
-    );
+    expect(spyHistoryPush).toHaveBeenCalledWith('/result/search=TEST_INPUT/1');
   });
 
   it(`'should redirect to my page`, () => {
