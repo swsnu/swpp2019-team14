@@ -23,6 +23,8 @@ urlpatterns = [
     path('curation/<curation_id>/',
          views.specific_curation, name='specific_curation'),
     path('curation/page/<page>/', views.curation_page, name='curation_page'),
+    path('curation/username=<username>/<page>/', views.search_curation_by_author,
+         name='search_curation_by_author'),
     path('library/<library_id>/', views.library, name='library'),
     path('comment/curation/', views.curation_comment, name='curation_comment'),
     path('library/', views.library, name='library'),

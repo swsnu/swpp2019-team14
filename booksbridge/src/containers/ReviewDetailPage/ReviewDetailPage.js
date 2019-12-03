@@ -32,7 +32,6 @@ class ReviewDetailPage extends Component {
 
   render() {
     this.props.onGetLikeArticle(this.props.match.params.review_id);
-    console.log('DEGUB ', this.props.currentArticle);
 
     if (!this.props.currentArticle) {
       return <div className="loading">LOADING...</div>;

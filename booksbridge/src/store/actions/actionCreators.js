@@ -264,8 +264,8 @@ export const getSearchedCurations = keyword => dispatch =>
     }),
   );
 // export const GET_CURATIONS_BY_USERID = 'GET_CURATIONS_BY_USERID'
-export const getCurationsByUserId = id => dispatch =>
-  axios.get(`/api/curation/?userID=${id}/`).then(res =>
+export const getCurationsByUserId = (page, username) => dispatch =>
+  axios.get(`/api/curation/username=${username}/${page}/`).then(res =>
     dispatch({
       type: actionTypes.GET_CURATIONS_BY_USERID,
       curations: res.data,

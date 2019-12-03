@@ -487,6 +487,24 @@ def search_curation(request, keyword):
                     }
                     result_users.append(user_dict)
         return JsonResponse(result_users, safe=False)
+
+def search_curation_by_author(request, username, page):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    if request.method == 'GET':
+        author = User.objects.get(username=username)
+        curation_list = Curation.objects.filter(author=author).order_by('-id')
+        paginator = Paginator(curation_list, 5)
+        results = paginator.get_page(page)
+        curations=list()
+        for curation in results:
+            curation_dict = make_curation_dict(curation)
+            curations.append(curation_dict) 
+        response_dict = {'curations':curations, 'length':curation_list.count()}
+        return JsonResponse(response_dict)
+    else:
+        return HttpResponseNotAllowed(['GET'])
     
 def make_curation_dict(curation):
     # TODO: comments

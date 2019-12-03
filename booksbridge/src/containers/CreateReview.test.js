@@ -71,7 +71,8 @@ describe('<CreateReview/>', () => {
   });
   it('should post long review', () => {
     const title = 'TITLE';
-    const content = 'CONTENT';
+    const content =
+      'CONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENTCONTENT';
     const component = mount(createReview);
     const title_space = component.find('#review-title').at(0);
     const content_space = component.find('#review-content').at(0);
@@ -79,10 +80,15 @@ describe('<CreateReview/>', () => {
     content_space.simulate('change', { target: { value: content } });
     const submitbutton = component.find('.SubmitButton').at(0);
     submitbutton.simulate('click');
-    expect(spyPostArticle).toHaveBeenCalledTimes(0);
+    //console.log(component.debug());
     const instance = component.find(CreateReview.WrappedComponent).instance();
     expect(instance.state.title).toEqual(title);
     expect(instance.state.content).toEqual(content);
+    component
+      .find('Button[content="작성"]')
+      .at(0)
+      .simulate('click');
+    expect(spyPostArticle).toHaveBeenCalledTimes(1);
   });
   it('should post short review', () => {
     const content = 'content';
@@ -93,6 +99,10 @@ describe('<CreateReview/>', () => {
     content_space.simulate('change', { target: { value: content } });
     const submitButton = component.find('.SubmitButton').at(0);
     submitButton.simulate('click');
+    component
+      .find('Button[content="작성"]')
+      .at(0)
+      .simulate('click');
     expect(spyPostArticle).toHaveBeenCalledTimes(1);
   });
   it('should post phrase review', () => {
@@ -104,6 +114,10 @@ describe('<CreateReview/>', () => {
     content_space.simulate('change', { target: { value: content } });
     const submitButton = component.find('.SubmitButton').at(0);
     submitButton.simulate('click');
+    component
+      .find('Button[content="작성"]')
+      .at(0)
+      .simulate('click');
     expect(spyPostArticle).toHaveBeenCalledTimes(1);
   });
   it('should not create review with no selected book', () => {

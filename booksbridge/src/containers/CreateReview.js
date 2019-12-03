@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Button, Form, TextArea } from 'semantic-ui-react';
+import { Popup, Button, Form, TextArea, Confirm } from 'semantic-ui-react';
 
 import Header from '../components/Header';
 import OcrModal from '../components/OcrModal/OcrModal';
@@ -16,6 +16,7 @@ class CreateReview extends Component {
     title: '',
     content: '',
     type: 'long-review',
+    confirm: false,
   };
 
   onClickCreateButton = () => {
@@ -55,6 +56,9 @@ class CreateReview extends Component {
     this.setState({ type: event.target.value });
   };
 
+  confirm_open = () => this.setState({ ...this.state, confirm: true });
+  confirm_close = () => this.setState({ ...this.state, confirm: false });
+
   render() {
     const book = this.props.selectedBook ? (
       <BookResultSummary
@@ -64,57 +68,79 @@ class CreateReview extends Component {
         publisher={this.props.selectedBook.publisher}
         isbn={this.props.selectedBook.isbn}
         direct={false}
-        click={() => { }}
+        click={() => {}}
       />
     ) : null;
+
+    const LongReviewCheckbox = (
+      <div className="field">
+        <div className="ui radio checkbox">
+          <input
+            type="radio"
+            id="long-review-radio"
+            type="radio"
+            name="radioGroup"
+            value="long-review"
+            checked={this.state.type === 'long-review'}
+            onChange={this.radioHandler}
+          />
+          <label>Long Review</label>
+        </div>
+      </div>
+    );
+
+    const ShortReviewCheckbox = (
+      <div className="field">
+        <div className="ui radio checkbox">
+          <input
+            type="radio"
+            id="short-review-radio"
+            type="radio"
+            name="radioGroup"
+            value="short-review"
+            checked={this.state.type === 'short-review'}
+            onChange={this.radioHandler}
+          />
+          <label>Short Review</label>
+        </div>
+      </div>
+    );
+
+    const PhraseCheckbox = (
+      <div className="field">
+        <div className="ui radio checkbox">
+          <input
+            type="radio"
+            id="phrase-radio"
+            type="radio"
+            name="radioGroup"
+            value="phrase"
+            checked={this.state.type === 'phrase'}
+            onChange={this.radioHandler}
+          />
+          <label>Phrase</label>
+        </div>
+      </div>
+    );
+
     return (
       <div className="CreateReview">
         <Header />
         <div className="ReviewTypeCheckbox">
           <div className="ui form">
             <div className="inline fields">
-              <div className="field">
-                <div className="ui radio checkbox">
-                  <input
-                    type="radio"
-                    id="long-review-radio"
-                    type="radio"
-                    name="radioGroup"
-                    value="long-review"
-                    checked={this.state.type === 'long-review'}
-                    onChange={this.radioHandler}
-                  />
-                  <label>Long Review</label>
-                </div>
-              </div>
-              <div className="field">
-                <div className="ui radio checkbox">
-                  <input
-                    type="radio"
-                    id="short-review-radio"
-                    type="radio"
-                    name="radioGroup"
-                    value="short-review"
-                    checked={this.state.type === 'short-review'}
-                    onChange={this.radioHandler}
-                  />
-                  <label>Short Review</label>
-                </div>
-              </div>
-              <div className="field">
-                <div className="ui radio checkbox">
-                  <input
-                    type="radio"
-                    id="phrase-radio"
-                    type="radio"
-                    name="radioGroup"
-                    value="phrase"
-                    checked={this.state.type === 'phrase'}
-                    onChange={this.radioHandler}
-                  />
-                  <label>Phrase</label>
-                </div>
-              </div>
+              <Popup
+                content="제목이 있고, 문단을 갖춘 긴 리뷰를 작성합니다. 긴 리뷰는 140자를 넘어야 합니다."
+                trigger={LongReviewCheckbox}
+              />
+              <Popup
+                content="140자 미만의 짧은 리뷰를 작성할 수 있습니다."
+                trigger={ShortReviewCheckbox}
+              />
+              <Popup
+                content="인상 깊었던 책의 구절, 문장 혹은 문단을 모두와 공유해보세요."
+                trigger={PhraseCheckbox}
+              />
             </div>
           </div>
         </div>
@@ -158,7 +184,17 @@ class CreateReview extends Component {
                 className="SubmitButton"
                 id="create-review"
                 content="Submit"
-                onClick={() => this.onClickCreateButton()}
+                onClick={this.confirm_open}
+              />
+              <Confirm
+                className="CreateReviewConfirm"
+                open={this.state.confirm}
+                onCancel={this.confirm_close}
+                onConfirm={() => this.onClickCreateButton()}
+                size={'large'}
+                cancelButton="취소"
+                confirmButton="작성"
+                content="이대로 리뷰를 올리시겠습니까? 올린 후, 리뷰의 종류(Long Review/Short Reivew/Phrase)는 수정할 수 없습니다."
               />
             </Form>
           </div>
