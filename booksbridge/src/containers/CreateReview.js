@@ -64,13 +64,12 @@ class CreateReview extends Component {
         publisher={this.props.selectedBook.publisher}
         isbn={this.props.selectedBook.isbn}
         direct={false}
-        click={() => {}}
+        click={() => { }}
       />
     ) : null;
     return (
       <div className="CreateReview">
         <Header />
-        <h1>Create Review</h1>
         <div className="ReviewTypeCheckbox">
           <div className="ui form">
             <div className="inline fields">
@@ -127,7 +126,7 @@ class CreateReview extends Component {
             <Form className="ui form">
               {this.state.type === 'long-review' ? (
                 <div className="field">
-                  <label className="FormLabel">Title</label>
+                  <label className="FormLabel">제목</label>
                   <input
                     id="review-title"
                     type="text"
@@ -141,7 +140,7 @@ class CreateReview extends Component {
               ) : null}
               <br />
               <div className="field">
-                <label className="FormLabel">Content</label>
+                <label className="FormLabel">내용</label>
                 <TextArea
                   id="review-content"
                   name="content"
