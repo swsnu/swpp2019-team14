@@ -46,7 +46,6 @@ class SelectLibraryModal extends Component {
         라이브러리에 추가하기
       </Button>
     );
-    // TODO: get username string by using loggedin_user state, make some libraries to test.
     const libraries_html = this.props.libraries.map((library, index) => {
       let images_html = library.books.slice(0, 5).map((book, _index) => {
         return (

@@ -5,7 +5,6 @@ import { Card, Image } from 'semantic-ui-react';
 
 import Header from '../../components/Header';
 import AddLibraryModal from '../../components/Library/AddLibraryModal';
-import EditLibraryModal from '../../components/Library/EditLibraryModal';
 import ConfirmDelete from '../../components/Library/ConfirmDelete';
 
 import './Library.css';
@@ -52,10 +51,11 @@ class Library extends Component {
                 </Card.Header>
                 <div className="CardButtons">
                   <div className="CardButton">
-                    <EditLibraryModal
+                    <AddLibraryModal
                       id={library_dict.id}
                       title={library_dict.title}
                       books={library_dict.books}
+                      mode={'EDIT'}
                     />
                   </div>
                   <div className="CardButton">
@@ -83,7 +83,7 @@ class Library extends Component {
           <div className="LibraryContainer">
             <div className="LibraryContainerHeader">
               <div className="LibraryContainerHeaderWrapper">
-                <AddLibraryModal />
+                <AddLibraryModal mode={'ADD'} />
               </div>
             </div>
             <div className="LibraryContainerContent">{libraries_html}</div>
@@ -98,6 +98,7 @@ const mapStateToProps = state => {
   return {
     logged_in_user: state.user.logged_in_user,
     libraries: state.library.libraries,
+    selectedBook: state.book.selectedBook,
   };
 };
 

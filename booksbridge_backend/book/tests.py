@@ -37,7 +37,8 @@ class BookTestCase(TestCase):
                                json.dumps({
                                    'email': 'jsmith@snu.ac.kr',
                                    'username': 'John Smith',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'nickname': 'Anonymous',
                                }),
                                content_type='application/json',
                                HTTP_X_CSRFTOKEN=csrftoken)
@@ -62,7 +63,8 @@ class BookTestCase(TestCase):
                                json.dumps({
                                    'email': 'jsmith@snu.ac.kr',
                                    'username': 'John Smith',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'nickname': 'Anonymous',
                                }),
                                content_type='application/json')
         self.assertEqual(response.status_code, 201)
