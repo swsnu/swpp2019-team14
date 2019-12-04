@@ -11,6 +11,7 @@ class Signup extends Component {
     email: '',
     password: '',
     username: '',
+    nickname: '',
   };
 
   componentDidMount() {}
@@ -24,6 +25,7 @@ class Signup extends Component {
       email: this.state.email,
       username: this.state.username,
       password: this.state.password,
+      nickname: this.state.nickname,
     };
     e.preventDefault();
     this.props.onAddUser(user);
@@ -31,11 +33,11 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="login_page">
+      <div className="signup_page">
         <Form className="login_form" onSubmit={this.onClickSignUpButton}>
-          <h1>SIGN UP</h1>
+          <p className="SignUpLabel">회원가입</p>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>이메일 주소</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
@@ -44,11 +46,11 @@ class Signup extends Component {
               required
             />
             <Form.Control.Feedback type="invalid">
-              Please provide a valid email.
+              올바른 이메일 주소가 아닙니다.
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="validationFormUsername">
-            <Form.Label>Username</Form.Label>
+            <Form.Label>아이디</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter username"
@@ -60,8 +62,24 @@ class Signup extends Component {
               required
             />
           </Form.Group>
+          <Form.Group controlId="formBasicNickname">
+            <Form.Label>닉네임</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter nickname"
+              value={this.state.nickname}
+              onChange={event =>
+                this.setState({ nickname: event.target.value })
+              }
+              required
+            />
+            <Form.Text className="text-muted">
+              닉네임은 8글자를 넘을 수 없으며, 특수문자와 공백이 들어갈 수
+              없습니다.
+            </Form.Text>
+          </Form.Group>
           <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>비밀번호</Form.Label>
             <Form.Control
               type="password"
               placeholder="Enter password"
@@ -72,9 +90,11 @@ class Signup extends Component {
               required
             />
           </Form.Group>
-          <Button variant="primary" type="submit" id="login-button">
-            Confirm
-          </Button>
+          <div className="SignUpFooter">
+            <Button variant="primary" type="submit" id="login-button">
+              회원가입
+            </Button>
+          </div>
         </Form>
       </div>
     );

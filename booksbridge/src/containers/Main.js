@@ -48,13 +48,18 @@ class Main extends React.Component {
             <img
               id="createReviewLogo"
               className="createReviewLogo"
-              src="/images/reviewcreate.jpg"
+              src="/images/create-review-image.jpg"
               width="600"
             />
           </a>
           <br />
           <a id="curation-link" href={'/curation'}>
-            Curation page 이동
+            <img
+              id="createCurationLogo"
+              className="createCurationLogo"
+              src="/images/create-curation-image.jpg"
+              width="600"
+            />
           </a>
           <InfiniteScroll
             className="scroll"

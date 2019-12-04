@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import UserInfo from '../components/UserPage/UserInfo';
 import ContainerHeader from '../components/ContainerHeader/ContainerHeader';
 import UserReviewSummary from '../components/UserPage/UserReviewSummary';
+import UserCurationSummary from '../components/UserPage/UserCurationSummary';
 import { Pagination } from 'semantic-ui-react';
 
 import * as actionCreators from '../store/actions/actionCreators';
@@ -14,14 +15,23 @@ import './UserPage.css';
 class UserPage extends Component {
   constructor(params) {
     super(params);
-    this.state = { activeReviewPage: 1 };
+    this.state = { activeReviewPage: 1, activeCurationPage: 1 };
     this.props.onLoadUser(this.props.match.params.username);
     this.props.onLoadUserReviews(1, this.props.match.params.username);
+    this.props.onLoadUserCurations(1, this.props.match.params.username);
   }
 
-  handlePaginationChange = (e, { activePage }) => {
-    this.setState({ activePage });
+  handleReviewPaginationChange = (e, { activePage }) => {
+    this.setState({ ...this.state, activeReviewPage: activePage });
     this.props.onLoadUserReviews(activePage, this.props.match.params.username);
+  };
+
+  handleCurationPaginationChange = (e, { activePage }) => {
+    this.setState({ ...this.state, activeCurationPage: activePage });
+    this.props.onLoadUserCurations(
+      activePage,
+      this.props.match.params.username,
+    );
   };
 
   render() {
@@ -41,10 +51,15 @@ class UserPage extends Component {
       this.props.onGetFollows(this.props.profile_user.id);
     }
 
-    let final =
-      this.props.length % 5 === 0
-        ? this.props.length / 5
-        : parseInt(this.props.length / 5) + 1;
+    let ReviewFinal =
+      this.props.ReviewLength % 5 === 0
+        ? this.props.ReviewLength / 5
+        : parseInt(this.props.ReviewLength / 5) + 1;
+
+    let CurationFinal =
+      this.props.CurationLength % 5 === 0
+        ? this.props.CurationLength / 5
+        : parseInt(this.props.CurationLength / 5) + 1;
 
     const articles = this.props.articles_by_userID.map((article, index) => {
       return (
@@ -64,6 +79,20 @@ class UserPage extends Component {
       );
     });
 
+    const curations = this.props.curations_by_userID.map((curation, index) => {
+      return (
+        <div key={index}>
+          <UserCurationSummary
+            title={curation.title}
+            books={curation.books}
+            content={curation.content}
+            date={curation.date}
+            id={curation.id}
+          />
+        </div>
+      );
+    });
+
     return (
       <div className="UserPage">
         <Header />
@@ -76,20 +105,32 @@ class UserPage extends Component {
         <div className="ArmisticeLine"></div>
         <div className="Tab">
           <div className="UserReviewList">
-            <ContainerHeader title="나의 리뷰" />
+            <ContainerHeader title="작성한 리뷰" />
             {articles}
             <Pagination
               defaultActivePage={1}
-              activePage={this.state.activePage}
-              onPageChange={this.handlePaginationChange}
+              activePage={this.state.activeReviewPage}
+              onPageChange={this.handleReviewPaginationChange}
               firstItem={null}
               lastItem={null}
               pointing
               secondary
-              totalPages={final}
+              totalPages={ReviewFinal}
             />
-            <ContainerHeader title="나의 큐레이션" />
-            <ContainerHeader title="좋아요를 남긴 게시글 목록" />
+            <ContainerHeader title="작성한 큐레이션" />
+            {curations}
+            <Pagination
+              defaultActivePage={1}
+              activePage={this.state.activeCurationPage}
+              onPageChange={this.handleCurationPaginationChange}
+              firstItem={null}
+              lastItem={null}
+              pointing
+              secondary
+              totalPages={CurationFinal}
+            />
+            <ContainerHeader title="좋아하는 책" />
+            <ContainerHeader title="좋아하는 게시글" />
           </div>
         </div>
       </div>
@@ -101,7 +142,9 @@ const mapStateToProps = state => ({
   logged_in_user: state.user.logged_in_user,
   profile_user: state.user.profile_user,
   articles_by_userID: state.article.articlesByUserID,
-  length: state.article.length,
+  curations_by_userID: state.curation.curationsByUserID,
+  ReviewLength: state.article.length,
+  CurationLength: state.curation.length,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -111,6 +154,9 @@ const mapDispatchToProps = dispatch => {
     },
     onLoadUserReviews: (page, username) => {
       dispatch(actionCreators.getArticlesByUserId(page, username));
+    },
+    onLoadUserCurations: (page, username) => {
+      dispatch(actionCreators.getCurationsByUserId(page, username));
     },
     onGetFollows: profile_user_id =>
       dispatch(actionCreators.getFollows(profile_user_id)),

@@ -43,7 +43,12 @@ class CurationMain extends React.Component {
         <Header />
         <div className="articles">
           <a href="/curation/create">
-            <h1>큐레이션 만들러 가기 ㅎㅎ</h1>
+            <img
+              id="createReviewLogo"
+              className="createReviewLogo"
+              src="/images/create-curation-image2.jpg"
+              width="600"
+            />
           </a>
           <InfiniteScroll
             className="scroll"

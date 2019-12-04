@@ -1,7 +1,5 @@
 import React from 'react';
 import './UserReviewSummary.css';
-import Alert from 'react-bootstrap/Alert';
-import Time from '../Time';
 import { Label } from 'semantic-ui-react';
 
 const UserReviewSummary = props => {

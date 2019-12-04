@@ -7,20 +7,20 @@
 .btn-outline-secondary:hover {
   color: #fff;
   background-color: #b6b6b6 !important;
-  border-color: white !important;
+  border-color: #b6b6b6 !important;
 }
 
-.btn-outline-secondary {
-  color: white !important;
-  background-color: #989898 !important;
-  border-color: white !important;
+#search-button {
+  color: white;
+  background-color: #000000;
+  border-color: #000000; 
 }
 
 .MainHeader {
-  background-color: rgb(208, 235, 228);
   width: 100%;
   height: 80px;
   display: flex;
+  border-color: black;
 }
 
 .logo {
@@ -46,7 +46,6 @@
 
 .Profile {
   height: 80px;
-  background-color: yellow;
 }
 
 .profileName {

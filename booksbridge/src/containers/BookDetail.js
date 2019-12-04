@@ -64,7 +64,7 @@ class BookDetail extends Component {
           <Button
             id="create_review_button"
             icon
-            color="blue"
+            color="black"
             onClick={() => this.onCreateReview()}
           >
             <Icon name="pencil" />

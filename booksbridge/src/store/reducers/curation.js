@@ -5,6 +5,8 @@ const initialState = {
   curations: [],
   selectedCuration: null,
   likes: null,
+  curationsByUserID: [],
+  length: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -52,7 +54,11 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_SEARCHED_CURATIONS:
       return {};
     case actionTypes.GET_CURATIONS_BY_USERID:
-      return {};
+      return {
+        ...state,
+        curationsByUserID: action.curations.curations,
+        length: action.curations.length,
+      };
   }
   return state;
 };
