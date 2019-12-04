@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Sticky } from 'semantic-ui-react';
+import { Popup, Button, Modal, Sticky } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/actionCreators';
 import ChooseBookModal from './ChooseBookModal/ChooseBookModal';
 
@@ -27,12 +27,14 @@ class ReviewChooseBookModal extends Component {
   };
 
   render() {
+    const ChooseBookButton = (
+      <Button className="select-book-button" onClick={this.openHandler}>
+        책 선택하기
+      </Button>
+    );
     return (
       <div>
-        <Button className="select-book-button" onClick={this.openHandler}>
-          Select Book
-        </Button>
-
+        <Popup trigger={ChooseBookButton} content="리뷰할 책을 선택합니다." />
         <Modal className="choose-book-modal" open={this.state.open}>
           <ChooseBookModal
             selected={() => {

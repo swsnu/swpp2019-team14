@@ -545,6 +545,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubCuration,
         };
         resolve(result);
       });

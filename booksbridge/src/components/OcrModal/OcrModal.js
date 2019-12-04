@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, TextArea } from 'semantic-ui-react';
+import { Popup, Button, Modal, TextArea } from 'semantic-ui-react';
 import './OcrModal.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as actionCreators from '../../store/actions/actionCreators';
@@ -65,19 +65,27 @@ class OcrModal extends Component {
 
     return (
       <div className="ocr-modal">
-        <Button
-          onClick={() =>
-            this.setState({
-              files: [],
-              open: true,
-              content: '',
-              imageShow: false,
-            })
+        <Popup
+          wide={500}
+          position={'top center'}
+          content="사진 안의 문자를 추출합니다. 책 안에 인용하고 싶은 문장이 있을 경우, 직접 타이핑하지 말고 이 기능을 활용해 보세요."
+          trigger={
+            <Button
+              onClick={() =>
+                this.setState({
+                  files: [],
+                  open: true,
+                  content: '',
+                  imageShow: false,
+                })
+              }
+              id="open-ocr"
+            >
+              Quote
+            </Button>
           }
-          id="open-ocr"
-        >
-          Quote
-        </Button>
+        />
+
         <Modal open={this.state.open}>
           <Modal.Content>
             <div id="choose-file">
