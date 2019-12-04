@@ -20,16 +20,18 @@ class CreateCuration extends Component {
   };
 
   onClickCreateButton = () => {
-    if (this.state.title != '' && this.state.content != '') {
-      this.props.onPostCuration({
-        title: this.state.title,
-        content: this.state.content,
-        isbn_content_pairs: this.state.bookInCuration,
-      });
-      window.alert('Success!');
-    } else {
-      window.alert('Title or content is empty.');
-    }
+    if (this.state.selectedBooks) {
+      if (this.state.title != '' && this.state.content != '') {
+        this.props.onPostCuration({
+          title: this.state.title,
+          content: this.state.content,
+          isbn_content_pairs: this.state.bookInCuration,
+        });
+        window.alert('Success!');
+      } else {
+        window.alert('Title or content is empty.');
+      }
+    } else window.alert('Select books');
   };
 
   render() {

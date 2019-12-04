@@ -8,9 +8,9 @@ const SearchUser = props => {
   const text = user.profile_text;
   const date_joined = user.date_joined;
   let profile_photo = '';
-  if (user.profile_photo.startsWith('resources/image/profile'))
-    profile_photo = '/static/' + user.profile_photo.substr(24);
-  else profile_photo = user.profile_photo;
+
+  if (user.profile_photo.startsWith('http')) profile_photo = user.profile_photo;
+  else profile_photo = '/media/' + user.profile_photo;
 
   return (
     <a className="searched_user" href={'/page/' + username}>

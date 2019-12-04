@@ -41,11 +41,9 @@ class CommentUnit extends Component {
 
   render() {
     let profile_photo;
-    if (this.props.author.profile_photo.startsWith('resources/image/profile')) {
-      profile_photo = '/static/' + this.props.author.profile_photo.substr(24);
-    } else {
+    if (this.props.author.profile_photo.startsWith('http'))
       profile_photo = this.props.author.profile_photo;
-    }
+    else profile_photo = '/media/' + this.props.author.profile_photo;
 
     let replies;
     if (this.props.replies.length) {
