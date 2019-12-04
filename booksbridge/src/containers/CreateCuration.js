@@ -20,15 +20,16 @@ class CreateCuration extends Component {
   };
 
   onClickCreateButton = () => {
-    if (this.state.title != '' && this.state.content != '') {
+    if (this.state.bookInCuration.length === 0) {
+      window.alert('책을 한 권 이상 선택해야 합니다.');
+    } else if (this.state.title === '' || this.state.content === '') {
+      window.alert('제목과 내용을 반드시 입력해야 합니다.');
+    } else {
       this.props.onPostCuration({
         title: this.state.title,
         content: this.state.content,
         isbn_content_pairs: this.state.bookInCuration,
       });
-      window.alert('Success!');
-    } else {
-      window.alert('Title or content is empty.');
     }
   };
 
@@ -57,7 +58,7 @@ class CreateCuration extends Component {
           <div className="ReviewCreateForm">
             <Form className="ui form">
               <div className="field">
-                <label className="FormLabel">Title</label>
+                <label className="FormLabel">큐레이션 제목</label>
                 <input
                   id="curation-title"
                   type="text"
@@ -70,7 +71,7 @@ class CreateCuration extends Component {
               </div>
               <br />
               <div className="field">
-                <label className="FormLabel">Content</label>
+                <label className="FormLabel">큐레이션 설명</label>
                 <TextArea
                   id="curation-content"
                   name="content"
@@ -93,9 +94,10 @@ class CreateCuration extends Component {
                           isbn={book.isbn}
                           direct={false}
                           click={() => {}}
-                          size="small"
                         />
+                        <label className="FormLabel">이 책에 대한 코멘트</label>
                         <TextArea
+                          id="curation-book-content"
                           onChange={event => {
                             let value = event.target.value;
                             this.setState((state, props) => ({

@@ -65,7 +65,7 @@ class Comments extends Component {
             <div className="ReplyButton">
               <Button
                 className="ReplyButton"
-                content="Add Reply"
+                content="댓글 작성"
                 labelPosition="right"
                 icon="edit"
                 onClick={() => this.onClickPostComment()}

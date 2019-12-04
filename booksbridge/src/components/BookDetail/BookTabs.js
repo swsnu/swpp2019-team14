@@ -52,12 +52,12 @@ class BookTabs extends Component {
         render: () => <Tab.Pane>{contents}</Tab.Pane>,
       },
       {
-        menuItem: 'Short Review',
-        render: () => <Tab.Pane>{shortReviewList}</Tab.Pane>,
-      },
-      {
         menuItem: 'Long Review',
         render: () => <Tab.Pane>{longReviewList}</Tab.Pane>,
+      },
+      {
+        menuItem: 'Short Review',
+        render: () => <Tab.Pane>{shortReviewList}</Tab.Pane>,
       },
       {
         menuItem: 'Phrase',

@@ -20,35 +20,24 @@ class CreateReview extends Component {
   };
 
   onClickCreateButton = () => {
-    if (!this.props.selectedBook) {
-      return;
-    }
     if (this.state.type === 'long-review') {
-      if (this.state.content.length < 140) {
-        window.alert('긴 리뷰는 140자 이상 작성해야 합니다.');
-      } else if (this.state.title != '' && this.state.content != '') {
-        this.props.onPostArticle({
-          isbn: this.props.selectedBook.isbn,
-          title: this.state.title,
-          content: this.state.content,
-          is_long: true,
-          is_short: false,
-          is_phrase: false,
-        });
-      } else {
-      }
+      this.props.onPostArticle({
+        isbn: this.props.selectedBook.isbn,
+        title: this.state.title,
+        content: this.state.content,
+        is_long: true,
+        is_short: false,
+        is_phrase: false,
+      });
     } else {
-      if (this.state.content != '') {
-        this.props.onPostArticle({
-          isbn: this.props.selectedBook.isbn,
-          title: '',
-          content: this.state.content,
-          is_long: false,
-          is_short: this.state.type === 'short-review',
-          is_phrase: this.state.type === 'phrase',
-        });
-      } else {
-      }
+      this.props.onPostArticle({
+        isbn: this.props.selectedBook.isbn,
+        title: '',
+        content: this.state.content,
+        is_long: false,
+        is_short: this.state.type === 'short-review',
+        is_phrase: this.state.type === 'phrase',
+      });
     }
   };
 
@@ -56,7 +45,26 @@ class CreateReview extends Component {
     this.setState({ type: event.target.value });
   };
 
-  confirm_open = () => this.setState({ ...this.state, confirm: true });
+  confirm_open = () => {
+    if (!this.props.selectedBook) {
+      window.alert('책을 반드시 선택해야 합니다.');
+      return;
+    } else if (this.state.type === 'long-review') {
+      if (this.state.title === '')
+        window.alert('제목을 반드시 입력해야 합니다.');
+      else if (this.state.content === '')
+        window.alert('내용을 반드시 작성해야 합니다.');
+      else if (this.state.content.length < 140) {
+        window.alert('긴 리뷰는 140자 이상 작성해야 합니다.');
+      } else {
+        this.setState({ ...this.state, confirm: true });
+      }
+    } else {
+      if (this.state.content === '')
+        window.alert('내용을 반드시 작성해야 합니다.');
+      else this.setState({ ...this.state, confirm: true });
+    }
+  };
   confirm_close = () => this.setState({ ...this.state, confirm: false });
 
   render() {
@@ -152,7 +160,7 @@ class CreateReview extends Component {
             <Form className="ui form">
               {this.state.type === 'long-review' ? (
                 <div className="field">
-                  <label className="FormLabel">제목</label>
+                  <label className="FormLabel">리뷰 제목</label>
                   <input
                     id="review-title"
                     type="text"
@@ -166,7 +174,7 @@ class CreateReview extends Component {
               ) : null}
               <br />
               <div className="field">
-                <label className="FormLabel">내용</label>
+                <label className="FormLabel">리뷰 내용</label>
                 <TextArea
                   id="review-content"
                   name="content"

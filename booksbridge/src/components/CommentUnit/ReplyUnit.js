@@ -7,10 +7,11 @@ import './ReplyUnit.css';
 const ReplyUnit = props => {
   let profile_photo;
 
-  if (props.author.profile_photo.startsWith('resources/image/profile'))
-    profile_photo = '/static/' + props.author.profile_photo.substr(24);
-  else profile_photo = props.author.profile_photo;
+  if (props.author.profile_photo.startsWith('http'))
+    profile_photo = props.author.profile_photo;
+  else profile_photo = '/media/' + props.author.profile_photo;
 
+  window.alert('Title or content is empty.');
   return (
     <div className="ReplyUnit">
       <Comment>
