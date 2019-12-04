@@ -566,6 +566,8 @@ def curation_page(request, page):
 
         curations = [] 
         for curation in requested_list:
+            deltatime = (datetime.now() - curation.date)
+            time_array = [deltatime.days//365, deltatime.days//30, deltatime.days, deltatime.seconds//3600, deltatime.seconds//60]
             books = []
             book_set= []
             for books_in_cur in curation.book_in_curation.all():
@@ -587,7 +589,7 @@ def curation_page(request, page):
                 'author': user_dict,
                 'title': curation.title,
                 'content': curation.content,
-                'date': curation.date,
+                'date': time_array,
             }
             curations.append(curation_dict)
         response_body = {'curations': curations, 'has_next': paginator.page(page).has_next()}
