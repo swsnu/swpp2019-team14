@@ -22,14 +22,14 @@ class CreateCuration extends Component {
   onClickCreateButton = () => {
     if (this.state.bookInCuration.length === 0) {
       window.alert('책을 한 권 이상 선택해야 합니다.');
-    } else if (this.state.title != '' && this.state.content != '') {
+    } else if (this.state.title === '' || this.state.content === '') {
+      window.alert('제목과 내용을 반드시 입력해야 합니다.');
+    } else {
       this.props.onPostCuration({
         title: this.state.title,
         content: this.state.content,
         isbn_content_pairs: this.state.bookInCuration,
       });
-    } else {
-      window.alert('제목과 내용을 반드시 입력해야 합니다.');
     }
   };
 
@@ -97,6 +97,7 @@ class CreateCuration extends Component {
                         />
                         <label className="FormLabel">이 책에 대한 코멘트</label>
                         <TextArea
+                          id="curation-book-content"
                           onChange={event => {
                             let value = event.target.value;
                             this.setState((state, props) => ({

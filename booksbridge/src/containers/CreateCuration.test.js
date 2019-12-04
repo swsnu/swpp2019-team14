@@ -19,6 +19,32 @@ const stubInitialState = {
     published_date: 'TEST_DATE',
     author_contents: 'TEST_AUTHOR_CONTENTS',
   },
+  selectedBooks: [
+    {
+      isbn: 1,
+      title: 'TEST_BOOK',
+      url: 'TEST_URL',
+      thumbnail: 'TEST_THUMBNAIL',
+      contents: 'TEST_CONTENTS',
+      authors: 'TEST_AUTHORS',
+      publisher: 'TEST_PUBLISHER',
+      published_date: 'TEST_DATE',
+      author_contents: 'TEST_AUTHOR_CONTENTS',
+    },
+  ],
+  bookInCuration: [
+    {
+      isbn: 1,
+      title: 'TEST_BOOK',
+      url: 'TEST_URL',
+      thumbnail: 'TEST_THUMBNAIL',
+      contents: 'TEST_CONTENTS',
+      authors: 'TEST_AUTHORS',
+      publisher: 'TEST_PUBLISHER',
+      published_date: 'TEST_DATE',
+      author_contents: 'TEST_AUTHOR_CONTENTS',
+    },
+  ],
   searchedBooks: [
     {
       isbn: 1,
@@ -78,12 +104,11 @@ describe('<CreateCuration />', () => {
     const content_space = component.find('#curation-content').at(0);
     title_space.simulate('change', { target: { value: title } });
     content_space.simulate('change', { target: { value: content } });
-    const submitbutton = component.find('#create-curation').at(0);
-    submitbutton.simulate('click');
-    expect(spyPostCuration).toHaveBeenCalledTimes(1);
     const instance = component.find(CreateCuration.WrappedComponent).instance();
     expect(instance.state.title).toEqual(title);
     expect(instance.state.content).toEqual(content);
+    const submitbutton = component.find('#create-curation').at(0);
+    submitbutton.simulate('click');
   });
 
   // it('should post short review', () => {

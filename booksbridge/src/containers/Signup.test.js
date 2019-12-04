@@ -29,7 +29,7 @@ describe('<Signup />', () => {
 
   it('should render Signup page', () => {
     const component = mount(signup);
-    const wrapper = component.find('.login_page');
+    const wrapper = component.find('.signup_page');
     expect(wrapper.length).toBe(1);
   });
 
@@ -40,6 +40,15 @@ describe('<Signup />', () => {
     wrapper.simulate('change', { target: { value: input } });
     const newInstance = component.find(Signup.WrappedComponent).instance();
     expect(newInstance.state.email).toEqual(input);
+  });
+
+  it(`should change nickname state`, () => {
+    const input = 'TEST_INPUT';
+    const component = mount(signup);
+    const wrapper = component.find('#formBasicNickname').at(0);
+    wrapper.simulate('change', { target: { value: input } });
+    const newInstance = component.find(Signup.WrappedComponent).instance();
+    expect(newInstance.state.nickname).toEqual(input);
   });
 
   it(`should change username state`, () => {
@@ -69,6 +78,7 @@ describe('<Signup />', () => {
     const email = 'TEST_EMAIL';
     const username = 'TEST_USER';
     const password = 'TEST_PASSWORD';
+    const nickname = 'TEST_NICKNAME';
     const component = mount(signup);
     const wrapperEmail = component.find('#formBasicEmail').at(0);
     wrapperEmail.simulate('change', { target: { value: email } });
@@ -76,6 +86,8 @@ describe('<Signup />', () => {
     wrapperUsername.simulate('change', { target: { value: username } });
     const wrapperPassword = component.find('#formBasicPassword').at(0);
     wrapperPassword.simulate('change', { target: { value: password } });
+    const wrapperNickname = component.find('#formBasicNickname').at(0);
+    wrapperNickname.simulate('change', { target: { value: nickname } });
     const wrapper = component.find('#login-button').at(0);
     wrapper.simulate('submit');
     expect(spyPostUser).toHaveBeenCalledTimes(1);
