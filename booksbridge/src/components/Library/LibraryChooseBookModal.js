@@ -36,6 +36,7 @@ class LibraryChooseBookModal extends Component {
         <Modal className="choose-book-modal" open={this.state.open}>
           <ChooseBookModal
             selected={() => {
+              this.props.addToLibrary();
               this.setState({ open: false });
             }}
             close={() => {

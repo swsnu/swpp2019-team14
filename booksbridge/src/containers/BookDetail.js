@@ -29,6 +29,8 @@ class BookDetail extends Component {
   };
 
   render() {
+    this.props.onLoadLibrary();
+
     if (!this.props.currentBook) {
       return <Spinner animation="border" className="Spinner" />;
     }

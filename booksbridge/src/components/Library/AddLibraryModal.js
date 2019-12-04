@@ -16,26 +16,35 @@ import LibraryChooseBookModal from './LibraryChooseBookModal';
 import BookInfo from '../BookDetail/BookInfo';
 
 import './AddLibraryModal.css';
+import Alert from 'react-bootstrap/Alert';
 
 class AddLibraryModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      open: false,
-      title: '',
-      books: [],
-    };
   }
+  state = {
+    open: false,
+    title: this.props.title ? this.props.title : '',
+    books: this.props.books ? this.props.books : [],
+    mode: this.props.mode === 'ADD' ? 'ADD' : 'EDIT',
+  };
 
   /////////////* Logic for Modal */////////////
   open = () => this.setState({ ...this.state, open: true });
   close = () => {
-    this.setState({
-      ...this.state,
-      title: '',
-      books: [],
-      open: false,
-    });
+    console.log('[DEBUG] close called');
+    if (this.state.mode === 'ADD')
+      this.setState({
+        ...this.state,
+        title: '',
+        books: [],
+        open: false,
+      });
+    else
+      this.setState({
+        ...this.state,
+        open: false,
+      });
     this.props.onLoadLibrary();
     this.props.onEmptySelectedBook();
   };
@@ -45,13 +54,29 @@ class AddLibraryModal extends Component {
     this.setState({ ...this.state, title: value });
   /////////////////////////////////////////////
 
-  onClickAddToLibrary = () => {
-    if (this.props.selectedBook == null) return;
-    this.setState({
-      ...this.state,
-      books: this.state.books.concat(this.props.selectedBook),
+  addToLibrary = () => {
+    /* Debug Start */
+    console.log('[DEBUG] status: ' + this.state.mode);
+    console.log('[DEBUG] books: ');
+    this.state.books.map(book => {
+      console.log(book.title);
     });
-    this.props.onEmptySelectedBook();
+    console.log(
+      '[DEBUG] selectedBook exists?: ' + this.props.selectedBook != null
+        ? 'yes. the title is: ' + this.props.selectedBook
+        : 'no',
+    );
+    //if (this.props.selectedBook == null) return;
+    /* Debug End */
+    setTimeout(() => {
+      console.log('[DEBUG] timeout');
+
+      this.setState({
+        ...this.state,
+        books: this.state.books.concat(this.props.selectedBook),
+      });
+      this.props.onEmptySelectedBook();
+    }, 1000);
   };
 
   onClickDeleteFromSelectedBooks = isbn => {
@@ -66,12 +91,14 @@ class AddLibraryModal extends Component {
       title: this.state.title,
       books: this.state.books,
     };
-    this.props.onSaveLibrary(title_books_dict);
+    if (this.state.mode === 'ADD') this.props.onSaveLibrary(title_books_dict);
+    else this.props.onEditLibrary(this.props.id, title_books_dict);
+
     this.close();
   };
 
   render() {
-    if (this.props.selectedBook != null) this.onClickAddToLibrary();
+    //if (this.props.selectedBook != null) this.addToLibrary();
 
     const { open, title } = this.state;
     const libraryAddButton = (
@@ -80,31 +107,22 @@ class AddLibraryModal extends Component {
         라이브러리 만들기
       </Button>
     );
+    const libraryEditButton = (
+      <Button size="mini" icon>
+        <Icon name="pencil" size="small" />
+      </Button>
+    );
 
     const saveButton = (
       <Button
         onClick={this.save}
-        disabled={this.state.title == '' || this.state.books == []}
+        disabled={this.state.title == ''}
         color="green"
       >
         <Icon name="checkmark" />
         저장
       </Button>
     );
-
-    /*  DEPRICATED
-    const selectedBookHTML = this.props.selectedBook ? (
-      <BookInfo
-        isbn={this.props.selectedBook.isbn}
-        title={this.props.selectedBook.title}
-        authors={this.props.selectedBook.authors}
-        publisher={this.props.selectedBook.publisher}
-        publishedDate={this.props.selectedBook.publishedDate}
-        thumbnail={this.props.selectedBook.thumbnail}
-      />
-    ) : (
-      '아직 선택한 책이 없어요. 책 고르기 버튼을 눌러 추가해보세요!'
-    );*/
 
     const booksHTML = this.state.books.map((book, index) => {
       return (
@@ -126,26 +144,33 @@ class AddLibraryModal extends Component {
     });
 
     let books_in_rows = [];
-    for (let i = 0; i < booksHTML.length; i += 1) {
-      if (i % 3 == 0) {
-        books_in_rows.push(
-          <div className="AddedBooks_by_3" key={i}>
-            {booksHTML.slice(i, i + 3)}
-          </div>,
-        );
+    if (booksHTML && booksHTML.length != 0)
+      for (let i = 0; i < booksHTML.length; i += 1) {
+        if (i % 3 == 0) {
+          books_in_rows.push(
+            <div className="AddedBooks_by_3" key={i}>
+              {booksHTML.slice(i, i + 3)}
+            </div>,
+          );
+        }
       }
-    }
 
     return (
       <div className="AddLibraryModalContainer">
         <Modal
-          trigger={libraryAddButton}
+          trigger={
+            this.state.mode === 'ADD' ? libraryAddButton : libraryEditButton
+          }
           className="AddLibraryModal"
           open={open}
           onOpen={this.open}
           onClose={this.close}
         >
-          <Modal.Header>라이브러리 만들기</Modal.Header>
+          <Modal.Header>
+            {this.state.mode === 'ADD'
+              ? '라이브러리 만들기'
+              : '라이브러리 수정하기'}
+          </Modal.Header>
           <Modal.Content scrolling className="LibraryContent">
             <Modal.Content className="LibraryTitleInput">
               <Form>
@@ -162,7 +187,10 @@ class AddLibraryModal extends Component {
             <Modal.Content className="LibraryBookSearch">
               <div className="LibraryBookSearchInner">
                 <div className="LibraryChooseBookModal">
-                  <LibraryChooseBookModal id="choose-book-modal" />
+                  <LibraryChooseBookModal
+                    id="choose-book-modal"
+                    addToLibrary={this.addToLibrary}
+                  />
                 </div>
               </div>
             </Modal.Content>
@@ -196,6 +224,10 @@ const mapDispatchToProps = dispatch => {
     onSaveLibrary: title_books_dict =>
       dispatch(actionCreators.postLibrary(title_books_dict)),
     onLoadLibrary: () => dispatch(actionCreators.getLibraries()),
+    onEditLibrary: (library_id, title_books_dict) =>
+      dispatch(
+        actionCreators.editSpecificLibrary(library_id, title_books_dict),
+      ),
   };
 };
 

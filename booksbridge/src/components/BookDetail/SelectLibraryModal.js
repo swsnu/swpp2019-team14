@@ -35,7 +35,7 @@ class SelectLibraryModal extends Component {
   };
 
   render() {
-    if (this.props.libraries.length == 0) this.props.onLoadLibrary();
+    //if (this.props.libraries.length == 0) this.props.onLoadLibrary();
 
     const { open } = this.state;
     const button = (
