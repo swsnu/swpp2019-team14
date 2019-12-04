@@ -160,7 +160,7 @@ class CreateReview extends Component {
             <Form className="ui form">
               {this.state.type === 'long-review' ? (
                 <div className="field">
-                  <label className="FormLabel">제목</label>
+                  <label className="FormLabel">리뷰 제목</label>
                   <input
                     id="review-title"
                     type="text"
@@ -174,7 +174,7 @@ class CreateReview extends Component {
               ) : null}
               <br />
               <div className="field">
-                <label className="FormLabel">내용</label>
+                <label className="FormLabel">리뷰 내용</label>
                 <TextArea
                   id="review-content"
                   name="content"

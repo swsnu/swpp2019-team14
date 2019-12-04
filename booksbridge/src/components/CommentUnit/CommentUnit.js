@@ -68,13 +68,14 @@ class CommentUnit extends Component {
       <Form reply>
         <Form.TextArea
           id="reply-input"
+          className="ReplyTextArea"
           value={this.state.content}
           onChange={onChangeInput}
         />
         <div className="ReplyButton">
           <Button
             className="ReplyButton"
-            content="Add Reply"
+            content="답글 작성"
             labelPosition="right"
             icon="edit"
             onClick={() => this.onClickPostComment()}

@@ -20,9 +20,10 @@ def signup(request):
         username = req_data['username']
         email = req_data['email']
         password = req_data['password']
+        nickname = req_data['nickname']
         User.objects.create_user(username, email, password)
         user = User.objects.get(username=username)
-        Profile.objects.create(user=user, nickname=username)
+        Profile.objects.create(user=user, nickname=nickname)
         return HttpResponse(status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
