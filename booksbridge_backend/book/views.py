@@ -177,7 +177,7 @@ def specific_book(request,isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-# TODO: test NOT implemented
+# test implemented
 def make_article_dict(article):
     ''' input: Article instance   ->  output: article dict  '''
     deltatime = datetime.now() - article.date
@@ -223,7 +223,7 @@ def search_article(request, isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-# TODO: test NOT implemented
+# test implemented
 def search_article_by_author(request, page, username):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -233,7 +233,7 @@ def search_article_by_author(request, page, username):
         article_list = Article.objects.filter(author=author).order_by('-id')
         paginator = Paginator(article_list, 5)
         results = paginator.get_page(page)
-        articles=list()
+        articles = list()
         for article in results:
             deltatime = datetime.now() - article.date
             time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
@@ -344,7 +344,7 @@ def get_comments(post):
             comments.append(comment_dict)
     return comments
 
-# TODO: test NOT implemented
+# test implemented
 def article_comment(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -479,14 +479,14 @@ def curation(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
 
-# TODO: test NOT implemented
+# TODO: test NOT implemented. Doesn't seem to be in use.
 def search_curation(request, keyword):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     
     elif request.method == 'GET':
-        decoded_keyword =urllib.parse.unquote(keyword)
-        result_users=[]
+        decoded_keyword = urllib.parse.unquote(keyword)
+        result_users = []
         all_users = User.objects.all()
         if all_users:
             for user in all_users:
@@ -502,7 +502,7 @@ def search_curation(request, keyword):
                     result_users.append(user_dict)
         return JsonResponse(result_users, safe=False)
 
-# TODO: test NOT implemented
+# test implemented
 def search_curation_by_author(request, username, page):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -516,12 +516,12 @@ def search_curation_by_author(request, username, page):
         for curation in results:
             curation_dict = make_curation_dict(curation)
             curations.append(curation_dict) 
-        response_dict = {'curations':curations, 'length':curation_list.count()}
+        response_dict = {'curations': curations, 'length': curation_list.count()}
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
     
-# TODO: test NOT implemented
+# test implemented
 def make_curation_dict(curation):
     # TODO: comments
     ''' input: Curation object  ->   output: curation dict '''
@@ -612,33 +612,30 @@ def curation_page(request, page):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-# TODO: test NOT implemented
+# test implemented
 def libraries(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
     elif request.method == 'GET':
-        try:
-            libraries = list()
-            for library in Library.objects.filter(user=request.user):
-                library_dict = {
-                    'title': library.title,
-                    'date': library.date,
-                    'books': [],
-                    'id': library.id,
-                }
+        libraries = list()
+        for library in Library.objects.filter(user=request.user):
+            library_dict = {
+                'title': library.title,
+                'date': library.date,
+                'books': [],
+                'id': library.id,
+            }
                   
-                for book_in_library in BookInLibrary.objects.filter(library=library):
-                    book = {
-                        'isbn': book_in_library.book.isbn,
-                        'title': book_in_library.book.title,
-                        'thumbnail': book_in_library.book.thumbnail,
-                    }
-                    library_dict['books'].append(book)
+            for book_in_library in BookInLibrary.objects.filter(library=library):
+                book = {
+                    'isbn': book_in_library.book.isbn,
+                    'title': book_in_library.book.title,
+                    'thumbnail': book_in_library.book.thumbnail,
+                }
+                library_dict['books'].append(book)
 
-                libraries.append(library_dict)
-        except:
-            return HttpResponse(status=404)
+            libraries.append(library_dict)
 
         return JsonResponse(libraries, status=200, safe=False)
         
@@ -764,7 +761,7 @@ def specific_user(request, username):
     else:
         return HttpResponseNotAllowed(['GET',])
 
-# TODO: test NOT implemented
+# test implemented
 def search_user(request, keyword):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -786,6 +783,9 @@ def search_user(request, keyword):
                     }
                     result_users.append(user_dict)
         return JsonResponse(result_users, safe=False)
+    
+    else:
+        return HttpResponseNotAllowed(['GET',])
 
 # test implemented
 def run_text_detection(path):
