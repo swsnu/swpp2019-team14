@@ -12,19 +12,68 @@ from .views import run_text_detection, make_article_dict, make_curation_dict
 class BookTestCase(TestCase):
 
     def setUp(self):
-        book1 = Book(isbn='1', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
-        book1.save()
-        book2 = Book(isbn='2', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
-        book2.save()
-        book3 = Book(isbn='3', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
-        book3.save()
+        client = Client()
+
+        # Create user
+        user = User.objects.create_user(
+            email='team14@snu.ac.kr',
+            username='Fourteen',
+            password='mypassword')
+
+        Profile.objects.create(user=user)
+
+        # Sign in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'Fourteen',
+                                   'password': 'mypassword'
+                               }),
+                               content_type='application/json')
+
+
+        # Book registration
+        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
+                   content_type='application/json')
+
+        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
+                   content_type='application/json')
+        
+        client.get('/api/book/' + parse.quote('C programming') + '/1/',
+                   content_type='application/json')
+
+        # Article registration
+        client.post('/api/article/',
+                    json.dumps({
+                        'isbn': '9780393912470',
+                        'title': 'test_title',
+                        'content': 'test_content',
+                        'is_long': True,
+                        'is_short': False,
+                        'is_phrase': False
+                    }),
+                    content_type='application/json')
+
+
+        # Curation registration 
+        response = client.post('/api/curation/',
+                               json.dumps({
+                                   'title': 'test_title',
+                                   'content': 'test_content',
+                                   'isbn_content_pairs': [
+                                       { 'isbn' : '9780393912470', 'content': 'test_content1'},
+                                       { 'isbn' : '9780140447934', 'content': 'test_content2'},
+                                       { 'isbn' : '9780131103627', 'content': 'test_content3'},
+                                   ],
+                               }),
+                               content_type='application/json')
+ 
     
     def test_csrf(self):
         client = Client(enforce_csrf_checks=True)
         response = client.post('/api/user/',
                                json.dumps({
                                    'email': 'jsmith@snu.ac.kr',
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
@@ -36,7 +85,7 @@ class BookTestCase(TestCase):
         response = client.post('/api/user/',
                                json.dumps({
                                    'email': 'jsmith@snu.ac.kr',
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword',
                                    'nickname': 'Anonymous',
                                }),
@@ -62,7 +111,7 @@ class BookTestCase(TestCase):
         response = client.post('/api/user/',
                                json.dumps({
                                    'email': 'jsmith@snu.ac.kr',
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword',
                                    'nickname': 'Anonymous',
                                }),
@@ -73,7 +122,7 @@ class BookTestCase(TestCase):
         response = client.put('/api/user/',
                               json.dumps({
                                   'email': 'jsmith@snu.ac.kr',
-                                  'username': 'John Smith',
+                                  'username': 'John',
                                   'password': 'mypassword'
                               }),
                               content_type='application/json',)
@@ -90,7 +139,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -112,7 +161,7 @@ class BookTestCase(TestCase):
         # POST with proper info
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
@@ -122,7 +171,7 @@ class BookTestCase(TestCase):
         # PUT
         response = client.put('/api/sign_in/',
                               json.dumps({
-                                  'username': 'John Smith',
+                                  'username': 'John',
                                   'password': 'mypassword'
                               }),
                               content_type='application/json')
@@ -140,7 +189,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -154,7 +203,7 @@ class BookTestCase(TestCase):
         # sign in
         client.post('/api/sign_in/',
                     json.dumps({
-                        'username': 'John Smith',
+                        'username': 'John',
                         'password': 'mypassword'
                     }),
                     content_type='application/json')
@@ -187,10 +236,11 @@ class BookTestCase(TestCase):
     def test_profile(self):
         # Initialize
         client = Client()
+        #self.pretest(client, '/api/profile/1/')
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -198,7 +248,7 @@ class BookTestCase(TestCase):
         # before sign in
         response = client.put('/api/profile/1/',
                                 json.dumps({
-                                  'nickname': 'John Smith',
+                                  'nickname': 'John',
                                   'profile_text': 'mypassword',
                                   'profile_photo': 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
                               }),
@@ -208,12 +258,12 @@ class BookTestCase(TestCase):
 
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
 
-        # GET
+        # # GET
         response = client.get('/api/profile/1/',
                               content_type='application/json',)
         self.assertEqual(response.status_code, 405)
@@ -221,7 +271,7 @@ class BookTestCase(TestCase):
         # PUT
         response = client.put('/api/profile/1/',
                               json.dumps({
-                                  'nickname': 'John Smith',
+                                  'nickname': 'John',
                                   'profile_text': 'mypassword',
                                   'profile_photo': 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
                               }),
@@ -288,7 +338,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -302,7 +352,7 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
@@ -327,7 +377,7 @@ class BookTestCase(TestCase):
         # POST
         response = client.post('/api/book/9780140422344/',
                                json.dumps({
-                                   'nickname': 'John Smith',
+                                   'nickname': 'John',
                                    'profile_text': 'mypassword',
                                    'profile_photo': 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
                                }),
@@ -337,7 +387,7 @@ class BookTestCase(TestCase):
         # PUT
         response = client.put('/api/book/9780140422344/',
                               json.dumps({
-                                  'nickname': 'John Smith',
+                                  'nickname': 'John',
                                   'profile_text': 'mypassword',
                                   'profile_photo': 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
                               }),
@@ -355,7 +405,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -369,7 +419,7 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
@@ -417,7 +467,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -425,33 +475,17 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
 
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
         # GET before article registration
-        response = client.get('/api/article/bookID=9780393912470/',
+        response = client.get('/api/article/bookID=9780393912471/',  # changed last digit to 0
                               content_type='application/json')
 
         self.assertJSONEqual(response.content, [])
         self.assertEqual(response.status_code, 200)
-
-        # Article registration
-        client.post('/api/article/',
-                    json.dumps({
-                        'isbn': '9780393912470',
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'is_long': True,
-                        'is_short': False,
-                        'is_phrase': False
-                    }),
-                    content_type='application/json')
 
         # GET after article registration
         response = client.get('/api/article/bookID=9780393912470/',
@@ -490,7 +524,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -504,26 +538,10 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        # Article registration
-        client.post('/api/article/',
-                    json.dumps({
-                        'isbn': '9780393912470',
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'is_long': True,
-                        'is_short': False,
-                        'is_phrase': False
-                    }),
-                    content_type='application/json')
 
         # GET
         response = client.get('/api/article/1/',
@@ -573,7 +591,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -595,14 +613,10 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
 
         # GET
         response = client.get('/api/article/',
@@ -681,7 +695,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -704,7 +718,7 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
@@ -742,14 +756,13 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       {'isbn': 1, 'content':'test_content1'},
-                                       {'isbn': 2, 'content':'test_content2'},
-                                       {'isbn': 3, 'content':'test_content3'},
+                                       {'isbn': '9780393912470', 'content':'test_content1'},
+                                       {'isbn': '9780140447934', 'content':'test_content2'},
+                                       {'isbn': '9780131103627', 'content':'test_content3'},
                                    ],
                                }),
                                content_type='application/json')
         self.assertEqual(response.status_code, 201)
-
 
 
     def test_article_page(self):
@@ -758,7 +771,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -772,16 +785,12 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
 
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        # Article registration
+        # Multiple Article registration
         for i in (1, 22):
             client.post('/api/article/',
                         json.dumps({
@@ -807,7 +816,7 @@ class BookTestCase(TestCase):
 
         user1 = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         user2 = User.objects.create_user(
@@ -827,14 +836,10 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
 
         # Library registration
         response = client.post('/api/library/9999/',
@@ -866,7 +871,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -883,14 +888,10 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
 
         # KeyError
         response = client.post('/api/library/9999/',
@@ -941,27 +942,7 @@ class BookTestCase(TestCase):
     def test_specific_user(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # GET before sign in
-        response = client.get('/api/user/1/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
+        self.pretest(client, '/api/user/1/')
 
         # Nonexisting user
         response = client.get('/api/user/9999/',
@@ -1003,43 +984,7 @@ class BookTestCase(TestCase):
     def test_comment(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John Smith',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # POST before sign in
-        response = client.post('/api/comment/article/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John Smith',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        # Article creation
-        client.post('/api/article/',
-                    json.dumps({
-                        'isbn': '9780393912470',
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'is_long': True,
-                        'is_short': False,
-                        'is_phrase': False,
-                    }),
-                    content_type='application/json')
+        self.pretest(client, '/api/comment/article/')
 
         # GET
         response = client.get('/api/comment/article/',
@@ -1083,48 +1028,7 @@ class BookTestCase(TestCase):
     def test_article_comment(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # POST before sign in
-        response = client.post('/api/comment/article/',
-                               json.dumps({
-                                    'article_id': 1,
-                                    'content': 'test_comment',
-                                    'parent_id': None
-                               }),
-                               content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        client.post('/api/sign_in/',
-                    json.dumps({
-                        'username': 'John',
-                        'password': 'mypassword'
-                    }),
-                    content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        # Article creation
-        client.post('/api/article/',
-                    json.dumps({
-                        'isbn': '9780393912470',
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'is_long': True,
-                        'is_short': False,
-                        'is_phrase': False,
-                    }),
-                    content_type='application/json')
+        self.pretest(client, '/api/comment/article/')
 
         # POST with wrong key value
         response = client.post('/api/comment/article/',
@@ -1157,54 +1061,7 @@ class BookTestCase(TestCase):
     def test_search_article_by_author(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # GET before sign in
-        response = client.get('/api/article/username=John/1/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        client.post('/api/sign_in/',
-                    json.dumps({
-                        'username': 'John',
-                        'password': 'mypassword'
-                    }),
-                    content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        # Article creation
-        client.post('/api/article/',
-                    json.dumps({
-                        'isbn': '9780393912470',
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'is_long': True,
-                        'is_short': False,
-                        'is_phrase': False,
-                    }),
-                    content_type='application/json')
-        
-        client.post('/api/article/',
-                    json.dumps({
-                        'isbn': '9780393912470',
-                        'title': 'test_title2',
-                        'content': 'test_content2',
-                        'is_long': False,
-                        'is_short': True,
-                        'is_phrase': False,
-                    }),
-                    content_type='application/json')
+        self.pretest(client, '/api/article/username=John/1/')
 
         # GET
         response = client.get('/api/article/username=John/1/',
@@ -1234,51 +1091,8 @@ class BookTestCase(TestCase):
     def test_specific_curation(self):
         # Initialize
         client = Client()
+        self.pretest(client, '/api/curation/1/')
 
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John Smith',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # GET before sign in  (why this is 401)
-        response = client.get('/api/curation/1/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John Smith',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
-                   content_type='application/json')
-        
-        client.get('/api/book/' + parse.quote('C programming') + '/1/',
-                   content_type='application/json')
-
-        # Curation registration 
-        response = client.post('/api/curation/',
-                               json.dumps({
-                                   'title': 'test_title',
-                                   'content': 'test_content',
-                                   'isbn_content_pairs': [
-                                       { 'isbn' : '9780393912470', 'content': 'test_content1'},
-                                       { 'isbn' : '9780140447934', 'content': 'test_content2'},
-                                       { 'isbn' : '9780131103627', 'content': 'test_content3'},
-                                   ],
-                               }),
-                               content_type='application/json')
-        
         # GET
         response = client.get('/api/curation/1/',
                               content_type='application/json')
@@ -1294,48 +1108,7 @@ class BookTestCase(TestCase):
     def test_search_curation_by_author(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # GET before sign in
-        response = client.get('/api/curation/username=John/1/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                    content_type='application/json')
-        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
-                    content_type='application/json')
-        client.get('/api/book/' + parse.quote('C programming') + '/1/',
-                   content_type='application/json')
-
-        # Curation registration 
-        client.post('/api/curation/',
-                    json.dumps({
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'isbn_content_pairs': [
-                            { 'isbn' : '9780393912470', 'content': 'test_content1'},
-                            { 'isbn' : '9780140447934', 'content': 'test_content2'},
-                            { 'isbn' : '9780131103627', 'content': 'test_content3'},
-                        ],
-                    }),
-                    content_type='application/json')
+        self.pretest(client, '/api/curation/username=John/1/')
 
         # GET
         response = client.get('/api/curation/username=John/1/',
@@ -1372,27 +1145,6 @@ class BookTestCase(TestCase):
                                }),
                                content_type='application/json')
 
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                    content_type='application/json')
-        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
-                    content_type='application/json')
-        client.get('/api/book/' + parse.quote('C programming') + '/1/',
-                   content_type='application/json')
-
-        # Curation registration 
-        client.post('/api/curation/',
-                    json.dumps({
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'isbn_content_pairs': [
-                            { 'isbn' : '9780393912470', 'content': 'test_content1'},
-                            { 'isbn' : '9780140447934', 'content': 'test_content2'},
-                            { 'isbn' : '9780131103627', 'content': 'test_content3'},
-                        ],
-                    }),
-                    content_type='application/json')
-
         curation = Curation.objects.get(id=1)
         curation_dict = make_curation_dict(curation)
 
@@ -1401,35 +1153,7 @@ class BookTestCase(TestCase):
     def test_curation_page(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John Smith',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # GET before sign in
-        response = client.get('/api/article/page/1/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John Smith',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                    content_type='application/json')
-        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
-                    content_type='application/json')
-        client.get('/api/book/' + parse.quote('C programming') + '/1/',
-                   content_type='application/json')
+        self.pretest(client, '/api/article/page/1/')
 
         # Curation registration 
         for i in range(1, 22):
@@ -1460,11 +1184,12 @@ class BookTestCase(TestCase):
 
     def test_follow(self):
         client = Client()
+        # self.pretest(client, '/api/follow/user_id=2/')
 
         # user 1
         user1 = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user1)
@@ -1488,7 +1213,7 @@ class BookTestCase(TestCase):
         # Sign in by user 1
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
@@ -1519,43 +1244,7 @@ class BookTestCase(TestCase):
     def test_article_like(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John Smith',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # GET before sign in
-        response = client.get('/api/like/article/1/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John Smith',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        # Article registration
-        client.post('/api/article/',
-                    json.dumps({
-                        'isbn': '9780393912470',
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'is_long': True,
-                        'is_short': False,
-                        'is_phrase': False
-                    }),
-                    content_type='application/json')
+        self.pretest(client, '/api/like/article/1/')
 
         # POST
         response = client.post('/api/like/article/1/',
@@ -1586,51 +1275,7 @@ class BookTestCase(TestCase):
     def test_curation_like(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John Smith',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # GET before sign in
-        response = client.get('/api/like/curation/1/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John Smith',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
-                   content_type='application/json')
-        
-        client.get('/api/book/' + parse.quote('C programming') + '/1/',
-                   content_type='application/json')
-
-        # Curation registration 
-        response = client.post('/api/curation/',
-                               json.dumps({
-                                   'title': 'test_title',
-                                   'content': 'test_content',
-                                   'isbn_content_pairs': [
-                                       { 'isbn' : '9780393912470', 'content': 'test_content1'},
-                                       { 'isbn' : '9780140447934', 'content': 'test_content2'},
-                                       { 'isbn' : '9780131103627', 'content': 'test_content3'},
-                                   ],
-                               }),
-                               content_type='application/json')
-        
+        self.pretest(client, '/api/like/curation/1/')
 
         # POST
         response = client.post('/api/like/curation/1/',
@@ -1663,7 +1308,7 @@ class BookTestCase(TestCase):
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
@@ -1671,27 +1316,11 @@ class BookTestCase(TestCase):
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
                                
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        # Article registration
-        client.post('/api/article/',
-                    json.dumps({
-                        'isbn': '9780393912470',
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'is_long': True,
-                        'is_short': False,
-                        'is_phrase': False
-                    }),
-                    content_type='application/json')
-
         # Comment registration
         response = client.post('/api/comment/article/',
                                json.dumps({
@@ -1710,43 +1339,7 @@ class BookTestCase(TestCase):
     def test_article_like(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John Smith',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # GET before sign in
-        response = client.get('/api/like/article/1/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John Smith',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        # Article registration
-        client.post('/api/article/',
-                    json.dumps({
-                        'isbn': '9780393912470',
-                        'title': 'test_title',
-                        'content': 'test_content',
-                        'is_long': True,
-                        'is_short': False,
-                        'is_phrase': False
-                    }),
-                    content_type='application/json')
+        self.pretest(client, '/api/like/article/1/')
 
         # POST
         response = client.post('/api/like/article/1/',
@@ -1776,31 +1369,11 @@ class BookTestCase(TestCase):
     def mock_run_text_detection(path):
         return "TEST_QUOTE"
 
-    @patch('book.views.run_text_detection', side_effect=mock_run_text_detection) 
+    @patch('book.views.run_text_detection_url', side_effect=mock_run_text_detection) 
     def test_ocr(self, arg):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John Smith',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # POST before sign in
-        response = client.post('/api/ocr/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John Smith',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
+        self.pretest(client, '/api/ocr/')
 
         # POST 
         with open('sapiens.jpg', 'rb') as f:
@@ -1821,27 +1394,7 @@ class BookTestCase(TestCase):
     def test_photo_upload(self):
         # Initialize
         client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John Smith',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # POST before sign in
-        response = client.post('/api/image/profile/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John Smith',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
+        self.pretest(client, '/api/image/profile/')
 
         # POST 
         with open('sapiens.jpg', 'rb') as f:
@@ -1858,55 +1411,33 @@ class BookTestCase(TestCase):
                                content_type='application/json')
         self.assertEqual(response.status_code, 405) 
 
-    # search user, curation comment
-    def test_curation_comment(self):
-        # Initialize
-        client = Client()
-
+    def pretest(self, client, url):
+        # create user -> request before sign in -> sign in 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
-            username='John Smith',
+            username='John',
             password='mypassword')
 
         Profile.objects.create(user=user)
 
-        # POST before sign in
-        response = client.post('/api/comment/curation/',
-                              content_type='application/json')
+        # request before sign in
+        response = client.post(url, content_type='application/json')
 
         self.assertEqual(response.status_code, 401)
 
         # Sign in
         response = client.post('/api/sign_in/',
                                json.dumps({
-                                   'username': 'John Smith',
+                                   'username': 'John',
                                    'password': 'mypassword'
                                }),
                                content_type='application/json')
 
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
+    def test_curation_comment(self):
+        # Initialize
+        client = Client()
+        self.pretest(client, '/api/comment/curation/')
 
-        client.get('/api/book/' + parse.quote('War and Peace') + '/1/',
-                   content_type='application/json')
-        
-        client.get('/api/book/' + parse.quote('C programming') + '/1/',
-                   content_type='application/json')
-
-        # Curation registration 
-        response = client.post('/api/curation/',
-                               json.dumps({
-                                   'title': 'test_title',
-                                   'content': 'test_content',
-                                   'isbn_content_pairs': [
-                                       { 'isbn' : '9780393912470', 'content': 'test_content1'},
-                                       { 'isbn' : '9780140447934', 'content': 'test_content2'},
-                                       { 'isbn' : '9780131103627', 'content': 'test_content3'},
-                                   ],
-                               }),
-                               content_type='application/json')
-        
         # GET
         response = client.get('/api/comment/curation/',
                               content_type='application/json')
