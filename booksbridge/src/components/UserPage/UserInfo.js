@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import { Form, TextArea, Icon } from 'semantic-ui-react';
-import Alert from 'react-bootstrap/Alert';
 import * as actionCreators from '../../store/actions/actionCreators';
 
 import './UserInfo.css';
