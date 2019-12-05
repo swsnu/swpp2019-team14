@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
 import { Tab } from 'semantic-ui-react';
 import BookTabsReviewList from './BookTabsReviewList';
 import BookDetailInfo from '../BookDetailInfo/BookDetailInfo';
@@ -33,14 +32,9 @@ class BookTabs extends Component {
       />
     );
 
-    // To fix an issue addressed in github issue #51.
-    var content = this.props.contents.endsWith('더보기 ')
-      ? this.props.contents.slice(0, -5)
-      : this.props.contents;
-
     const contents = (
       <BookDetailInfo
-        contents={content}
+        contents={this.props.content}
         author_contents={this.props.author_contents}
       />
     );
