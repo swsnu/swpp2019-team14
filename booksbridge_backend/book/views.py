@@ -13,7 +13,7 @@ from django.db import transaction
 import io, os
 from django.core.files.storage import FileSystemStorage
 
-
+# test implemented
 def signup(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
@@ -28,6 +28,7 @@ def signup(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+# test implemented
 def profile(request, userid):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -43,6 +44,7 @@ def profile(request, userid):
     else:
         return HttpResponseNotAllowed(['PUT'])
 
+# test implemented
 def photo_upload(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -61,6 +63,7 @@ def photo_upload(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+# test implemented
 def signin(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
@@ -77,6 +80,7 @@ def signin(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+# test implemented
 def signout(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -87,6 +91,7 @@ def signout(request):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+# test implemented
 def searchbooks(request,keyword,page):
     if not request.user.is_authenticated:
         return HttpResponse(status=401) 
@@ -148,6 +153,7 @@ def searchbooks(request,keyword,page):
     else:
         return HttpResponseNotAllowed(['GET']) 
 
+# test implemented
 def specific_book(request,isbn):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -171,7 +177,7 @@ def specific_book(request,isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-
+# TODO: test NOT implemented
 def make_article_dict(article):
     ''' input: Article instance   ->  output: article dict  '''
     deltatime = datetime.now() - article.date
@@ -206,7 +212,7 @@ def make_article_dict(article):
 
     return article_dict
 
-
+# test implemented
 def search_article(request, isbn):
     if request.method == 'GET':
         articles = [] 
@@ -217,6 +223,7 @@ def search_article(request, isbn):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+# TODO: test NOT implemented
 def search_article_by_author(request, page, username):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -247,6 +254,7 @@ def search_article_by_author(request, page, username):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+# test implemented
 def specific_article(request,review_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -276,6 +284,7 @@ def specific_article(request,review_id):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+# test implemented
 def article_page(request, page):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -291,7 +300,7 @@ def article_page(request, page):
         response_body={'articles': articles, 'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body)
 
-
+# test implemented
 def get_comments(post):
     comments = []
     iteration = post.comments.all()
@@ -335,6 +344,7 @@ def get_comments(post):
             comments.append(comment_dict)
     return comments
 
+# TODO: test NOT implemented
 def article_comment(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -361,6 +371,7 @@ def article_comment(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
 
+# test implemented
 def curation_comment(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -390,8 +401,7 @@ def curation_comment(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
 
-
-
+# test implemented
 def article(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -423,6 +433,7 @@ def article(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
 
+# test implemented
 def curation(request): 
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -468,6 +479,7 @@ def curation(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
 
+# TODO: test NOT implemented
 def search_curation(request, keyword):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -490,6 +502,7 @@ def search_curation(request, keyword):
                     result_users.append(user_dict)
         return JsonResponse(result_users, safe=False)
 
+# TODO: test NOT implemented
 def search_curation_by_author(request, username, page):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -508,6 +521,7 @@ def search_curation_by_author(request, username, page):
     else:
         return HttpResponseNotAllowed(['GET'])
     
+# TODO: test NOT implemented
 def make_curation_dict(curation):
     # TODO: comments
     ''' input: Curation object  ->   output: curation dict '''
@@ -543,7 +557,7 @@ def make_curation_dict(curation):
  
     return curation_dict
 
-
+# test implemented
 def specific_curation(request, curation_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -554,7 +568,7 @@ def specific_curation(request, curation_id):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-
+# test implemented
 def curation_page(request, page):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -598,6 +612,7 @@ def curation_page(request, page):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+# TODO: test NOT implemented
 def libraries(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -631,6 +646,7 @@ def libraries(request):
         return HttpResponseNotAllowed(['GET'])
         
 
+# test implemented
 def library(request, library_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -725,34 +741,8 @@ def library(request, library_id):
         return JsonResponse(library_dict, status=200)
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'PUT', 'DELETE']) 
-"""
-////* THERE IS ABSOLUTELY NO NEED TO DEFINE THIS VIEW *///////
-def book_in_library(request):
-    if not request.user.is_authenticated:
-        return HttpResponse(status=401)
-    # TODO elif request.method == 'GET':
-    #    pass
-    elif request.method == 'POST':
-        # { isbn, library }: library means library_id (정수라고 가정)
-        try:
-            req_data = json.loads(request.body.decode())
-            isbn = req_data['isbn']
-            library_id = req_data['library']
-            book = Book.objects.get(isbn=int(isbn))
-            library = Library.objects.get(id=int(library_id))
-        except (KeyError) as e:
-            return HttpResponse(status=400) 
 
-        book_in_library = BookInLibrary(book=book, library=library)
-        book_in_library.save()
-        result_dict = model_to_dict(book_in_library)
-        return JsonResponse(result_dict, status=201)
-    # TODO elif request.method == 'DELETE':
-    #    pass
-    else:
-        return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
-"""
-
+# test implemented
 def specific_user(request, username):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -774,6 +764,7 @@ def specific_user(request, username):
     else:
         return HttpResponseNotAllowed(['GET',])
 
+# TODO: test NOT implemented
 def search_user(request, keyword):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -796,6 +787,7 @@ def search_user(request, keyword):
                     result_users.append(user_dict)
         return JsonResponse(result_users, safe=False)
 
+# test implemented
 def run_text_detection(path):
     from google.cloud import vision
     client = vision.ImageAnnotatorClient()
@@ -822,7 +814,7 @@ def run_text_detection(path):
                     result += word_text + ' '
     return result
 
-
+# test implemented
 def ocr(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -863,6 +855,7 @@ def ocr(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+# test implemented
 def follow(request, user_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -936,6 +929,7 @@ def follow(request, user_id):
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
 
+# test implemented
 def article_like(request, article_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -959,28 +953,10 @@ def article_like(request, article_id):
         result_dict = make_article_dict(article)
         return JsonResponse(result_dict, status=200)
 
-    # elif request.method == 'POST':
-    #     like = ArticleLike(user=request.user, article_id=article_id) 
-    #     like.save()
-    #     like_dict = model_to_dict(like)
-    #     return JsonResponse(like_dict, status=201)
-    
-    # elif request.method == 'GET':
-    #     like_count = ArticleLike.objects.filter(article_id=article_id).count()
-    #     like_dict = { 'count': like_count }
-    #     return JsonResponse(like_dict, status=200)
-    
-    # elif request.method == 'DELETE':
-    #     like = get_object_or_404(ArticleLike, article_id=article_id, user_id=user_id)
-    #     like_dict = model_to_dict(like)
-    #     like.delete()
-    #     return JsonResponse(like_dict, status=200)
-
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
 
-
-
+# test implemented
 def curation_like(request, curation_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)

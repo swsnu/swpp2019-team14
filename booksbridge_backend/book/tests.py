@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from urllib import parse
 import json
 from unittest.mock import MagicMock, patch
-from .views import run_text_detection
+from .views import run_text_detection, make_article_dict
 
 
 
@@ -825,87 +825,6 @@ class BookTestCase(TestCase):
 
         self.assertIsNotNone(response.content)
         self.assertEqual(response.status_code, 200)   
-        
-
-    """
-    THERE IS ABSOLUTELY NO NEED FOR IMPLEMENTATION OF BOOK IN LIBRARY, THUS NO NEED FOR TEST OF IT
-    def test_book_in_library(self):
-        # Initialize
-        client = Client()
-
-        user = User.objects.create_user(
-            email='jsmith@snu.ac.kr',
-            username='John Smith',
-            password='mypassword')
-
-        Profile.objects.create(user=user)
-
-        # POST before sign in
-        response = client.post('/api/library/book/',
-                               json.dumps({
-                                   'title': 'test_title',
-                                   'content': 'test_content',
-                                   'isbn_content_pairs': [
-                                       ('9780393912470', 'test_content1'),
-                                       ('9780140447934', 'test_content2'),
-                                       ('9780131103627', 'test_content3'),
-                                   ],
-                               }),
-                               content_type='application/json')
-
-        self.assertEqual(response.status_code, 401)
-
-        # Sign in
-        response = client.post('/api/sign_in/',
-                               json.dumps({
-                                   'username': 'John Smith',
-                                   'password': 'mypassword'
-                               }),
-                               content_type='application/json')
-
-        # Book registration
-        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
-                   content_type='application/json')
-
-        # KeyError
-        response = client.post('/api/library/book/',
-                               json.dumps({
-                                   'notgoodkey': 'notgoodvalue',
-                               }),
-                               content_type='application/json')
-        
-        self.assertEqual(response.status_code, 400)
-
-        # library generation
-        response = client.post('/api/library/9999/',
-                               json.dumps({
-                                   'title': 'test_title',
-                                   'books': [],
-                               }),
-                               content_type='application/json')
-
-
-        # POST
-        response = client.post('/api/library/book/',
-                               json.dumps({
-                                   'isbn': '9780393912470',
-                                   'library': '2'
-                               }),
-                               content_type='application/json')
-
-        self.assertIsNotNone(response.content)
-        self.assertEqual(response.status_code, 201)
-
-        # PUT
-        response = client.put('/api/library/book/',
-                              json.dumps({
-                                  'isbn': '9780393912470',
-                                  'library': '1',
-                              }),
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 405)
-"""
 
     def test_specific_user(self):
         # Initialize
@@ -1448,6 +1367,55 @@ class BookTestCase(TestCase):
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)                        
     
+    def test_make_article_dict(self):
+        # Initialize
+        client = Client()
+
+        user = User.objects.create_user(
+            email='jsmith@snu.ac.kr',
+            username='John Smith',
+            password='mypassword')
+
+        Profile.objects.create(user=user)
+        
+        # Sign in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John Smith',
+                                   'password': 'mypassword'
+                               }),
+                               content_type='application/json')
+                               
+        # Book registration
+        client.get('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
+                   content_type='application/json')
+
+        # Article registration
+        client.post('/api/article/',
+                    json.dumps({
+                        'isbn': '9780393912470',
+                        'title': 'test_title',
+                        'content': 'test_content',
+                        'is_long': True,
+                        'is_short': False,
+                        'is_phrase': False
+                    }),
+                    content_type='application/json')
+
+        # Comment registration
+        response = client.post('/api/comment/article/',
+                               json.dumps({
+                                    'article_id': 1,
+                                    'content': 'test_comment',
+                                    'parent_id': None
+                               }),
+                               content_type='application/json')
+
+        article = Article.objects.get(id=1)
+        
+        article_dict = make_article_dict(article)
+        
+        self.assertIsInstance(article_dict, dict)
 
     def test_article_like(self):
         # Initialize
