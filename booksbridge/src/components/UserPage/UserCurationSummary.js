@@ -2,6 +2,7 @@ import React from 'react';
 import './UserCurationSummary.css';
 
 const UserCurationSummary = props => {
+  if (props.books.length === 0) return null;
   let books_title =
     props.books[0].book.title + ' 등 총 ' + props.books.length + '권';
   return (
