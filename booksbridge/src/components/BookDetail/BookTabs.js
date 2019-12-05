@@ -34,7 +34,7 @@ class BookTabs extends Component {
 
     const contents = (
       <BookDetailInfo
-        contents={this.props.content}
+        contents={this.props.contents}
         author_contents={this.props.author_contents}
       />
     );
