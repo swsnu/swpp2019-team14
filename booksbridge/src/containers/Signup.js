@@ -74,8 +74,7 @@ class Signup extends Component {
               required
             />
             <Form.Text className="text-muted">
-              닉네임은 8글자를 넘을 수 없으며, 특수문자와 공백이 들어갈 수
-              없습니다.
+              닉네임은 8글자를 넘을 수 없으며, 공백이 들어갈 수 없습니다.
             </Form.Text>
           </Form.Group>
           <Form.Group controlId="formBasicPassword">
