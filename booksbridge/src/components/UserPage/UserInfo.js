@@ -88,9 +88,9 @@ class UserInfo extends Component {
     const followees = this.props.followees;
     const isFollowing =
       followers &&
-        followers
-          .map(follower => follower.id)
-          .includes(this.props.logged_in_user.id)
+      followers
+        .map(follower => follower.id)
+        .includes(this.props.logged_in_user.id)
         ? true
         : false;
 
@@ -185,8 +185,8 @@ class UserInfo extends Component {
                   <div className="ProfilePicture">{profile_picture}</div>
                 </div>
               ) : (
-                  <div className="ProfilePicture">{profile_picture}</div>
-                )}
+                <div className="ProfilePicture">{profile_picture}</div>
+              )}
             </div>
           </p>
           <div className="UpperRight">
@@ -210,8 +210,8 @@ class UserInfo extends Component {
                     </div>
                   </div>
                 ) : (
-                    <div className="Username">{nickname}</div>
-                  )}
+                  <div className="Username">{nickname}</div>
+                )}
               </div>
               <div className="Nickname">@{username}</div>
               <div className="ProfileComment">
@@ -231,8 +231,8 @@ class UserInfo extends Component {
                     />
                   </div>
                 ) : (
-                    <div className="Comment">{profile_text}</div>
-                  )}
+                  <div className="Comment">{profile_text}</div>
+                )}
               </div>
             </div>
           </div>
