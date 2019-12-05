@@ -795,7 +795,6 @@ def run_text_detection(path):
         with io.open(path, 'rb') as image_file:
             content = image_file.read()
     except:
-        print("couldn't open file")
         return HttpResponse(status=400)
 
     image = vision.types.Image(content=content)
@@ -813,6 +812,28 @@ def run_text_detection(path):
                     result += word_text + ' '
     return result
 
+def run_text_detection_url(path):
+    from google.cloud import vision
+
+    client = vision.ImageAnnotatorClient()
+    image = vision.types.Image()
+    image.source.image_uri = path
+
+    response = client.text_detection(image=image)
+    
+    result = ""
+
+    for page in response.full_text_annotation.pages:
+        for block in page.blocks:
+            for paragraph in block.paragraphs:
+                for word in paragraph.words:
+                    word_text = ''.join([
+                        symbol.text for symbol in word.symbols
+                    ])
+                    result += word_text + " "
+    return result
+
+
 # test implemented
 def ocr(request):
     if not request.user.is_authenticated:
@@ -822,35 +843,20 @@ def ocr(request):
         try:
             image = request.FILES['image']
         except:
+            # print("could not get image in ocr")
             return HttpResponse(status=400)
-
+        
         fs = FileSystemStorage()
         filename = fs.save(image.name, image)
-        path = fs.url(filename)
+        # path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + fs.url(filename)
+        # path='https://www.booksbridge.online/media/zzz.jpg'
+        path = 'https://www.booksbridge.online' + fs.url(filename)
 
-        result = run_text_detection(path)
-        result_dict = { 'quote': result }
-        return JsonResponse(result_dict, status=200)                       
+        text = run_text_detection_url(path)     # OR run_text_detection(path): SHOULD DO WITH ABSOLUTE PATH
+        text_dict = { 'quote': text }
+        return JsonResponse(text_dict, status=200)                       
 
-        '''
-        #uri = 'http://127.0.0.1:8000/api/ocr/' + image.name
-        url = image.temporary_file_path
-        from google.cloud import vision
-        client = vision.ImageAnnotatorClient()
-        image = vision.types.Image()
-        image.source.image_uri = uri
-
-        response = client.document_text_detection(image=image)
-        result = "yeah"
-        for page in response.full_text_annotation.pages:
-            for block in page.blocks:
-                for paragraph in block.paragraphs:
-                    for word in paragraph.words:
-                        word_text = ''.join([
-                            symbol.text for symbol in word.symbols
-                        ])
-                        result += word_text + " "
-        '''
+        
     else:
         return HttpResponseNotAllowed(['POST'])
 

@@ -236,6 +236,7 @@ class BookTestCase(TestCase):
     def test_profile(self):
         # Initialize
         client = Client()
+        #self.pretest(client, '/api/profile/1/')
 
         user = User.objects.create_user(
             email='jsmith@snu.ac.kr',
@@ -262,7 +263,7 @@ class BookTestCase(TestCase):
                                }),
                                content_type='application/json')
 
-        # GET
+        # # GET
         response = client.get('/api/profile/1/',
                               content_type='application/json',)
         self.assertEqual(response.status_code, 405)
@@ -1368,7 +1369,7 @@ class BookTestCase(TestCase):
     def mock_run_text_detection(path):
         return "TEST_QUOTE"
 
-    @patch('book.views.run_text_detection', side_effect=mock_run_text_detection) 
+    @patch('book.views.run_text_detection_url', side_effect=mock_run_text_detection) 
     def test_ocr(self, arg):
         # Initialize
         client = Client()
