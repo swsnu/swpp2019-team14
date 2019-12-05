@@ -53,7 +53,6 @@ def photo_upload(request):
         try:
             image = request.FILES['image']
         except:
-            print("could not get image")
             return HttpResponse(status=400)
         profile = request.user.profile
         profile.profile_photo = image
