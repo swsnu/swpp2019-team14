@@ -26,6 +26,7 @@ class ConfirmDelete extends Component {
           confirmButton="가즈아!!!"
           onCancel={this.handleCancel}
           onConfirm={this.handleConfirm}
+          className="Confirmation"
         />
       </div>
     );

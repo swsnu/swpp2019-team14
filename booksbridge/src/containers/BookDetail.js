@@ -18,6 +18,7 @@ class BookDetail extends Component {
   constructor(props) {
     super(props);
   }
+
   componentDidMount() {
     this.props.onLoadBook(this.props.match.params.book_id);
     this.props.onLoadArticles(this.props.match.params.book_id);
@@ -121,7 +122,7 @@ class BookDetail extends Component {
 const mapStateToProps = state => {
   return {
     logged_in_user: state.user.logged_in_user,
-    currentBook: state.book.selectedBook,
+    currentBook: state.book.currentBook,
     shortReviews: state.article.shortReviews,
     longReviews: state.article.longReviews,
     phrases: state.article.phrases,
@@ -130,7 +131,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
+    onLoadBook: isbn => dispatch(actionCreators.getCurrentBook(isbn)),
     onLoadArticles: isbn => dispatch(actionCreators.getArticlesByBookId(isbn)),
     onLikeBook: isbn => dispatch(actionCreators.postBookLike(isbn)),
     onUnlikeBook: isbn => dispatch(actionCreators.deleteBookLike(isbn)),
