@@ -5,6 +5,7 @@ import * as actionCreators from '../../store/actions/actionCreators';
 import { withRouter } from 'react-router';
 
 import './SelectLibraryModal.css';
+import AddLibraryModal from '../Library/AddLibraryModal';
 
 class SelectLibraryModal extends Component {
   constructor(props) {
@@ -96,7 +97,8 @@ class SelectLibraryModal extends Component {
           <Modal.Content scrolling className="LibraryList">
             {libraries_html}
           </Modal.Content>
-          <Modal.Actions>
+          <Modal.Actions className="LibraryModalAction">
+            <AddLibraryModal mode={'ADD'} />
             <Button primary onClick={this.close}>
               닫기 <Icon name="chevron right" />
             </Button>
