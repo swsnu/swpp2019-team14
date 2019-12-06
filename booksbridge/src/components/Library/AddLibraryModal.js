@@ -56,7 +56,7 @@ class AddLibraryModal extends Component {
   /////////////////////////////////////////////
 
   addToLibrary = () => {
-    /* Debug Start */
+    /* Debug Start 
     console.log('[DEBUG] status: ' + this.state.mode);
     console.log('[DEBUG] books: ');
     this.state.books.map(book => {
@@ -69,11 +69,9 @@ class AddLibraryModal extends Component {
           : 'no'),
     );
     //if (this.props.selectedBook == null) return;
-    /* Debug End */
+     Debug End */
 
     setTimeout(() => {
-      console.log('[DEBUG] timeout');
-
       this.setState({
         ...this.state,
         books: this.state.books.concat(this.props.selectedBook),
