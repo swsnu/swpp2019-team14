@@ -929,6 +929,33 @@ def follow(request, user_id):
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
 
+def book_like(request, book_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
+        book = get_object_or_404(Book, id=book_id)
+        book.like_users.add(request.user)
+        return JsonResponse(model_to_dict(book), status=201)
+    
+    elif request.method == 'GET':
+        book = get_object_or_404(Book, id=book_id)
+        likeusers = book.like_users.all()
+        users = []
+        for user in likeusers:
+            user_dict = make_user_dict(user)
+            users.add(user_dict)
+        return JsonResponse(users, status=200)
+    
+    elif request.method == 'PUT':
+        book = get_object_or_404(Book, id=book_id)
+        book.like.users.remove(request.user)
+        return JsonResponse(model_to_dict(book), status=201)
+
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST','PUT'])
+
+
 # test implemented
 def article_like(request, article_id):
     if not request.user.is_authenticated:
@@ -983,8 +1010,14 @@ def curation_like(request, curation_id):
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
 
-
-
+def make_user_dict(user):
+    user_dict = {
+        'id':user.id,
+        'username':user.username,
+        'profile_photo':user.profile.profile_photo.name,
+        'nickname':user.profile.nickname,
+    }
+    return user_dict
 
 @ensure_csrf_cookie
 def token(request):

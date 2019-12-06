@@ -42,6 +42,7 @@ class BookDetail extends Component {
     const { thumbnail } = this.props.currentBook;
     const { contents } = this.props.currentBook;
     const { author_contents } = this.props.currentBook;
+    const { like_users } = this.props.currentBook;
     const { shortReviews } = this.props;
     const { longReviews } = this.props;
     const { phrases } = this.props;
@@ -58,6 +59,7 @@ class BookDetail extends Component {
             publisher={publisher}
             publishedDate={publishedDate}
             thumbnail={thumbnail}
+            like_users={like_users}
           />
         </div>
         <div className="BookDetailButtons">

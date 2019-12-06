@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-
-import Alert from 'react-bootstrap/Alert';
 import Image from 'react-bootstrap/Image';
-
+import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
+import { Popup, Icon } from 'semantic-ui-react';
 
 import './BookInfo.css';
 
@@ -13,6 +12,13 @@ class BookInfo extends Component {
   }
 
   render() {
+    const LikeButton = (
+      <div>
+        <Icon name="like" />
+        {this.props.like_users.length} 즐겨찾기
+      </div>
+    );
+
     return (
       <div className="containerStyle">
         <div style={{ textAlign: 'left' }}>
@@ -21,7 +27,7 @@ class BookInfo extends Component {
 
         <div style={{ textAlign: 'right' }}>
           <div className="BookInfoStyle">
-            <div className="info">
+            <div className="BookInfoText">
               <p className="titleStyle">{this.props.title}</p>
               <p>
                 <b>AUTHOR(S) : </b>
@@ -40,6 +46,15 @@ class BookInfo extends Component {
                 {this.props.isbn}
               </p>
             </div>
+            <div className="BookLikeSection">
+              <div className="BookLikeButton">
+                <Popup
+                  content="책을 '즐겨찾기'할 경우, 이 책에 새로 남겨진 리뷰를 피드에서 확인할 수 있습니다."
+                  position="top center"
+                  trigger={LikeButton}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -47,4 +62,15 @@ class BookInfo extends Component {
   }
 }
 
-export default BookInfo;
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {};
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(BookInfo);

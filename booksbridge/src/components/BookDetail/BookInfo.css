@@ -25,3 +25,8 @@
   text-align: left;
   padding: 20px;
 };
+
+.BookLikeSection{
+  background-color: red;
+  text-align: right;
+}

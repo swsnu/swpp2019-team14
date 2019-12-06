@@ -31,6 +31,7 @@ class Book(models.Model):
     authors = models.TextField()
     publisher = models.TextField()
     published_date = models.TextField(null=True)
+    like_users = models.ManyToManyField(User)
 
     def __str__(self):
         return str(self.isbn)
@@ -105,7 +106,6 @@ class ArticleLike(models.Model):
 class CurationLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE)
-
 
 class Follow(models.Model):
     follower = models.ForeignKey(
