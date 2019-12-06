@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Form, TextArea, Icon } from 'semantic-ui-react';
 import * as actionCreators from '../../store/actions/actionCreators';
 
+import FollowerListModal from './FollwerListModal';
+
 import './UserInfo.css';
 class UserInfo extends Component {
   constructor(props) {
@@ -12,6 +14,7 @@ class UserInfo extends Component {
       onEdit: false,
       nickname: '',
       comment: '',
+      //followerOpen: false,
     };
 
     this.inputRef = React.createRef();
@@ -20,6 +23,7 @@ class UserInfo extends Component {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.profile_user) return;
     this.setState({
+      //...this.state,
       onEdit: false,
       nickname: nextProps.profile_user.nickname,
       comment: nextProps.profile_user.profile_text,
@@ -56,6 +60,23 @@ class UserInfo extends Component {
       this.setState(state => ({ ...this.state, onEdit: false }));
     }
   }
+
+  /*
+  handleFollowerModalOpen = () => {
+    console.log('[DEBUG] handleFollowerModalOpen called');
+    this.setState({
+      ...this.state,
+      followerOpen: true,
+    });
+  };
+
+  handleFollowerModalClose = () => {
+    this.setState({
+      ...this.state,
+      followerOpen: false,
+    });
+  };
+  */
 
   handleFileInput(e) {
     e.preventDefault();
@@ -240,10 +261,11 @@ class UserInfo extends Component {
           <div className="FooterRight">
             <div className="Follow">
               {follow_button}
-              <p className="FollowStatus">
-                {followers ? followers.length : 0} 팔로워{' '}
-                {followees ? followees.length : 0} 팔로잉
-              </p>
+              <FollowerListModal
+                profile_user={profile_user}
+                followers={followers}
+                followees={followees}
+              />
             </div>
           </div>
         </div>

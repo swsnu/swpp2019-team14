@@ -880,12 +880,14 @@ def follow(request, user_id):
         follower_dict = {'id': follow.follower.id,
                          'username': follow.follower.username,
                          'profile_photo': follow.follower.profile.profile_photo.name,
-                         'nickname': follow.follower.profile.nickname 
+                         'nickname': follow.follower.profile.nickname,
+                         'date_joined': follow.follower.date_joined.date(),
                         }
         followee_dict = {'id': follow.followee.id,
                          'username': follow.followee.username,
                          'profile_photo': follow.followee.profile.profile_photo.name,
-                         'nickname': follow.followee.profile.nickname 
+                         'nickname': follow.followee.profile.nickname,
+                         'date_joined': follow.followee.date_joined.date(),
                         }
         
         follow_dict = {'follower_dict': follower_dict, 'followee_dict': followee_dict}
@@ -898,7 +900,8 @@ def follow(request, user_id):
         follower_list = [{'id': user.id,
                          'username':user.username,
                          'profile_photo':user.profile.profile_photo.name,
-                         'nickname':user.profile.nickname } for user in follower_list]
+                         'nickname':user.profile.nickname,
+                         'date_joined': user.date_joined.date(), } for user in follower_list]
 
         # users that requested user follows
         followee_list = [get_object_or_404(User, id=x.followee_id) 
@@ -906,7 +909,8 @@ def follow(request, user_id):
         followee_list = [{'id': user.id,
                          'username':user.username,
                          'profile_photo':user.profile.profile_photo.name,
-                         'nickname':user.profile.nickname } for user in followee_list]
+                         'nickname':user.profile.nickname,
+                         'date_joined': user.date_joined.date(), } for user in followee_list]
 
         result_dict = {'follower_list': follower_list, 'followee_list': followee_list}
         return JsonResponse(result_dict, status=200)
@@ -921,12 +925,14 @@ def follow(request, user_id):
         follower_dict = {'id': follow.follower.id,
                          'username': follow.follower.username,
                          'profile_photo': follow.follower.profile.profile_photo.name,
-                         'nickname': follow.follower.profile.nickname 
+                         'nickname': follow.follower.profile.nickname,
+                         'date_joined': follow.follower.date_joined.date(),
                         }
         followee_dict = {'id': follow.followee.id,
                          'username': follow.followee.username,
                          'profile_photo': follow.followee.profile.profile_photo.name,
-                         'nickname': follow.followee.profile.nickname 
+                         'nickname': follow.followee.profile.nickname,
+                         'date_joined': follow.followee.date_joined.date(),
                         }
         
         follow_dict = {'follower_dict': follower_dict, 'followee_dict': followee_dict}

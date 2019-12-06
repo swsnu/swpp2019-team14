@@ -22,6 +22,7 @@ class AddLibraryModal extends Component {
   constructor(props) {
     super(props);
   }
+
   state = {
     open: false,
     title: this.props.title ? this.props.title : '',
@@ -55,22 +56,22 @@ class AddLibraryModal extends Component {
   /////////////////////////////////////////////
 
   addToLibrary = () => {
-    /* Debug Start */
+    /* Debug Start 
     console.log('[DEBUG] status: ' + this.state.mode);
     console.log('[DEBUG] books: ');
     this.state.books.map(book => {
       console.log(book.title);
     });
     console.log(
-      '[DEBUG] selectedBook exists?: ' + this.props.selectedBook != null
-        ? 'yes. the title is: ' + this.props.selectedBook
-        : 'no',
+      '[DEBUG] selectedBook exists?: ' +
+        (this.props.selectedBook != null
+          ? 'yes. the title is: ' + this.props.selectedBook.title
+          : 'no'),
     );
     //if (this.props.selectedBook == null) return;
-    /* Debug End */
-    setTimeout(() => {
-      console.log('[DEBUG] timeout');
+     Debug End */
 
+    setTimeout(() => {
       this.setState({
         ...this.state,
         books: this.state.books.concat(this.props.selectedBook),
