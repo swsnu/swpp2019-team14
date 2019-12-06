@@ -96,8 +96,8 @@ export const getSpecificBook = isbn => dispatch =>
   );
 
 //export const POST_BOOK_LIKE = 'POST_BOOK_LIKE';
-export const postBookLike = id => dispatch =>
-  axios.post(`/api/like/book/${id}/`).then(res =>
+export const postBookLike = isbn => dispatch =>
+  axios.post(`/api/like/book/${isbn}/`).then(res =>
     dispatch({
       type: actionTypes.POST_BOOK_LIKE,
       book: res.data,
@@ -105,8 +105,8 @@ export const postBookLike = id => dispatch =>
   );
 
 //export const DELETE_BOOK_LIKE = 'DELETE_BOOK_LIKE';
-export const deleteBookLike = id => dispatch =>
-  axios.put(`/api/like/book/${id}/`).then(res =>
+export const deleteBookLike = isbn => dispatch =>
+  axios.put(`/api/like/book/${isbn}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_BOOK_LIKE,
       book: res.data,

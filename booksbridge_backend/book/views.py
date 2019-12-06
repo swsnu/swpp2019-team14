@@ -114,11 +114,11 @@ def searchbooks(request,keyword,page):
                 try:
                     try:
                         book_in_db = Book.objects.get(isbn = int(book['isbn'][11:]) if (len(book['isbn']) == 24) else int(book['isbn']))
-                        book_dict = model_to_dict(book_in_db)
+                        book_dict = make_book_dict(book_in_db)
                         book_response.append(book_dict)
                     except ValueError:
                         book_in_db = Book.objects.get(isbn = int(book['isbn'][5:]))
-                        book_dict = model_to_dict(book_in_db)
+                        book_dict = make_book_dict(book_in_db)
                         book_response.append(book_dict)
                 except Book.DoesNotExist:
                     try:
@@ -144,7 +144,7 @@ def searchbooks(request,keyword,page):
                             published_date = book['datetime'][0:9],
                         )
                     new_book.save()
-                    book_dict = model_to_dict(new_book)
+                    book_dict = make_book_dict(new_book)
                     book_response.append(book_dict)
             response_body={'books':book_response,'count': count}
             return JsonResponse(response_body)
@@ -159,7 +159,7 @@ def specific_book(request,isbn):
     elif request.method == 'GET':
         try:
             book_in_db = Book.objects.get(isbn = isbn)
-            book_dict = model_to_dict(book_in_db)
+            book_dict = make_book_dict(book_in_db)
             response = requests.get('https://m.search.daum.net/search'+book_in_db.url[30:]).text
         except:
             return HttpResponse(status=400)
@@ -190,7 +190,7 @@ def make_article_dict(article):
     }
 
     book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
-    book_dict = model_to_dict(book_in_db)
+    book_dict = make_book_dict(book_in_db)
 
     comments = get_comments(article)
     article_dict = {
@@ -536,7 +536,7 @@ def make_curation_dict(curation):
     }
 
     book_in_curation = BookInCuration.objects.filter(curation=curation)
-    book_list = [{'book': model_to_dict(get_object_or_404(Book, isbn=book.book_id)), 'content': book.content} 
+    book_list = [{'book': make_book_dict(get_object_or_404(Book, isbn=book.book_id)), 'content': book.content} 
                  for book in book_in_curation]  # book_id: isbn 
 
     comments = get_comments(curation)
@@ -587,7 +587,7 @@ def curation_page(request, page):
                 if(len(book_set)==4):
                     books.append(book_set)
                     book_set=[]
-                book_set.append(model_to_dict(books_in_cur.book))
+                book_set.append(make_book_dict(books_in_cur.book))
             books.append(book_set)
             user=curation.author
             user_dict = {
@@ -934,30 +934,30 @@ def follow(request, user_id):
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
 
-def book_like(request, book_id):
+def book_like(request, isbn):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     
     # in book detail page
     elif request.method == 'POST':
-        book = get_object_or_404(Book, id=book_id)
+        book = get_object_or_404(Book, isbn=isbn)
         book.like_users.add(request.user)
-        return JsonResponse(model_to_dict(book), status=201)
+        return JsonResponse(make_book_dict(book), status=201)
     
     elif request.method == 'GET':
-        book = get_object_or_404(Book, id=book_id)
+        book = get_object_or_404(Book, isbn=isbn)
         likeusers = book.like_users.all()
         users = []
         for user in likeusers:
             user_dict = make_user_dict(user)
-            users.add(user_dict)
+            users.append(user_dict)
         return JsonResponse(users, status=200)
     
     # delete, in book detail page
     elif request.method == 'PUT':
-        book = get_object_or_404(Book, id=book_id)
+        book = get_object_or_404(Book, isbn=isbn)
         book.like.users.remove(request.user)
-        return JsonResponse(model_to_dict(book), status=201)
+        return JsonResponse(make_book_dict(book), status=201)
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST','PUT'])
@@ -1025,6 +1025,25 @@ def make_user_dict(user):
         'nickname':user.profile.nickname,
     }
     return user_dict
+
+def make_book_dict(book):
+    users = []
+    likeusers = book.like_users.all()
+    for user in likeusers:
+        user_dict = make_user_dict(user)
+        users.append(user_dict)
+    book_dict = {
+        'isbn': book.isbn,
+        'title': book.title,
+        'contents': book. contents,
+        'url': book.url,
+        'thumbnail': book.thumbnail,
+        'authors':book.authors,
+        'publisher':book.publisher,
+        'published_date': book.published_date,
+        'like_users': users,
+    }
+    return book_dict
 
 @ensure_csrf_cookie
 def token(request):
