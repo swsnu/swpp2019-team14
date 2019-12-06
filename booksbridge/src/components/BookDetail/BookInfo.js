@@ -11,30 +11,7 @@ class BookInfo extends Component {
     super(props);
   }
 
-  onClickLikeBookButton = like_or_not => {
-    if (like_or_not) {
-      this.props.onUnlikeBook(this.props.isbn);
-      this.props.onLoadBook(this.props.isbn);
-    } else {
-      this.props.onLikeBook(this.props.isbn);
-      this.props.onLoadBook(this.props.isbn);
-    }
-  };
-
   render() {
-    const test = user => user.id === this.props.logged_in_user.id;
-    const like_or_not = this.props.like_users.some(test);
-    const LikeButton = (
-      <div onClick={() => this.onClickLikeBookButton(like_or_not)}>
-        {like_or_not ? (
-          <Icon name="heart" color="red" />
-        ) : (
-          <Icon name="heart outline" />
-        )}
-        {this.props.like_users.length} 즐겨찾기
-      </div>
-    );
-
     return (
       <div className="containerStyle">
         <div style={{ textAlign: 'left' }}>
@@ -70,16 +47,12 @@ class BookInfo extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    currentBook: state.book.selectedBook,
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
-    onLikeBook: isbn => dispatch(actionCreators.postBookLike(isbn)),
-    onUnlikeBook: isbn => dispatch(actionCreators.deleteBookLike(isbn)),
   };
 };
 
