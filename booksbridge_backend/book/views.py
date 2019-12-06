@@ -956,7 +956,7 @@ def book_like(request, isbn):
     # delete, in book detail page
     elif request.method == 'PUT':
         book = get_object_or_404(Book, isbn=isbn)
-        book.like.users.remove(request.user)
+        book.like_users.remove(request.user)
         return JsonResponse(make_book_dict(book), status=201)
 
     else:

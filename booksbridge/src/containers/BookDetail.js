@@ -46,6 +46,7 @@ class BookDetail extends Component {
     const { shortReviews } = this.props;
     const { longReviews } = this.props;
     const { phrases } = this.props;
+    const { logged_in_user } = this.props;
 
     return (
       <div className="bookDetail">
@@ -60,6 +61,7 @@ class BookDetail extends Component {
             publishedDate={publishedDate}
             thumbnail={thumbnail}
             like_users={like_users}
+            logged_in_user={logged_in_user}
           />
         </div>
         <div className="BookDetailButtons">

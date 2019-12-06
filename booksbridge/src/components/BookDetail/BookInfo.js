@@ -11,10 +11,25 @@ class BookInfo extends Component {
     super(props);
   }
 
+  onClickLikeBookButton = like_or_not => {
+    console.log(like_or_not);
+    if (like_or_not) this.props.onUnlikeBook(this.props.isbn);
+    else {
+      this.props.onLikeBook(this.props.isbn);
+    }
+  };
+
   render() {
+    const test = user => user.id === this.props.logged_in_user.id;
+    const like_or_not = this.props.like_users.some(test);
+    console.log(like_or_not);
     const LikeButton = (
-      <div>
-        <Icon name="like" />
+      <div onClick={() => this.onClickLikeBookButton(like_or_not)}>
+        {like_or_not ? (
+          <Icon name="heart" color="red" />
+        ) : (
+          <Icon name="heart outline" />
+        )}
         {this.props.like_users.length} 즐겨찾기
       </div>
     );
@@ -67,7 +82,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    onLikeBook: isbn => dispatch(actionCreators.postBookLike(isbn)),
+    onUnlikeBook: isbn => dispatch(actionCreators.deleteBookLike(isbn)),
+  };
 };
 
 export default connect(
