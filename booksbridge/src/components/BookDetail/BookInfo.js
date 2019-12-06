@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Image from 'react-bootstrap/Image';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
-import { Popup, Icon } from 'semantic-ui-react';
 
 import './BookInfo.css';
 

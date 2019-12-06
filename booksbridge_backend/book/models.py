@@ -37,7 +37,6 @@ class Book(models.Model):
     def __str__(self):
         return str(self.isbn)
 
-
 class Article(models.Model):
     objects = models.Manager()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='articles')
@@ -48,16 +47,17 @@ class Article(models.Model):
     is_long = models.BooleanField(default=False)
     is_short = models.BooleanField(default=False)
     is_phrase = models.BooleanField(default=False)
-
+    like_users = models.ManyToManyField(User, through='ArticleLike')
     def __str__(self):
         return str(self.content)
 
 class Curation(models.Model):
     objects = models.Manager()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='curations')
     title = models.TextField()
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
+    like_users = models.ManyToManyField(User, through='CurationLike')
     def __str__(self):
         return str(self.title)
 
@@ -77,8 +77,6 @@ class ArticleComment(Comment):
 
 class CurationComment(Comment):
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE, related_name='comments')
-
-
 
 class BookInCuration(models.Model):
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE, related_name='book_in_curation')

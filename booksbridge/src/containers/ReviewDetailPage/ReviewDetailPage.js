@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Feed, Icon } from 'semantic-ui-react';
+import Spinner from 'react-bootstrap/Spinner';
 
 import Header from '../../components/Header';
 import BookInfo from '../../components/BookDetail/BookInfo';
@@ -31,10 +32,8 @@ class ReviewDetailPage extends Component {
   };
 
   render() {
-    this.props.onGetLikeArticle(this.props.match.params.review_id);
-
     if (!this.props.currentArticle) {
-      return <div className="loading">LOADING...</div>;
+      return <Spinner animation="border" className="Spinner" />;
     }
 
     const book = this.props.currentArticle.book;

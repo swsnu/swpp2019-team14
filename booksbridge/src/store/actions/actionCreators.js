@@ -9,13 +9,18 @@ axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 // export const POST_NEW_USER = 'POST_NEW_USER'
 export const postUser = user => {
   return dispatch => {
-    return axios.post('/api/user/', user).then(res => {
-      dispatch({
-        type: actionTypes.POST_NEW_USER,
-        user: res.data,
+    return axios
+      .post('/api/user/', user)
+      .then(res => {
+        dispatch({
+          type: actionTypes.POST_NEW_USER,
+          user: res.data,
+        });
+        dispatch(push('/sign-in/'));
+      })
+      .catch(err => {
+        alert('중복된 아이디입니다.');
       });
-      dispatch(push('/sign-in/'));
-    });
   };
 };
 
@@ -34,7 +39,7 @@ export const loginUser = user => {
         dispatch(push('/main/'));
       })
       .catch(err => {
-        alert('Username or Password is incorrect.');
+        alert('아이디 혹은 비밀번호가 틀렸습니다.');
       });
   };
 };

@@ -28,6 +28,8 @@
     line-height: 1.2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    word-wrap:break-word;
+    
   }
   @media only screen and (max-width: 600px) {
     .AuthorProfile {

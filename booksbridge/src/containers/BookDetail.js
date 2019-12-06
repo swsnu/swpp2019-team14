@@ -56,7 +56,7 @@ class BookDetail extends Component {
     const { logged_in_user } = this.props;
 
     const test = user => user.id === logged_in_user.id;
-    const like_or_not = like_users.some(test);
+    const like_or_not = like_users.some(test); //true or false
 
     const LikeButton = (
       <div onClick={() => this.onClickLikeBookButton(like_or_not, isbn)}>

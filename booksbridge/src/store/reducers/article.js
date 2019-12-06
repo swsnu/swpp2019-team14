@@ -8,7 +8,6 @@ const initialState = {
   hasNext: null,
   selectedArticle: null,
   articlesByUserID: [],
-  likes: null,
   length: 0,
 };
 
@@ -52,7 +51,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_ARTICLE_LIKE:
       return {
         ...state,
-        likes: action.likes.count,
+        selectedArticle: action.article,
       };
 
     case actionTypes.DELETE_ARTICLE_LIKE:

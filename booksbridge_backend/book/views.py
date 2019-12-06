@@ -177,27 +177,21 @@ def specific_book(request,isbn):
 
 # test implemented
 def make_article_dict(article):
-    ''' input: Article instance   ->  output: article dict  '''
     deltatime = datetime.now() - article.date
     time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
     user = get_object_or_404(User, id=article.author_id)
-    user_dict = {
-        'id':user.id,
-        'username':user.username,
-        'profile_photo':user.profile.profile_photo.name,
-        'nickname':user.profile.nickname,
-    }
-
+    user_dict = make_user_dict(user)
     book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
     book_dict = make_book_dict(book_in_db, False)
-
     comments = get_comments(article)
+    likes = []
+    likeusers = article.like_users.all()
+    for user in likeusers:
+        like_dict = make_user_dict(user)
+        likes.append(like_dict)
     article_dict = {
         'author': user_dict,
-        'book':book_dict, 
-        # 'book_isbn': article.book.isbn,
-        # 'book_title': article.book.title,
-        # 'book_thumbnail': article.book.thumbnail,
+        'book':book_dict,
         'id': article.id,
         'title': article.title,
         'content': article.content,
@@ -206,8 +200,8 @@ def make_article_dict(article):
         'is_short': article.is_short,
         'is_phrase': article.is_phrase,
         'comments': comments,
+        'like_users': likes,
     }
-
     return article_dict
 
 # test implemented
