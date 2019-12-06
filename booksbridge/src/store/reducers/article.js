@@ -8,8 +8,6 @@ const initialState = {
   hasNext: null,
   selectedArticle: null,
   articlesByUserID: [],
-  myLikes: { count: 0, users: [] },
-  likes: 0,
   length: 0,
 };
 

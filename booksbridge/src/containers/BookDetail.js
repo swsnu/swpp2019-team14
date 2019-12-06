@@ -17,6 +17,9 @@ import './containers.css';
 class BookDetail extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      articles: [],
+    };
     this.likeHandler = this.likeHandler.bind(this);
   }
 
@@ -37,31 +40,15 @@ class BookDetail extends Component {
     this.props.history.push('/review/create');
   };
 
-  async likeHandler(article_id) {
-    await this.props.onLoadArticle(article_id);
-
-    if (
-      this.checkUserInArray(
-        this.props.logged_in_user.id,
-        this.props.currentArticle.likes.users,
-      )
-    ) {
-      await this.props.onDeleteLikeArticle(article_id);
+  likeHandler(like_or_not, article_id) {
+    if (like_or_not) {
+      this.props.onDeleteLikeArticle(article_id);
       this.props.onLoadArticles(this.props.match.params.book_id);
     } else {
-      await this.props.onPostLikeArticle(article_id);
+      this.props.onPostLikeArticle(article_id);
       this.props.onLoadArticles(this.props.match.params.book_id);
     }
   }
-
-  checkUserInArray = (user_id, user_array) => {
-    const result = user_array.filter(user => user.id === user_id);
-    if (result.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   render() {
     if (!this.props.currentBook) {
@@ -150,7 +137,7 @@ class BookDetail extends Component {
 const mapStateToProps = state => {
   return {
     logged_in_user: state.user.logged_in_user,
-    currentBook: state.book.currentBook,
+    currentBook: state.book.selectedBook,
     shortReviews: state.article.shortReviews,
     longReviews: state.article.longReviews,
     phrases: state.article.phrases,
@@ -161,8 +148,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
-    onLoadArticle: article_id =>
-      dispatch(actionCreators.getSpecificArticle(article_id)),
     onLoadArticles: isbn => dispatch(actionCreators.getArticlesByBookId(isbn)),
     onPostLikeArticle: article_id =>
       dispatch(actionCreators.postArticleLike(article_id)),

@@ -31,15 +31,27 @@ const BookTabsReview = props => {
                 </div>
                 <div className="ReviewContent">{props.content}</div>
               </div>
-              {props.is_long ? null : (
-                <div className="ReviewLikeButton">
+              {props.like_or_not ? (
+                <div
+                  className="ReviewLikeButton"
+                  onClick={() => props.likeHandler(true, props.id)}
+                >
                   <Feed.Meta>
                     <Feed.Like>
-                      <Icon
-                        name="like"
-                        onClick={() => props.likeHandler(props.id)}
-                      />
-                      {props.likes.count}
+                      <Icon color="red" name="like" />
+                      {props.like_count}
+                    </Feed.Like>
+                  </Feed.Meta>
+                </div>
+              ) : (
+                <div
+                  className="ReviewLikeButton"
+                  onClick={() => props.likeHandler(false, props.id)}
+                >
+                  <Feed.Meta>
+                    <Feed.Like>
+                      <Icon name="like" />
+                      {props.like_count}
                     </Feed.Like>
                   </Feed.Meta>
                 </div>

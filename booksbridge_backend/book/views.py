@@ -204,7 +204,9 @@ def search_article(request, isbn):
         articles = [] 
         articles_list = Article.objects.filter(book_id=isbn).order_by('-id')
         for article in articles_list:
-            articles.append(make_article_dict(article))
+            article_dict = make_article_dict(article)
+            article_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
+            articles.append(article_dict)
         return JsonResponse(articles, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
