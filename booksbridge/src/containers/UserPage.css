@@ -8,6 +8,11 @@
   justify-content: center;
 }
 
+.LikeBookThumbnail{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 .ui.secondary.pointing.menu {
   border-bottom: 0px !important;
 }

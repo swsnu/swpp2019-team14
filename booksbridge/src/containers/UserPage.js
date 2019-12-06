@@ -57,19 +57,16 @@ class UserPage extends Component {
       this.props.ReviewLength % 5 === 0
         ? this.props.ReviewLength / 5
         : parseInt(this.props.ReviewLength / 5) + 1;
-    if (ReviewFinal === 0) ReviewFinal = 1;
 
     let CurationFinal =
       this.props.CurationLength % 5 === 0
         ? this.props.CurationLength / 5
         : parseInt(this.props.CurationLength / 5) + 1;
-    if (CurationFinal === 0) CurationFinal = 1;
 
     let BookFinal =
-      like_books.length % 5 === 0
-        ? like_books.length / 5
-        : parseInt(like_books.length / 5) + 1;
-    if (BookFinal === 0) BookFinal = 1;
+      like_books.length % 6 === 0
+        ? like_books.length / 6
+        : parseInt(like_books.length / 6) + 1;
 
     const articles = this.props.articles_by_userID.map((article, index) => {
       return (
@@ -102,6 +99,29 @@ class UserPage extends Component {
         </div>
       );
     });
+
+    let slicedBooks = [];
+    slicedBooks = like_books.slice(
+      (this.state.activeBookPage - 1) * 6,
+      this.state.activeBookPage * 6,
+    );
+
+    const likebooks = slicedBooks.map(book => {
+      return book.thumbnail === '' ? (
+        <img
+          className="LikeBookThumbnail"
+          onClick={() => this.props.history.push('/book/' + book.isbn)}
+          src="/images/no_cover.jpg"
+        />
+      ) : (
+        <img
+          className="LikeBookThumbnail"
+          onClick={() => this.props.history.push('/book/' + book.isbn)}
+          src={book.thumbnail}
+        />
+      );
+    });
+
     return (
       <div className="UserPage">
         <Header />
@@ -118,7 +138,9 @@ class UserPage extends Component {
             {articles.length === 0 ? (
               '아직 작성된 리뷰가 없습니다.'
             ) : (
-                <div>{articles}<Pagination
+              <div>
+                {articles}
+                <Pagination
                   defaultActivePage={1}
                   activePage={this.state.activeReviewPage}
                   onPageChange={this.handleReviewPaginationChange}
@@ -127,13 +149,16 @@ class UserPage extends Component {
                   pointing
                   secondary
                   totalPages={ReviewFinal}
-                /></div>
-              )}
+                />
+              </div>
+            )}
             <ContainerHeader title="작성한 큐레이션" />
             {curations.length === 0 ? (
               '아직 작성된 큐레이션이 없습니다.'
             ) : (
-                <div>{curations}<Pagination
+              <div>
+                {curations}
+                <Pagination
                   defaultActivePage={1}
                   activePage={this.state.activeCurationPage}
                   onPageChange={this.handleCurationPaginationChange}
@@ -142,19 +167,28 @@ class UserPage extends Component {
                   pointing
                   secondary
                   totalPages={CurationFinal}
-                /></div>
-              )}
-            <ContainerHeader title="즐겨찾기 한 책" />
-            <Pagination
-              defaultActivePage={1}
-              activePage={this.state.activeBookPage}
-              onPageChange={this.handleBookPaginationChange}
-              firstItem={null}
-              lastItem={null}
-              pointing
-              secondary
-              totalPages={BookFinal}
-            />
+                />
+              </div>
+            )}
+            <ContainerHeader title="즐겨찾기한 책" />
+            {like_books.length === 0 ? (
+              '아직 즐겨찾기한 책 없습니다.'
+            ) : (
+              <div>
+                {likebooks}
+                <br />
+                <Pagination
+                  defaultActivePage={1}
+                  activePage={this.state.activeBookPage}
+                  onPageChange={this.handleBookPaginationChange}
+                  firstItem={null}
+                  lastItem={null}
+                  pointing
+                  secondary
+                  totalPages={BookFinal}
+                />
+              </div>
+            )}
             <ContainerHeader title="좋아하는 게시글" />
           </div>
         </div>
