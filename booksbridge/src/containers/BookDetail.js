@@ -61,17 +61,15 @@ class BookDetail extends Component {
 
     const LikeButton = (
       <div onClick={() => this.onClickLikeBookButton(like_or_not, isbn)}>
-
         <Button as="div" labelPosition="right">
           <Button className="BookLikeButton" color="black">
             <Icon name="heart" />
             즐겨찾기
-            </Button>
+          </Button>
           <Label as="a" basic color="black" pointing="left">
             {like_users.length}
           </Label>
         </Button>
-
       </div>
     );
 

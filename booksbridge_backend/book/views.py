@@ -737,7 +737,6 @@ def library(request, library_id):
     else:
         return HttpResponseNotAllowed(['POST', 'GET', 'PUT', 'DELETE']) 
 
-# test implemented
 def specific_user(request, username):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -745,12 +744,17 @@ def specific_user(request, username):
     elif request.method == 'GET':
         try:
             user = User.objects.get(username=username)
+            like_books=[]
+            for book in user.book_set.all():
+                book_dict = make_book_dict(book, False)
+                like_books.append(book_dict)
             user_dict = {
                 'id': user.id,
                 'username': user.username,
                 'profile_photo': user.profile.profile_photo.name,
                 'nickname': user.profile.nickname,
                 'profile_text': user.profile.profile_text,
+                'like_books' : like_books
             }
             return JsonResponse(user_dict)
         except: 
@@ -943,15 +947,6 @@ def book_like(request, isbn):
         book.like_users.add(request.user)
         return JsonResponse(make_book_dict(book, True), status=201)
     
-    elif request.method == 'GET':
-        book = get_object_or_404(Book, isbn=isbn)
-        likeusers = book.like_users.all()
-        users = []
-        for user in likeusers:
-            user_dict = make_user_dict(user)
-            users.append(user_dict)
-        return JsonResponse(users, status=200)
-    
     # delete, in book detail page
     elif request.method == 'PUT':
         book = get_object_or_404(Book, isbn=isbn)
@@ -959,7 +954,7 @@ def book_like(request, isbn):
         return JsonResponse(make_book_dict(book, True), status=201)
 
     else:
-        return HttpResponseNotAllowed(['GET', 'POST','PUT'])
+        return HttpResponseNotAllowed(['POST','PUT'])
 
 
 # test implemented
