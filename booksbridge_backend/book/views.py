@@ -183,11 +183,7 @@ def make_article_dict(article):
     user_dict = make_user_dict(user)
     book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
     book_dict = make_book_dict(book_in_db, False)
-    likes = []
     likeusers = article.like_users.all()
-    for user in likeusers:
-        like_dict = make_user_dict(user)
-        likes.append(like_dict)
     article_dict = {
         'author': user_dict,
         'book':book_dict,
@@ -198,7 +194,7 @@ def make_article_dict(article):
         'is_long': article.is_long,
         'is_short': article.is_short,
         'is_phrase': article.is_phrase,
-        'like_users': likes,
+        'like_count': likeusers.count()
     }
     return article_dict
 
@@ -252,6 +248,7 @@ def specific_article(request,review_id):
         article = get_object_or_404(Article, id=review_id)
         response_dict = make_article_dict(article)
         response_dict['comments'] = get_comments(article)
+        response_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -266,9 +263,9 @@ def article_page(request, page):
         articles_list = paginator.page(page).object_list
         articles = []
         for article in articles_list:
-            articles.append(make_article_dict(article))
-        # articles = list(articles_all.values())
-        # response_body={'articles':articles,'count': Article.objects.count()} 
+            article_dict = make_article_dict(article)
+            article_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
+            articles.append(article_dict)
         response_body={'articles': articles, 'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body)
 
@@ -327,6 +324,7 @@ def article_comment(request):
         comment.save()
         response_dict = make_article_dict(article)
         response_dict['comments'] = get_comments(article)
+        response_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
         return JsonResponse(response_dict, status=201)
     # TODO elif request.method == 'PUT':
     #    pass
@@ -941,11 +939,11 @@ def article_like(request, article_id):
         return HttpResponse(status=401)
     
     elif request.method == 'POST':
-        like = ArticleLike(user=request.user, article_id=article_id) 
-        like.save()
         article = get_object_or_404(Article, id=article_id)
+        article.like_users.add(request.user)
         result_dict = make_article_dict(article)
         result_dict['comments'] = get_comments(article)
+        result_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
         return JsonResponse(result_dict, status=201)
     
     elif request.method == 'GET':
@@ -955,11 +953,11 @@ def article_like(request, article_id):
         return JsonResponse(like_dict, status=200)
     
     elif request.method == 'DELETE':
-        like = get_object_or_404(ArticleLike, article_id=article_id, user_id=request.user.id)
-        like.delete()
         article = get_object_or_404(Article, id=article_id)
+        article.like_users.remove(request.user)
         result_dict = make_article_dict(article)
         result_dict['comments'] = get_comments(article)
+        result_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
         return JsonResponse(result_dict, status=200)
 
     else:

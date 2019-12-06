@@ -35,8 +35,7 @@ class ReviewDetailPage extends Component {
 
     const book = this.props.currentArticle.book;
 
-    const test = user => user.id === this.props.logged_in_user.id;
-    const like_or_not = this.props.currentArticle.like_users.some(test);
+    const like_or_not = this.props.currentArticle.like_or_not;
 
     const LikeButton = like_or_not ? (
       <div
@@ -48,7 +47,7 @@ class ReviewDetailPage extends Component {
         }
       >
         <Icon color="red" name="like" />
-        {this.props.currentArticle.like_users.length}
+        {this.props.currentArticle.like_count}
       </div>
     ) : (
       <div
@@ -60,7 +59,7 @@ class ReviewDetailPage extends Component {
         }
       >
         <Icon name="like" />
-        {this.props.currentArticle.like_users.length}
+        {this.props.currentArticle.like_count}
       </div>
     );
 

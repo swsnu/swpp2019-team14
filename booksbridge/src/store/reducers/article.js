@@ -56,9 +56,17 @@ const reducer = (state = initialState, action) => {
         selectedArticle: action.article,
       };
     case actionTypes.DELETE_ARTICLE_LIKE:
+      const deleted = state.articles.map(article => {
+        if (article.id === action.article.id) {
+          return { ...article, like_count: article.like_count - 1 };
+        } else {
+          return { ...article };
+        }
+      });
       return {
         ...state,
         selectedArticle: action.article,
+        articles: deleted,
       };
   }
   return state;
