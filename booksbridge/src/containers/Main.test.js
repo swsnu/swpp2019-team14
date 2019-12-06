@@ -28,6 +28,8 @@ const stubInitialState = {
       is_long: true,
       is_short: false,
       is_phrase: false,
+      like_or_not: true,
+      like_count: 1,
     },
   ],
   hasNext: true,

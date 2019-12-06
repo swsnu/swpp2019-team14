@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Feed, Icon } from 'semantic-ui-react';
+import Spinner from 'react-bootstrap/Spinner';
 
 import Header from '../../components/Header';
 import BookInfo from '../../components/BookDetail/BookInfo';
@@ -19,34 +20,48 @@ class ReviewDetailPage extends Component {
     this.props.onLoadArticle(this.props.match.params.review_id);
   }
 
-  likeHandler = () => {
-    if (
-      this.checkUserInArray(
-        this.props.logged_in_user.id,
-        this.props.currentArticle.likes.users,
-      )
-    ) {
-      this.props.onDeleteLikeArticle(this.props.match.params.review_id);
+  onClickLikeArticleButton = (like_or_not, id) => {
+    if (like_or_not) {
+      this.props.onDeleteLikeArticle(id);
     } else {
-      this.props.onPostLikeArticle(this.props.match.params.review_id);
-    }
-  };
-
-  checkUserInArray = (user_id, user_array) => {
-    const result = user_array.filter(user => user.id === user_id);
-    if (result.length > 0) {
-      return true;
-    } else {
-      return false;
+      this.props.onPostLikeArticle(id);
     }
   };
 
   render() {
     if (!this.props.currentArticle) {
-      return <div className="loading">LOADING...</div>;
+      return <Spinner animation="border" className="Spinner" />;
     }
 
     const book = this.props.currentArticle.book;
+
+    const like_or_not = this.props.currentArticle.like_or_not;
+
+    const LikeButton = like_or_not ? (
+      <div
+        onClick={() =>
+          this.onClickLikeArticleButton(
+            like_or_not,
+            this.props.currentArticle.id,
+          )
+        }
+      >
+        <Icon color="red" name="like" />
+        {this.props.currentArticle.like_count}
+      </div>
+    ) : (
+      <div
+        onClick={() =>
+          this.onClickLikeArticleButton(
+            like_or_not,
+            this.props.currentArticle.id,
+          )
+        }
+      >
+        <Icon name="like" />
+        {this.props.currentArticle.like_count}
+      </div>
+    );
 
     return (
       <div className="ReviewDetailPage">
@@ -80,14 +95,7 @@ class ReviewDetailPage extends Component {
           </div>
           <div className="ReviewContainer">
             {this.props.currentArticle.content}
-            <div className="LikeButton">
-              <Feed.Meta>
-                <Feed.Like>
-                  <Icon name="like" onClick={this.likeHandler} />
-                  {this.props.currentArticle.likes.count}
-                </Feed.Like>
-              </Feed.Meta>
-            </div>
+            <div className="LikeButton">{LikeButton}</div>
             <div className="ReviewComments">
               <Comments
                 comments={this.props.currentArticle.comments}

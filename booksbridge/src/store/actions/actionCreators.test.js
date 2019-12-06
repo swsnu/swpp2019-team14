@@ -129,7 +129,7 @@ describe('ActionCreators', () => {
     store.dispatch(actionCreators.loginUser()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spyAlert).toHaveBeenCalledWith(
-        'Username or Password is incorrect.',
+        '아이디 혹은 비밀번호가 틀렸습니다.',
       );
       done();
     });
@@ -390,6 +390,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubArticle,
         };
         resolve(result);
       });
@@ -405,6 +406,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubArticle,
         };
         resolve(result);
       });

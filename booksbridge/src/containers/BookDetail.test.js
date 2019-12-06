@@ -11,7 +11,7 @@ import { history } from '../store/store';
 import * as actionCreators from '../store/actions/actionCreators';
 
 const stubInitialState = {
-  currentBook: {
+  selectedBook: {
     isbn: 1,
     title: 'TEST_BOOK',
     url: 'TEST_URL',
@@ -41,6 +41,8 @@ const stubInitialState = {
       is_long: false,
       is_short: true,
       is_phrase: false,
+      like_count: 1,
+      like_or_not: true,
     },
   ],
   longReviews: [
@@ -61,6 +63,8 @@ const stubInitialState = {
       is_long: true,
       is_short: false,
       is_phrase: false,
+      like_count: 1,
+      like_or_not: true,
     },
   ],
   phrases: [
@@ -81,6 +85,8 @@ const stubInitialState = {
       is_long: false,
       is_short: false,
       is_phrase: true,
+      like_count: 1,
+      like_or_not: true,
     },
   ],
   libraries: [],
@@ -110,7 +116,7 @@ describe('<BookDetail />', () => {
       });
   });
 
-  it('should render bookDetail', () => {
+  it('should render loading page', () => {
     const component = mount(
       <Provider store={getMockStore({})}>
         <ConnectedRouter history={history}>
@@ -120,16 +126,6 @@ describe('<BookDetail />', () => {
     );
     const wrapper = component.find('.Spinner');
     expect(wrapper.length).toBe(2);
-  });
-
-  it(`'should render loading page`, () => {
-    const spyHistoryPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(path => {});
-    const component = mount(bookDetail);
-    const wrapper = component.find('#create_review_button').at(0);
-    wrapper.simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/review/create');
   });
 
   it(`'should redirect to review create page`, () => {

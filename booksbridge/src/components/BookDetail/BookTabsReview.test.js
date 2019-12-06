@@ -12,7 +12,6 @@ describe('<BookTabsReview />', () => {
     nickname: 'ybzzang',
   };
   const date = [0, 0, 0, 0, 0];
-  const likes = { count: 0, users: [] };
 
   beforeEach(() => {
     review = (
@@ -26,7 +25,6 @@ describe('<BookTabsReview />', () => {
           book_title="book title"
           content="review content"
           is_long={true}
-          likes={likes}
         />
       </Router>
     );

@@ -8,8 +8,6 @@ const initialState = {
   hasNext: null,
   selectedArticle: null,
   articlesByUserID: [],
-  myLikes: { count: 0, users: [] },
-  likes: 0,
   length: 0,
 };
 
@@ -46,21 +44,91 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.POST_ARTICLE_LIKE:
+      const longs = state.longReviews.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: true,
+            like_count: article.like_count + 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      const shorts = state.shortReviews.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: true,
+            like_count: article.like_count + 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      const phrases = state.phrases.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: true,
+            like_count: article.like_count + 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      return {
+        ...state,
+        selectedArticle: action.article,
+        longReviews: longs,
+        shortReviews: shorts,
+        phrases: phrases,
+      };
+    case actionTypes.GET_ARTICLE_LIKE:
       return {
         ...state,
         selectedArticle: action.article,
       };
-
-    // case actionTypes.GET_ARTICLE_LIKE:
-    //   return {
-    //     ...state,
-    //     myLikes: action.likes.count,
-    //   };
-
     case actionTypes.DELETE_ARTICLE_LIKE:
+      const longs_deleted = state.longReviews.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: false,
+            like_count: article.like_count - 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      const shorts_deleted = state.shortReviews.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: false,
+            like_count: article.like_count - 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      const phrases_deleted = state.phrases.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: false,
+            like_count: article.like_count - 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
       return {
         ...state,
         selectedArticle: action.article,
+        longReviews: longs_deleted,
+        shortReviews: shorts_deleted,
+        phrases: phrases_deleted,
       };
   }
   return state;
