@@ -161,7 +161,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
+    onLoadBook: isbn => dispatch(actionCreators.getCurrentBook(isbn)),
     onLoadArticle: article_id =>
       dispatch(actionCreators.getSpecificArticle(article_id)),
     onLoadArticles: isbn => dispatch(actionCreators.getArticlesByBookId(isbn)),
