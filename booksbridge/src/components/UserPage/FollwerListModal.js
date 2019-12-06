@@ -46,6 +46,10 @@ class FollwerListModal extends Component {
       </p>
     );
 
+    if (!(this.props.followers && this.props.followees)) {
+      return <div>로딩 실패 :(</div>;
+    }
+
     const followersHTML = this.props.followers.length
       ? this.props.followers.map(follower => {
           return <SearchUser user={follower} />;
