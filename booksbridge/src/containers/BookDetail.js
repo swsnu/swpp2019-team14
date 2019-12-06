@@ -19,6 +19,7 @@ class BookDetail extends Component {
     super(props);
     this.likeHandler = this.likeHandler.bind(this);
   }
+
   componentDidMount() {
     this.props.onLoadBook(this.props.match.params.book_id);
     this.props.onLoadArticles(this.props.match.params.book_id);
@@ -150,7 +151,7 @@ class BookDetail extends Component {
 const mapStateToProps = state => {
   return {
     logged_in_user: state.user.logged_in_user,
-    currentBook: state.book.selectedBook,
+    currentBook: state.book.currentBook,
     shortReviews: state.article.shortReviews,
     longReviews: state.article.longReviews,
     phrases: state.article.phrases,
