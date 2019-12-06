@@ -44,19 +44,35 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.POST_ARTICLE_LIKE:
-      return {
-        ...state,
-        selectedArticle: action.article,
-      };
-    case actionTypes.GET_ARTICLE_LIKE:
-      return {
-        ...state,
-        selectedArticle: action.article,
-      };
-    case actionTypes.DELETE_ARTICLE_LIKE:
-      const deleted = state.articles.map(article => {
+      const longs = state.longReviews.map(article => {
         if (article.id === action.article.id) {
-          return { ...article, like_count: article.like_count - 1 };
+          return {
+            ...article,
+            like_or_not: true,
+            like_count: article.like_count + 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      const shorts = state.shortReviews.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: true,
+            like_count: article.like_count + 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      const phrases = state.phrases.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: true,
+            like_count: article.like_count + 1,
+          };
         } else {
           return { ...article };
         }
@@ -64,7 +80,55 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedArticle: action.article,
-        articles: deleted,
+        longReviews: longs,
+        shortReviews: shorts,
+        phrases: phrases,
+      };
+    case actionTypes.GET_ARTICLE_LIKE:
+      return {
+        ...state,
+        selectedArticle: action.article,
+      };
+    case actionTypes.DELETE_ARTICLE_LIKE:
+      const longs_deleted = state.longReviews.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: false,
+            like_count: article.like_count - 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      const shorts_deleted = state.shortReviews.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: false,
+            like_count: article.like_count - 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      const phrases_deleted = state.phrases.map(article => {
+        if (article.id === action.article.id) {
+          return {
+            ...article,
+            like_or_not: false,
+            like_count: article.like_count - 1,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      return {
+        ...state,
+        selectedArticle: action.article,
+        longReviews: longs_deleted,
+        shortReviews: shorts_deleted,
+        phrases: phrases_deleted,
       };
   }
   return state;

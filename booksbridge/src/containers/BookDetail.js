@@ -43,10 +43,8 @@ class BookDetail extends Component {
   likeHandler(like_or_not, article_id) {
     if (like_or_not) {
       this.props.onDeleteLikeArticle(article_id);
-      this.props.onLoadArticles(this.props.match.params.book_id);
     } else {
       this.props.onPostLikeArticle(article_id);
-      this.props.onLoadArticles(this.props.match.params.book_id);
     }
   }
 
