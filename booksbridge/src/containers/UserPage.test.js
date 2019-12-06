@@ -22,6 +22,7 @@ const stubInitialState = {
     nickname: 'NICKNAME',
     profile_photo: 'url',
     profile_text: 'PROFILE COMMENT',
+    like_books: [],
   },
   articlesByUserID: [
     {

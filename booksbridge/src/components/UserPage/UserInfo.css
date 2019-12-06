@@ -150,6 +150,7 @@
   font-weight: 700;
   font-size: 15px;
   padding-top: 5px;
+  cursor: pointer;
 }
 .Follow {
   text-align: right;

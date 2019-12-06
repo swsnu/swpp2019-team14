@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-
-import Alert from 'react-bootstrap/Alert';
 import Image from 'react-bootstrap/Image';
-
+import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
+import { Popup, Icon } from 'semantic-ui-react';
 
 import './BookInfo.css';
 
@@ -16,12 +15,15 @@ class BookInfo extends Component {
     return (
       <div className="containerStyle">
         <div style={{ textAlign: 'left' }}>
-          <Image src={this.props.thumbnail} className="imageStyle" />
+          {this.props.thumbnail === '' ? (
+            <Image src="/images/no_cover.jpg" className="imageStyle" />
+          ) : (
+            <Image src={this.props.thumbnail} className="imageStyle" />
+          )}
         </div>
-
         <div style={{ textAlign: 'right' }}>
           <div className="BookInfoStyle">
-            <div className="info">
+            <div className="BookInfoText">
               <p className="titleStyle">{this.props.title}</p>
               <p>
                 <b>AUTHOR(S) : </b>
@@ -47,4 +49,17 @@ class BookInfo extends Component {
   }
 }
 
-export default BookInfo;
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(BookInfo);

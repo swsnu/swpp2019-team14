@@ -1,0 +1,53 @@
+.FollowerList {
+  height: auto !important;
+  width: auto !important;
+}
+
+.FollowerListContent {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+}
+
+.FollowerListContentFollower {
+  width: 50%;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  border-right: 1px solid lightgray;
+}
+
+.FollowerListContentFollowerHeader {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  font-family: 'NanumSquare', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  white-space: nowrap;
+}
+
+.FollowerListContentFollowerContent {
+  text-align: center;
+  font-family: 'NanumSquare', sans-serif;
+}
+
+.FollowerListContentFollowee {
+  width: 50%;
+  padding-left: 15px;
+  padding-bottom: 15px;
+}
+
+.FollowerListContentFolloweeHeader {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  font-family: 'NanumSquare', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  white-space: nowrap;
+}
+
+.FollowerListContentFolloweeContent {
+  text-align: center;
+  font-family: 'NanumSquare', sans-serif;
+}

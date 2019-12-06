@@ -59,6 +59,12 @@ class CreateReview extends Component {
       } else {
         this.setState({ ...this.state, confirm: true });
       }
+    } else if (this.state.type === 'short-review') {
+      if (this.state.content === '')
+        window.alert('내용을 반드시 작성해야 합니다.');
+      else if (this.state.content.length > 140) {
+        window.alert('짧은 리뷰는 140자를 넘을 수 없습니다.');
+      } else this.setState({ ...this.state, confirm: true });
     } else {
       if (this.state.content === '')
         window.alert('내용을 반드시 작성해야 합니다.');
