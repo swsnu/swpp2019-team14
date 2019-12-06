@@ -59,20 +59,13 @@ class SearchResultBook extends Component {
   }
 
   handlePaginationChange = (e, { activePage }) => {
-    this.setState({ activePage });
+    this.setState({ activePage: activePage });
     this.props.history.push(
-      '/result/search=' +
-        this.props.match.params.keyword +
-        '/book/' +
-        activePage,
+      '/result/search=' + this.props.match.params.keyword + '/' + activePage,
     );
   };
 
   render() {
-    const active = parseInt(this.props.match.params.page);
-    const items = [];
-    let first = active - 2;
-    let last = active + 2;
     let final = parseInt(this.props.count / 10) + 1;
     if (this.props.count % 10 === 0) final -= 1;
 
@@ -109,6 +102,10 @@ class SearchResultBook extends Component {
                 <Pagination
                   activePage={this.state.activePage}
                   onPageChange={this.handlePaginationChange}
+                  firstItem={null}
+                  lastItem={null}
+                  pointing
+                  secondary
                   totalPages={final}
                 />
                 <div className="TopButton">

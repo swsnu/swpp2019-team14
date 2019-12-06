@@ -54,10 +54,14 @@ const CurationSummary = props => {
                     <Carousel
                       className="carousel-items"
                       prevIcon={
-                        <Icon color="black" name="angle left" size="large" />
+                        props.books.length > 4 ? (
+                          <Icon color="black" name="angle left" size="large" />
+                        ) : null
                       }
                       nextIcon={
-                        <Icon color="black" name="angle right" size="large" />
+                        props.books.length > 4 ? (
+                          <Icon color="black" name="angle right" size="large" />
+                        ) : null
                       }
                     >
                       {Books}

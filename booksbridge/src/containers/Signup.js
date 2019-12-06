@@ -37,7 +37,7 @@ class Signup extends Component {
         <Form className="login_form" onSubmit={this.onClickSignUpButton}>
           <p className="SignUpLabel">회원가입</p>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>이메일 주소</Form.Label>
+            <Form.Label className="SignUpSmallLabel">이메일 주소</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
@@ -50,7 +50,7 @@ class Signup extends Component {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="validationFormUsername">
-            <Form.Label>아이디</Form.Label>
+            <Form.Label className="SignUpSmallLabel">아이디</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter username"
@@ -63,7 +63,7 @@ class Signup extends Component {
             />
           </Form.Group>
           <Form.Group controlId="formBasicNickname">
-            <Form.Label>닉네임</Form.Label>
+            <Form.Label className="SignUpSmallLabel">닉네임</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter nickname"
@@ -74,12 +74,11 @@ class Signup extends Component {
               required
             />
             <Form.Text className="text-muted">
-              닉네임은 8글자를 넘을 수 없으며, 특수문자와 공백이 들어갈 수
-              없습니다.
+              닉네임은 8글자를 넘을 수 없으며, 공백이 들어갈 수 없습니다.
             </Form.Text>
           </Form.Group>
           <Form.Group controlId="formBasicPassword">
-            <Form.Label>비밀번호</Form.Label>
+            <Form.Label className="SignUpSmallLabel">비밀번호</Form.Label>
             <Form.Control
               type="password"
               placeholder="Enter password"

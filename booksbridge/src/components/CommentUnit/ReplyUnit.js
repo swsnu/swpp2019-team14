@@ -11,7 +11,6 @@ const ReplyUnit = props => {
     profile_photo = props.author.profile_photo;
   else profile_photo = '/media/' + props.author.profile_photo;
 
-  window.alert('Title or content is empty.');
   return (
     <div className="ReplyUnit">
       <Comment>

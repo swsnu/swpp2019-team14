@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import { Form, TextArea, Icon } from 'semantic-ui-react';
-import Alert from 'react-bootstrap/Alert';
 import * as actionCreators from '../../store/actions/actionCreators';
 
 import './UserInfo.css';
@@ -12,7 +10,6 @@ class UserInfo extends Component {
 
     this.state = {
       onEdit: false,
-      onUpload: false,
       nickname: '',
       comment: '',
     };
@@ -25,7 +22,7 @@ class UserInfo extends Component {
     this.setState({
       onEdit: false,
       nickname: nextProps.profile_user.nickname,
-      comment: nextProps.profile_user.nickname,
+      comment: nextProps.profile_user.profile_text,
     });
   }
 
