@@ -938,6 +938,7 @@ def book_like(request, book_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     
+    # in book detail page
     elif request.method == 'POST':
         book = get_object_or_404(Book, id=book_id)
         book.like_users.add(request.user)
@@ -952,6 +953,7 @@ def book_like(request, book_id):
             users.add(user_dict)
         return JsonResponse(users, status=200)
     
+    # delete, in book detail page
     elif request.method == 'PUT':
         book = get_object_or_404(Book, id=book_id)
         book.like.users.remove(request.user)
