@@ -25,6 +25,13 @@ class UserPage extends Component {
     this.props.onLoadUserCurations(1, this.props.match.params.username);
   }
 
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.match.params.username !== prevProps.match.params.username) {
+      this.props.onLoadUser(this.props.match.params.username);
+    }
+  }
+
   handleReviewPaginationChange = (e, { activePage }) => {
     this.setState({ ...this.state, activeReviewPage: activePage });
     this.props.onLoadUserReviews(activePage, this.props.match.params.username);
