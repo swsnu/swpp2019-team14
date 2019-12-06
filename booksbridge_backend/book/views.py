@@ -343,6 +343,21 @@ def get_comments(post):
             comments.append(comment_dict)
     return comments
 
+def alarm(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'GET':
+        alarms_array=[]
+        alarms = request.user.profile.alarms.all()
+        for alarm in alarms:
+            alarm_dict = model_to_dict(alarm)
+            alarms_array.append(alarm_dict)
+        return JsonResponse(alarms_array,safe=False)
+
+def send_alarm(sender,reciever,link_id,content):
+    new_alarm = Alarm(author=sender,link_id=link_id,content=content)
+    reciever.profile.alarm.add(new_alarm)
+
 # test implemented
 def article_comment(request):
     if not request.user.is_authenticated:
@@ -358,8 +373,10 @@ def article_comment(request):
         article = get_object_or_404(Article, id=article_id)
         try:
             parent = ArticleComment.objects.get(id=parent_id)
+            send_alarm(request.user,parent.author,article_id,'reply')
         except ArticleComment.DoesNotExist:
             parent = None
+        send_alarm(request.user,article.author,article_id,'comment')
         comment = ArticleComment(article=article, author=request.user, content=content, parent=parent)
         comment.save()
         return JsonResponse(make_article_dict(article), status=201)
@@ -386,9 +403,10 @@ def curation_comment(request):
         curation = get_object_or_404(Curation, id=curation_id)
         try:
             parent = CurationComment.objects.get(id=parent_id)
+            send_alarm(request.user,parent.author,curation_id,'reply')
         except CurationComment.DoesNotExist:
             parent = None
-
+        send_alarm(request.user,parent.author,curation_id,'comment')
         comment = CurationComment(curation=curation, author=request.user, content=content, parent=parent)
         comment.save()
         
@@ -873,6 +891,7 @@ def follow(request, user_id):
         except:
             HttpResponse(status=404)
             
+        send_alarm(request.user,followee,article,'님이 회원님이 남긴 글에 댓글을 남겼습니다.')
         follow.save()
         follower_dict = {'id': follow.follower.id,
                          'username': follow.follower.username,
@@ -886,6 +905,7 @@ def follow(request, user_id):
                         }
         
         follow_dict = {'follower_dict': follower_dict, 'followee_dict': followee_dict}
+        send_alarm(request.user,followee,user_id,'follow')
         return JsonResponse(follow_dict, status=201)
 
     elif request.method == 'GET':
@@ -944,6 +964,7 @@ def article_like(request, article_id):
         like.save()
         article = get_object_or_404(Article, id=article_id)
         result_dict = make_article_dict(article)
+        send_alarm(request.user,article.author,article_id,'like')
         return JsonResponse(result_dict, status=201)
     
     elif request.method == 'GET':
@@ -971,6 +992,7 @@ def curation_like(request, curation_id):
         like.save()
         curation = get_object_or_404(Curation, id=curation_id)
         result_dict = make_curation_dict(curation)
+        send_alarm(request.user,curation.author,curation_id,'like')
         return JsonResponse(result_dict, status=201)
     
     elif request.method == 'GET':
