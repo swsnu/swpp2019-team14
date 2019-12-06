@@ -21,6 +21,7 @@ const stubInitialState = {
     publisher: 'TEST_PUBLISHER',
     published_date: 'TEST_DATE',
     author_contents: 'TEST_AUTHOR_CONTENTS',
+    like_users: [],
   },
   shortReviews: [
     {
