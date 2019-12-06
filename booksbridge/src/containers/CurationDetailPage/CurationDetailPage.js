@@ -14,36 +14,6 @@ import * as actionCreators from '../../store/actions/actionCreators';
 
 import './CurationDetailPage.css';
 
-/* 
-PATH    curation/:curation_id"
-
-RESOPNSE FROM BACKEND   curation_dict
-user_dict = {
-        'id':user.id,
-        'username':user.username,
-        'profile_photo':user.profile.profile_photo.name,
-        'nickname':user.profile.nickname,
-    }
-
-book_in_curation = BookInCuration.objects.filter(curation=curation)
-book_list = [{'book': model_to_dict(get_object_or_404(Book, isbn=book.book_id)), 'content': book.content} 
-              for book in book_in_curation]  # book_id: isbn 
-comments = get_comments(curation, False)
-
-likes = CurationLike.objects.filter(curation_id=curation.id).count()
-
-curation_dict = {
-    'id': curation.id,
-    'author': user_dict,
-    'books': book_list,    
-    'title': curation.title,
-    'content': curation.content,
-    'date': time_array,
-    'comments': comments,
-    'likes': likes
-}
- 
-*/
 class CurationDetailPage extends Component {
   constructor(params) {
     super(params);
@@ -51,16 +21,28 @@ class CurationDetailPage extends Component {
   }
 
   likeHandler = () => {
-    if (this.props.likes > 0) {
+    if (
+      this.checkUserInArray(
+        this.props.logged_in_user.id,
+        this.props.currentCuration.likes.users,
+      )
+    ) {
       this.props.onDeleteLikeCuration(this.props.match.params.curation_id);
     } else {
       this.props.onPostLikeCuration(this.props.match.params.curation_id);
     }
   };
 
-  render() {
-    this.props.onGetLikeCuration(this.props.match.params.curation_id);
+  checkUserInArray = (user_id, user_array) => {
+    const result = user_array.filter(user => user.id === user_id);
+    if (result.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
+  render() {
     if (!this.props.currentCuration) {
       return <div className="loading">LOADING..!</div>;
     }
@@ -106,7 +88,7 @@ class CurationDetailPage extends Component {
                   <i className="heart icon" /> Like
                 </div>
                 <a className="ui basic red left pointing label">
-                  {this.props.currentCuration.likes}
+                  {this.props.currentCuration.likes.count}
                 </a>
               </div>
             </div>
@@ -128,7 +110,7 @@ class CurationDetailPage extends Component {
 const mapStateToProps = state => {
   return {
     currentCuration: state.curation.selectedCuration,
-    likes: state.curation.likes,
+    logged_in_user: state.user.logged_in_user,
   };
 };
 
@@ -137,8 +119,6 @@ const mapDispatchToProps = dispatch => {
     onLoadCuration: id => dispatch(actionCreators.getSpecificCuration(id)),
     onPostLikeCuration: curation_id =>
       dispatch(actionCreators.postCurationLike(curation_id)),
-    onGetLikeCuration: curation_id =>
-      dispatch(actionCreators.getCurationLike(curation_id)),
     onDeleteLikeCuration: curation_id =>
       dispatch(actionCreators.deleteCurationLike(curation_id)),
   };

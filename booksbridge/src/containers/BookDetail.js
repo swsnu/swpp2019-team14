@@ -17,6 +17,7 @@ import './containers.css';
 class BookDetail extends Component {
   constructor(props) {
     super(props);
+    this.likeHandler = this.likeHandler.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +37,34 @@ class BookDetail extends Component {
     this.props.history.push('/review/create');
   };
 
+  async likeHandler(article_id) {
+    await this.props.onLoadArticle(article_id);
+
+    if (
+      this.checkUserInArray(
+        this.props.logged_in_user.id,
+        this.props.currentArticle.likes.users,
+      )
+    ) {
+      await this.props.onDeleteLikeArticle(article_id);
+      this.props.onLoadArticles(this.props.match.params.book_id);
+    } else {
+      await this.props.onPostLikeArticle(article_id);
+      this.props.onLoadArticles(this.props.match.params.book_id);
+    }
+  }
+
+  checkUserInArray = (user_id, user_array) => {
+    const result = user_array.filter(user => user.id === user_id);
+    if (result.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   render() {
+    console.log(this.props.logged_in_user);
     if (!this.props.currentBook) {
       return <Spinner animation="border" className="Spinner" />;
     }
@@ -112,6 +140,7 @@ class BookDetail extends Component {
             shortReviews={shortReviews}
             longReviews={longReviews}
             phrases={phrases}
+            likeHandler={this.likeHandler}
           />
         </div>
       </div>
@@ -126,13 +155,20 @@ const mapStateToProps = state => {
     shortReviews: state.article.shortReviews,
     longReviews: state.article.longReviews,
     phrases: state.article.phrases,
+    currentArticle: state.article.selectedArticle,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadBook: isbn => dispatch(actionCreators.getCurrentBook(isbn)),
+    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
+    onLoadArticle: article_id =>
+      dispatch(actionCreators.getSpecificArticle(article_id)),
     onLoadArticles: isbn => dispatch(actionCreators.getArticlesByBookId(isbn)),
+    onPostLikeArticle: article_id =>
+      dispatch(actionCreators.postArticleLike(article_id)),
+    onDeleteLikeArticle: article_id =>
+      dispatch(actionCreators.deleteArticleLike(article_id)),
     onLikeBook: isbn => dispatch(actionCreators.postBookLike(isbn)),
     onUnlikeBook: isbn => dispatch(actionCreators.deleteBookLike(isbn)),
   };

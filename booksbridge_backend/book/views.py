@@ -192,6 +192,15 @@ def make_article_dict(article):
     book_dict = make_book_dict(book_in_db, False)
 
     comments = get_comments(article)
+
+    like_query_result = ArticleLike.objects.select_related('user').filter(article_id=article.id)
+    like_user_dict = [{'id': instance.user.id, 
+                       'username': instance.user.username, 
+                       'profile_photo': instance.user.profile.profile_photo.name, 
+                       'nickname': instance.user.profile.nickname }
+                       for instance in like_query_result]
+    like_dict = { 'count': like_query_result.count(), 'users': like_user_dict }
+
     article_dict = {
         'author': user_dict,
         'book':book_dict, 
@@ -206,6 +215,7 @@ def make_article_dict(article):
         'is_short': article.is_short,
         'is_phrase': article.is_phrase,
         'comments': comments,
+        'likes': like_dict,
     }
 
     return article_dict
@@ -540,7 +550,13 @@ def make_curation_dict(curation):
 
     comments = get_comments(curation)
 
-    likes = CurationLike.objects.filter(curation_id=curation.id).count()
+    like_query_result = CurationLike.objects.select_related('user').filter(curation_id=curation.id)
+    like_user_dict = [{'id': instance.user.id, 
+                       'username': instance.user.username, 
+                       'profile_photo': instance.user.profile.profile_photo.name, 
+                       'nickname': instance.user.profile.nickname }
+                       for instance in like_query_result]
+    like_dict = { 'count': like_query_result.count(), 'users': like_user_dict }
 
     curation_dict = {
         'id': curation.id,
@@ -550,7 +566,7 @@ def make_curation_dict(curation):
         'content': curation.content,
         'date': time_array,
         'comments': comments,
-        'likes': likes
+        'likes': like_dict, 
     }
  
     return curation_dict
@@ -976,6 +992,7 @@ def article_like(request, article_id):
         return JsonResponse(result_dict, status=201)
     
     elif request.method == 'GET':
+        # to check if logged_in user liked this article before
         like_count = ArticleLike.objects.filter(article_id=article_id, user_id=request.user.id).count()  
         like_dict = { 'count': like_count }
         return JsonResponse(like_dict, status=200)
