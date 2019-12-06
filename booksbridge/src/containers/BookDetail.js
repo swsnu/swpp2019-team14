@@ -64,7 +64,6 @@ class BookDetail extends Component {
   };
 
   render() {
-    console.log(this.props.logged_in_user);
     if (!this.props.currentBook) {
       return <Spinner animation="border" className="Spinner" />;
     }

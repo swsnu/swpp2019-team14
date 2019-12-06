@@ -55,7 +55,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedArticle: action.article,
       };
-
     case actionTypes.DELETE_ARTICLE_LIKE:
       return {
         ...state,
