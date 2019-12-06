@@ -80,6 +80,8 @@ class BookTabsReviewList extends Component {
             is_short={review.is_short}
             is_phrase={review.is_phrase}
             id={review.id}
+            likes={review.likes}
+            likeHandler={this.props.likeHandler}
           />
         </div>
       );

@@ -22,6 +22,7 @@ const stubInitialState = {
     title: 'REVIEW TITLE',
     comments: [],
     date: [0, 0, 0, 0, 0],
+    likes: { count: 0, users: [] },
   },
 };
 

@@ -9,6 +9,14 @@ import * as actionCreators from '../../store/actions/actionCreators';
 
 const stubInitialState = {
   curations: [],
+  logged_in_user: {
+    id: 2,
+    username: 'www',
+    nickname: 'www',
+    profile_photo:
+      'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+    profile_text: '',
+  },
   selectedCuration: {
     id: 1,
     author: {
@@ -64,7 +72,7 @@ const stubInitialState = {
         replies: [],
       },
     ],
-    likes: 1,
+    likes: { count: 0, users: [] },
   },
 };
 const mockStore = getMockStore(stubInitialState);

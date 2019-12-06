@@ -9,30 +9,39 @@ import Comments from '../Comments/Comments';
 import ProfileSummary from '../../components/ProfileSummary/ProfileSummary';
 import Time from '../../components/Time';
 import * as actionCreators from '../../store/actions/actionCreators';
+import ArticleLike from '../../components/Like/ArticleLike';
 
 import './ReviewDetailPage.css';
 
 class ReviewDetailPage extends Component {
-  // componentDidMount() {
-  //   this.props.onLoadArticle(this.props.match.params.review_id);
-  // }
-
   constructor(params) {
     super(params);
     this.props.onLoadArticle(this.props.match.params.review_id);
   }
 
   likeHandler = () => {
-    if (this.props.likes > 0) {
+    if (
+      this.checkUserInArray(
+        this.props.logged_in_user.id,
+        this.props.currentArticle.likes.users,
+      )
+    ) {
       this.props.onDeleteLikeArticle(this.props.match.params.review_id);
     } else {
       this.props.onPostLikeArticle(this.props.match.params.review_id);
     }
   };
 
-  render() {
-    this.props.onGetLikeArticle(this.props.match.params.review_id);
+  checkUserInArray = (user_id, user_array) => {
+    const result = user_array.filter(user => user.id === user_id);
+    if (result.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
+  render() {
     if (!this.props.currentArticle) {
       return <div className="loading">LOADING...</div>;
     }
@@ -75,7 +84,7 @@ class ReviewDetailPage extends Component {
               <Feed.Meta>
                 <Feed.Like>
                   <Icon name="like" onClick={this.likeHandler} />
-                  {this.props.likes}
+                  {this.props.currentArticle.likes.count}
                 </Feed.Like>
               </Feed.Meta>
             </div>
@@ -96,18 +105,15 @@ class ReviewDetailPage extends Component {
 const mapStateToProps = state => {
   return {
     currentArticle: state.article.selectedArticle,
-    likes: state.article.likes,
+    logged_in_user: state.user.logged_in_user,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onLoadArticle: id => dispatch(actionCreators.getSpecificArticle(id)),
-    onLikeArticle: () => dispatch(actionCreators.postArticleLike()),
     onPostLikeArticle: article_id =>
       dispatch(actionCreators.postArticleLike(article_id)),
-    onGetLikeArticle: article_id =>
-      dispatch(actionCreators.getArticleLike(article_id)),
     onDeleteLikeArticle: article_id =>
       dispatch(actionCreators.deleteArticleLike(article_id)),
   };
