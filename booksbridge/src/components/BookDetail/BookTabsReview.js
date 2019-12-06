@@ -7,6 +7,7 @@ import { Button, Feed, Icon } from 'semantic-ui-react';
 
 const BookTabsReview = props => {
   const Author = <ProfileSummary user={props.author} />;
+
   return (
     <div className="Review">
       <Alert variant="light" className="article">
@@ -34,7 +35,11 @@ const BookTabsReview = props => {
                 <div className="ReviewLikeButton">
                   <Feed.Meta>
                     <Feed.Like>
-                      <Icon name="like" />4 Likes
+                      <Icon
+                        name="like"
+                        onClick={() => props.likeHandler(props.id)}
+                      />
+                      {props.likes.count}
                     </Feed.Like>
                   </Feed.Meta>
                 </div>

@@ -10,26 +10,17 @@ import Comments from '../Comments/Comments';
 import ProfileSummary from '../../components/ProfileSummary/ProfileSummary';
 import Time from '../../components/Time';
 import * as actionCreators from '../../store/actions/actionCreators';
+import ArticleLike from '../../components/Like/ArticleLike';
 
 import './ReviewDetailPage.css';
 
 class ReviewDetailPage extends Component {
-  // componentDidMount() {
-  //   this.props.onLoadArticle(this.props.match.params.review_id);
-  // }
-
   constructor(params) {
     super(params);
     this.props.onLoadArticle(this.props.match.params.review_id);
   }
 
-  likeHandler = () => {
-    if (this.props.likes > 0) {
-      this.props.onDeleteLikeArticle(this.props.match.params.review_id);
-    } else {
-      this.props.onPostLikeArticle(this.props.match.params.review_id);
-    }
-  };
+  likeHandler = () => {};
 
   render() {
     if (!this.props.currentArticle) {
@@ -74,7 +65,7 @@ class ReviewDetailPage extends Component {
               <Feed.Meta>
                 <Feed.Like>
                   <Icon name="like" onClick={this.likeHandler} />
-                  {this.props.likes}
+                  {this.props.currentArticle.likes.count}
                 </Feed.Like>
               </Feed.Meta>
             </div>
@@ -95,18 +86,15 @@ class ReviewDetailPage extends Component {
 const mapStateToProps = state => {
   return {
     currentArticle: state.article.selectedArticle,
-    likes: state.article.likes,
+    logged_in_user: state.user.logged_in_user,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onLoadArticle: id => dispatch(actionCreators.getSpecificArticle(id)),
-    onLikeArticle: () => dispatch(actionCreators.postArticleLike()),
     onPostLikeArticle: article_id =>
       dispatch(actionCreators.postArticleLike(article_id)),
-    onGetLikeArticle: article_id =>
-      dispatch(actionCreators.getArticleLike(article_id)),
     onDeleteLikeArticle: article_id =>
       dispatch(actionCreators.deleteArticleLike(article_id)),
   };

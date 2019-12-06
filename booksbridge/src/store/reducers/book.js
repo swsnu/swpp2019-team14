@@ -4,6 +4,7 @@ const initialState = {
   books: [],
   count: 0,
   selectedBook: null,
+  currentBook: null,
   searchedBooks: [],
   quote: '',
 };
@@ -19,6 +20,8 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.GET_SPECIFIC_BOOK:
       return { ...state, selectedBook: action.book };
+    case actionTypes.GET_CURRENT_BOOK:
+      return { ...state, currentBook: action.book };
     case actionTypes.POST_BOOK_LIKE:
       return { ...state, selectedBook: action.book };
     case actionTypes.DELETE_BOOK_LIKE:

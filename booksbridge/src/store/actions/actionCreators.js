@@ -100,6 +100,15 @@ export const getSpecificBook = isbn => dispatch =>
     }),
   );
 
+// export const GET_CURRENT_BOOK = 'GET_CURRENT_BOOK'
+export const getCurrentBook = isbn => dispatch =>
+  axios.get(`/api/book/${isbn}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_CURRENT_BOOK,
+      book: res.data,
+    }),
+  );
+
 //export const POST_BOOK_LIKE = 'POST_BOOK_LIKE';
 export const postBookLike = isbn => dispatch =>
   axios.post(`/api/like/book/${isbn}/`).then(res =>
