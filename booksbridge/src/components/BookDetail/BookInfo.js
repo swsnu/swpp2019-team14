@@ -21,7 +21,6 @@ class BookInfo extends Component {
             <Image src={this.props.thumbnail} className="imageStyle" />
           )}
         </div>
-
         <div style={{ textAlign: 'right' }}>
           <div className="BookInfoStyle">
             <div className="BookInfoText">
