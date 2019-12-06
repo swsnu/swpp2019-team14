@@ -59,6 +59,8 @@ class CurationDetailPage extends Component {
   };
 
   render() {
+    this.props.onGetLikeCuration(this.props.match.params.curation_id);
+
     if (!this.props.currentCuration) {
       return <div className="loading">LOADING..!</div>;
     }
