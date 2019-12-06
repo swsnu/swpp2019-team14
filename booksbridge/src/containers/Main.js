@@ -87,7 +87,8 @@ class Main extends React.Component {
                   is_long={article.is_long}
                   is_short={article.is_short}
                   is_phrase={article.is_phrase}
-                  like_users={article.like_users}
+                  like_count={article.like_count}
+                  like_or_not={article.like_or_not}
                 />
               </div>
             ))}

@@ -59,7 +59,7 @@ const Article = props => {
             <Feed.Meta>
               <Feed.Like>
                 <Icon name="like" />
-                {props.like_users.count}
+                {props.like_count}
               </Feed.Like>
             </Feed.Meta>
           </div>

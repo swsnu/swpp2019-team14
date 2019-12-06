@@ -183,7 +183,6 @@ def make_article_dict(article):
     user_dict = make_user_dict(user)
     book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
     book_dict = make_book_dict(book_in_db, False)
-    comments = get_comments(article)
     likes = []
     likeusers = article.like_users.all()
     for user in likeusers:
@@ -199,7 +198,6 @@ def make_article_dict(article):
         'is_long': article.is_long,
         'is_short': article.is_short,
         'is_phrase': article.is_phrase,
-        'comments': comments,
         'like_users': likes,
     }
     return article_dict
@@ -252,27 +250,9 @@ def specific_article(request,review_id):
         return HttpResponse(status=401)
     elif request.method == 'GET':
         article = get_object_or_404(Article, id=review_id)
-        return JsonResponse(make_article_dict(article))
-        # book_in_db = get_object_or_404(Book, isbn=article.book.isbn)
-        # book_dict = model_to_dict(book_in_db)
-        # user = get_object_or_404(User, id=article.author_id)
-        # user_dict = {
-        #     'id':user.id, 
-        #     'username':user.username,
-        #     'nickname':user.profile.nickname,
-        #     'profile_photo':user.profile.profile_photo.name
-        # }
-        # comments = get_comments(article, True)
-        # response_dict = {
-        #     'id':article.id, 
-        #     'author':user_dict, 
-        #     'book':book_dict, 
-        #     'title':article.title, 
-        #     'content':article.content, 
-        #     'date':article.date, 
-        #     'comments': comments
-        # }
-        # return JsonResponse(response_dict)
+        response_dict = make_article_dict(article)
+        response_dict['comments'] = get_comments(article)
+        return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -301,24 +281,14 @@ def get_comments(post):
         deltatime = (datetime.now() - comment.date)
         time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
         comment_author = get_object_or_404(User, id=comment.author_id)
-        comment_author_dict = {
-            'id':comment_author.id,
-            'username':comment_author.username,
-            'profile_photo':comment_author.profile.profile_photo.name,
-            'nickname':comment_author.profile.nickname,
-        }
+        comment_author_dict = make_user_dict(comment_author)
         if comment.parent == None:
             replies = list()
             for reply in comment.replies.all():
                 reply_deltatime = (datetime.now() - reply.date)
                 reply_time_array = [reply_deltatime.days//365,reply_deltatime.days//30,reply_deltatime.days,reply_deltatime.seconds//3600,reply_deltatime.seconds//60]
                 reply_author = get_object_or_404(User, id=reply.author_id)
-                reply_author_dict = {
-                    'id':reply_author.id,
-                    'username':reply_author.username,
-                    'profile_photo':reply_author.profile.profile_photo.name,
-                    'nickname':reply_author.profile.nickname,
-                }
+                reply_author_dict = make_user_dict(reply_author)
                 reply_dict = {
                     'author': reply_author_dict,
                     'id': reply.id,
@@ -355,7 +325,9 @@ def article_comment(request):
             parent = None
         comment = ArticleComment(article=article, author=request.user, content=content, parent=parent)
         comment.save()
-        return JsonResponse(make_article_dict(article), status=201)
+        response_dict = make_article_dict(article)
+        response_dict['comments'] = get_comments(article)
+        return JsonResponse(response_dict, status=201)
     # TODO elif request.method == 'PUT':
     #    pass
     # TODO elif request.method == 'DELETE':
@@ -973,6 +945,7 @@ def article_like(request, article_id):
         like.save()
         article = get_object_or_404(Article, id=article_id)
         result_dict = make_article_dict(article)
+        result_dict['comments'] = get_comments(article)
         return JsonResponse(result_dict, status=201)
     
     elif request.method == 'GET':
@@ -986,6 +959,7 @@ def article_like(request, article_id):
         like.delete()
         article = get_object_or_404(Article, id=article_id)
         result_dict = make_article_dict(article)
+        result_dict['comments'] = get_comments(article)
         return JsonResponse(result_dict, status=200)
 
     else:
