@@ -12,17 +12,18 @@ class BookInfo extends Component {
   }
 
   onClickLikeBookButton = like_or_not => {
-    console.log(like_or_not);
-    if (like_or_not) this.props.onUnlikeBook(this.props.isbn);
-    else {
+    if (like_or_not) {
+      this.props.onUnlikeBook(this.props.isbn);
+      this.props.onLoadBook(this.props.isbn);
+    } else {
       this.props.onLikeBook(this.props.isbn);
+      this.props.onLoadBook(this.props.isbn);
     }
   };
 
   render() {
     const test = user => user.id === this.props.logged_in_user.id;
     const like_or_not = this.props.like_users.some(test);
-    console.log(like_or_not);
     const LikeButton = (
       <div onClick={() => this.onClickLikeBookButton(like_or_not)}>
         {like_or_not ? (
@@ -61,15 +62,6 @@ class BookInfo extends Component {
                 {this.props.isbn}
               </p>
             </div>
-            <div className="BookLikeSection">
-              <div className="BookLikeButton">
-                <Popup
-                  content="책을 '즐겨찾기'할 경우, 이 책에 새로 남겨진 리뷰를 피드에서 확인할 수 있습니다."
-                  position="top center"
-                  trigger={LikeButton}
-                />
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -78,11 +70,14 @@ class BookInfo extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    currentBook: state.book.selectedBook,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
     onLikeBook: isbn => dispatch(actionCreators.postBookLike(isbn)),
     onUnlikeBook: isbn => dispatch(actionCreators.deleteBookLike(isbn)),
   };

@@ -25,7 +25,8 @@ class Profile(models.Model):
 class Book(models.Model):
     isbn = models.BigIntegerField(primary_key=True)
     title = models.TextField()
-    contents = models.TextField()
+    contents = models.TextField(null=True)
+    author_contents = models.TextField(null=True)
     url = models.TextField()
     thumbnail = models.TextField()
     authors = models.TextField()
