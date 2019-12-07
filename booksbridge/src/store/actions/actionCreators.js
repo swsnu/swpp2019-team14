@@ -168,10 +168,12 @@ export const editSpecificArticle = article => dispatch =>
     }),
   );
 // export const DELETE_SPECIFIC_ARTICLE = 'DELETE_SPECIFIC_ARTICLE'
-export const deleteSpecificArticle = id => dispatch =>
+export const deleteSpecificArticle = (id, type) => dispatch =>
   axios.delete(`/api/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_SPECIFIC_ARTICLE,
+      targetID: id,
+      targetTYPE: type,
     }),
   );
 // export const GET_ARTICLE_LIKE = 'GET_ARTICLE_LIKE'

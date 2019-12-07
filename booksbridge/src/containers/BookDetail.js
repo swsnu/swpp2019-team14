@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Button, Icon, Popup, Label } from 'semantic-ui-react';
+import { Button, Icon, Popup, Label, Confirm } from 'semantic-ui-react';
 import Spinner from 'react-bootstrap/Spinner';
 
 import Header from '../components/Header';
@@ -21,6 +21,7 @@ class BookDetail extends Component {
       articles: [],
     };
     this.likeHandler = this.likeHandler.bind(this);
+    this.deleteHandler = this.deleteHandler.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +47,10 @@ class BookDetail extends Component {
     } else {
       this.props.onPostLikeArticle(article_id);
     }
+  }
+
+  deleteHandler(article_id, type) {
+    this.props.onDeleteArticle(article_id, type);
   }
 
   render() {
@@ -124,7 +129,9 @@ class BookDetail extends Component {
             shortReviews={shortReviews}
             longReviews={longReviews}
             phrases={phrases}
+            logged_in_user={logged_in_user}
             likeHandler={this.likeHandler}
+            deleteHandler={this.deleteHandler}
           />
         </div>
       </div>
@@ -153,6 +160,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreators.deleteArticleLike(article_id)),
     onLikeBook: isbn => dispatch(actionCreators.postBookLike(isbn)),
     onUnlikeBook: isbn => dispatch(actionCreators.deleteBookLike(isbn)),
+    onDeleteArticle: (article_id, type) =>
+      dispatch(actionCreators.deleteSpecificArticle(article_id, type)),
   };
 };
 

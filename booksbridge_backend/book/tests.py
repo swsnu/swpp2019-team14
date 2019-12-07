@@ -578,11 +578,27 @@ class BookTestCase(TestCase):
 
         self.assertEqual(response.status_code, 405)
 
+        client.post('/api/article/',
+                    json.dumps({
+                        'isbn': '9780393912470',
+                        'title': 'test_title',
+                        'content': 'test_content',
+                        'is_long': True,
+                        'is_short': False,
+                        'is_phrase': False
+                    }),
+                    content_type='application/json')
+
         # DELETE   
         response = client.delete('/api/article/1/',
                                content_type='application/json')
 
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 403)
+
+        response = client.delete('/api/article/2/',
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
 
 
     def test_article(self):

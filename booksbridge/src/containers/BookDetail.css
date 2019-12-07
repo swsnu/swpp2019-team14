@@ -7,6 +7,10 @@
   align-items: center;
 }
 
+.DeleteReviewConfirm{
+  height: auto !important; 
+}
+
 .BookDetailButtons {
   display: flex;
   justify-content: center;

@@ -22,6 +22,18 @@
   word-wrap: break-word;
   padding-top: 0px;
 }
+.LabelAndButton{
+  display: flex;
+  justify-content: space-between;
+}
+
+.ReviewTypeLabel{
+  display: flex;
+  margin-bottom: 5px;
+}
+.UserPageEditDeleteButton{
+  display: flex;
+}
 .ReviewContent {
   font-family: 'Nanum Gothic', sans-serif;
   font-size: 0.85714286em;

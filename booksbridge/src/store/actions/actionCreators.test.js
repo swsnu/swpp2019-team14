@@ -229,6 +229,7 @@ describe('ActionCreators', () => {
       done();
     });
   });
+
   //   getArticles,
   //   getArticlesByBookId,
   //   getArticlesByUserId,
@@ -260,7 +261,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
-          data: stubArticles,
+          data: { articles: stubArticles, length: 1 },
         };
         resolve(result);
       });
@@ -353,17 +354,17 @@ describe('ActionCreators', () => {
   });
   //   deleteSpecificArticle,
   it(`'deleteSpecificArticle'`, done => {
+    const newState = store.getState();
     const spy = jest.spyOn(axios, 'delete').mockImplementation(url => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
-          data: stubArticle,
+          data: null,
         };
         resolve(result);
       });
     });
     store.dispatch(actionCreators.deleteSpecificArticle()).then(() => {
-      //   expect(newState.article.selectedArticle).toBe(stubArticle);
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
