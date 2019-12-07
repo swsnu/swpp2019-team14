@@ -39,7 +39,13 @@ def profile(request, userid):
         profile.profile_text = req_data['profile_text']
         profile.profile_photo = req_data['profile_photo']
         profile.save()
-        user_dict = {'id':request.user.id, 'username':request.user.username, 'nickname':profile.nickname, 'profile_photo':profile.profile_photo.name, 'profile_text': profile.profile_text}
+        like_books=[]
+        for book in request.user.book_set.all():
+                book_dict = make_book_dict(book, False)
+                like_books.append(book_dict)
+        user_dict = make_user_dict(request.user)
+        user_dict['profile_text'] = profile.profile_text
+        user_dict['like_books'] = like_books
         return JsonResponse(user_dict, status=200)
     else:
         return HttpResponseNotAllowed(['PUT'])

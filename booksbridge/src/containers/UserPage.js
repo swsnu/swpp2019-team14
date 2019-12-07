@@ -79,6 +79,8 @@ class UserPage extends Component {
       return (
         <div key={index}>
           <UserReviewSummary
+            logged_in_user={this.props.logged_in_user}
+            profile_user={this.props.profile_user}
             title={article.title}
             book_isbn={article.book_isbn}
             book_title={article.book_title}

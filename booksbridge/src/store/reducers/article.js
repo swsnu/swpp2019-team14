@@ -157,6 +157,7 @@ const reducer = (state = initialState, action) => {
         };
       }
     case actionTypes.DELETE_SPECIFIC_ARTICLE:
+      //in Book detail page
       let deleted;
       switch (action.targetTYPE) {
         case 'long':
@@ -175,6 +176,11 @@ const reducer = (state = initialState, action) => {
           });
           return { ...state, phrases: deleted };
       }
+      //in User Page
+      deleted = state.articlesByUserID.filter(article => {
+        return article.id !== action.targetID;
+      });
+      return { ...state, articlesByUserID: deleted };
   }
   return state;
 };
