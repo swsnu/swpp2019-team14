@@ -582,7 +582,7 @@ class BookTestCase(TestCase):
         response = client.delete('/api/article/1/',
                                content_type='application/json')
 
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 200)
 
 
     def test_article(self):

@@ -18,6 +18,7 @@ describe('<BookTabsReview />', () => {
       <Router history={history}>
         <BookTabsReview
           author={author}
+          logged_in_user={author}
           content="example"
           date={date}
           id="1"
