@@ -63,7 +63,7 @@ class App extends Component {
               component={ReviewDetailPage}
             />
             <Route
-              path="/review/:review_id/edit"
+              path="/review/edit/:review_id"
               exact
               component={ReviewDetailPage}
             />

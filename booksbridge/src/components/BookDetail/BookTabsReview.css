@@ -18,6 +18,9 @@
     color: black !important;
     font-weight: 900;
 }
+.ReviewEditIcon{
+    color: black !important;
+}
 .ReviewContent{
     display: block;
     overflow: hidden;

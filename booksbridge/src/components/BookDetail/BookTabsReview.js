@@ -43,12 +43,12 @@ const BookTabsReview = props => {
                       content="수정"
                       position={'top center'}
                       trigger={
-                        <Icon
-                          name="pencil"
-                          onClick={() =>
-                            props.history.push('/revied/edit/' + props.id)
-                          }
-                        />
+                        <a
+                          className="ReviewEditIcon"
+                          href={'/review/edit/' + props.id}
+                        >
+                          <Icon name="pencil" />
+                        </a>
                       }
                     />
                     <Popup
