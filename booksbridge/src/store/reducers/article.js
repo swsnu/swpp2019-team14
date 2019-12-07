@@ -180,7 +180,7 @@ const reducer = (state = initialState, action) => {
       deleted = state.articlesByUserID.filter(article => {
         return article.id !== action.targetID;
       });
-      return { ...state, articlesByUserID: deleted };
+      return { ...state, articlesByUserID: deleted, length: state.length - 1 };
   }
   return state;
 };

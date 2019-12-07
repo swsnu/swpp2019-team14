@@ -6,7 +6,7 @@ const UserReviewSummary = props => {
   const [delete_confirm, openConfirm] = useState(false);
   const onConfirm = () => {
     openConfirm(false);
-    //props.deleteHandler(props.id, type);
+    props.deleteHandler(props.id);
   };
   return (
     <div className="UserReviewSummary">
@@ -35,7 +35,7 @@ const UserReviewSummary = props => {
           </div>
           <div className="UserPageEditDeleteButton">
             {props.profile_user.username === props.logged_in_user.username ? (
-              <div className="ArticleDeleteButton">
+              <div className="ArticleEditDeleteButton">
                 <Popup
                   content="수정"
                   position={'top center'}
@@ -68,8 +68,8 @@ const UserReviewSummary = props => {
         {props.is_long === true ? (
           <p className="ReviewContent">{props.content}</p>
         ) : (
-          <p className="ShortContent">{props.content}</p>
-        )}
+            <p className="ShortContent">{props.content}</p>
+          )}
       </div>
     </div>
   );

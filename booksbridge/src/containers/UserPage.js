@@ -23,6 +23,7 @@ class UserPage extends Component {
     this.props.onLoadUser(this.props.match.params.username);
     this.props.onLoadUserReviews(1, this.props.match.params.username);
     this.props.onLoadUserCurations(1, this.props.match.params.username);
+    this.deleteHandler = this.deleteHandler.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -30,6 +31,12 @@ class UserPage extends Component {
     if (this.props.match.params.username !== prevProps.match.params.username) {
       this.props.onLoadUser(this.props.match.params.username);
     }
+  }
+
+  deleteHandler(article_id) {
+    this.props.onDeleteArticle(article_id);
+    //this.setState({ ...this.state, activeReviewPage: 1 });
+    //this.props.onLoadUserReviews(1, this.props.match.params.username);
   }
 
   handleReviewPaginationChange = (e, { activePage }) => {
@@ -75,6 +82,13 @@ class UserPage extends Component {
         ? like_books.length / 6
         : parseInt(like_books.length / 6) + 1;
 
+    if (
+      this.props.ReviewLength !== 0 &&
+      this.props.articles_by_userID.length === 0
+    ) {
+      this.props.onLoadUserReviews(1, this.props.match.params.username);
+    }
+
     const articles = this.props.articles_by_userID.map((article, index) => {
       return (
         <div key={index}>
@@ -90,6 +104,7 @@ class UserPage extends Component {
             is_short={article.is_short}
             is_phrase={article.is_phrase}
             id={article.id}
+            deleteHandler={this.deleteHandler}
           />
         </div>
       );
@@ -144,7 +159,7 @@ class UserPage extends Component {
         <div className="Tab">
           <div className="UserReviewList">
             <ContainerHeader title="작성한 리뷰" />
-            {articles.length === 0 ? (
+            {this.props.ReviewLength === 0 ? (
               '아직 작성된 리뷰가 없습니다.'
             ) : (
               <div>
@@ -228,6 +243,8 @@ const mapDispatchToProps = dispatch => {
     },
     onGetFollows: profile_user_id =>
       dispatch(actionCreators.getFollows(profile_user_id)),
+    onDeleteArticle: article_id =>
+      dispatch(actionCreators.deleteSpecificArticle(article_id, null)),
   };
 };
 
