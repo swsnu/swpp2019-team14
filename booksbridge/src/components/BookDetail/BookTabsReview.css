@@ -46,11 +46,13 @@
     justify-content: space-between;
     color: black !important;
 }
-.summary{
+.ArticleDeleteButton{
+    text-align: right;
+}
+.BookTabsReviewDate{
     text-align: right !important;
     display: flex;
     align-items: center;
-    float: right;
     font-size: .85714286em !important;
 }
 .Review{

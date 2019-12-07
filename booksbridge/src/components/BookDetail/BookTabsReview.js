@@ -1,22 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './BookTabsReview.css';
 import Alert from 'react-bootstrap/Alert';
 import Time from '../Time';
 import ProfileSummary from '../ProfileSummary/ProfileSummary';
-import { Button, Feed, Icon } from 'semantic-ui-react';
+import { Icon, Confirm } from 'semantic-ui-react';
 
 const BookTabsReview = props => {
+  const [delete_confirm, openConfirm] = useState(false);
   const Author = <ProfileSummary user={props.author} />;
 
   return (
     <div className="Review">
+      <Confirm
+        className="DeleteReviewConfirm"
+        size={'small'}
+        cancelButton="취소"
+        confirmButton="삭제"
+        content="정말로 리뷰를 삭제하시겠습니까? 삭제한 리뷰는 되돌릴 수 없습니다."
+        open={delete_confirm}
+        onCancel={() => openConfirm(false)}
+        onConfirm={() => props.deleteHandler(props.id)}
+      />
       <Alert variant="light" className="article">
         <div>
           <div>
             <div className="AuthorProfileMain">
               <div>{Author}</div>
-              <div className="summary">
-                <Time date={props.date} />
+              <div>
+                {props.author.username === props.logged_in_user.username ? (
+                  <div className="ArticleDeleteButton">
+                    <Icon name="delete" onClick={() => openConfirm(true)} />
+                  </div>
+                ) : null}
+                <div className="BookTabsReviewDate">
+                  <Time date={props.date} />
+                </div>
               </div>
             </div>
             <div className="content">
@@ -36,24 +54,16 @@ const BookTabsReview = props => {
                   className="ReviewLikeButton"
                   onClick={() => props.likeHandler(true, props.id)}
                 >
-                  <Feed.Meta>
-                    <Feed.Like>
-                      <Icon color="red" name="like" />
-                      {props.like_count}
-                    </Feed.Like>
-                  </Feed.Meta>
+                  <Icon color="red" name="like" />
+                  {props.like_count}
                 </div>
               ) : (
                 <div
                   className="ReviewLikeButton"
                   onClick={() => props.likeHandler(false, props.id)}
                 >
-                  <Feed.Meta>
-                    <Feed.Like>
-                      <Icon name="like" />
-                      {props.like_count}
-                    </Feed.Like>
-                  </Feed.Meta>
+                  <Icon name="like" />
+                  {props.like_count}
                 </div>
               )}
             </div>
