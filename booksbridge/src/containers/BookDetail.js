@@ -160,8 +160,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreators.deleteArticleLike(article_id)),
     onLikeBook: isbn => dispatch(actionCreators.postBookLike(isbn)),
     onUnlikeBook: isbn => dispatch(actionCreators.deleteBookLike(isbn)),
-    onDeleteArticle: article_id =>
-      dispatch(actionCreators.deleteSpecificArticle(article_id)),
+    onDeleteArticle: (article_id, type) =>
+      dispatch(actionCreators.deleteSpecificArticle(article_id, type)),
   };
 };
 
