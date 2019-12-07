@@ -49,8 +49,8 @@ class BookDetail extends Component {
     }
   }
 
-  deleteHandler(article_id) {
-    console.log('delete!');
+  deleteHandler(article_id, type) {
+    this.props.onDeleteArticle(article_id, type);
   }
 
   render() {

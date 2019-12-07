@@ -156,6 +156,25 @@ const reducer = (state = initialState, action) => {
           phrases: unliked,
         };
       }
+    case actionTypes.DELETE_SPECIFIC_ARTICLE:
+      let deleted;
+      switch (action.targetTYPE) {
+        case 'long':
+          deleted = state.longReviews.filter(article => {
+            return article.id !== action.targetID;
+          });
+          return { ...state, longReviews: deleted };
+        case 'short':
+          deleted = state.shortReviews.filter(article => {
+            return article.id !== action.targetID;
+          });
+          return { ...state, shortReviews: deleted };
+        case 'phrase':
+          deleted = state.phrases.filter(article => {
+            return article.id !== action.targetID;
+          });
+          return { ...state, phrases: deleted };
+      }
   }
   return state;
 };

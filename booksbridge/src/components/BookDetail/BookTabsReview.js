@@ -9,6 +9,16 @@ const BookTabsReview = props => {
   const [delete_confirm, openConfirm] = useState(false);
   const Author = <ProfileSummary user={props.author} />;
 
+  let type;
+  if (props.is_long) type = 'long';
+  else if (props.is_short) type = 'short';
+  else type = 'phrase';
+
+  const onConfirm = () => {
+    openConfirm(false);
+    props.deleteHandler(props.id, type);
+  };
+
   return (
     <div className="Review">
       <Confirm
@@ -19,7 +29,7 @@ const BookTabsReview = props => {
         content="정말로 리뷰를 삭제하시겠습니까? 삭제한 리뷰는 되돌릴 수 없습니다."
         open={delete_confirm}
         onCancel={() => openConfirm(false)}
-        onConfirm={() => props.deleteHandler(props.id)}
+        onConfirm={() => onConfirm()}
       />
       <Alert variant="light" className="article">
         <div>

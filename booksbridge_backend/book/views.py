@@ -252,8 +252,14 @@ def specific_article(request,review_id):
         response_dict['comments'] = get_comments(article)
         response_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
         return JsonResponse(response_dict)
+    elif request.method == 'DELETE':
+        article = get_object_or_404(Article, id=review_id)
+        if not request.user.id==article.author_id:
+            return HttpResponse(status=403)
+        article.delete()
+        return HttpResponse(status=200)
     else:
-        return HttpResponseNotAllowed(['GET'])
+        return HttpResponseNotAllowed(['GET', 'DELETE'])
 
 # test implemented
 def article_page(request, page):
