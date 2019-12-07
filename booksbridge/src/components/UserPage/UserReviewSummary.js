@@ -68,8 +68,8 @@ const UserReviewSummary = props => {
         {props.is_long === true ? (
           <p className="ReviewContent">{props.content}</p>
         ) : (
-            <p className="ShortContent">{props.content}</p>
-          )}
+          <p className="ShortContent">{props.content}</p>
+        )}
       </div>
     </div>
   );
