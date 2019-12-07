@@ -29,7 +29,9 @@ class App extends Component {
 
   initializeUserInfo = () => {
     const logged_in_user = storage.get('logged_in_user');
-    if (!logged_in_user) return;
+    if (!logged_in_user) {
+      this.props.history.push('/sign-in');
+    }
     this.props.onSetLogin(logged_in_user);
   };
 

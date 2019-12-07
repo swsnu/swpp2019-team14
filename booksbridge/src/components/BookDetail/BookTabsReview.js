@@ -3,7 +3,7 @@ import './BookTabsReview.css';
 import Alert from 'react-bootstrap/Alert';
 import Time from '../Time';
 import ProfileSummary from '../ProfileSummary/ProfileSummary';
-import { Icon, Confirm } from 'semantic-ui-react';
+import { Icon, Confirm, Popup } from 'semantic-ui-react';
 
 const BookTabsReview = props => {
   const [delete_confirm, openConfirm] = useState(false);
@@ -39,7 +39,25 @@ const BookTabsReview = props => {
               <div>
                 {props.author.username === props.logged_in_user.username ? (
                   <div className="ArticleDeleteButton">
-                    <Icon name="delete" onClick={() => openConfirm(true)} />
+                    <Popup
+                      content="수정"
+                      position={'top center'}
+                      trigger={
+                        <Icon
+                          name="pencil"
+                          onClick={() =>
+                            props.history.push('/revied/edit/' + props.id)
+                          }
+                        />
+                      }
+                    />
+                    <Popup
+                      content="삭제"
+                      position={'top center'}
+                      trigger={
+                        <Icon name="delete" onClick={() => openConfirm(true)} />
+                      }
+                    />
                   </div>
                 ) : null}
                 <div className="BookTabsReviewDate">
