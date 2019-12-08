@@ -497,9 +497,7 @@ def search_curation_by_author(request, username, page):
     else:
         return HttpResponseNotAllowed(['GET'])
     
-# test implemented
 def make_curation_dict(curation):
-    # TODO: comments
     ''' input: Curation object  ->   output: curation dict '''
     deltatime = (datetime.now() - curation.date)
     time_array = [deltatime.days//365, deltatime.days//30, deltatime.days, deltatime.seconds//3600, deltatime.seconds//60]
@@ -518,13 +516,15 @@ def make_curation_dict(curation):
 
     comments = get_comments(curation)
 
-    like_query_result = CurationLike.objects.select_related('user').filter(curation_id=curation.id)
-    like_user_dict = [{'id': instance.user.id, 
-                       'username': instance.user.username, 
-                       'profile_photo': instance.user.profile.profile_photo.name, 
-                       'nickname': instance.user.profile.nickname }
-                       for instance in like_query_result]
-    like_dict = { 'count': like_query_result.count(), 'users': like_user_dict }
+    # NOT USED ANYMORE
+    # like_query_result = CurationLike.objects.select_related('user').filter(curation_id=curation.id)
+    # like_user_dict = [{'id': instance.user.id, 
+    #                    'username': instance.user.username, 
+    #                    'profile_photo': instance.user.profile.profile_photo.name, 
+    #                    'nickname': instance.user.profile.nickname }
+    #                    for instance in like_query_result]
+    # like_dict = { 'count': like_query_result.count(), 'users': like_user_dict }
+    likeusers = curation.like_users.all()
 
     curation_dict = {
         'id': curation.id,
@@ -534,9 +534,8 @@ def make_curation_dict(curation):
         'content': curation.content,
         'date': time_array,
         'comments': comments,
-        'likes': like_dict, 
+        'like_count': likeusers.count(), 
     }
- 
     return curation_dict
 
 # test implemented
@@ -562,8 +561,8 @@ def curation_page(request, page):
 
         curations = [] 
         for curation in requested_list:
-            deltatime = (datetime.now() - curation.date)
-            time_array = [deltatime.days//365, deltatime.days//30, deltatime.days, deltatime.seconds//3600, deltatime.seconds//60]
+            curation_dict = make_curation_dict(curation)
+            
             books = []
             book_set= []
             for books_in_cur in curation.book_in_curation.all():
@@ -572,25 +571,14 @@ def curation_page(request, page):
                     book_set=[]
                 book_set.append(make_book_dict(books_in_cur.book, False))
             books.append(book_set)
-            user=curation.author
-            user_dict = {
-                'id':user.id,
-                'username':user.username,
-                'profile_photo':user.profile.profile_photo.name,
-                'nickname':user.profile.nickname,
-            }
-            curation_dict = {
-                'id': curation.id,
-                'books': books,
-                'author': user_dict,
-                'title': curation.title,
-                'content': curation.content,
-                'date': time_array,
-            }
+
+            curation_dict['books'] = books
+            curation_dict['like_or_not'] = curation.like_users.all().filter(id=request.user.id).exists()
             curations.append(curation_dict)
+
         response_body = {'curations': curations, 'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body, status=200)
-    
+
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -983,26 +971,27 @@ def curation_like(request, curation_id):
         return HttpResponse(status=401)
     
     elif request.method == 'POST':
-        like = CurationLike(user=request.user, curation_id=curation_id) 
-        like.save()
         curation = get_object_or_404(Curation, id=curation_id)
+        curation.like_users.add(request.user)
         result_dict = make_curation_dict(curation)
+        result_dict['like_or_not'] = curation.like_users.all().filter(id=request.user.id).exists()
         return JsonResponse(result_dict, status=201)
     
-    elif request.method == 'GET':
+    elif request.method == 'GET':  # NOT USED
         like_count = CurationLike.objects.filter(curation_id=curation_id, user_id=request.user.id).count()  
         like_dict = { 'count': like_count }
         return JsonResponse(like_dict, status=200)
     
     elif request.method == 'DELETE':
-        like = get_object_or_404(CurationLike, curation_id=curation_id, user_id=request.user.id)
-        like.delete()
         curation = get_object_or_404(Curation, id=curation_id)
+        curation.like_users.remove(request.user)
         result_dict = make_curation_dict(curation)
+        result_dict['like_or_not'] = curation.like_users.all().filter(id=request.user.id).exists()
         return JsonResponse(result_dict, status=200)
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
+
 
 def make_user_dict(user):
     user_dict = {
