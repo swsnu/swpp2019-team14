@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Button, Container, Divider } from 'semantic-ui-react';
+import { Button, Icon, Container, Divider } from 'semantic-ui-react';
 
 import Header from '../../components/Header';
 import BookInfo from '../../components/BookDetail/BookInfo';
@@ -20,27 +20,13 @@ class CurationDetailPage extends Component {
     this.props.onLoadCuration(this.props.match.params.curation_id);
   }
 
-  likeHandler = () => {
-    if (
-      this.checkUserInArray(
-        this.props.logged_in_user.id,
-        this.props.currentCuration.likes.users,
-      )
-    ) {
-      this.props.onDeleteLikeCuration(this.props.match.params.curation_id);
+  likeHandler(like_or_not, curation_id) {
+    if (like_or_not) {
+      this.props.onDeleteLikeCuration(curation_id);
     } else {
-      this.props.onPostLikeCuration(this.props.match.params.curation_id);
+      this.props.onPostLikeCuration(curation_id);
     }
-  };
-
-  checkUserInArray = (user_id, user_array) => {
-    const result = user_array.filter(user => user.id === user_id);
-    if (result.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  }
 
   render() {
     if (!this.props.currentCuration) {
@@ -64,6 +50,23 @@ class CurationDetailPage extends Component {
       );
     });
 
+    const likeButton = this.props.currentCuration.like_or_not ? (
+      <div
+        className="CurationLikeButton"
+        onClick={() => this.likeHandler(true, this.props.currentCuration.id)}
+      >
+        <Icon color="red" name="like" />
+        {this.props.currentCuration.like_count}
+      </div>
+    ) : (
+      <div
+        className="CurationLikeButton"
+        onClick={() => this.likeHandler(false, this.props.currentCuration.id)}
+      >
+        <Icon name="like" />
+        {this.props.currentCuration.like_count}
+      </div>
+    );
     return (
       <div>
         <Header />
@@ -82,16 +85,17 @@ class CurationDetailPage extends Component {
           <div className="book-and-content">{bookAndContent}</div>
 
           <div className="CurationContainer">
-            <div className="LikeButton" onClick={this.likeHandler}>
+            {/* <div className="LikeButton" onClick={this.likeHandler}>
               <div className="ui labeled button" tabIndex="0">
                 <div className="ui red button">
                   <i className="heart icon" /> Like
                 </div>
                 <a className="ui basic red left pointing label">
-                  {this.props.currentCuration.likes.count}
+                  {this.props.currentCuration.like_count}
                 </a>
               </div>
-            </div>
+            </div> */}
+            {likeButton}
 
             <div className="CurationComments">
               <Comments

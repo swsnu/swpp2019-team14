@@ -17,25 +17,69 @@ class CurationMain extends React.Component {
       hasNext: true,
     };
     this.fetchMoreData();
+    this.likeHandler = this.likeHandler.bind(this);
   }
 
-  fetchMoreData = () => {
+  async fetchMoreData() {
     // a fake async api call like which sends
     // 10 more records in 0.7 secs
-    this.props.onGetCurations(this.state.page);
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
+    await this.props.onGetCurations(this.state.page);
+    this.setState({
+      page: this.state.page + 1,
+      curations: this.state.curations.concat(this.props.loadCurations),
+      hasNext: this.props.hasNext,
+    });
+    // function delay(ms) {
+    //   return new Promise(resolve => setTimeout(resolve, ms));
+    // }
+    // delay(500)
+    //   .then(() =>
+    //     this.setState({
+    //       page: this.state.page + 1,
+    //       curations: this.state.curations.concat(this.props.loadCurations),
+    //       hasNext: this.props.hasNext,
+    //     }),
+    //   )
+    //   .catch();
+  }
+
+  likeHandler(like_or_not, curation_id) {
+    if (like_or_not) {
+      this.props.onDeleteLikeCuration(curation_id);
+      const deleted = this.state.curations.map(curation => {
+        if (curation.id === curation_id) {
+          return {
+            ...curation,
+            like_count: curation.like_count - 1,
+            like_or_not: false,
+          };
+        } else {
+          return { ...curation };
+        }
+      });
+      this.setState({
+        ...this.state,
+        curations: deleted,
+      });
+    } else {
+      this.props.onPostLikeCuration(curation_id);
+      const added = this.state.curations.map(curation => {
+        if (curation.id === curation_id) {
+          return {
+            ...curation,
+            like_count: curation.like_count + 1,
+            like_or_not: true,
+          };
+        } else {
+          return { ...curation };
+        }
+      });
+      this.setState({
+        ...this.state,
+        curations: added,
+      });
     }
-    delay(500)
-      .then(() =>
-        this.setState({
-          page: this.state.page + 1,
-          curations: this.state.curations.concat(this.props.loadCurations),
-          hasNext: this.props.hasNext,
-        }),
-      )
-      .catch();
-  };
+  }
 
   render() {
     return (
@@ -71,6 +115,9 @@ class CurationMain extends React.Component {
                   title={curation.title}
                   content={curation.content}
                   date={curation.date}
+                  like_or_not={curation.like_or_not}
+                  like_count={curation.like_count}
+                  likeHandler={this.likeHandler}
                 />
               </div>
             ))}
@@ -91,6 +138,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onGetCurations: page => dispatch(actionCreators.getCurations(page)),
+    onPostLikeCuration: curation_id =>
+      dispatch(actionCreators.postCurationLike(curation_id)),
+    onDeleteLikeCuration: curation_id =>
+      dispatch(actionCreators.deleteCurationLike(curation_id)),
   };
 };
 
