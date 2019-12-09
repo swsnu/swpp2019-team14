@@ -355,8 +355,8 @@ def alarm(request):
         return JsonResponse(alarms_array,safe=False)
 
 def send_alarm(sender,reciever,link_id,content):
-    new_alarm = Alarm(author=sender,link_id=link_id,content=content)
-    reciever.profile.alarm.add(new_alarm)
+    if(sender!=reciever):
+        reciever.profile.alarms.create(author=sender,link_id=link_id,content=content)
 
 # test implemented
 def article_comment(request):
@@ -406,7 +406,7 @@ def curation_comment(request):
             send_alarm(request.user,parent.author,curation_id,'reply')
         except CurationComment.DoesNotExist:
             parent = None
-        send_alarm(request.user,parent.author,curation_id,'comment')
+        send_alarm(request.user,curation.author,curation_id,'comment')
         comment = CurationComment(curation=curation, author=request.user, content=content, parent=parent)
         comment.save()
         
@@ -891,7 +891,6 @@ def follow(request, user_id):
         except:
             HttpResponse(status=404)
             
-        send_alarm(request.user,followee,article,'님이 회원님이 남긴 글에 댓글을 남겼습니다.')
         follow.save()
         follower_dict = {'id': follow.follower.id,
                          'username': follow.follower.username,

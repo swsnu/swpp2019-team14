@@ -1,88 +1,116 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import './Header.css';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import Alarm from './Alarm/Alarm';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Popup, Menu } from 'semantic-ui-react';
+import { Popup, Menu, Icon } from 'semantic-ui-react';
 import ProfileSummary from './ProfileSummary/ProfileSummary';
 import * as actionCreators from '../store/actions/actionCreators';
 
-const Header = props => {
-  const [show_menu, setMenu] = useState(false);
-  const [search_input, setSearchInput] = useState('');
-
-  const onSearch = () => {
-    if (search_input !== '')
-      props.history.push(`/result/search=${search_input}/1`);
+class Header extends Component {
+  state = {
+    show_menu: false,
+    search_input: '',
+    visible: false,
   };
 
-  const onClickProfile = () => {
-    setMenu(!show_menu);
+  componentDidMount() {
+    this.props.onGetAlarms();
+    this.timerID = setInterval(() => this.props.onGetAlarms(), 30000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  onSearch = () => {
+    if (this.state.search_input !== '')
+      this.props.history.push(`/result/search=${this.state.search_input}/1`);
   };
 
-  const menu = (
-    <div className="ProfileMenu">
-      <Menu vertical>
-        <Menu.Item
-          onClick={() =>
-            props.history.push('/page/' + props.logged_in_user.username)
-          }
-        >
-          My Page
-        </Menu.Item>
-        <Menu.Item onClick={() => props.history.push('/library/')}>
-          My Library
-        </Menu.Item>
-        <Menu.Item onClick={() => props.onLogout()}>LOGOUT</Menu.Item>
-      </Menu>
-    </div>
-  );
+  onClickProfile = () => {
+    this.setState({ visible: true });
+    // this.setState({ show_menu: !this.state.show_menu });
+  };
+  render() {
+    const menu = (
+      <div className="ProfileMenu">
+        <Menu vertical>
+          <Menu.Item
+            onClick={() =>
+              this.props.history.push(
+                '/page/' + this.props.logged_in_user.username,
+              )
+            }
+          >
+            My Page
+          </Menu.Item>
+          <Menu.Item onClick={() => this.props.history.push('/library/')}>
+            My Library
+          </Menu.Item>
+          <Menu.Item onClick={() => this.props.onLogout()}>LOGOUT</Menu.Item>
+        </Menu>
+      </div>
+    );
 
-  return (
-    <div className="MainHeader">
-      <a className="logo" href="/main">
-        <img src="/images/logo2.png" height="80px" />
-      </a>
-      <div className="search">
-        <InputGroup>
-          <FormControl
-            id="search-input"
-            aria-describedby="basic-addon2"
-            type="text"
-            value={search_input}
-            onChange={({ target: { value } }) => setSearchInput(value)}
-            onKeyPress={event => {
-              if (event.key === 'Enter') {
-                onSearch();
+    return (
+      <div className="MainHeader">
+        <a className="logo" href="/main">
+          <img src="/images/logo2.png" height="80px" />
+        </a>
+        <div className="search">
+          <InputGroup>
+            <FormControl
+              id="search-input"
+              aria-describedby="basic-addon2"
+              type="text"
+              value={this.state.search_input}
+              onChange={({ target: { value } }) =>
+                this.setState({ search_input: value })
               }
-            }}
-          />
-          <InputGroup.Append>
-            <Button
-              id="search-button"
-              variant="outline-secondary"
-              onClick={() => onSearch()}
-            >
-              Search
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
-      </div>
-      <div className="headerProfile">
-        <div className="HeaderProfileSummary" onClick={onClickProfile}>
-          <ProfileSummary user={props.logged_in_user} />
+              onKeyPress={event => {
+                if (event.key === 'Enter') {
+                  this.onSearch();
+                }
+              }}
+            />
+            <InputGroup.Append>
+              <Button
+                id="search-button"
+                variant="outline-secondary"
+                onClick={() => this.onSearch()}
+              >
+                Search
+              </Button>
+            </InputGroup.Append>
+          </InputGroup>
         </div>
-        {show_menu == true ? menu : null}
+        <div className="headerProfile">
+          <div className="HeaderProfileSummary" onClick={this.onClickProfile}>
+            <ProfileSummary user={this.props.logged_in_user} />
+            <Popup
+              trigger={<Icon name="alarm" size="large" color="yellow" />}
+              flowing
+              hoverable
+              on="click"
+              className="alarm-popup"
+            >
+              <Alarm alarms={this.props.alarms} />
+            </Popup>
+          </div>
+          {this.state.show_menu == true ? menu : null}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const mapStateToProps = state => {
   return {
     logged_in_user: state.user.logged_in_user,
+    alarms: state.user.alarms,
   };
 };
 
@@ -90,6 +118,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onLogout: () => {
       dispatch(actionCreators.logoutUser());
+    },
+    onGetAlarms: () => {
+      dispatch(actionCreators.getAlarms());
     },
   };
 };

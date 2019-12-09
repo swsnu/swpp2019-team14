@@ -397,6 +397,13 @@ export const getLibraries = () => dispatch =>
     }),
   );
 
+export const getAlarms = () => dispatch =>
+  axios.get('/api/alarm/').then(res =>
+    dispatch({
+      type: actionTypes.GET_ALARMS,
+      alarms: res.data,
+    }),
+  );
 // //////////////////////////////////// FOLLOW ///////////////////////////////////
 
 // export const FOLLOW_USER = 'FOLLOW_USER'

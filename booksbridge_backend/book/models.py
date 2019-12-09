@@ -10,7 +10,7 @@ def profile_pic_path(instance, filename):
 
 
 class Alarm(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     link_id = models.IntegerField()
     content = models.TextField()
 

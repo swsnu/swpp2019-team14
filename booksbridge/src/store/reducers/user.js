@@ -6,6 +6,7 @@ const initialState = {
   profile_user: null,
   follower_list: [],
   followee_list: [],
+  alarms: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -62,6 +63,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         users: action.users,
+      };
+    case actionTypes.GET_ALARMS:
+      return {
+        ...state,
+        alarms: action.alarms,
       };
   }
   return state;

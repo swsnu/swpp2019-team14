@@ -45,4 +45,5 @@ export {
   getFollows,
   emptySearchedBooks,
   runOcr,
+  getAlarms,
 } from './actionCreators';
