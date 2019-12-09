@@ -574,7 +574,6 @@ class BookTestCase(TestCase):
                                    'is_phrase': False
                                }),
                                content_type='application/json')
-
         self.assertEqual(response.status_code, 405)
 
         client.post('/api/article/',

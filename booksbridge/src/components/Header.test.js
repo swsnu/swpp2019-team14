@@ -73,7 +73,7 @@ describe('<Header/>', () => {
         return dispatch => {};
       });
     const component = mount(header);
-    const wrapper = component.find('.HeaderProfileSummary');
+    const wrapper = component.find('.header-icon').at(0);
     wrapper.simulate('click');
     component
       .find('MenuItem')
@@ -89,7 +89,7 @@ describe('<Header/>', () => {
         return dispatch => {};
       });
     const component = mount(header);
-    const wrapper = component.find('.HeaderProfileSummary');
+    const wrapper = component.find('.header-icon').at(0);
     wrapper.simulate('click');
     component
       .find('MenuItem')
@@ -105,7 +105,7 @@ describe('<Header/>', () => {
         return dispatch => {};
       });
     const component = mount(header);
-    const wrapper = component.find('.HeaderProfileSummary');
+    const wrapper = component.find('.header-icon').at(0);
     wrapper.simulate('click');
     component
       .find('MenuItem')
