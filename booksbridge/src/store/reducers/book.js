@@ -4,6 +4,7 @@ const initialState = {
   books: [],
   count: 0,
   selectedBook: null,
+  currentBook: null,
   searchedBooks: [],
   quote: '',
 };
@@ -18,8 +19,12 @@ const reducer = (state = initialState, action) => {
         searchedBooks: state.searchedBooks.concat(action.books),
       };
     case actionTypes.GET_SPECIFIC_BOOK:
-      console.log('[DEBUG] action delivered');
-      console.log('[DEBUG] action.book: ' + action.book.title);
+      return { ...state, selectedBook: action.book };
+    case actionTypes.GET_CURRENT_BOOK:
+      return { ...state, currentBook: action.book };
+    case actionTypes.POST_BOOK_LIKE:
+      return { ...state, selectedBook: action.book };
+    case actionTypes.DELETE_BOOK_LIKE:
       return { ...state, selectedBook: action.book };
     case actionTypes.EMPTY_SEARCHED_BOOKS:
       return { ...state, searchedBooks: [] };

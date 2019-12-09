@@ -9,6 +9,14 @@ import * as actionCreators from '../../store/actions/actionCreators';
 
 const stubInitialState = {
   curations: [],
+  logged_in_user: {
+    id: 2,
+    username: 'www',
+    nickname: 'www',
+    profile_photo:
+      'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+    profile_text: '',
+  },
   selectedCuration: {
     id: 1,
     author: {
@@ -64,7 +72,7 @@ const stubInitialState = {
         replies: [],
       },
     ],
-    likes: 1,
+    likes: { count: 0, users: [] },
   },
 };
 const mockStore = getMockStore(stubInitialState);
@@ -76,27 +84,6 @@ const stubInitialState2 = {
 };
 const mockStore2 = getMockStore(stubInitialState2);
 
-// mock child components
-// jest.mock('../Comments/Comments', () => {
-//   return jest.fn(props => {
-//     return (
-//       <div id="curation-comments">
-//         {props.comments}
-//         {props.curation_id}
-//       </div>
-//     );
-//   });
-// });
-// jest.mock('../../components/Header', () => {
-//   return jest.fn(props => {
-//     return <div id="header"></div>;
-//   });
-// });
-// jest.mock('../../components/ProfileSummary/ProfileSummary', () => {
-//   return jest.fn(props => {
-//     return <div id="profile-summary">{props.user}</div>;
-//   });
-// });
 describe('<CurationDetailPage/>', () => {
   let page,
     spyLoadCuration,
@@ -157,7 +144,7 @@ describe('<CurationDetailPage/>', () => {
 
   it('should like and unlike curation', () => {
     const component = mount(page);
-    const wrapper = component.find('.LikeButton');
+    const wrapper = component.find('.CurationLikeButton');
     wrapper.simulate('click');
     expect(spyPostLikeCuration).toHaveBeenCalledTimes(1);
     // wrapper.simulate('click');

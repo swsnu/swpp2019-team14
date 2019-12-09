@@ -18,6 +18,9 @@
     color: black !important;
     font-weight: 900;
 }
+.ReviewEditIcon{
+    color: black !important;
+}
 .ReviewContent{
     display: block;
     overflow: hidden;
@@ -27,8 +30,8 @@
     line-height: 1.5rem;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
+    word-wrap:break-word;
     padding: 20px 0px 0px 0px;
-    width: 100%;
     color: black !important;
 }
 .ReviewAdditionalDetail{
@@ -46,11 +49,13 @@
     justify-content: space-between;
     color: black !important;
 }
-.summary{
+.ArticleDeleteButton{
+    text-align: right;
+}
+.BookTabsReviewDate{
     text-align: right !important;
     display: flex;
     align-items: center;
-    float: right;
     font-size: .85714286em !important;
 }
 .Review{

@@ -5,17 +5,20 @@ import { history } from '../../store/store';
 import { Router } from 'react-router-dom';
 
 describe('<BookTabsReview />', () => {
-  it('should render long review summary without errors', () => {
-    const author = {
-      username: 'ybzzang',
-      profile_photo: 'resources/image/profile/ybzzang',
-      nickname: 'ybzzang',
-    };
-    const date = [0, 0, 0, 0, 0];
-    const component = mount(
+  let review;
+  const author = {
+    username: 'ybzzang',
+    profile_photo: 'resources/image/profile/ybzzang',
+    nickname: 'ybzzang',
+  };
+  const date = [0, 0, 0, 0, 0];
+
+  beforeEach(() => {
+    review = (
       <Router history={history}>
         <BookTabsReview
           author={author}
+          logged_in_user={author}
           content="example"
           date={date}
           id="1"
@@ -24,8 +27,11 @@ describe('<BookTabsReview />', () => {
           content="review content"
           is_long={true}
         />
-      </Router>,
+      </Router>
     );
+  });
+  it('should render long review summary without errors', () => {
+    const component = mount(review);
     const wrapper = component.find('.Review');
     expect(wrapper.length).toBe(1);
     component
@@ -34,26 +40,7 @@ describe('<BookTabsReview />', () => {
       .simulate('click');
   });
   it('should render short review summary without errors', () => {
-    const author = {
-      username: 'ybzzang',
-      profile_photo: 'resources/image/profile/ybzzang',
-      nickname: 'ybzzang',
-    };
-    const date = [0, 0, 0, 0, 0];
-    const component = mount(
-      <Router history={history}>
-        <BookTabsReview
-          author={author}
-          content="example"
-          date={date}
-          id="1"
-          title="review title"
-          book_title="book title"
-          content="review content"
-          is_long={false}
-        />
-      </Router>,
-    );
+    const component = mount(review);
     const wrapper = component.find('.Review');
     expect(wrapper.length).toBe(1);
   });

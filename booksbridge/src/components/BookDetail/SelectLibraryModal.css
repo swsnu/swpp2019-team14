@@ -32,6 +32,11 @@
   width: auto;
 }
 
+.LibraryModalAction {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .BookCoverArea {
   display: flex;
   align-items: center;

@@ -33,6 +33,24 @@ const CurationSummary = props => {
     );
   });
 
+  const likeButton = props.like_or_not ? (
+    <div
+      className="CurationLikeButton"
+      onClick={() => props.likeHandler(true, props.id)}
+    >
+      <Icon color="red" name="like" />
+      {props.like_count}
+    </div>
+  ) : (
+    <div
+      className="CurationLikeButton"
+      onClick={() => props.likeHandler(false, props.id)}
+    >
+      <Icon name="like" />
+      {props.like_count}
+    </div>
+  );
+
   return (
     <Alert variant="secondary" className="article">
       <div className="ui feed">
@@ -71,17 +89,10 @@ const CurationSummary = props => {
               </div>
             </div>
           </div>
-          <div className="MainLikeButton">
-            <Feed.Meta>
-              <Feed.Like>
-                <Icon name="like" />4 Likes
-              </Feed.Like>
-            </Feed.Meta>
-          </div>
+          <div className="MainLikeButton">{likeButton}</div>
         </div>
       </div>
     </Alert>
   );
 };
-
 export default CurationSummary;

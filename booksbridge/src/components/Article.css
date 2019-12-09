@@ -60,7 +60,8 @@
   line-height: 1.2;
   -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
-
+  word-wrap:break-word;
+  
   margin: 0.5rem 0 0;
   font-size: 15px !important;
 }

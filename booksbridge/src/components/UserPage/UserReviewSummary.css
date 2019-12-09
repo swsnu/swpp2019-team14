@@ -19,7 +19,20 @@
 .ShortContent {
   font-family: 'Nanum Gothic', sans-serif;
   font-size: 0.85714286em;
+  word-wrap: break-word;
   padding-top: 0px;
+}
+.LabelAndButton{
+  display: flex;
+  justify-content: space-between;
+}
+
+.ReviewTypeLabel{
+  display: flex;
+  margin-bottom: 5px;
+}
+.UserPageEditDeleteButton{
+  display: flex;
 }
 .ReviewContent {
   font-family: 'Nanum Gothic', sans-serif;
@@ -33,6 +46,7 @@
   line-height: 1.2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  word-wrap: break-word;
 }
 .ReviewAdditionalDetail {
   padding: 0px 0px 0px 60px;

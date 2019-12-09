@@ -22,6 +22,8 @@ const stubInitialState = {
     title: 'REVIEW TITLE',
     comments: [],
     date: [0, 0, 0, 0, 0],
+    like_count: 1,
+    like_or_not: true,
   },
 };
 
@@ -69,6 +71,6 @@ describe('<ReviewDetailPage />', () => {
         </ConnectedRouter>
       </Provider>,
     );
-    expect(component.find('.loading').length).toBe(1);
+    expect(component.find('Spinner').length).toBe(1);
   });
 });

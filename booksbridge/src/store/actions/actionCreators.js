@@ -9,13 +9,18 @@ axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 // export const POST_NEW_USER = 'POST_NEW_USER'
 export const postUser = user => {
   return dispatch => {
-    return axios.post('/api/user/', user).then(res => {
-      dispatch({
-        type: actionTypes.POST_NEW_USER,
-        user: res.data,
+    return axios
+      .post('/api/user/', user)
+      .then(res => {
+        dispatch({
+          type: actionTypes.POST_NEW_USER,
+          user: res.data,
+        });
+        dispatch(push('/sign-in/'));
+      })
+      .catch(err => {
+        alert('중복된 아이디입니다.');
       });
-      dispatch(push('/sign-in/'));
-    });
   };
 };
 
@@ -34,7 +39,7 @@ export const loginUser = user => {
         dispatch(push('/main/'));
       })
       .catch(err => {
-        alert('Username or Password is incorrect.');
+        alert('아이디 혹은 비밀번호가 틀렸습니다.');
       });
   };
 };
@@ -95,6 +100,33 @@ export const getSpecificBook = isbn => dispatch =>
     }),
   );
 
+// export const GET_CURRENT_BOOK = 'GET_CURRENT_BOOK'
+export const getCurrentBook = isbn => dispatch =>
+  axios.get(`/api/book/${isbn}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_CURRENT_BOOK,
+      book: res.data,
+    }),
+  );
+
+//export const POST_BOOK_LIKE = 'POST_BOOK_LIKE';
+export const postBookLike = isbn => dispatch =>
+  axios.post(`/api/like/book/${isbn}/`).then(res =>
+    dispatch({
+      type: actionTypes.POST_BOOK_LIKE,
+      book: res.data,
+    }),
+  );
+
+//export const DELETE_BOOK_LIKE = 'DELETE_BOOK_LIKE';
+export const deleteBookLike = isbn => dispatch =>
+  axios.put(`/api/like/book/${isbn}/`).then(res =>
+    dispatch({
+      type: actionTypes.DELETE_BOOK_LIKE,
+      book: res.data,
+    }),
+  );
+
 export const getArticles = page => dispatch =>
   axios.get(`/api/article/page/${page}/`).then(res =>
     dispatch({
@@ -136,10 +168,12 @@ export const editSpecificArticle = article => dispatch =>
     }),
   );
 // export const DELETE_SPECIFIC_ARTICLE = 'DELETE_SPECIFIC_ARTICLE'
-export const deleteSpecificArticle = id => dispatch =>
+export const deleteSpecificArticle = (id, type) => dispatch =>
   axios.delete(`/api/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_SPECIFIC_ARTICLE,
+      targetID: id,
+      targetTYPE: type,
     }),
   );
 // export const GET_ARTICLE_LIKE = 'GET_ARTICLE_LIKE'

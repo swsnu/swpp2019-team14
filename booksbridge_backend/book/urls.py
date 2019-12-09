@@ -35,7 +35,11 @@ urlpatterns = [
     path('ocr/', views.ocr, name='ocr'),
     path('image/profile/', views.photo_upload, name='propic_upload'),
     path('like/article/<article_id>/', views.article_like, name='article_like'),
-    path('like/curation/<curation_id>/',
-         views.curation_like, name='curation_like'),
+    path('like/book/<isbn>/', views.book_like, name='book_like'),
+    path('like/curation/<curation_id>/', views.curation_like, name='curation_like'),
+    path('group/', views.group, name='group'),
+    path('group/<group_id>/', views.specific_group, name='specific_group'),
+    
+     
 
 ]

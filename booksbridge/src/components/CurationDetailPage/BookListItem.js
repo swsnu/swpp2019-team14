@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Container } from 'semantic-ui-react';
 
 import BookResultSummary from '../../components/BookResultSummary/BookResultSummary';
 import './BookListItem.css';
@@ -21,7 +20,7 @@ class BookListItem extends Component {
     return (
       <div key={isbn} className="book-content-list">
         <BookResultSummary
-          id="book"
+          className="book"
           cover={cover}
           title={title}
           authors={authors}
@@ -31,7 +30,7 @@ class BookListItem extends Component {
           click={click}
           size={size}
         />
-        <h5 id="content">{content}</h5>
+        <h5 className="content-for-book">{content}</h5>
       </div>
     );
   }

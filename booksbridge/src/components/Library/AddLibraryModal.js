@@ -22,6 +22,7 @@ class AddLibraryModal extends Component {
   constructor(props) {
     super(props);
   }
+
   state = {
     open: false,
     title: this.props.title ? this.props.title : '',
@@ -32,7 +33,6 @@ class AddLibraryModal extends Component {
   /////////////* Logic for Modal */////////////
   open = () => this.setState({ ...this.state, open: true });
   close = () => {
-    console.log('[DEBUG] close called');
     if (this.state.mode === 'ADD')
       this.setState({
         ...this.state,
@@ -62,19 +62,21 @@ class AddLibraryModal extends Component {
       console.log(book.title);
     });
     console.log(
-      '[DEBUG] selectedBook exists?: ' + this.props.selectedBook != null
-        ? 'yes. the title is: ' + this.props.selectedBook
-        : 'no',
+      '[DEBUG] selectedBook exists?: ' +
+        (this.props.selectedBook != null
+          ? 'yes. the title is: ' + this.props.selectedBook.title
+          : 'no'),
     );
     //if (this.props.selectedBook == null) return;
-    /* Debug End */
-    setTimeout(() => {
-      console.log('[DEBUG] timeout');
+    /*Debug End */
 
+    setTimeout(() => {
+      console.log('[DEBUG] setTiemout called');
       this.setState({
         ...this.state,
         books: this.state.books.concat(this.props.selectedBook),
       });
+      console.log('[DEBUG] asdf');
       this.props.onEmptySelectedBook();
     }, 1000);
   };
@@ -98,8 +100,6 @@ class AddLibraryModal extends Component {
   };
 
   render() {
-    //if (this.props.selectedBook != null) this.addToLibrary();
-
     const { open, title } = this.state;
     const libraryAddButton = (
       <Button icon labelPosition="left">

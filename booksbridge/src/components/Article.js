@@ -55,13 +55,17 @@ const Article = props => {
               </div>
             </div>
           </div>
-          <div className="MainLikeButton">
-            <Feed.Meta>
-              <Feed.Like>
-                <Icon name="like" />4 Likes
-              </Feed.Like>
-            </Feed.Meta>
-          </div>
+          {props.like_or_not ? (
+            <div className="MainLikeButton" onClick={props.clickUnlike}>
+              <Icon name="like" color="red" />
+              {props.like_count}
+            </div>
+          ) : (
+            <div className="MainLikeButton" onClick={props.clickLike}>
+              <Icon name="like" />
+              {props.like_count}
+            </div>
+          )}
         </div>
       </div>
     </Alert>

@@ -129,7 +129,7 @@ describe('ActionCreators', () => {
     store.dispatch(actionCreators.loginUser()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spyAlert).toHaveBeenCalledWith(
-        'Username or Password is incorrect.',
+        '아이디 혹은 비밀번호가 틀렸습니다.',
       );
       done();
     });
@@ -229,6 +229,7 @@ describe('ActionCreators', () => {
       done();
     });
   });
+
   //   getArticles,
   //   getArticlesByBookId,
   //   getArticlesByUserId,
@@ -260,7 +261,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
-          data: stubArticles,
+          data: { articles: stubArticles, length: 1 },
         };
         resolve(result);
       });
@@ -353,17 +354,17 @@ describe('ActionCreators', () => {
   });
   //   deleteSpecificArticle,
   it(`'deleteSpecificArticle'`, done => {
+    const newState = store.getState();
     const spy = jest.spyOn(axios, 'delete').mockImplementation(url => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
-          data: stubArticle,
+          data: null,
         };
         resolve(result);
       });
     });
     store.dispatch(actionCreators.deleteSpecificArticle()).then(() => {
-      //   expect(newState.article.selectedArticle).toBe(stubArticle);
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -390,6 +391,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubArticle,
         };
         resolve(result);
       });
@@ -405,6 +407,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubArticle,
         };
         resolve(result);
       });

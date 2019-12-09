@@ -32,16 +32,17 @@ class Profile(models.Model):
 class Book(models.Model):
     isbn = models.BigIntegerField(primary_key=True)
     title = models.TextField()
-    contents = models.TextField()
+    contents = models.TextField(null=True)
+    author_contents = models.TextField(null=True)
     url = models.TextField()
     thumbnail = models.TextField()
     authors = models.TextField()
     publisher = models.TextField()
     published_date = models.TextField(null=True)
+    like_users = models.ManyToManyField(User)
 
     def __str__(self):
         return str(self.isbn)
-
 
 class Article(models.Model):
     objects = models.Manager()
@@ -53,16 +54,17 @@ class Article(models.Model):
     is_long = models.BooleanField(default=False)
     is_short = models.BooleanField(default=False)
     is_phrase = models.BooleanField(default=False)
-
+    like_users = models.ManyToManyField(User, through='ArticleLike')
     def __str__(self):
         return str(self.content)
 
 class Curation(models.Model):
     objects = models.Manager()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='curations')
     title = models.TextField()
     content = models.TextField()
     date = models.DateTimeField(default=datetime.now, blank=True)
+    like_users = models.ManyToManyField(User, through='CurationLike')
     def __str__(self):
         return str(self.title)
 
@@ -82,8 +84,6 @@ class ArticleComment(Comment):
 
 class CurationComment(Comment):
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE, related_name='comments')
-
-
 
 class BookInCuration(models.Model):
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE, related_name='book_in_curation')
@@ -113,12 +113,32 @@ class CurationLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     curation = models.ForeignKey(Curation, on_delete=models.CASCADE)
 
-
 class Follow(models.Model):
     follower = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="follower")
     followee = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="followee")
+
+class Group(models.Model):
+    name = models.CharField(max_length=20)
+    explanation = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    members = models.ManyToManyField(User, through='MemberInGroup')
+
+class AdminInGroup(models.Model):
+    admin = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='admin')
+
+class MemberInGroup(models.Model):
+    member = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+
+class PostInGroup(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='posts')
+    title = models.TextField()
+    content = models.TextField()
+    
 
 
 # class LongReivewComment(models.Model):

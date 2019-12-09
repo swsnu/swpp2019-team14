@@ -13,6 +13,9 @@ class BookTabs extends Component {
         is_long={false}
         is_phrase={false}
         reviews={this.props.shortReviews}
+        likeHandler={this.props.likeHandler}
+        deleteHandler={this.props.deleteHandler}
+        logged_in_user={this.props.logged_in_user}
       />
     );
     const longReviewList = (
@@ -21,6 +24,9 @@ class BookTabs extends Component {
         is_long
         is_phrase={false}
         reviews={this.props.longReviews}
+        likeHandler={this.props.likeHandler}
+        deleteHandler={this.props.deleteHandler}
+        logged_in_user={this.props.logged_in_user}
       />
     );
     const phraseList = (
@@ -29,6 +35,9 @@ class BookTabs extends Component {
         is_long={false}
         is_phrase
         reviews={this.props.phrases}
+        likeHandler={this.props.likeHandler}
+        deleteHandler={this.props.deleteHandler}
+        logged_in_user={this.props.logged_in_user}
       />
     );
 

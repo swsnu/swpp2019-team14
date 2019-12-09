@@ -5,8 +5,7 @@ from django.contrib.auth.models import User
 from urllib import parse
 import json
 from unittest.mock import MagicMock, patch
-from .views import run_text_detection, make_article_dict, make_curation_dict
-
+from .views import make_article_dict, make_curation_dict
 
 
 class BookTestCase(TestCase):
@@ -578,11 +577,27 @@ class BookTestCase(TestCase):
 
         self.assertEqual(response.status_code, 405)
 
+        client.post('/api/article/',
+                    json.dumps({
+                        'isbn': '9780393912470',
+                        'title': 'test_title',
+                        'content': 'test_content',
+                        'is_long': True,
+                        'is_short': False,
+                        'is_phrase': False
+                    }),
+                    content_type='application/json')
+
         # DELETE   
         response = client.delete('/api/article/1/',
                                content_type='application/json')
 
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 403)
+
+        response = client.delete('/api/article/2/',
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
 
 
     def test_article(self):
@@ -1481,12 +1496,66 @@ class BookTestCase(TestCase):
         response = client.get('/api/comment/curation/', 
                                content_type='application/json')
         self.assertEqual(response.status_code, 405)  
-  
+    
+
+    def test_group(self):
+        client = Client()
+        self.pretest(client, '/api/group/')
+
+        # POST
+        response = client.post('/api/group/',
+                               json.dumps({
+                                    'name': 'TEST_GROUP',
+                                    'explanation': 'THIS IS NEW GROUP',
+                               }),
+                               content_type='application/json')
+
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 201)
+
+        # GET
+        response = client.get('/api/group/', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+        # unallowed request
+        response = client.put('/api/group/', content_type='application/json')
+        self.assertEqual(response.status_code, 405)
+    
+
+    def test_specific_group(self):
+        client = Client()
+        self.pretest(client, '/api/group/1/')
+
+        # group registration 
+        response = client.post('/api/group/',
+                               json.dumps({
+                                    'name': 'TEST_GROUP',
+                                    'explanation': 'THIS IS NEW GROUP',
+                               }),
+                               content_type='application/json')
+
+        # POST
+        response = client.post('/api/group/1/',
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        
+    def test_book_like(self):
+        client = Client()
+        self.pretest(client, '/api/like/book/9780393912470/')
+
+        # POST
+        response = client.post('/api/like/book/9780393912470/',
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        # PUT
+        response = client.post('/api/like/book/9780393912470/',
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 201)
 
 
-
-
-
-
-
+        # unallowed request
+        response = client.patch('/api/group/', content_type='application/json')
+        self.assertEqual(response.status_code, 405)
 

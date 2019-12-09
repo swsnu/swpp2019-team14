@@ -21,6 +21,44 @@ class Main extends React.Component {
     this.fetchMoreData();
   }
 
+  onClickLikeArticleButton = (like_or_not, id) => {
+    if (like_or_not) {
+      this.props.onDeleteLikeArticle(id);
+      const deleted = this.state.articles.map(article => {
+        if (article.id === id) {
+          return {
+            ...article,
+            like_count: article.like_count - 1,
+            like_or_not: false,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      this.setState({
+        ...this.state,
+        articles: deleted,
+      });
+    } else {
+      this.props.onPostLikeArticle(id);
+      const added = this.state.articles.map(article => {
+        if (article.id === id) {
+          return {
+            ...article,
+            like_count: article.like_count + 1,
+            like_or_not: true,
+          };
+        } else {
+          return { ...article };
+        }
+      });
+      this.setState({
+        ...this.state,
+        articles: added,
+      });
+    }
+  };
+
   fetchMoreData = () => {
     // a fake async api call like which sends
     // 10 more records in 0.7 secs
@@ -40,6 +78,28 @@ class Main extends React.Component {
   };
 
   render() {
+    const feed = this.state.articles.map(article => (
+      <div>
+        <Article
+          author={article.author}
+          book_isbn={article.book.isbn}
+          book_title={article.book.title}
+          book_thumbnail={article.book.thumbnail}
+          id={article.id}
+          title={article.title}
+          content={article.content}
+          date={article.date}
+          is_long={article.is_long}
+          is_short={article.is_short}
+          is_phrase={article.is_phrase}
+          like_or_not={article.like_or_not}
+          like_count={article.like_count}
+          logged_in_user={this.props.logged_in_user}
+          clickLike={() => this.onClickLikeArticleButton(false, article.id)}
+          clickUnlike={() => this.onClickLikeArticleButton(true, article.id)}
+        />
+      </div>
+    ));
     return (
       <div className="main">
         <Header />
@@ -73,23 +133,7 @@ class Main extends React.Component {
               </p>
             }
           >
-            {this.state.articles.map(article => (
-              <div>
-                <Article
-                  author={article.author}
-                  book_isbn={article.book.isbn}
-                  book_title={article.book.title}
-                  book_thumbnail={article.book.thumbnail}
-                  id={article.id}
-                  title={article.title}
-                  content={article.content}
-                  date={article.date}
-                  is_long={article.is_long}
-                  is_short={article.is_short}
-                  is_phrase={article.is_phrase}
-                />
-              </div>
-            ))}
+            {feed}
           </InfiniteScroll>
         </div>
       </div>
@@ -101,12 +145,17 @@ const mapStateToProps = state => {
   return {
     loadArticle: state.article.articles,
     hasNext: state.article.hasNext,
+    logged_in_user: state.user.logged_in_user,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onGetArticles: page => dispatch(actionCreators.getArticles(page)),
+    onPostLikeArticle: article_id =>
+      dispatch(actionCreators.postArticleLike(article_id)),
+    onDeleteLikeArticle: article_id =>
+      dispatch(actionCreators.deleteArticleLike(article_id)),
   };
 };
 

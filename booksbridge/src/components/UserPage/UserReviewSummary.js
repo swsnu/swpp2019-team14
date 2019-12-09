@@ -1,15 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './UserReviewSummary.css';
-import { Label } from 'semantic-ui-react';
+import { Label, Popup, Icon, Confirm } from 'semantic-ui-react';
 
 const UserReviewSummary = props => {
+  const [delete_confirm, openConfirm] = useState(false);
+  const onConfirm = () => {
+    openConfirm(false);
+    props.deleteHandler(props.id);
+  };
   return (
     <div className="UserReviewSummary">
+      <Confirm
+        className="DeleteReviewConfirm"
+        size={'small'}
+        cancelButton="취소"
+        confirmButton="삭제"
+        content="정말로 리뷰를 삭제하시겠습니까? 삭제한 리뷰는 되돌릴 수 없습니다."
+        open={delete_confirm}
+        onCancel={() => openConfirm(false)}
+        onConfirm={() => onConfirm()}
+      />
       <div className="ReviewSummary">
-        {props.is_short === true ? (
-          <Label size="mini">Short Review</Label>
-        ) : null}
-        {props.is_phrase === true ? <Label size="mini">Phrase</Label> : null}
+        <div className="LabelAndButton">
+          <div className="ReviewTypeLabel">
+            {props.is_long === true ? (
+              <Label size="mini">Long Review</Label>
+            ) : null}
+            {props.is_short === true ? (
+              <Label size="mini">Short Review</Label>
+            ) : null}
+            {props.is_phrase === true ? (
+              <Label size="mini">Phrase</Label>
+            ) : null}
+          </div>
+          <div className="UserPageEditDeleteButton">
+            {props.profile_user.username === props.logged_in_user.username ? (
+              <div className="ArticleEditDeleteButton">
+                <Popup
+                  content="수정"
+                  position={'top center'}
+                  trigger={
+                    <a
+                      className="ReviewEditIcon"
+                      href={'/review/edit/' + props.id}
+                    >
+                      <Icon name="pencil" />
+                    </a>
+                  }
+                />
+                <Popup
+                  content="삭제"
+                  position={'top center'}
+                  trigger={
+                    <Icon name="delete" onClick={() => openConfirm(true)} />
+                  }
+                />
+              </div>
+            ) : null}
+          </div>
+        </div>
         <a href={'/review/' + props.id}>
           <h3 className="ReviewTitle">{props.title}</h3>
         </a>
