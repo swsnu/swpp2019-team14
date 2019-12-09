@@ -11,6 +11,7 @@
   padding-left: 1rem;
   align-items: flex-start;
   justify-content: center;
+  cursor: pointer;
 }
 
 .username {

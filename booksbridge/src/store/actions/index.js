@@ -46,4 +46,5 @@ export {
   emptySearchedBooks,
   runOcr,
   getAlarms,
+  toggleAlarm,
 } from './actionCreators';

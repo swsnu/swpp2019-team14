@@ -15,7 +15,13 @@
 .curation-summary-items {
   width: 100% !important;
   padding-top: 10px;
-  padding-bottom: 120px;
+  padding-bottom: 10px;
+}
+.curation-captions {
+  display: flex;
+}
+.caption-content {
+  flex-basis: 25%;
 }
 @media only screen and (max-width: 600px) {
   .carousel-items {

@@ -441,7 +441,16 @@ export const getAlarms = () => dispatch =>
   axios.get('/api/alarm/').then(res =>
     dispatch({
       type: actionTypes.GET_ALARMS,
-      alarms: res.data,
+      alarms: res.data.alarms,
+      new: res.data.new,
+    }),
+  );
+
+export const toggleAlarm = id => dispatch =>
+  axios.put(`/api/alarm/${id}/`).then(res =>
+    dispatch({
+      type: actionTypes.TOGGLE_ALARM,
+      alarm: res.data,
     }),
   );
 // //////////////////////////////////// FOLLOW ///////////////////////////////////

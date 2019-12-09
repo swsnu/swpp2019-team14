@@ -69,3 +69,4 @@ export const RUN_OCR = 'RUN_OCR';
 export const UPLOAD_PROFILE_IMAGE = 'UPLOAD_PROFILE_IMAGE';
 
 export const GET_ALARMS = 'GET_ALARMS';
+export const TOGGLE_ALARM = 'TOGGLE_ALARM';

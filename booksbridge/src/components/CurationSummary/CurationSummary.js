@@ -25,31 +25,14 @@ const CurationSummary = props => {
             );
           })}
         </Image.Group>
-        <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </Carousel.Caption>
+        {/* <Carousel.Caption className="curation-captions">
+          {book_set.map(book => {
+            return <p className="caption-content">{book.title}</p>;
+          })}
+        </Carousel.Caption> */}
       </Carousel.Item>
     );
   });
-
-  const likeButton = props.like_or_not ? (
-    <div
-      className="CurationLikeButton"
-      onClick={() => props.likeHandler(true, props.id)}
-    >
-      <Icon color="red" name="like" />
-      {props.like_count}
-    </div>
-  ) : (
-    <div
-      className="CurationLikeButton"
-      onClick={() => props.likeHandler(false, props.id)}
-    >
-      <Icon name="like" />
-      {props.like_count}
-    </div>
-  );
 
   return (
     <Alert variant="secondary" className="article">
@@ -72,24 +55,48 @@ const CurationSummary = props => {
                     <Carousel
                       className="carousel-items"
                       prevIcon={
-                        props.books.length > 4 ? (
+                        props.books.length > 1 ? (
                           <Icon color="black" name="angle left" size="large" />
                         ) : null
                       }
                       nextIcon={
-                        props.books.length > 4 ? (
+                        props.books.length > 1 ? (
                           <Icon color="black" name="angle right" size="large" />
                         ) : null
                       }
                     >
                       {Books}
                     </Carousel>
+                    <div className="content">{props.content}</div>
                   </div>
+                  <a
+                    id="article-extra"
+                    className="extra"
+                    href={'/review/' + props.id}
+                  >
+                    더 보기
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-          <div className="MainLikeButton">{likeButton}</div>
+          {props.like_or_not ? (
+            <div
+              className="MainLikeButton"
+              onClick={() => props.likeHandler(true, props.id)}
+            >
+              <Icon name="like" color="red" />
+              {props.like_count}
+            </div>
+          ) : (
+            <div
+              className="MainLikeButton"
+              onClick={() => props.likeHandler(false, props.id)}
+            >
+              <Icon name="like" />
+              {props.like_count}
+            </div>
+          )}
         </div>
       </div>
     </Alert>

@@ -340,15 +340,19 @@ def alarm(request):
     elif request.method == 'GET':
         alarms_array=[]
         alarms = request.user.profile.alarms.all().order_by('-id')
+        new=False
         for alarm in alarms:
             author=alarm.author
             author_name=author.profile.nickname
             author_username=author.get_username()
             alarm_dict = {
+                'id': alarm.id,
                 'author_name':author_name,
                 'author_username':author_username,
                 'profile_photo': author.profile.profile_photo.name,
+                'is_new':alarm.is_new,
             }
+            new = new or alarm.is_new
             if alarm.category == 'user':
                 alarm_dict['link'] = '/page/' + author_username
             elif alarm.content == 'curation':
@@ -364,16 +368,23 @@ def alarm(request):
             elif alarm.content == 'reply':
                 alarm_dict['content'] = author_name+'님이 회원님의 댓글에 답글을 남겼습니다.'
             alarms_array.append(alarm_dict)
-        return JsonResponse(alarms_array,safe=False)
-        # articles_all = Article.objects.all().order_by('-id')
-        # paginator = Paginator(articles_all, 10)
-        # articles_list = paginator.page(page).object_list
-        # articles = []
-        # for article in articles_list:
-        #     articles.append(make_article_dict(article))
-        # # articles = list(articles_all.values())
-        # # response_body={'articles':articles,'count': Article.objects.count()} 
-        # response_body={'articles': articles, 'has_next': paginator.page(page).has_next()}
+        result = {
+            'alarms':alarms_array,
+            'new': new,
+        }
+        return JsonResponse(result)
+
+def specific_alarm(request,alarm_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'PUT':
+        alarm = Alarm.objects.get(id=alarm_id)
+        alarm.is_new=False
+        alarm.save()
+        alarm_dict = {
+            'id': alarm.id,
+        }
+        return JsonResponse(alarm_dict)
 
 def send_alarm(sender,reciever,link_id,category,content):
     if(sender!=reciever):
