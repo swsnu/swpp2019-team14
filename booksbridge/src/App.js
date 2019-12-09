@@ -9,6 +9,7 @@ import Signup from './containers/Signup';
 import CreateReview from './containers/CreateReview';
 import Main from './containers/Main';
 import BookDetail from './containers/BookDetail';
+import EditReview from './containers/EditReview';
 import SearchResultBook from './containers/SearchResultBook/SearchResultBook';
 import ReviewDetailPage from './containers/ReviewDetailPage/ReviewDetailPage';
 import UserPage from './containers/UserPage';
@@ -65,7 +66,7 @@ class App extends Component {
             <Route
               path="/review/edit/:review_id"
               exact
-              component={ReviewDetailPage}
+              component={EditReview}
             />
             <Route path="/book/:book_id" exact component={BookDetail} />
             <Route path="/curation" exact component={CurationMain} />
