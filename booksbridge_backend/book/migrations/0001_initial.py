@@ -18,6 +18,15 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Alarm',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('link_id', models.IntegerField()),
+                ('content', models.TextField()),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='author', to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Article',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -84,6 +93,7 @@ class Migration(migrations.Migration):
                 ('nickname', models.CharField(blank=True, max_length=32)),
                 ('profile_text', models.TextField(blank=True)),
                 ('profile_photo', imagekit.models.fields.ProcessedImageField(default='https://react.semantic-ui.com/images/avatar/large/matthew.png', upload_to=book.models.profile_pic_path)),
+                ('alarms', models.ManyToManyField(related_name='alarms', to='book.Alarm')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

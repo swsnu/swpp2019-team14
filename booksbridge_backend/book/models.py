@@ -9,6 +9,12 @@ def profile_pic_path(instance, filename):
     return f'{instance.user.username}.jpg'
 
 
+class Alarm(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    link_id = models.IntegerField()
+    category = models.CharField(max_length=32,default='user')
+    content = models.CharField(max_length=32)
+
 class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -21,6 +27,7 @@ class Profile(models.Model):
         format = 'JPEG',
         options = {'quality':100},
         )
+    alarms = models.ManyToManyField(Alarm, related_name='alarms')
 
 class Book(models.Model):
     isbn = models.BigIntegerField(primary_key=True)
@@ -132,7 +139,6 @@ class PostInGroup(models.Model):
     title = models.TextField()
     content = models.TextField()
     
-
 
 
 # class LongReivewComment(models.Model):

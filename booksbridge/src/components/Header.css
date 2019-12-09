@@ -13,7 +13,7 @@
 #search-button {
   color: white;
   background-color: #000000;
-  border-color: #000000; 
+  border-color: #000000;
 }
 
 .MainHeader {
@@ -64,8 +64,13 @@
   height: 80px;
   padding-top: 15px;
   padding-bottom: 15px;
+  display: flex;
+  flex-direction: row;
 }
 
 .ui.vertical.menu {
   position: relative;
+}
+
+.alarm-popup {
 }
