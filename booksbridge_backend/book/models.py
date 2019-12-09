@@ -11,7 +11,7 @@ def profile_pic_path(instance, filename):
 
 class Alarm(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    link_id = models.IntegerField()
+    link_id = models.CharField(max_length=10)
     category = models.CharField(max_length=32,default='user')
     content = models.CharField(max_length=32)
     is_new = models.BooleanField(default=True)

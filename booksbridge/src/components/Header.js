@@ -112,10 +112,9 @@ class Header extends Component {
               on="click"
               position="bottom right"
             >
-              <Alarm
-                alarms={this.props.alarms}
-                onClickAlarm={this.props.onToggleAlarm}
-              />
+              {this.props.alarms.map((alarm, index) => (
+                <Alarm alarm={alarm} onClickAlarm={this.props.onToggleAlarm} />
+              ))}
             </Popup>
           </div>
           {this.state.show_menu == true ? menu : null}

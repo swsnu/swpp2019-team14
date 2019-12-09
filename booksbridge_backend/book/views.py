@@ -358,7 +358,7 @@ def alarm(request):
             elif alarm.category == 'curation':
                 alarm_dict['link'] = '/curation/' + alarm.link_id
             elif alarm.category == 'article':
-                alarm_dict['link'] = '/article/' + alarm.link_id
+                alarm_dict['link'] = '/review/' + alarm.link_id
             if alarm.content == 'follow':
                 alarm_dict['content'] = author_name+'님이 회원님을 팔로우합니다.'
             elif alarm.content == 'like':
