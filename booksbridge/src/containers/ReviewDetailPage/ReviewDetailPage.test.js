@@ -24,7 +24,9 @@ const stubInitialState = {
     date: [0, 0, 0, 0, 0],
     like_count: 1,
     like_or_not: true,
+    author: { username: 'TEST', profile_photo: 'TEST', nickname: 'TEST' },
   },
+  logged_in_user: { username: 'TEST', profile_photo: 'TEST', nickname: 'TEST' },
 };
 
 const mockStore = getMockStore(stubInitialState);
