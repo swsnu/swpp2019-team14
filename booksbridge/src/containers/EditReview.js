@@ -33,6 +33,7 @@ class EditReview extends Component {
 
   onClickEditButton = () => {
     this.props.onEditArticle({
+      id: this.props.selectedArticle.id,
       isbn: this.props.selectedArticle.book.isbn,
       title: this.state.title,
       content: this.state.content,

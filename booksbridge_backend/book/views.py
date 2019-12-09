@@ -266,6 +266,21 @@ def specific_article(request,review_id):
             return HttpResponse(status=403)
         article.delete()
         return HttpResponse(status=200)
+    elif request.method == 'PUT':
+        article = get_object_or_404(Article, id=review_id)
+        if not request.user.id==article.author_id:
+            return HttpResponse(status=403)
+        try:
+            req_data = json.loads(request.body.decode())
+            article.title = req_data['title']
+            article.content = req_data['content']
+            article.save()
+        except(KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+        response_dict = make_article_dict(article)
+        response_dict['comments'] = get_comments(article)
+        response_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
+        return JsonResponse(response_dict, status=200)
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
