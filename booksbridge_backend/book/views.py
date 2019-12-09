@@ -355,9 +355,9 @@ def alarm(request):
             new = new or alarm.is_new
             if alarm.category == 'user':
                 alarm_dict['link'] = '/page/' + author_username
-            elif alarm.content == 'curation':
+            elif alarm.category == 'curation':
                 alarm_dict['link'] = '/curation/' + alarm.link_id
-            elif alarm.content == 'article':
+            elif alarm.category == 'article':
                 alarm_dict['link'] = '/article/' + alarm.link_id
             if alarm.content == 'follow':
                 alarm_dict['content'] = author_name+'님이 회원님을 팔로우합니다.'
