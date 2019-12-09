@@ -49,9 +49,13 @@
   font-size: 35px;
 }
 
+.ReviewDetailEditDeleteButton{
+  text-align: right;
+  padding-bottom: 10%;
+}
 .LikeButton {
   padding-top: 10%;
-  padding-bottom: 10%;
+  padding-bottom: 3%;
   text-align: right;
 }
 

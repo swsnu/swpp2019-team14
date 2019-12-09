@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Feed, Icon } from 'semantic-ui-react';
+import { Feed, Icon, Popup, Confirm } from 'semantic-ui-react';
 import Spinner from 'react-bootstrap/Spinner';
 
 import Header from '../../components/Header';
@@ -16,6 +16,7 @@ import './ReviewDetailPage.css';
 class ReviewDetailPage extends Component {
   constructor(params) {
     super(params);
+    this.state = { delete_confirm: false };
     this.props.onLoadArticle(this.props.match.params.review_id);
   }
 
@@ -64,6 +65,19 @@ class ReviewDetailPage extends Component {
 
     return (
       <div className="ReviewDetailPage">
+        <Confirm
+          className="DeleteReviewConfirm"
+          size={'small'}
+          cancelButton="취소"
+          confirmButton="삭제"
+          content="정말로 리뷰를 삭제하시겠습니까? 삭제한 리뷰는 되돌릴 수 없습니다."
+          open={this.state.delete_confirm}
+          onCancel={() => this.setState({ delete_confirm: false })}
+          onConfirm={() => {
+            this.props.onDeleteArticle(this.props.currentArticle.id);
+            this.props.history.push('/main');
+          }}
+        />
         <Header />
 
         <div className="ReviewDetail">
@@ -95,6 +109,35 @@ class ReviewDetailPage extends Component {
           <div className="ReviewContainer">
             {this.props.currentArticle.content}
             <div className="LikeButton">{LikeButton}</div>
+            <div className="ReviewDetailEditDeleteButton">
+              {this.props.currentArticle.author.username ===
+              this.props.logged_in_user.username ? (
+                <div className="ArticleDeleteButton">
+                  <Popup
+                    content="수정"
+                    position={'top center'}
+                    trigger={
+                      <a
+                        className="ReviewEditIcon"
+                        href={'/review/edit/' + this.props.currentArticle.id}
+                      >
+                        <Icon name="pencil" />
+                      </a>
+                    }
+                  />
+                  <Popup
+                    content="삭제"
+                    position={'top center'}
+                    trigger={
+                      <Icon
+                        name="delete"
+                        onClick={() => this.setState({ delete_confirm: true })}
+                      />
+                    }
+                  />
+                </div>
+              ) : null}
+            </div>
             <div className="ReviewComments">
               <Comments
                 comments={this.props.currentArticle.comments}
@@ -123,6 +166,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreators.postArticleLike(article_id)),
     onDeleteLikeArticle: article_id =>
       dispatch(actionCreators.deleteArticleLike(article_id)),
+    onDeleteArticle: article_id =>
+      dispatch(actionCreators.deleteSpecificArticle(article_id, null)),
   };
 };
 
