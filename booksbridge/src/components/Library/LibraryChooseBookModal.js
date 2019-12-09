@@ -28,7 +28,7 @@ class LibraryChooseBookModal extends Component {
 
   render() {
     return (
-      <div>
+      <div className="library-choose-book-modal">
         <Button icon className="selectBookButton" onClick={this.openHandler}>
           <Icon name="plus" />책 고르기
         </Button>

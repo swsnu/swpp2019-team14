@@ -60,6 +60,7 @@ class Library extends Component {
                   </div>
                   <div className="CardButton">
                     <ConfirmDelete
+                      id="confirm-delete-library"
                       onConfirm={() => this.onDeleteLibrary(library_dict.id)}
                     />
                   </div>

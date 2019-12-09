@@ -4,6 +4,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie , csrf_exempt
 import json, re
 import urllib, requests
 from .models import *
+from .text_detection import *
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404, get_list_or_404
@@ -762,52 +763,6 @@ def search_user(request, keyword):
     else:
         return HttpResponseNotAllowed(['GET',])
 
-# test implemented
-def run_text_detection(path):
-    from google.cloud import vision
-    client = vision.ImageAnnotatorClient()
-
-    try:
-        with io.open(path, 'rb') as image_file:
-            content = image_file.read()
-    except:
-        return HttpResponse(status=400)
-
-    image = vision.types.Image(content=content)
-
-    response = client.document_text_detection(image=image)
-
-    result = ""
-    for page in response.full_text_annotation.pages:
-        for block in page.blocks:
-            for paragraph in block.paragraphs:
-                for word in paragraph.words:
-                    word_text = ''.join([
-                        symbol.text for symbol in word.symbols
-                    ])
-                    result += word_text + ' '
-    return result
-
-def run_text_detection_url(path):
-    from google.cloud import vision
-
-    client = vision.ImageAnnotatorClient()
-    image = vision.types.Image()
-    image.source.image_uri = path
-
-    response = client.text_detection(image=image)
-    
-    result = ""
-
-    for page in response.full_text_annotation.pages:
-        for block in page.blocks:
-            for paragraph in block.paragraphs:
-                for word in paragraph.words:
-                    word_text = ''.join([
-                        symbol.text for symbol in word.symbols
-                    ])
-                    result += word_text + " "
-    return result
 
 
 # test implemented
@@ -1062,7 +1017,6 @@ def group(request):
         response_dict['members'] = member_in_group.member.id
         response_dict['posts'] = None
         return JsonResponse(response_dict, status=201)
- 
     
     elif request.method == 'GET':  
         # 내가 속한 모든 그룹 가져오기
@@ -1087,6 +1041,7 @@ def specific_group(request, group_id):
         member_in_group.save()
         return HttpResponse(status=201)
     
+    '''
     elif request.method == 'GET':  
         # 그룹 정보 및 멤버 가져오기 (post 완료되면 post 정보도 가져오는 코드 추가 필요)
         pass
@@ -1102,9 +1057,7 @@ def specific_group(request, group_id):
     
     else:
         return HttpResponseNotAllowed(['GET', 'POST', 'PUT', 'DELETE'])
-
-
-
+    
 def post(request, group_id):
     pass
 
@@ -1112,7 +1065,7 @@ def post(request, group_id):
 def specific_post(request, group_id, post_id):
     pass
 
-
+'''
 
 
 

@@ -10,7 +10,6 @@ import Comments from '../Comments/Comments';
 import ProfileSummary from '../../components/ProfileSummary/ProfileSummary';
 import Time from '../../components/Time';
 import * as actionCreators from '../../store/actions/actionCreators';
-import ArticleLike from '../../components/Like/ArticleLike';
 
 import './ReviewDetailPage.css';
 
