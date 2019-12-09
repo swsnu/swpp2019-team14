@@ -8,15 +8,30 @@
   padding-right: 25%;
   margin: 10px;
   white-space: pre-wrap;
+  font-family: 'NanumSquare', sans-serif;
   text-align: left;
   font-size: 16px;
   line-height: 1.5;
 }
 
-/* .book-and-content {
-  display: 'flex';
-  flex-direction: 'row';
-} */
+.curation-detail-title {
+  font-family: 'NanumSquare', sans-serif;
+  text-align: left;
+  padding-top: 12%;
+}
+
+.curation-detail-content {
+  font-family: 'NanumSquare', sans-serif;
+  padding-top: 5%;
+}
+.book-and-content {
+  padding-top: 5%;
+}
+.CurationLikeButton {
+  padding-top: 10%;
+  padding-bottom: 10%;
+  text-align: right;
+}
 
 @media only screen and (max-width: 600px) {
   .curation-detail-page {

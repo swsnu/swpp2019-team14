@@ -1497,12 +1497,43 @@ class BookTestCase(TestCase):
         response = client.get('/api/comment/curation/', 
                                content_type='application/json')
         self.assertEqual(response.status_code, 405)  
-  
+    
+    def test_group(self):
+        client = Client()
+        self.pretest(client, '/api/group/')
+
+        # POST
+        response = client.post('/api/group/',
+                               json.dumps({
+                                    'name': 'TEST_GROUP',
+                                    'explanation': 'THIS IS NEW GROUP',
+                               }),
+                               content_type='application/json')
+
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 201)
 
 
+        # GET
+        response = client.get('/api/group/', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_specific_group(self):
+        client = Client()
+        self.pretest(client, '/api/group/1/')
 
+        # group registration 
+        response = client.post('/api/group/',
+                               json.dumps({
+                                    'name': 'TEST_GROUP',
+                                    'explanation': 'THIS IS NEW GROUP',
+                               }),
+                               content_type='application/json')
 
-
+        # POST
+        response = client.post('/api/group/1/',
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 201)
 
 
 

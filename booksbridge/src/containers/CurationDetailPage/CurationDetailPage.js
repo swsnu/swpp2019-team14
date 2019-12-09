@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Button, Icon, Container, Divider } from 'semantic-ui-react';
+import { Icon, Container, Divider } from 'semantic-ui-react';
 
 import Header from '../../components/Header';
 import BookInfo from '../../components/BookDetail/BookInfo';
@@ -36,17 +36,20 @@ class CurationDetailPage extends Component {
     const bookAndContent = this.props.currentCuration.books.map(entry => {
       // { {book info}, content } list
       return (
-        <BookListItem
-          cover={entry.book.thumbnail}
-          title={entry.book.title}
-          authors={entry.book.authors}
-          publisher={entry.book.publisher}
-          isbn={entry.book.isbn}
-          direct={true}
-          click={() => {}}
-          size="small"
-          content={entry.content}
-        ></BookListItem>
+        <div>
+          <Divider />
+          <BookListItem
+            cover={entry.book.thumbnail}
+            title={entry.book.title}
+            authors={entry.book.authors}
+            publisher={entry.book.publisher}
+            isbn={entry.book.isbn}
+            direct={true}
+            click={() => {}}
+            size="big"
+            content={entry.content}
+          ></BookListItem>
+        </div>
       );
     });
 
@@ -72,31 +75,19 @@ class CurationDetailPage extends Component {
         <Header />
         <div className="curation-detail-page">
           <ProfileSummary user={this.props.currentCuration.author} />
-
-          <div className="curation-title">
+          <div className="curation-detail-title">
             <h1>{this.props.currentCuration.title}</h1>
           </div>
           <Divider />
-          <div className="curation-content">
-            <Container>
-              <h5>{this.props.currentCuration.content}</h5>
-            </Container>
-          </div>
+          <Container>
+            <h5 className="curation-detail-content">
+              {this.props.currentCuration.content}
+            </h5>
+          </Container>
           <div className="book-and-content">{bookAndContent}</div>
 
           <div className="CurationContainer">
-            {/* <div className="LikeButton" onClick={this.likeHandler}>
-              <div className="ui labeled button" tabIndex="0">
-                <div className="ui red button">
-                  <i className="heart icon" /> Like
-                </div>
-                <a className="ui basic red left pointing label">
-                  {this.props.currentCuration.like_count}
-                </a>
-              </div>
-            </div> */}
             {likeButton}
-
             <div className="CurationComments">
               <Comments
                 comments={this.props.currentCuration.comments}
