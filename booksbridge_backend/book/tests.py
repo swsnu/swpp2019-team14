@@ -5,8 +5,7 @@ from django.contrib.auth.models import User
 from urllib import parse
 import json
 from unittest.mock import MagicMock, patch
-from .views import run_text_detection, make_article_dict, make_curation_dict
-
+from .views import make_article_dict, make_curation_dict
 
 
 class BookTestCase(TestCase):
@@ -1498,6 +1497,7 @@ class BookTestCase(TestCase):
                                content_type='application/json')
         self.assertEqual(response.status_code, 405)  
     
+
     def test_group(self):
         client = Client()
         self.pretest(client, '/api/group/')
@@ -1513,11 +1513,15 @@ class BookTestCase(TestCase):
         self.assertIsNotNone(response.content)
         self.assertEqual(response.status_code, 201)
 
-
         # GET
         response = client.get('/api/group/', content_type='application/json')
         self.assertEqual(response.status_code, 200)
+
+        # unallowed request
+        response = client.put('/api/group/', content_type='application/json')
+        self.assertEqual(response.status_code, 405)
     
+
     def test_specific_group(self):
         client = Client()
         self.pretest(client, '/api/group/1/')
@@ -1535,5 +1539,23 @@ class BookTestCase(TestCase):
                                content_type='application/json')
         self.assertEqual(response.status_code, 201)
 
+        
+    def test_book_like(self):
+        client = Client()
+        self.pretest(client, '/api/like/book/9780393912470/')
 
+        # POST
+        response = client.post('/api/like/book/9780393912470/',
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        # PUT
+        response = client.post('/api/like/book/9780393912470/',
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+
+        # unallowed request
+        response = client.patch('/api/group/', content_type='application/json')
+        self.assertEqual(response.status_code, 405)
 
