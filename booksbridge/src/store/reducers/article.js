@@ -31,6 +31,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedArticle: action.article,
       };
+    case actionTypes.EDIT_SPECIFIC_ARTICLE:
+      return {
+        ...state,
+        selectedArticle: action.article,
+      };
     case actionTypes.GET_ARTICLES_BY_USERID:
       return {
         ...state,

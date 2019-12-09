@@ -161,12 +161,18 @@ export const getSpecificArticle = id => dispatch =>
 
 // export const EDIT_SPECIFIC_ARTICLE = 'EDIT_SPECIFIC_ARTICLE'
 export const editSpecificArticle = article => dispatch =>
-  axios.put(`/api/article/${article.id}/`, article).then(res =>
+  axios.put(`/api/article/${article.id}/`, article).then(res => {
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_ARTICLE,
       article: res.data,
-    }),
-  );
+    });
+    if (article.is_long) {
+      dispatch(push(`/review/${res.data.id}`));
+    } else {
+      dispatch(push('/book/' + res.data.book.isbn));
+    }
+  });
+
 // export const DELETE_SPECIFIC_ARTICLE = 'DELETE_SPECIFIC_ARTICLE'
 export const deleteSpecificArticle = (id, type) => dispatch =>
   axios.delete(`/api/article/${id}/`).then(res =>
