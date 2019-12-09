@@ -563,20 +563,6 @@ class BookTestCase(TestCase):
 
         self.assertEqual(response.status_code, 405)
 
-        # PUT
-        response = client.put('/api/article/1/',
-                               json.dumps({
-                                   'isbn': '9780393912470',
-                                   'title': 'test_title',
-                                   'content': 'test_content',
-                                   'is_long': True,
-                                   'is_short': False,
-                                   'is_phrase': False
-                               }),
-                               content_type='application/json')
-
-        self.assertEqual(response.status_code, 405)
-
         client.post('/api/article/',
                     json.dumps({
                         'isbn': '9780393912470',
