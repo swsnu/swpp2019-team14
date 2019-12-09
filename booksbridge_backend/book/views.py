@@ -13,6 +13,7 @@ from django.db import transaction
 import io, os
 from django.core.files.storage import FileSystemStorage
 
+
 # test implemented
 def signup(request):
     if request.method == 'POST':
@@ -965,7 +966,6 @@ def article_like(request, article_id):
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
 
-# test implemented
 def curation_like(request, curation_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -991,7 +991,6 @@ def curation_like(request, curation_id):
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST','DELETE'])
-
 
 def make_user_dict(user):
     user_dict = {
@@ -1032,6 +1031,91 @@ def make_book_dict(book, full):
         }
     
     return book_dict
+
+
+def group(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
+        # 처음 그룹 생성
+        try:
+            req_data = json.loads(request.body.decode())
+            name = req_data['name']
+            explanation = req_data['explanation']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+        admin = request.user
+        
+        with transaction.atomic():
+            group = Group(name=name, explanation=explanation)
+            group.save()
+            admin_in_group = AdminInGroup(admin=admin, group=group)
+            admin_in_group.save()
+            member_in_group = MemberInGroup(member=admin, group=group)
+            member_in_group.save()
+        
+        # response format from group
+        # { name, explanation, admin_id, [member_id], {posts} }
+        response_dict = model_to_dict(group)
+        response_dict['admin'] = admin_in_group.admin.id
+        response_dict['members'] = member_in_group.member.id
+        response_dict['posts'] = None
+        return JsonResponse(response_dict, status=201)
+ 
+    
+    elif request.method == 'GET':  
+        # 내가 속한 모든 그룹 가져오기
+        # [ {id, name, explanation}, { ... }, { ... }, ... ]
+        member_in_group = MemberInGroup.objects.select_related('group').filter(member_id=request.user.id)
+        groups = [ x.group for x in member_in_group]
+        result = [ { 'id': group.id, 'name': group.name, 'explanation': group.explanation } for group in groups ]
+        response_dict = { 'groups': result }
+        return JsonResponse(response_dict, status=200)
+        
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST'])
+
+
+def specific_group(request, group_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
+        # 그룹에 가입 
+        member_in_group = MemberInGroup(member=request.user, group_id=group_id)
+        member_in_group.save()
+        return HttpResponse(status=201)
+    
+    elif request.method == 'GET':  
+        # 그룹 정보 및 멤버 가져오기 (post 완료되면 post 정보도 가져오는 코드 추가 필요)
+        pass
+
+    elif request.method == 'PUT':  
+        # 관리자인 경우 그룹 정보 수정
+        pass
+    
+
+    elif request.method == 'DELETE':  
+        # 그룹에서 탈퇴 (관리자인 경우 그룹도 함께 삭제)
+        pass
+    
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST', 'PUT', 'DELETE'])
+
+
+
+def post(request, group_id):
+    pass
+
+
+def specific_post(request, group_id, post_id):
+    pass
+
+
+
+
+
 
 @ensure_csrf_cookie
 def token(request):
