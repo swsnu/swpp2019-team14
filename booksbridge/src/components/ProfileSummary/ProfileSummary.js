@@ -23,10 +23,10 @@ const ProfileSummary = props => {
         onClick={() => props.history.push('/page/' + user.username)}
         src={profile_photo}
       />
-      <div className="profileName">
+      <a className="profileName" onClick={props.menu}>
         <b className="nickname">{user.nickname}</b>
         <p className="username">@{user.username}</p>
-      </div>
+      </a>
     </div>
   );
 };

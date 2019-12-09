@@ -86,16 +86,36 @@ class Header extends Component {
           </InputGroup>
         </div>
         <div className="headerProfile">
-          <div className="HeaderProfileSummary" onClick={this.onClickProfile}>
-            <ProfileSummary user={this.props.logged_in_user} />
+          <div className="HeaderProfileSummary">
+            <ProfileSummary
+              user={this.props.logged_in_user}
+              menu={this.onClickProfile}
+            />
+            <Icon
+              name="angle down"
+              size="large"
+              onClick={this.onClickProfile}
+              className="header-icon"
+            />
             <Popup
-              trigger={<Icon name="alarm" size="large" color="yellow" />}
-              flowing
+              trigger={
+                <Icon
+                  name="alarm"
+                  size="big"
+                  color={this.props.new_alarm ? 'red' : 'yellow'}
+                  className="header-alarm-icon"
+                />
+              }
               hoverable
+              wide
+              className="header-alarm-popup"
               on="click"
-              className="alarm-popup"
+              position="bottom right"
             >
-              <Alarm alarms={this.props.alarms} />
+              <Alarm
+                alarms={this.props.alarms}
+                onClickAlarm={this.props.onToggleAlarm}
+              />
             </Popup>
           </div>
           {this.state.show_menu == true ? menu : null}
@@ -109,6 +129,7 @@ const mapStateToProps = state => {
   return {
     logged_in_user: state.user.logged_in_user,
     alarms: state.user.alarms,
+    new_alarm: state.user.new_alarm,
   };
 };
 
@@ -119,6 +140,9 @@ const mapDispatchToProps = dispatch => {
     },
     onGetAlarms: () => {
       dispatch(actionCreators.getAlarms());
+    },
+    onToggleAlarm: id => {
+      dispatch(actionCreators.toggleAlarm(id));
     },
   };
 };

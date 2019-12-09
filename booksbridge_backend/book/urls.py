@@ -15,6 +15,7 @@ urlpatterns = [
     path('article/username=<username>/<page>/', views.search_article_by_author,
           name='search_article_by_author'),
     path('alarm/',views.alarm, name='alarm'),
+    path('alarm/<alarm_id>/',views.specific_alarm, name='specific_alarm'),
     path('article/<review_id>/', views.specific_article, name='specific_article'),
     path('token/', views.token, name='token'),
     path('article/', views.article, name='article'),

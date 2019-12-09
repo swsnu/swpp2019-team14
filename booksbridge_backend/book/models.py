@@ -14,6 +14,7 @@ class Alarm(models.Model):
     link_id = models.IntegerField()
     category = models.CharField(max_length=32,default='user')
     content = models.CharField(max_length=32)
+    is_new = models.BooleanField(default=True)
 
 class Profile(models.Model):
     user = models.OneToOneField(

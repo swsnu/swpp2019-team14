@@ -7,6 +7,7 @@ const initialState = {
   follower_list: [],
   followee_list: [],
   alarms: [],
+  new_alarm: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -68,6 +69,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         alarms: action.alarms,
+        new_alarm: action.new,
       };
   }
   return state;
