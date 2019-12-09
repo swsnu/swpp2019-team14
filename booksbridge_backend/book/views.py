@@ -348,15 +348,45 @@ def alarm(request):
         return HttpResponse(status=401)
     elif request.method == 'GET':
         alarms_array=[]
-        alarms = request.user.profile.alarms.all()
+        alarms = request.user.profile.alarms.all().order_by('-id')
         for alarm in alarms:
-            alarm_dict = model_to_dict(alarm)
+            author=alarm.author
+            author_name=author.profile.nickname
+            author_username=author.get_username()
+            alarm_dict = {
+                'author_name':author_name,
+                'author_username':author_username,
+                'profile_photo': author.profile.profile_photo.name,
+            }
+            if alarm.category == 'user':
+                alarm_dict['link'] = '/page/' + author_username
+            elif alarm.content == 'curation':
+                alarm_dict['link'] = '/curation/' + alarm.link_id
+            elif alarm.content == 'article':
+                alarm_dict['link'] = '/article/' + alarm.link_id
+            if alarm.content == 'follow':
+                alarm_dict['content'] = author_name+'님이 회원님을 팔로우합니다.'
+            elif alarm.content == 'like':
+                alarm_dict['content'] = author_name+'님이 회원님의 글에 \'좋아요\'를 눌렀습니다.'
+            elif alarm.content == 'comment':
+                alarm_dict['content'] = author_name+'님이 회원님의 글에 댓글을 남겼습니다.'
+            elif alarm.content == 'reply':
+                alarm_dict['content'] = author_name+'님이 회원님의 댓글에 답글을 남겼습니다.'
             alarms_array.append(alarm_dict)
         return JsonResponse(alarms_array,safe=False)
+        # articles_all = Article.objects.all().order_by('-id')
+        # paginator = Paginator(articles_all, 10)
+        # articles_list = paginator.page(page).object_list
+        # articles = []
+        # for article in articles_list:
+        #     articles.append(make_article_dict(article))
+        # # articles = list(articles_all.values())
+        # # response_body={'articles':articles,'count': Article.objects.count()} 
+        # response_body={'articles': articles, 'has_next': paginator.page(page).has_next()}
 
-def send_alarm(sender,reciever,link_id,content):
+def send_alarm(sender,reciever,link_id,category,content):
     if(sender!=reciever):
-        reciever.profile.alarms.create(author=sender,link_id=link_id,content=content)
+        reciever.profile.alarms.create(author=sender,link_id=link_id,category=category,content=content)
 
 # test implemented
 def article_comment(request):
@@ -373,10 +403,10 @@ def article_comment(request):
         article = get_object_or_404(Article, id=article_id)
         try:
             parent = ArticleComment.objects.get(id=parent_id)
-            send_alarm(request.user,parent.author,article_id,'reply')
+            send_alarm(request.user,parent.author,article_id,'article','reply')
         except ArticleComment.DoesNotExist:
             parent = None
-        send_alarm(request.user,article.author,article_id,'comment')
+        send_alarm(request.user,article.author,article_id,'article','comment')
         comment = ArticleComment(article=article, author=request.user, content=content, parent=parent)
         comment.save()
         return JsonResponse(make_article_dict(article), status=201)
@@ -403,10 +433,10 @@ def curation_comment(request):
         curation = get_object_or_404(Curation, id=curation_id)
         try:
             parent = CurationComment.objects.get(id=parent_id)
-            send_alarm(request.user,parent.author,curation_id,'reply')
+            send_alarm(request.user,parent.author,curation_id,'curation','reply')
         except CurationComment.DoesNotExist:
             parent = None
-        send_alarm(request.user,curation.author,curation_id,'comment')
+        send_alarm(request.user,curation.author,curation_id,'curation','comment')
         comment = CurationComment(curation=curation, author=request.user, content=content, parent=parent)
         comment.save()
         
@@ -904,7 +934,7 @@ def follow(request, user_id):
                         }
         
         follow_dict = {'follower_dict': follower_dict, 'followee_dict': followee_dict}
-        send_alarm(request.user,followee,user_id,'follow')
+        send_alarm(request.user,followee,user_id,'user','follow')
         return JsonResponse(follow_dict, status=201)
 
     elif request.method == 'GET':
@@ -963,7 +993,7 @@ def article_like(request, article_id):
         like.save()
         article = get_object_or_404(Article, id=article_id)
         result_dict = make_article_dict(article)
-        send_alarm(request.user,article.author,article_id,'like')
+        send_alarm(request.user,article.author,article_id,'article','like')
         return JsonResponse(result_dict, status=201)
     
     elif request.method == 'GET':
@@ -991,7 +1021,7 @@ def curation_like(request, curation_id):
         like.save()
         curation = get_object_or_404(Curation, id=curation_id)
         result_dict = make_curation_dict(curation)
-        send_alarm(request.user,curation.author,curation_id,'like')
+        send_alarm(request.user,curation.author,curation_id,'curation','like')
         return JsonResponse(result_dict, status=201)
     
     elif request.method == 'GET':
