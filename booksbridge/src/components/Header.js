@@ -14,7 +14,6 @@ class Header extends Component {
   state = {
     show_menu: false,
     search_input: '',
-    visible: false,
   };
 
   componentDidMount() {
@@ -31,8 +30,7 @@ class Header extends Component {
   };
 
   onClickProfile = () => {
-    this.setState({ visible: true });
-    // this.setState({ show_menu: !this.state.show_menu });
+    this.setState({ show_menu: !this.state.show_menu });
   };
   render() {
     const menu = (
