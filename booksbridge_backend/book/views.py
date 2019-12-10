@@ -614,7 +614,7 @@ def make_curation_dict(curation):
     }
     return curation_dict
 
-# test implemented
+# TODO: test NOT implemented for delete
 def specific_curation(request, curation_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -622,8 +622,14 @@ def specific_curation(request, curation_id):
     elif request.method == 'GET':
         curation = get_object_or_404(Curation, id=curation_id)
         return JsonResponse(make_curation_dict(curation), status=200)
+    elif request.method == 'DELETE':
+        curation = get_object_or_404(Curation, id=curation_id)
+        curation.delete()
+        # curation_dict = model_to_dict(curation)
+        # return JsonResponse(curation_dict, status=200)
+        return HttpResponse(status=200)
     else:
-        return HttpResponseNotAllowed(['GET'])
+        return HttpResponseNotAllowed(['GET', 'DELETE'])
 
 # test implemented
 def curation_page(request, page):
