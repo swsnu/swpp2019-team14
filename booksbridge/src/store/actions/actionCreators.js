@@ -528,6 +528,14 @@ export const uploadProfileImage = formData => dispatch =>
       storage.set('logged_in_user', res.data);
     });
 
+export const getLikedBooks = () => dispatch =>
+  axios.get('/api/like_books/').then(res =>
+    dispatch({
+      type: actionTypes.GET_LIKED_BOOKS,
+      likedBooks: res.data,
+    }),
+  );
+
 export const getToken = () => {
   //   return axios.get('/api/token/').then(res => {
   //     dispatch({

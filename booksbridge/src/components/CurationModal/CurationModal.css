@@ -39,6 +39,13 @@
 .curation-modal-tab-first {
   height: 100%;
 }
+.close-select-book-button {
+  margin-top: 0% !important;
+  margin-bottom: 3% !important;
+  top: 92%;
+  position: fixed !important;
+  right: 5%;
+}
 @media only screen and (max-width: 600px) {
   #curation-modal {
     flex-direction: column;

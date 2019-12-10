@@ -81,13 +81,6 @@ describe('<Library />', () => {
     expect(wrapper.length).toBe(1);
   });
 
-  it('should redirect to book detail page', () => {
-    const component = mount(page);
-    const wrapper = component.find('.BookCover').at(0);
-    wrapper.simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-  });
-
   it('', () => {
     const component = mount(page);
     const wrapper = component.find('.Library');
