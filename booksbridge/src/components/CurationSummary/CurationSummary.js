@@ -46,7 +46,7 @@ const CurationSummary = props => {
           </div>
           <div className="ui items">
             <div className="item">
-              <div className="MainArticle">
+              <div className="curation-main-article">
                 <a id="article-title" href={'/curation/' + props.id}>
                   <h3 className="MainArticleTitle">{props.title}</h3>
                 </a>
@@ -72,7 +72,7 @@ const CurationSummary = props => {
                   <a
                     id="article-extra"
                     className="extra"
-                    href={'/review/' + props.id}
+                    href={'/curation/' + props.id}
                   >
                     더 보기
                   </a>

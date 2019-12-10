@@ -144,7 +144,7 @@ class CurationModal extends Component {
             </Row>
           </Tab.Container>
           <div className="selected-book-tab">
-            <Modal.Content scrolling className="choose-book-modal-content">
+            <Modal.Content scrolling className="selected-book-modal-content">
               {this.state.selectedBooks.length > 0
                 ? this.state.selectedBooks.map(book => {
                     return (
