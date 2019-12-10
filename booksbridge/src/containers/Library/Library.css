@@ -16,3 +16,9 @@
 .LibraryContainerHeaderWrapper {
   float: right;
 }
+
+@media only screen and (max-width: 600px) {
+  .LibraryContainer {
+    width: 100%;
+  }
+}
