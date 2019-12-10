@@ -87,10 +87,12 @@ class Header extends Component {
         </div>
         <div className="headerProfile">
           <div className="HeaderProfileSummary">
-            <ProfileSummary
-              user={this.props.logged_in_user}
-              menu={this.onClickProfile}
-            />
+            <div className="profile-hidden">
+              <ProfileSummary
+                user={this.props.logged_in_user}
+                menu={this.onClickProfile}
+              />
+            </div>
             <Icon
               name="angle down"
               size="large"

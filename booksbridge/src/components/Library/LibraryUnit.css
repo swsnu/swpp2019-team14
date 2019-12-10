@@ -1,0 +1,64 @@
+.CardContentWrapper {
+  height: auto;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.CardContent {
+  width: 500px !important;
+}
+
+.CardArea {
+  height: 35px;
+  align-items: center;
+  text-align: left;
+  display: flex;
+}
+
+.CardTitle {
+  font-size: 20px;
+  font-weight: bold;
+  width: auto;
+}
+
+.CardButtons {
+  width: auto;
+  display: flex;
+  position: absolute;
+  right: 20px;
+}
+
+.CardButton {
+  width: 30px !important;
+  height: 30px;
+  margin-left: 5px;
+}
+
+.Confirm {
+  height: 130px;
+}
+
+.BookCoverArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.BookCoverList {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.BookCoverWrapper {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.BookCover {
+  height: auto;
+  max-height: 160px;
+  width: 100%;
+  cursor: pointer;
+}

@@ -132,17 +132,17 @@ class UserPage extends Component {
 
     const likebooks = slicedBooks.map(book => {
       return book.thumbnail === '' ? (
-        <img
-          className="LikeBookThumbnail"
-          onClick={() => this.props.history.push('/book/' + book.isbn)}
-          src="/images/no_cover.jpg"
-        />
+        <a href={'/book/' + book.isbn}>
+          <img
+            className="LikeBookThumbnail"
+            onClick={() => this.props.history.push('/book/' + book.isbn)}
+            src="/images/no_cover.jpg"
+          />
+        </a>
       ) : (
-        <img
-          className="LikeBookThumbnail"
-          onClick={() => this.props.history.push('/book/' + book.isbn)}
-          src={book.thumbnail}
-        />
+        <a href={'/book/' + book.isbn}>
+          <img className="LikeBookThumbnail" src={book.thumbnail} />
+        </a>
       );
     });
 
