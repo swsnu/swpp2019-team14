@@ -621,7 +621,9 @@ def specific_curation(request, curation_id):
 
     elif request.method == 'GET':
         curation = get_object_or_404(Curation, id=curation_id)
-        return JsonResponse(make_curation_dict(curation), status=200)
+        result_dict = make_curation_dict(curation)
+        result_dict['like_or_not'] = curation.like_users.all().filter(id=request.user.id).exists()
+        return JsonResponse(result_dict, status=200)
     else:
         return HttpResponseNotAllowed(['GET'])
 
