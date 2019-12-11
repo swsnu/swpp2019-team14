@@ -538,21 +538,19 @@ def search_curation(request, keyword):
     
     elif request.method == 'GET':
         decoded_keyword = urllib.parse.unquote(keyword)
-        result_users = []
-        all_users = User.objects.all()
-        if all_users:
-            for user in all_users:
-                if decoded_keyword in user.get_username() or decoded_keyword in user.profile.nickname:
-                    user_dict = {
-                        'id': user.id,
-                        'username': user.username,
-                        'date_joined': user.date_joined.date(),
-                        'profile_photo': user.profile.profile_photo.name,
-                        'nickname': user.profile.nickname,
-                        'profile_text': user.profile.profile_text,
-                    }
-                    result_users.append(user_dict)
-        return JsonResponse(result_users, safe=False)
+        result_curations = []
+        all_curations = Curation.objects.all()
+        if all_curations:
+            for curation in all_curations:
+                if decoded_keyword in curation.title or decoded_keyword in curation.content:
+                    result_curations.append(make_curation_dict(curation))
+                else:
+                    for book_in_curation in curation.book_in_curation.all():
+                        if decoded_keyword in book_in_curation.book.title:
+                            result_curations.append(make_curation_dict(curation))
+                            break
+        print(result_curations)
+        return JsonResponse(result_curations, safe=False)
 
 # test implemented
 def search_curation_by_author(request, username, page):

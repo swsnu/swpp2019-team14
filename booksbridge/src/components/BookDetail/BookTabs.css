@@ -13,4 +13,7 @@
   .DetailTabStyle .item {
     width: 25% !important;
   }
+  .DetailTabStyle {
+    width: 100% !important;
+  }
 }
