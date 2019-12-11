@@ -551,6 +551,8 @@ def search_curation(request, keyword):
                             break
         print(result_curations)
         return JsonResponse(result_curations, safe=False)
+    else:
+        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
 
 # test implemented
 def search_curation_by_author(request, username, page):
