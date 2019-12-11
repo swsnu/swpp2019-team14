@@ -52,7 +52,7 @@ const reducer = (state = initialState, action) => {
         selectedCuration: action.curation,
       };
     case actionTypes.GET_SEARCHED_CURATIONS:
-      return {};
+      return { ...state, curations: action.curations };
     case actionTypes.GET_CURATIONS_BY_USERID:
       return {
         ...state,
