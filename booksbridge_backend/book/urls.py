@@ -40,6 +40,7 @@ urlpatterns = [
     path('like/curation/<curation_id>/', views.curation_like, name='curation_like'),
     path('group/', views.group, name='group'),
     path('group/<group_id>/', views.specific_group, name='specific_group'),
+    path('like_books/',views.like_books,name='like_books')
     
      
 

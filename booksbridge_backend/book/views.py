@@ -813,6 +813,24 @@ def specific_user(request, username):
     else:
         return HttpResponseNotAllowed(['GET',])
 
+def like_books(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'GET':
+        try:
+            like_books=[]
+            for book in request.user.book_set.all():
+                book_dict = make_book_dict(book, False)
+                like_books.append(book_dict)
+            return JsonResponse(like_books,safe=False)
+        except: 
+            return HttpResponse(status=404)
+
+    else:
+        return HttpResponseNotAllowed(['GET',])
+
+
 # test implemented
 def search_user(request, keyword):
     if not request.user.is_authenticated:

@@ -37,7 +37,6 @@ const SearchUser = props => {
         <Card.Content extra>
           <a>
             <Icon name="user" />
-            22 Followers 24 Followees
           </a>
         </Card.Content>
       </Card>

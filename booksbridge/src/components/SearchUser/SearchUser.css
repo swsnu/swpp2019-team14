@@ -20,3 +20,19 @@
   height: 42px !important;
   overflow: hidden !important;
 }
+
+@media only screen and (max-width: 600px) {
+  .searched_user {
+    width: 95%;
+  }
+  .user_picture {
+    height: 100%;
+  }
+  .search_user_card {
+    height: 50%;
+  }
+  .card-description {
+    height: 0px !important;
+    overflow: hidden !important;
+  }
+}

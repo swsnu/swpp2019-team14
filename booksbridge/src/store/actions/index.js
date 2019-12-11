@@ -47,4 +47,5 @@ export {
   runOcr,
   getAlarms,
   toggleAlarm,
+  getLikedBooks,
 } from './actionCreators';

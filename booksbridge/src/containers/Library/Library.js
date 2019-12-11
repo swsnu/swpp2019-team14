@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Card, Image } from 'semantic-ui-react';
 
 import Header from '../../components/Header';
 import AddLibraryModal from '../../components/Library/AddLibraryModal';
-import ConfirmDelete from '../../components/Library/ConfirmDelete';
+import LibraryUnit from '../../components/Library/LibraryUnit';
 
 import './Library.css';
 
@@ -28,54 +27,9 @@ class Library extends Component {
   };
 
   render() {
-    const libraries_html = this.props.libraries.map((library_dict, index) => {
-      let images_html = library_dict.books.slice(0, 5).map((book, _index) => {
-        return (
-          <div className="BookCoverWrapper" key={_index}>
-            <Image
-              src={book.thumbnail}
-              className="BookCover"
-              onClick={() => this.props.history.push('/book/' + book.isbn)}
-            />
-          </div>
-        );
-      });
-
-      return (
-        <div className="CardContentWrapper" key={index}>
-          <Card className="CardContent">
-            <Card.Content>
-              <div className="CardArea">
-                <Card.Header>
-                  <div className="CardTitle">{library_dict.title}</div>
-                </Card.Header>
-                <div className="CardButtons">
-                  <div className="CardButton">
-                    <AddLibraryModal
-                      id={library_dict.id}
-                      title={library_dict.title}
-                      books={library_dict.books}
-                      mode={'EDIT'}
-                    />
-                  </div>
-                  <div className="CardButton">
-                    <ConfirmDelete
-                      id="confirm-delete-library"
-                      onConfirm={() => this.onDeleteLibrary(library_dict.id)}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Card.Content>
-            <Card.Content>
-              <div className="BookCoverArea">
-                <div className="BookCoverList">{images_html}</div>
-              </div>
-            </Card.Content>
-          </Card>
-        </div>
-      );
-    });
+    const libraries_html = this.props.libraries.map((library, index) => (
+      <LibraryUnit library={library} index={index} authorize={true} />
+    ));
 
     return (
       <div className="Library">

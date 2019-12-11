@@ -56,7 +56,9 @@ class ChooseBookModal extends Component {
               publisher={book.publisher}
               isbn={book.isbn}
               direct={false}
-              click={this.props.selected}
+              click={() => {
+                this.props.selected(book);
+              }}
             />
           );
         })

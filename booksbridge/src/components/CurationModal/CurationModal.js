@@ -5,36 +5,20 @@ import { Row, Col, Tab, Nav } from 'react-bootstrap';
 import * as actionCreators from '../../store/actions/actionCreators';
 import ChooseBookModal from '../ChooseBookModal/ChooseBookModal';
 import BookResultSummary from '../BookResultSummary/BookResultSummary';
+import LibraryUnit from '../Library/LibraryUnit';
 import './CurationModal.css';
 
 class CurationModal extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    open: false,
+    selectedBooks: [],
+  };
 
-    this.state = {
-      open: false,
-      selectedBooks: [],
-      delete: false,
-    };
+  componentDidMount() {
+    this.props.onLoadLibrary();
+    this.props.onGetLikedBooks();
   }
 
-  UNSAFE_componentWillUpdate(nextProps, nextState, snapshot) {
-    if (this.state.open) {
-      if (this.state.delete && this.state.selectedBooks.length > 0) {
-        this.setState({
-          selectedBooks: this.state.selectedBooks.filter(book => {
-            return book.isbn !== nextProps.selectedBook.isbn;
-          }),
-          delete: false,
-        });
-      } else if (
-        nextProps.selectedBook &&
-        nextProps.selectedBook !== this.props.selectedBook
-      ) {
-        this.state.selectedBooks.push(nextProps.selectedBook);
-      }
-    }
-  }
   openHandler = () => {
     this.setState({ open: true });
     this.props.onEmptySearchedBooks();
@@ -52,10 +36,13 @@ class CurationModal extends Component {
               <Col sm={1} className="curation-modal-tabs">
                 <Nav variant="pills" className="flex-column">
                   <Nav.Item>
-                    <Nav.Link eventKey="first">Tab 1</Nav.Link>
+                    <Nav.Link eventKey="first">검색</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link eventKey="second">Tab 2</Nav.Link>
+                    <Nav.Link eventKey="second">서재</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="third">즐겨찾기</Nav.Link>
                   </Nav.Item>
                 </Nav>
               </Col>
@@ -67,7 +54,11 @@ class CurationModal extends Component {
                   >
                     <div className="search-book-tab">
                       <ChooseBookModal
-                        selected={() => {}}
+                        selected={book => {
+                          this.setState((state, props) => ({
+                            selectedBooks: state.selectedBooks.concat(book),
+                          }));
+                        }}
                         close={() => {
                           this.setState({ open: false });
                           this.props.update(this.state.selectedBooks);
@@ -80,20 +71,80 @@ class CurationModal extends Component {
                     eventKey="second"
                   >
                     <div className="search-book-tab">
-                      <ChooseBookModal
-                        selected={() => {}}
-                        close={() => {
-                          this.setState({ open: false });
-                        }}
-                      />
+                      {this.props.libraries ? (
+                        this.props.libraries.map((library, index) => (
+                          <a
+                            onClick={() => {
+                              this.setState((state, props) => ({
+                                selectedBooks: state.selectedBooks.concat(
+                                  library.books,
+                                ),
+                              }));
+                            }}
+                          >
+                            <LibraryUnit
+                              library={library}
+                              index={index}
+                              authorize={false}
+                            />
+                          </a>
+                        ))
+                      ) : (
+                        <p>라이브러리가 없습니다.</p>
+                      )}
                     </div>
+                    <Button
+                      className="close-select-book-button"
+                      onClick={() => {
+                        this.setState({ open: false });
+                      }}
+                    >
+                      Close
+                    </Button>
+                  </Tab.Pane>
+                  <Tab.Pane
+                    className="curation-modal-tab-contents"
+                    eventKey="third"
+                  >
+                    <div className="search-book-tab">
+                      {this.props.likedBooks
+                        ? this.props.likedBooks.map(book => {
+                            return (
+                              <BookResultSummary
+                                cover={book.thumbnail}
+                                title={book.title}
+                                authors={book.authors}
+                                publisher={book.publisher}
+                                isbn={book.isbn}
+                                direct={false}
+                                size="small"
+                                click={() => {
+                                  this.setState((state, props) => ({
+                                    selectedBooks: state.selectedBooks.concat(
+                                      book,
+                                    ),
+                                  }));
+                                }}
+                              />
+                            );
+                          })
+                        : null}
+                    </div>
+                    <Button
+                      className="close-select-book-button"
+                      onClick={() => {
+                        this.setState({ open: false });
+                      }}
+                    >
+                      Close
+                    </Button>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>
             </Row>
           </Tab.Container>
           <div className="selected-book-tab">
-            <Modal.Content scrolling className="choose-book-modal-content">
+            <Modal.Content scrolling className="selected-book-modal-content">
               {this.state.selectedBooks.length > 0
                 ? this.state.selectedBooks.map(book => {
                     return (
@@ -106,7 +157,13 @@ class CurationModal extends Component {
                         direct={false}
                         size="small"
                         click={() => {
-                          this.setState({ delete: true });
+                          this.setState((state, props) => ({
+                            selectedBooks: state.selectedBooks.filter(
+                              selectedBook => {
+                                return book.isbn !== selectedBook.isbn;
+                              },
+                            ),
+                          }));
                         }}
                       />
                     );
@@ -123,11 +180,15 @@ class CurationModal extends Component {
 const mapStateToProps = state => {
   return {
     selectedBook: state.book.selectedBook,
+    libraries: state.library.libraries,
+    likedBooks: state.book.likedBooks,
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     onEmptySearchedBooks: () => dispatch(actionCreators.emptySearchedBooks()),
+    onLoadLibrary: () => dispatch(actionCreators.getLibraries()),
+    onGetLikedBooks: () => dispatch(actionCreators.getLikedBooks()),
   };
 };
 

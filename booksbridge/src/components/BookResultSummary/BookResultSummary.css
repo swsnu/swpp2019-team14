@@ -68,3 +68,30 @@
   width: 70%;
   align-items: center !important;
 }
+
+@media only screen and (max-width: 600px) {
+  .Summary {
+    height: 100%;
+  }
+  #inside {
+    padding: 0px;
+    width: 100%;
+  }
+  .book_image {
+    width: 100% !important;
+  }
+  .Summary .book_cover {
+    width: 30% !important;
+    height: 100% !important;
+  }
+  .book_title {
+    font-size: 13px;
+  }
+  .book_info {
+    width: 100% !important;
+    font-size: 8px;
+  }
+  .inside.row {
+    width: 100%;
+  }
+}
