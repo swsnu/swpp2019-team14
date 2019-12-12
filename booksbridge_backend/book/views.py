@@ -875,7 +875,6 @@ def ocr(request):
         filename = fs.save(image.name, image)
         # path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + fs.url(filename)  # for run_text_detection(path)
 
-
         # path='https://www.booksbridge.online/media/zzz.jpg'
         path = 'https://www.booksbridge.online' + fs.url(filename)
 

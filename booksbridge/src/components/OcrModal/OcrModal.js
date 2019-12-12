@@ -38,6 +38,8 @@ class OcrModal extends Component {
   }
 
   onFilesAdded(event) {
+    this.props.onClearQuote();
+
     const { files } = event.target;
 
     if (event.target.files && event.target.files[0]) {
@@ -88,6 +90,7 @@ class OcrModal extends Component {
   };
 
   render() {
+    console.log('[DEBUG]: ', this.state.file, this.state.run, this.props.quote);
     const image = this.state.imageShow && (
       <img id="target" src={this.state.image} width={300} height={300} />
     );
@@ -112,13 +115,15 @@ class OcrModal extends Component {
 
         <Modal open={this.state.open}>
           <Modal.Content>
-            <div id="choose-file">
+            <div
+              id="choose-file"
+              onClick={() => this.setState({ ...this.state, run: false })}
+            >
               <input
                 ref={this.fileInputRef}
                 className="FileInput"
                 type="file"
                 accept=".jpg, .jpeg, .png"
-                multiple
                 onChange={this.onFilesAdded}
               />
             </div>

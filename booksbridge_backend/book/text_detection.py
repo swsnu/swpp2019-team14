@@ -25,6 +25,7 @@ def run_text_detection(path):
                         symbol.text for symbol in word.symbols
                     ])
                     result += word_text + ' '
+    result += " "
     return result
 
 
@@ -36,7 +37,6 @@ def run_text_detection_url(path):
     response = client.text_detection(image=image)
     
     result = ""
-
     for page in response.full_text_annotation.pages:
         for block in page.blocks:
             for paragraph in block.paragraphs:
@@ -45,4 +45,5 @@ def run_text_detection_url(path):
                         symbol.text for symbol in word.symbols
                     ])
                     result += word_text + " "
+    result += " "
     return result
