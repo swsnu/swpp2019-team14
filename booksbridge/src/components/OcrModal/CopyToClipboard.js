@@ -7,7 +7,7 @@ const Copy = props => {
     <div id="copy-to-clipboard">
       <CopyToClipboard text={props.text}>
         <Button id="copy" onClick={props.clickCopy}>
-          Copy to the Clipboard
+          클립보드에 복사
         </Button>
       </CopyToClipboard>
     </div>
