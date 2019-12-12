@@ -46,4 +46,5 @@ urlpatterns = [
      path('post/<post_id>/', views.specific_post, name='specific_post'),
      path('like/post/<post_id>/', views.post_like, name='post_like'),
      path('comment/post/', views.post_comment, name='post_comment'),
+     path('post/page/<page>/', views.post_page, name='post_page'),
 ]

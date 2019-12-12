@@ -88,7 +88,7 @@ class App extends Component {
             <Route path="/library" exact component={Library} />
             <Route path="/post" exact component={PostMain} />
             <Route path="/post/create" exact component={CreatePost} />
-            <Route path="/post/:post_id" exact component={PostDetailPage} />
+            {/* <Route path="/post/:post_id" exact component={PostDetailPage} /> */}
 
             <Redirect from="/" to="/sign-in" />
           </Switch>

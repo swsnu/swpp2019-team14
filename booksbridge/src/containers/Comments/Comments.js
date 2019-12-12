@@ -10,7 +10,7 @@ class Comments extends Component {
   state = {
     content: '',
   };
-  onClickPostComment = () => {
+  async onClickPostComment() {
     if (this.state.content != '') {
       if (this.props.is_article) {
         this.props.onPostComment({
@@ -19,11 +19,12 @@ class Comments extends Component {
           parent_id: -1,
         });
       } else if (this.props.is_post) {
-        this.props.onPostPostComment({
+        await this.props.onPostPostComment({
           post_id: this.props.post_id,
           content: this.state.content,
           parent_id: -1,
         });
+        this.props.createCommentHandler();
       } else {
         this.props.onPostCurationComment({
           curation_id: this.props.curation_id,
@@ -35,7 +36,7 @@ class Comments extends Component {
     } else {
       window.alert('Content is empty.');
     }
-  };
+  }
 
   render() {
     const comments = this.props.comments.map(comment => {
@@ -45,6 +46,7 @@ class Comments extends Component {
           id={comment.id}
           article_id={this.props.article_id}
           curation_id={this.props.curation_id}
+          post_id={this.props.post_id}
           author={comment.author}
           date={comment.date}
           content={comment.content}

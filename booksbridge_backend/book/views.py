@@ -1093,15 +1093,15 @@ def post(request):
     elif request.method == 'POST':
         try:
             req_data = json.loads(request.body.decode())
-            title = req_data['title']
+            # title = req_data['title']
             content = req_data['content']
         except (KeyError) as e:
             return HttpResponse(status=400)
         
-        post = Post(title=title, content=content, author=request.user)
+        post = Post(title='', content=content, author=request.user)
         post.save()
         
-        response_dict = model_to_dict(post)
+        response_dict = make_post_dict(post, request.user.id)
         return JsonResponse(response_dict, status=201)
     
     elif request.method == 'GET':  
@@ -1145,6 +1145,26 @@ def specific_post(request, post_id):
     else:
         return HttpResponseNotAllowed(['GET', 'PUT', 'DELETE'])
 
+def post_page(request, page): 
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    elif request.method == 'GET':
+        posts_all = Post.objects.all().order_by('-id')
+        posts = [] 
+        for post in posts_all:
+            posts.append(make_post_dict(post, request.user.id))
+        response_dict = { 'posts': posts}
+        return JsonResponse(response_dict, status=200)
+        # paginator = Paginator(posts_all, 10)
+        # posts_list = paginator.page(page).object_list
+        # posts = []
+        # for post in posts_list:
+        #     post_dict = make_post_dict(post, request.user.id)
+        #     posts.append(post_dict)
+        # response_body={'posts': posts, 'has_next': paginator.page(page).has_next()}
+        # return JsonResponse(response_body)
+
  
 def post_like(request, post_id):
     if not request.user.is_authenticated:
@@ -1178,6 +1198,7 @@ def post_comment(request):
             content = req_data['content']
             parent_id = req_data['parent_id']
         except (KeyError) as e:
+            print(req_data)
             return HttpResponse(status=400)
 
         post = get_object_or_404(Post, id=post_id)

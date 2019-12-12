@@ -11,10 +11,15 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_POSTS:
+      console.log('reducer:', action.posts);
       return {
         ...state,
         posts: action.posts,
-        hasNext: action.has_next,
+      };
+    case actionTypes.POST_POST:
+      return {
+        ...state,
+        selectedPost: action.post,
       };
     case actionTypes.GET_SPECIFIC_POST:
       return {
@@ -33,9 +38,20 @@ const reducer = (state = initialState, action) => {
         length: action.posts.length,
       };
     case actionTypes.POST_POST_COMMENT:
+      const newPosts = state.posts.map(post => {
+        if (post.id === action.post.id) {
+          return {
+            ...post,
+            comments: action.post.comments,
+          };
+        } else {
+          return { ...post };
+        }
+      });
       return {
         ...state,
         selectedPost: action.post,
+        posts: newPosts,
       };
 
     case actionTypes.POST_POST_LIKE:

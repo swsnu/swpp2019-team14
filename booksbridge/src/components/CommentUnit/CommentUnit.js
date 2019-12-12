@@ -31,6 +31,8 @@ class CommentUnit extends Component {
           content: this.state.content,
           parent_id: this.props.id,
         };
+        this.props.onPostPostComment(comment);
+        this.setState({ reply: false, content: '' });
       } else {
         const comment = {
           curation_id: this.props.curation_id,
@@ -125,6 +127,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreators.postLongReviewComment(comment)),
     onPostCurationComment: comment =>
       dispatch(actionCreators.postCurationComment(comment)),
+    onPostPostComment: comment =>
+      dispatch(actionCreators.postPostComment(comment)),
   };
 };
 

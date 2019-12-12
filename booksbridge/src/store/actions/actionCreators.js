@@ -551,7 +551,6 @@ export const getPosts = page => dispatch =>
     dispatch({
       type: actionTypes.GET_POSTS,
       posts: res.data.posts,
-      has_next: res.data.has_next,
     }),
   );
 
@@ -561,8 +560,6 @@ export const postPost = post => dispatch =>
       type: actionTypes.POST_POST,
       post: res.data,
     });
-    console.log('post id: ', res.data.id);
-    dispatch(push('/post/' + res.data.id));
   });
 
 export const getSpecificPost = id => dispatch =>
