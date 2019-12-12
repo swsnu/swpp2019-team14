@@ -18,6 +18,12 @@ class Comments extends Component {
           content: this.state.content,
           parent_id: -1,
         });
+      } else if (this.props.is_post) {
+        this.props.onPostPostComment({
+          post_id: this.props.post_id,
+          content: this.state.content,
+          parent_id: -1,
+        });
       } else {
         this.props.onPostCurationComment({
           curation_id: this.props.curation_id,
@@ -44,6 +50,7 @@ class Comments extends Component {
           content={comment.content}
           replies={comment.replies}
           is_article={this.props.is_article}
+          is_post={this.props.is_post}
         />
       );
     });
@@ -89,6 +96,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreators.postLongReviewComment(comment)),
     onPostCurationComment: comment =>
       dispatch(actionCreators.postCurationComment(comment)),
+    onPostPostComment: comment =>
+      dispatch(actionCreators.postPostComment(comment)),
   };
 };
 

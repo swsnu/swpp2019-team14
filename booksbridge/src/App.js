@@ -19,6 +19,9 @@ import * as actionTypes from './store/actions/actionTypes';
 import CreateCuration from './containers/CreateCuration';
 import Library from './containers/Library/Library';
 import CurationMain from './containers/CurationMain/CurationMain';
+import CreatePost from './containers/Post/CreatePost';
+import PostDetailPage from './containers/Post/PostDetailPage';
+import PostMain from './containers/Post/PostMain';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -83,6 +86,10 @@ class App extends Component {
               component={Main}
             />
             <Route path="/library" exact component={Library} />
+            <Route path="/post" exact component={PostMain} />
+            <Route path="/post/create" exact component={CreatePost} />
+            <Route path="/post/:post_id" exact component={PostDetailPage} />
+
             <Redirect from="/" to="/sign-in" />
           </Switch>
         </div>

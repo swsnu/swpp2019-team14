@@ -25,6 +25,12 @@ class CommentUnit extends Component {
         };
         this.props.onPostComment(comment);
         this.setState({ reply: false, content: '' });
+      } else if (this.props.is_post) {
+        const comment = {
+          post_id: this.props.post_id,
+          content: this.state.content,
+          parent_id: this.props.id,
+        };
       } else {
         const comment = {
           curation_id: this.props.curation_id,

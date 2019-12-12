@@ -543,3 +543,112 @@ export const getToken = () => {
   //     })
   //   });
 };
+
+////////////////////////// POST ////////////////////////////////
+
+export const getPosts = page => dispatch =>
+  axios.get(`/api/post/page/${page}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_POSTS,
+      posts: res.data.posts,
+      has_next: res.data.has_next,
+    }),
+  );
+
+export const postPost = post => dispatch =>
+  axios.post('/api/post/', post).then(res => {
+    dispatch({
+      type: actionTypes.POST_POST,
+      post: res.data,
+    });
+    console.log('post id: ', res.data.id);
+    dispatch(push('/post/' + res.data.id));
+  });
+
+export const getSpecificPost = id => dispatch =>
+  axios.get(`/api/post/${id}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_SPECIFIC_POST,
+      post: res.data,
+    }),
+  );
+
+export const editSpecificPost = post => dispatch =>
+  axios.put(`/api/post/${post.id}/`, post).then(res => {
+    dispatch({
+      type: actionTypes.EDIT_SPECIFIC_POST,
+      post: res.data,
+    });
+    dispatch(push('/post/' + res.data.post.id));
+  });
+
+export const deleteSpecificPost = id => dispatch =>
+  axios.delete(`/api/post/${id}/`).then(res =>
+    dispatch({
+      type: actionTypes.DELETE_SPECIFIC_POST,
+      targetID: id,
+    }),
+  );
+
+export const postPostLike = id => dispatch =>
+  axios.post(`/api/like/post/${id}/`).then(res =>
+    dispatch({
+      type: actionTypes.POST_POST_LIKE,
+      post: res.data,
+    }),
+  );
+
+export const deletePostLike = id => dispatch =>
+  axios.delete(`/api/like/post/${id}/`).then(res =>
+    dispatch({
+      type: actionTypes.DELETE_POST_LIKE,
+      post: res.data,
+    }),
+  );
+
+export const getPostsByUserId = (page, username) => dispatch =>
+  axios.get(`/api/post/username=${username}/${page}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_POSTS_BY_USERID,
+      posts: res.data,
+    }),
+  );
+
+export const postPostComment = comment => dispatch =>
+  axios.post('/api/comment/post/', comment).then(res =>
+    dispatch({
+      type: actionTypes.POST_POST_COMMENT,
+      post: res.data,
+    }),
+  );
+
+export const getSpecificPostComment = id => dispatch =>
+  axios.get(`/api/comment/post/${id}/`).then(res =>
+    dispatch({
+      type: actionTypes.GET_SPECIFIC_POST_COMMENT,
+      comment: res.data,
+    }),
+  );
+
+export const editSpecificPostComment = comment => dispatch =>
+  axios.put(`/api/comment/post/${comment.id}/`, comment).then(res =>
+    dispatch({
+      type: actionTypes.EDIT_SPECIFIC_POST_COMMENT,
+      comment: res.data,
+    }),
+  );
+
+export const deleteSpecificPostComment = id => dispatch =>
+  axios.delete(`/api/comment/post/${id}/`).then(res =>
+    dispatch({
+      type: actionTypes.DELETE_SPECIFIC_POST_COMMENT,
+    }),
+  );
+
+export const getCommentsByPostID = id => dispatch =>
+  axios.get(`/api/${id}/comment`).then(res =>
+    dispatch({
+      type: actionTypes.GET_COMMENTS_BY_POSTID,
+      comments: res.data,
+    }),
+  );

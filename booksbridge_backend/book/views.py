@@ -1085,6 +1085,124 @@ def make_book_dict(book, full):
     return book_dict
 
 
+
+def post(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            title = req_data['title']
+            content = req_data['content']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+        
+        post = Post(title=title, content=content, author=request.user)
+        post.save()
+        
+        response_dict = model_to_dict(post)
+        return JsonResponse(response_dict, status=201)
+    
+    elif request.method == 'GET':  
+        pass 
+        
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST'])
+
+
+def make_post_dict(post, user_id):
+    deltatime = datetime.now() - post.date
+    time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
+
+    user = get_object_or_404(User, id=post.author_id)
+    user_dict = make_user_dict(user)
+
+    likeusers = post.like_users.all()
+
+    response_dict = {
+        'author': user_dict,
+        'id': post.id,
+        'title': post.title,
+        'content': post.content,
+        'date': time_array,
+        'comments': get_comments(post),
+        'like_count': likeusers.count(),
+        'like_or_not': likeusers.filter(id=user_id).exists(),
+    }
+    return response_dict
+
+          
+def specific_post(request, post_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=40)
+    
+    elif request.method == 'GET':
+        post = get_object_or_404(Post, id=post_id) 
+        response_dict = make_post_dict(post, request.user.id)
+        return JsonResponse(response_dict, status=200)
+
+    else:
+        return HttpResponseNotAllowed(['GET', 'PUT', 'DELETE'])
+
+ 
+def post_like(request, post_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    
+    elif request.method == 'POST':
+        post = get_object_or_404(Post, id=post_id)
+        post.like_users.add(request.user)
+        result_dict = make_post_dict(post, request.user.id)
+        # send_alarm(request.user,post.author,article_id,'article','like')
+        return JsonResponse(result_dict, status=201)
+    
+    elif request.method == 'DELETE':
+        post = get_object_or_404(Post, id=post_id)
+        post.like_users.remove(request.user)
+        result_dict = make_post_dict(post, request.user.id)
+        return JsonResponse(result_dict, status=200)
+
+    else:
+        return HttpResponseNotAllowed(['POST','DELETE'])
+
+  
+def post_comment(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    elif request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            post_id = req_data['post_id']
+            content = req_data['content']
+            parent_id = req_data['parent_id']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        post = get_object_or_404(Post, id=post_id)
+
+        try:
+            parent = PostComment.objects.get(id=parent_id)
+            # send_alarm(request.user,parent.author,post_id,'article','reply')
+        except PostComment.DoesNotExist:
+            parent = None
+
+        # send_alarm(request.user,post.author,post_id,'article','comment')
+        comment = PostComment(post=post, author=request.user, content=content, parent=parent)
+        comment.save()
+        response_dict = make_post_dict(post, request.user.id)
+        return JsonResponse(response_dict, status=201)
+
+    # TODO elif request.method == 'PUT':
+    #    pass
+    # TODO elif request.method == 'DELETE':
+    #    pass
+    else:
+        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
+
+
+
 def group(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)

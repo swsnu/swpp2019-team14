@@ -120,6 +120,46 @@ class Follow(models.Model):
     followee = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="followee")
 
+
+class Post(models.Model):
+    objects = models.Manager()
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    title = models.TextField(blank=True)
+    content = models.TextField()
+    date = models.DateTimeField(default=datetime.now, blank=True)
+    like_users = models.ManyToManyField(User, through='PostLike')
+    def __str__(self):
+        return str(self.content)
+
+class PostLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+class PostComment(Comment):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    # objects = models.Manager()
+    # author = models.ForeignKey(User, on_delete=models.CASCADE)
+    # content = models.TextField()
+    # date = models.DateTimeField(auto_now_add=True)
+    # parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Group(models.Model):
     name = models.CharField(max_length=20)
     explanation = models.TextField()

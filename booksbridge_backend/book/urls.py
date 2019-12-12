@@ -41,5 +41,9 @@ urlpatterns = [
      path('like/curation/<curation_id>/', views.curation_like, name='curation_like'),
      path('group/', views.group, name='group'),
      path('group/<group_id>/', views.specific_group, name='specific_group'),
-     path('like_books/',views.like_books,name='like_books')
+     path('like_books/',views.like_books,name='like_books'),
+     path('post/', views.post, name='post'),
+     path('post/<post_id>/', views.specific_post, name='specific_post'),
+     path('like/post/<post_id>/', views.post_like, name='post_like'),
+     path('comment/post/', views.post_comment, name='post_comment'),
 ]
