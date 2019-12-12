@@ -297,7 +297,7 @@ export const deleteCurationLike = curation_id => dispatch =>
   );
 // export const GET_SEARCHED_CURATIONS = 'GET_SEARCHED_CURATIONS'
 export const getSearchedCurations = keyword => dispatch =>
-  axios.get(`/api/curation/?searchWord=${keyword}/`).then(res =>
+  axios.get(`/api/curation/search/${keyword}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SEARCHED_CURATIONS,
       curations: res.data,
@@ -527,6 +527,14 @@ export const uploadProfileImage = formData => dispatch =>
       });
       storage.set('logged_in_user', res.data);
     });
+
+export const getLikedBooks = () => dispatch =>
+  axios.get('/api/like_books/').then(res =>
+    dispatch({
+      type: actionTypes.GET_LIKED_BOOKS,
+      likedBooks: res.data,
+    }),
+  );
 
 export const getToken = () => {
   //   return axios.get('/api/token/').then(res => {

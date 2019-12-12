@@ -72,16 +72,54 @@
 .ui.vertical.menu {
   position: relative;
 }
-
+.menu-trigger {
+  display: flex;
+}
 .header-alarm-icon {
   margin-left: 10px !important;
   cursor: pointer;
 }
 .header-icon {
   cursor: pointer;
+  align-self: center;
 }
 
 .header-alarm-popup {
-  width: 500px !important;
+  max-width: 500px !important;
   height: 500px;
+  overflow: scroll;
+}
+.header-menu-popup {
+  padding: 0px !important;
+  margin-top: 0px !important;
+  left: 3% !important;
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .profile-hidden {
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    left: 0%;
+    visibility: hidden;
+  }
+  .logo-image {
+    width: 90%;
+    height: 80%;
+  }
+
+  .header-alarm-popup {
+    max-width: 90% !important;
+    height: 60%;
+    top: 15px !important;
+  }
+  .ProfileMenu {
+    right: 10% !important;
+  }
+  .header-menu-popup {
+    margin: 0px !important;
+    padding: 0px !important;
+    top: 15px !important;
+  }
 }

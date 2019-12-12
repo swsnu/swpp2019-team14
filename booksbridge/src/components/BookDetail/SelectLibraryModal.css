@@ -77,3 +77,15 @@
   transform-origin: center !important;
   transition: all ease 0.5s;
 }
+
+@media only screen and (max-width: 600px) {
+  .LibraryModal {
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  .LibraryContent {
+    height: auto !important;
+    width: 100% !important;
+  }
+}

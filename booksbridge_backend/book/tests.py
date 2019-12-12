@@ -11,6 +11,12 @@ from .views import make_article_dict, make_curation_dict
 class BookTestCase(TestCase):
 
     def setUp(self):
+        book1 = Book(isbn='9780393912470', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
+        book1.save()
+        book2 = Book(isbn='9780140447934', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
+        book2.save()
+        book3 = Book(isbn='9780131103627', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
+        book3.save()
         client = Client()
 
         # Create user

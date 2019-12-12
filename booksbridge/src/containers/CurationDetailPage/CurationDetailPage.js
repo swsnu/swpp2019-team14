@@ -13,6 +13,7 @@ import BookListItem from '../../components/CurationDetailPage/BookListItem';
 import * as actionCreators from '../../store/actions/actionCreators';
 
 import './CurationDetailPage.css';
+import { stringify } from 'querystring';
 
 class CurationDetailPage extends Component {
   constructor(params) {
@@ -29,9 +30,19 @@ class CurationDetailPage extends Component {
   }
 
   handleDeleteCuration = () => {
-    console.log('[DEBUG] handleDeleteCuration');
     this.props.onDeleteCuration(this.props.currentCuration.id);
     this.props.history.push('/curation/');
+  };
+
+  handleEditCuration = () => {
+    console.log('[DEBUG] handleEditCuration');
+    this.props.history.push(
+      '/curation/' +
+        this.props.logged_in_user.username +
+        '/' +
+        this.props.currentCuration.id +
+        '/edit/',
+    );
   };
 
   render() {
@@ -79,7 +90,7 @@ class CurationDetailPage extends Component {
 
     const editButton =
       this.props.currentCuration.author.id === this.props.logged_in_user.id ? (
-        <Button onClick={this.handleEditcuration} icon size="small">
+        <Button onClick={this.handleEditCuration} icon size="small">
           <Icon name="pencil" size="small" />
         </Button>
       ) : null;

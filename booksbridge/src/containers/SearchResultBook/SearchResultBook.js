@@ -9,6 +9,7 @@ import ScrollUpButton from 'react-scroll-up-button';
 import { Pagination } from 'semantic-ui-react';
 import { Card, Button, Tab } from 'semantic-ui-react';
 import SearchUser from '../../components/SearchUser/SearchUser';
+import UserCurationSummary from '../../components/UserPage/UserCurationSummary';
 
 const mapStateToProps = state => ({
   books: state.book.books,
@@ -22,7 +23,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getSearchedBooks(keyword, page)),
   onGetSearchedUsers: keyword =>
     dispatch(actionCreators.getSearchedUsers(keyword)),
-  ongetSearchedCurations: keyword =>
+  onGetSearchedCurations: keyword =>
     dispatch(actionCreators.getSearchedCurations(keyword)),
 });
 
@@ -36,6 +37,7 @@ class SearchResultBook extends Component {
       this.props.match.params.page,
     );
     this.props.onGetSearchedUsers(this.props.match.params.keyword);
+    this.props.onGetSearchedCurations(this.props.match.params.keyword);
   }
 
   componentDidUpdate(prevProps) {
@@ -46,6 +48,7 @@ class SearchResultBook extends Component {
         this.props.match.params.page,
       );
       this.props.onGetSearchedUsers(this.props.match.params.keyword);
+      this.props.onGetSearchedCurations(this.props.match.params.keyword);
     }
     if (this.props.match.params.page !== prevProps.match.params.page) {
       this.props.onGetSearchedBooks(
@@ -86,7 +89,17 @@ class SearchResultBook extends Component {
     );
 
     const curation_result = this.props.curations.length ? (
-      this.props.curations.map(() => {})
+      this.props.curations.map((curation, index) => (
+        <div key={index}>
+          <UserCurationSummary
+            title={curation.title}
+            books={curation.books}
+            content={curation.content}
+            date={curation.date}
+            id={curation.id}
+          />
+        </div>
+      ))
     ) : (
       <h4>검색 결과가 없습니다.</h4>
     );

@@ -8,7 +8,14 @@ const Alarm = props => {
         onClick={() => props.onClickAlarm(props.alarm.id)}
       >
         <a href={'/page/' + props.alarm.author_username}>
-          <img className="profilePic" src={props.alarm.profile_photo} />
+          <img
+            className="profilePic"
+            src={
+              props.alarm.profile_photo.startsWith('http')
+                ? props.alarm.profile_photo
+                : '/media/' + props.alarm.profile_photo
+            }
+          />
         </a>
         {props.alarm.content}
       </a>

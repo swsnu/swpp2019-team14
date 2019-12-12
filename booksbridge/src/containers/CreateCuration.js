@@ -32,8 +32,26 @@ class CreateCuration extends Component {
       });
     }
   };
+  // TODO: recursive call to onEdit and setState
+  onEdit = () => {
+    this.props.onLoadCuration(this.props.match.params.curation_id);
+    this.setState({
+      title: this.props.currentCuration.title,
+      content: this.props.currentCuration.content,
+      selectedBooks: this.props.currentCuration.book_list,
+      bookInCuration: this.props.currentCuration.book_list,
+    });
+  };
 
   render() {
+    if (
+      this.props.match.params.username &&
+      this.props.match.params.curation_id
+    ) {
+      console.log('[DEBUG] called to edit');
+      this.onEdit();
+    }
+
     return (
       <div className="create-curation">
         <Header />
@@ -134,8 +152,15 @@ class CreateCuration extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    currentCuration: state.curation.selectedCuration,
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
+    onLoadCuration: id => dispatch(actionCreators.getSpecificCuration(id)),
     onPostCuration: curation => {
       dispatch(actionCreators.postCuration(curation));
     },
@@ -143,6 +168,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(withRouter(CreateCuration));

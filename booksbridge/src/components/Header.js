@@ -56,7 +56,7 @@ class Header extends Component {
     return (
       <div className="MainHeader">
         <a className="logo" href="/main">
-          <img src="/images/logo2.png" height="80px" />
+          <img src="/images/logo2.png" height="80px" className="logo-image" />
         </a>
         <div className="search">
           <InputGroup>
@@ -87,16 +87,30 @@ class Header extends Component {
         </div>
         <div className="headerProfile">
           <div className="HeaderProfileSummary">
-            <ProfileSummary
-              user={this.props.logged_in_user}
-              menu={this.onClickProfile}
-            />
-            <Icon
-              name="angle down"
-              size="large"
-              onClick={this.onClickProfile}
-              className="header-icon"
-            />
+            <Popup
+              trigger={
+                <div className="menu-trigger">
+                  <div className="profile-hidden">
+                    <ProfileSummary
+                      user={this.props.logged_in_user}
+                      menu={this.onClickProfile}
+                    />
+                  </div>
+                  <Icon
+                    name="angle down"
+                    size="large"
+                    className="header-icon"
+                  />
+                </div>
+              }
+              hoverable
+              flowing
+              basic
+              on="click"
+              position="bottom right"
+              className="header-menu-popup"
+              content={menu}
+            ></Popup>
             <Popup
               trigger={
                 <Icon
@@ -112,12 +126,16 @@ class Header extends Component {
               on="click"
               position="bottom right"
             >
-              {this.props.alarms.map((alarm, index) => (
-                <Alarm alarm={alarm} onClickAlarm={this.props.onToggleAlarm} />
-              ))}
+              {this.props.alarms
+                ? this.props.alarms.map((alarm, index) => (
+                    <Alarm
+                      alarm={alarm}
+                      onClickAlarm={this.props.onToggleAlarm}
+                    />
+                  ))
+                : null}
             </Popup>
           </div>
-          {this.state.show_menu == true ? menu : null}
         </div>
       </div>
     );

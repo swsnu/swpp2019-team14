@@ -46,3 +46,10 @@
   border: none !important;
   box-shadow: none !important;
 }
+
+@media only screen and (max-width: 600px) {
+  .search-menu {
+    width: 95% !important;
+    align-self: center;
+  }
+}

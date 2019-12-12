@@ -80,7 +80,7 @@ class App extends Component {
             <Route
               path="/curation/:username/:curation_id/edit"
               exact
-              component={Main}
+              component={CreateCuration}
             />
             <Route path="/library" exact component={Library} />
             <Redirect from="/" to="/sign-in" />
