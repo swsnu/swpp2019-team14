@@ -1,9 +1,10 @@
 import React, { Component, useState } from 'react';
 import { connect } from 'react-redux';
 import { Popup, Button, Modal, TextArea } from 'semantic-ui-react';
+import Spinner from 'react-bootstrap/Spinner';
 import './OcrModal.css';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as actionCreators from '../../store/actions/actionCreators';
+import * as actionTypes from '../../store/actions/actionTypes';
 import Copy from './CopyToClipboard';
 
 const mapStateToProps = state => {
@@ -15,6 +16,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onRunOcr: formData => dispatch(actionCreators.runOcr(formData)),
+    onClearQuote: () => dispatch({ type: actionTypes.CLEAR_QUOTE }),
   };
 };
 
@@ -27,6 +29,7 @@ class OcrModal extends Component {
       open: false,
       imageShow: true,
       image: null,
+      run: false,
     };
 
     this.fileInputRef = React.createRef();
@@ -35,6 +38,8 @@ class OcrModal extends Component {
   }
 
   onFilesAdded(event) {
+    this.props.onClearQuote();
+
     const { files } = event.target;
 
     if (event.target.files && event.target.files[0]) {
@@ -52,16 +57,48 @@ class OcrModal extends Component {
     });
   }
 
-  async runOcrOnFiles() {
+  runOcrOnFiles() {
     const formData = new FormData();
     formData.append('image', this.state.file);
+
+    this.setState({ ...this.state, run: true });
     this.props.onRunOcr(formData);
   }
 
+  openHandler = () => {
+    this.props.onClearQuote();
+    this.setState({
+      ...this.state,
+      file: null,
+      open: true,
+      imageShow: false,
+      image: null,
+      run: false,
+    });
+  };
+
+  clearEverything = () => {
+    this.props.onClearQuote();
+    this.setState({
+      ...this.state,
+      file: null,
+      open: false,
+      imageShow: true,
+      image: null,
+      run: false,
+    });
+  };
+
   render() {
+    console.log('[DEBUG]: ', this.state.file, this.state.run, this.props.quote);
     const image = this.state.imageShow && (
       <img id="target" src={this.state.image} width={300} height={300} />
     );
+
+    const loading =
+      this.state.file && this.state.run && !this.props.quote ? (
+        <Spinner animation="border" className="Spinner" />
+      ) : null;
 
     return (
       <div className="ocr-modal">
@@ -70,17 +107,7 @@ class OcrModal extends Component {
           position={'top center'}
           content="사진 안의 문자를 추출합니다. 책 안에 인용하고 싶은 문장이 있을 경우, 직접 타이핑하지 말고 이 기능을 활용해 보세요."
           trigger={
-            <Button
-              onClick={() =>
-                this.setState({
-                  files: [],
-                  open: true,
-                  content: '',
-                  imageShow: false,
-                })
-              }
-              id="open-ocr"
-            >
+            <Button onClick={() => this.openHandler()} id="open-ocr">
               Quote
             </Button>
           }
@@ -88,38 +115,37 @@ class OcrModal extends Component {
 
         <Modal open={this.state.open}>
           <Modal.Content>
-            <div id="choose-file">
+            <div
+              id="choose-file"
+              onClick={() => this.setState({ ...this.state, run: false })}
+            >
               <input
                 ref={this.fileInputRef}
                 className="FileInput"
                 type="file"
                 accept=".jpg, .jpeg, .png"
-                multiple
                 onChange={this.onFilesAdded}
               />
             </div>
             {image}
 
             <Button id="run-ocr" onClick={this.runOcrOnFiles}>
-              Extract
+              텍스트 추출하기
             </Button>
+            {loading}
+
             <Copy
               text={this.props.quote}
-              clickCopy={() => this.setState({ ...this.state, open: false })}
+              clickCopy={() => this.clearEverything()}
             />
-            <Button
-              id="clear"
-              onClick={() =>
-                this.setState({ files: [], content: '', imageShow: false })
-              }
-            >
-              Clear
+            <Button id="clear" onClick={() => this.clearEverything()}>
+              모두 지우기
             </Button>
             <Button
               id="close-ocr"
               onClick={() => this.setState({ open: false })}
             >
-              Close
+              창닫기
             </Button>
             <TextArea
               id="ocr-text"

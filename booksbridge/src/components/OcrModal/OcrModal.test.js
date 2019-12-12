@@ -67,8 +67,7 @@ describe('<OcrModal />', () => {
     clearButton.simulate('click');
 
     const modalInstance = component.find(OcrModal.WrappedComponent).instance();
-    expect(modalInstance.state.files).toEqual([]);
-    expect(modalInstance.state.content).toEqual('');
+    expect(modalInstance.state.file).toEqual(null);
   });
 
   it('should close modal when copy to clipboard', () => {
