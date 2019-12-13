@@ -55,6 +55,7 @@ class Article(models.Model):
     is_long = models.BooleanField(default=False)
     is_short = models.BooleanField(default=False)
     is_phrase = models.BooleanField(default=False)
+    is_spoiler = models.BooleanField(default=False)
     like_users = models.ManyToManyField(User, through='ArticleLike')
     def __str__(self):
         return str(self.content)

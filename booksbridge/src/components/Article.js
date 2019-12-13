@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Feed, Icon } from 'semantic-ui-react';
+import { Image, Icon } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/actionCreators';
 import './Article.css';
 import Alert from 'react-bootstrap/Alert';
@@ -41,7 +41,13 @@ const Article = props => {
                   </a>
                 </div>
                 <div className="MainArticleContent">
-                  <div className="content">{props.content}</div>
+                  <div className="content">
+                    {props.is_spoiler ? (
+                      <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
+                    ) : (
+                      props.content
+                    )}
+                  </div>
                 </div>
                 {props.is_long ? (
                   <a

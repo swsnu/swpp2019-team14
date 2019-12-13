@@ -28,13 +28,21 @@ class ReviewChooseBookModal extends Component {
 
   render() {
     const ChooseBookButton = (
-      <Button className="select-book-button" onClick={this.openHandler}>
+      <Button
+        color={'black'}
+        className="select-book-button"
+        onClick={this.openHandler}
+      >
         책 선택하기
       </Button>
     );
     return (
       <div>
-        <Popup trigger={ChooseBookButton} content="리뷰할 책을 선택합니다." />
+        <Popup
+          trigger={ChooseBookButton}
+          content="리뷰할 책을 선택합니다."
+          position="top center"
+        />
         <Modal className="choose-book-modal" open={this.state.open}>
           <ChooseBookModal
             selected={() => {
