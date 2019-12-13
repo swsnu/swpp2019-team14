@@ -59,23 +59,14 @@ class Main extends React.Component {
     }
   };
 
-  fetchMoreData = () => {
-    // a fake async api call like which sends
-    // 10 more records in 0.7 secs
-    this.props.onGetArticles(this.state.page);
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    delay(700)
-      .then(() =>
-        this.setState({
-          page: this.state.page + 1,
-          articles: this.state.articles.concat(this.props.loadArticle),
-          hasNext: this.props.hasNext,
-        }),
-      )
-      .catch();
-  };
+  async fetchMoreData() {
+    await this.props.onGetArticles(this.state.page);
+    this.setState({
+      page: this.state.page + 1,
+      articles: this.state.articles.concat(this.props.loadArticle),
+      hasNext: this.props.hasNext,
+    });
+  }
 
   render() {
     const feed = this.state.articles.map(article => (
