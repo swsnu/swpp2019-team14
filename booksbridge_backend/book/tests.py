@@ -1110,7 +1110,7 @@ class BookTestCase(TestCase):
         # disallowed requests 
         response = client.delete('/api/curation/1/',
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 405)                        
+        self.assertEqual(response.status_code, 200)                        
 
     def test_search_curation_by_author(self):
         # Initialize

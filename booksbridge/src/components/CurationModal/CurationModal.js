@@ -33,6 +33,7 @@ class CurationModal extends Component {
 
   render() {
     if (
+      this.props.initialBooks &&
       this.props.initialBooks.length > 0 &&
       this.state.selectedBooks.length === 0
     )
@@ -108,8 +109,8 @@ class CurationModal extends Component {
                           </a>
                         ))
                       ) : (
-                          <p>라이브러리가 없습니다.</p>
-                        )}
+                        <p>라이브러리가 없습니다.</p>
+                      )}
                     </div>
                     <Button
                       className="close-select-book-button"
@@ -127,25 +128,25 @@ class CurationModal extends Component {
                     <div className="search-book-tab">
                       {this.props.likedBooks
                         ? this.props.likedBooks.map(book => {
-                          return (
-                            <BookResultSummary
-                              cover={book.thumbnail}
-                              title={book.title}
-                              authors={book.authors}
-                              publisher={book.publisher}
-                              isbn={book.isbn}
-                              direct={false}
-                              size="small"
-                              click={() => {
-                                this.setState((state, props) => ({
-                                  selectedBooks: state.selectedBooks.concat(
-                                    book,
-                                  ),
-                                }));
-                              }}
-                            />
-                          );
-                        })
+                            return (
+                              <BookResultSummary
+                                cover={book.thumbnail}
+                                title={book.title}
+                                authors={book.authors}
+                                publisher={book.publisher}
+                                isbn={book.isbn}
+                                direct={false}
+                                size="small"
+                                click={() => {
+                                  this.setState((state, props) => ({
+                                    selectedBooks: state.selectedBooks.concat(
+                                      book,
+                                    ),
+                                  }));
+                                }}
+                              />
+                            );
+                          })
                         : null}
                     </div>
                     <Button
@@ -165,27 +166,27 @@ class CurationModal extends Component {
             <Modal.Content scrolling className="selected-book-modal-content">
               {this.state.selectedBooks.length > 0
                 ? this.state.selectedBooks.map(book => {
-                  return (
-                    <BookResultSummary
-                      cover={book.thumbnail}
-                      title={book.title}
-                      authors={book.authors}
-                      publisher={book.publisher}
-                      isbn={book.isbn}
-                      direct={false}
-                      size="small"
-                      click={() => {
-                        this.setState((state, props) => ({
-                          selectedBooks: state.selectedBooks.filter(
-                            selectedBook => {
-                              return book.isbn !== selectedBook.isbn;
-                            },
-                          ),
-                        }));
-                      }}
-                    />
-                  );
-                })
+                    return (
+                      <BookResultSummary
+                        cover={book.thumbnail}
+                        title={book.title}
+                        authors={book.authors}
+                        publisher={book.publisher}
+                        isbn={book.isbn}
+                        direct={false}
+                        size="small"
+                        click={() => {
+                          this.setState((state, props) => ({
+                            selectedBooks: state.selectedBooks.filter(
+                              selectedBook => {
+                                return book.isbn !== selectedBook.isbn;
+                              },
+                            ),
+                          }));
+                        }}
+                      />
+                    );
+                  })
                 : null}
             </Modal.Content>
           </div>
