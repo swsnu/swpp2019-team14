@@ -86,7 +86,7 @@ class App extends Component {
               component={Main}
             />
             <Route path="/library" exact component={Library} />
-            <Route path="/post" exact component={PostMain} />
+            <Route path="/post/:page" exact component={PostMain} />
             <Route path="/post/create" exact component={CreatePost} />
             {/* <Route path="/post/:post_id" exact component={PostDetailPage} /> */}
 

@@ -1144,43 +1144,66 @@ def specific_post(request, post_id):
 
     else:
         return HttpResponseNotAllowed(['GET', 'PUT', 'DELETE'])
+def make_post_paginator(posts_all, page, user_id):
+    paginator = Paginator(posts_all, 10)
+    posts_list = paginator.page(page).object_list
+    posts = []
+    for post in posts_list:
+        post_dict = make_post_dict(post, user_id)
+        posts.append(post_dict)
+    # response_body={'posts': posts, 'has_next': paginator.page(page).has_next()}
+    response_body={'posts': posts, 'count': posts_all.count()}
+    return response_body
 
 def post_page(request, page): 
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
+    elif request.method == 'POST':
+        try:
+            req_data = json.loads(request.body.decode())
+            content = req_data['content']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+        
+        post = Post(title='', content=content, author=request.user)
+        post.save()
+        
+        posts_all = Post.objects.all().order_by('-id')
+        response_dict = make_post_paginator(posts_all, 1, request.user.id)
+        return JsonResponse(response_dict, status=201)
+
     elif request.method == 'GET':
         posts_all = Post.objects.all().order_by('-id')
-        posts = [] 
-        for post in posts_all:
-            posts.append(make_post_dict(post, request.user.id))
-        response_dict = { 'posts': posts}
-        return JsonResponse(response_dict, status=200)
-        # paginator = Paginator(posts_all, 10)
-        # posts_list = paginator.page(page).object_list
-        # posts = []
-        # for post in posts_list:
-        #     post_dict = make_post_dict(post, request.user.id)
-        #     posts.append(post_dict)
-        # response_body={'posts': posts, 'has_next': paginator.page(page).has_next()}
-        # return JsonResponse(response_body)
+        # posts = [] 
+        # for post in posts_all:
+        #     posts.append(make_post_dict(post, request.user.id))
+        # response_dict = { 'posts': posts}
+        # return JsonResponse(response_dict, status=200)
+        return JsonResponse(make_post_paginator(posts_all, page, request.user.id))
 
  
-def post_like(request, post_id):
+def post_like(request, page, post_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     
     elif request.method == 'POST':
         post = get_object_or_404(Post, id=post_id)
         post.like_users.add(request.user)
-        result_dict = make_post_dict(post, request.user.id)
+
+        posts_all = Post.objects.all().order_by('-id')
+        result_dict = make_post_paginator(posts_all, page, request.user.id)
+        print(result_dict)
         # send_alarm(request.user,post.author,article_id,'article','like')
         return JsonResponse(result_dict, status=201)
     
     elif request.method == 'DELETE':
         post = get_object_or_404(Post, id=post_id)
         post.like_users.remove(request.user)
-        result_dict = make_post_dict(post, request.user.id)
+
+        posts_all = Post.objects.all().order_by('-id')
+        result_dict = make_post_paginator(posts_all, page, request.user.id)
+        print(result_dict)
         return JsonResponse(result_dict, status=200)
 
     else:

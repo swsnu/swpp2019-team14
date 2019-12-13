@@ -5,6 +5,8 @@ import { withRouter } from 'react-router';
 // import '../Main.css';
 import { Button } from 'semantic-ui-react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import ScrollUpButton from 'react-scroll-up-button';
+import { Pagination } from 'semantic-ui-react';
 import Header from '../../components/Header';
 import Post from '../../components/Post/Post';
 import CreatePost from './CreatePost';
@@ -16,21 +18,30 @@ class PostMain extends Component {
   constructor(params) {
     super(params);
     this.state = {
-      page: 1,
       posts: [],
-      hasNext: true,
+      // hasNext: true,
       createMode: false,
-      showComments: false,
+      activePage: this.props.match.params.page,
     };
-    this.fetchMoreData = this.fetchMoreData.bind(this);
-    this.fetchMoreData();
+
+    this.props.onGetPosts(this.props.match.params.page);
     this.CreateHandler = this.CreateHandler.bind(this);
     this.createCommentHandler = this.createCommentHandler.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.match.params.page !== prevProps.match.params.page) {
+      this.props.onGetPosts(this.props.match.params.page);
+    }
+    if (this.props.location !== prevProps.location) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   onClickLikePostButton = (like_or_not, id) => {
     if (like_or_not) {
-      this.props.onDeleteLikePost(id);
+      this.props.onDeleteLikePost(this.state.activePage, id);
       const deleted = this.state.posts.map(post => {
         if (post.id === id) {
           return {
@@ -47,7 +58,7 @@ class PostMain extends Component {
         posts: deleted,
       });
     } else {
-      this.props.onPostLikePost(id);
+      this.props.onPostLikePost(this.state.activePage, id);
       const added = this.state.posts.map(post => {
         if (post.id === id) {
           return {
@@ -92,8 +103,8 @@ class PostMain extends Component {
   CreateHandler = post => {
     this.setState(state => ({
       createMode: false,
-      posts: [post].concat(state.posts),
-      page: 1,
+      // posts: [post].concat(state.posts),
+      // page: 1,
     }));
   };
 
@@ -101,10 +112,17 @@ class PostMain extends Component {
     this.setState({ ...this.state, posts: this.props.loadPost });
   };
 
-  render() {
-    console.log('DEBUG]: ', this.state.posts);
+  handlePaginationChange = (e, { activePage }) => {
+    this.setState({ activePage: activePage });
+    this.props.history.push('/post/' + activePage);
+  };
 
-    const feed = this.state.posts.map(post => (
+  render() {
+    let final = parseInt(this.props.count / 10) + 1;
+    if (this.props.count % 10 === 0) final -= 1;
+
+    console.log('DEBUG:', this.props.loadPost);
+    const feed = this.props.loadPost.map(post => (
       <div>
         <Post
           author={post.author}
@@ -118,19 +136,12 @@ class PostMain extends Component {
           clickLike={() => this.onClickLikePostButton(false, post.id)}
           clickUnlike={() => this.onClickLikePostButton(true, post.id)}
           comments={post.comments}
-          showComments={this.state.showComments}
-          openComments={() =>
-            this.setState({ ...this.state, showComments: true })
-          }
-          closeComments={() =>
-            this.setState({ ...this.state, showComments: false })
-          }
           createCommentHandler={this.createCommentHandler}
         />
       </div>
     ));
 
-    const create = this.state.createMode ? (
+    const createSpace = this.state.createMode ? (
       <CreatePost
         onClose={() => {
           this.setState({ ...this.state, createMode: false });
@@ -144,13 +155,32 @@ class PostMain extends Component {
         포스트 만들기
       </Button>
     );
+    const create = this.state.activePage == 1 ? createSpace : null;
 
     return (
       <div className="main">
         <Header />
         {create}
         <div className="posts">
-          <InfiniteScroll
+          <div>
+            <div id="result">{feed}</div>
+            <Pagination
+              activePage={this.state.activePage}
+              onPageChange={this.handlePaginationChange}
+              firstItem={null}
+              lastItem={null}
+              pointing
+              secondary
+              totalPages={final}
+            />
+            <div className="TopButton">
+              <ScrollUpButton>
+                <Button>Top</Button>
+              </ScrollUpButton>
+            </div>
+          </div>
+
+          {/* <InfiniteScroll
             className="scroll"
             dataLength={this.state.posts.length}
             next={this.fetchMoreData}
@@ -163,7 +193,7 @@ class PostMain extends Component {
             }
           >
             {feed}
-          </InfiniteScroll>
+          </InfiniteScroll> */}
         </div>
       </div>
     );
@@ -173,7 +203,8 @@ class PostMain extends Component {
 const mapStateToProps = state => {
   return {
     loadPost: state.post.posts,
-    hasNext: state.post.hasNext,
+    count: state.post.count,
+    // hasNext: state.post.hasNext,
     logged_in_user: state.user.logged_in_user,
   };
 };
@@ -181,9 +212,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onGetPosts: page => dispatch(actionCreators.getPosts(page)),
-    onPostLikePost: post_id => dispatch(actionCreators.postPostLike(post_id)),
-    onDeleteLikePost: post_id =>
-      dispatch(actionCreators.deletePostLike(post_id)),
+    onPostLikePost: (page, post_id) =>
+      dispatch(actionCreators.postPostLike(page, post_id)),
+    onDeleteLikePost: (page, post_id) =>
+      dispatch(actionCreators.deletePostLike(page, post_id)),
   };
 };
 

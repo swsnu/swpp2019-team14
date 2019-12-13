@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   posts: [],
+  count: 0,
   hasNext: null,
   selectedPost: null,
   postsByUserID: [],
@@ -15,11 +16,15 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         posts: action.posts,
+        count: action.count,
       };
     case actionTypes.POST_POST:
       return {
         ...state,
-        selectedPost: action.post,
+        // selectedPost: action.post,
+        // posts: [action.post].concat(state.posts),
+        posts: action.posts,
+        count: action.count,
       };
     case actionTypes.GET_SPECIFIC_POST:
       return {
@@ -55,15 +60,19 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.POST_POST_LIKE:
+      console.log(action.posts);
       return {
         ...state,
-        selectedPost: action.post,
+        posts: action.posts,
+        // selectedPost: action.post,
       };
 
     case actionTypes.DELETE_POST_LIKE:
+      console.log(action.posts);
       return {
         ...state,
-        selectedPost: action.post,
+        posts: action.posts,
+        // selectedPost: action.post,
       };
 
     case actionTypes.DELETE_SPECIFIC_POST:

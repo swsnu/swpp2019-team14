@@ -19,7 +19,7 @@ class CreatePost extends Component {
   }
 
   async onClickCreateButton() {
-    await this.props.onPostPost({
+    await this.props.onPostPost(1, {
       // title: this.state.title,
       content: this.state.content,
     });
@@ -104,7 +104,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onPostPost: post => dispatch(actionCreators.postPost(post)),
+    onPostPost: (page, post) => dispatch(actionCreators.postPost(page, post)),
   };
 };
 

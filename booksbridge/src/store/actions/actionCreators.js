@@ -551,14 +551,16 @@ export const getPosts = page => dispatch =>
     dispatch({
       type: actionTypes.GET_POSTS,
       posts: res.data.posts,
+      count: res.data.count,
     }),
   );
 
-export const postPost = post => dispatch =>
-  axios.post('/api/post/', post).then(res => {
+export const postPost = (page, post) => dispatch =>
+  axios.post(`/api/post/page/${page}/`, post).then(res => {
     dispatch({
       type: actionTypes.POST_POST,
-      post: res.data,
+      posts: res.data.posts,
+      count: res.data.count,
     });
   });
 
@@ -587,19 +589,20 @@ export const deleteSpecificPost = id => dispatch =>
     }),
   );
 
-export const postPostLike = id => dispatch =>
-  axios.post(`/api/like/post/${id}/`).then(res =>
+export const postPostLike = (page, id) => dispatch => {
+  axios.post(`/api/like/post/${page}/${id}/`).then(res =>
     dispatch({
       type: actionTypes.POST_POST_LIKE,
-      post: res.data,
+      posts: res.data.posts,
     }),
   );
+};
 
-export const deletePostLike = id => dispatch =>
-  axios.delete(`/api/like/post/${id}/`).then(res =>
+export const deletePostLike = (page, id) => dispatch =>
+  axios.delete(`/api/like/post/${page}/${id}/`).then(res =>
     dispatch({
       type: actionTypes.DELETE_POST_LIKE,
-      post: res.data,
+      posts: res.data.posts,
     }),
   );
 
