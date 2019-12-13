@@ -202,6 +202,7 @@ def make_article_dict(article):
         'is_long': article.is_long,
         'is_short': article.is_short,
         'is_phrase': article.is_phrase,
+        'is_spoiler': article.is_spoiler,
         'like_count': likeusers.count()
     }
     return article_dict
@@ -466,6 +467,7 @@ def article(request):
             is_long = req_data['is_long']
             is_short = req_data['is_short']
             is_phrase = req_data['is_phrase']
+            is_spoiler = req_data['is_spoiler']
         except (KeyError) as e:
             return HttpResponse(status=400)
 
@@ -474,7 +476,7 @@ def article(request):
         except Book.DoesNotExist:
             return HttpResponse(status=404)
 
-        article = Article(author=request.user, book=book, content=content, title=title, is_long=is_long, is_short=is_short, is_phrase=is_phrase)
+        article = Article(author=request.user, book=book, content=content, title=title, is_long=is_long, is_short=is_short, is_phrase=is_phrase, is_spoiler=is_spoiler)
         article.save()
         article_dict = model_to_dict(article)
         return JsonResponse(article_dict, status=201)

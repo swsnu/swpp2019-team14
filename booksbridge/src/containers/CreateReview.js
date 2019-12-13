@@ -1,7 +1,14 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Popup, Button, Form, TextArea, Confirm } from 'semantic-ui-react';
+import {
+  Popup,
+  Button,
+  Form,
+  TextArea,
+  Confirm,
+  Checkbox,
+} from 'semantic-ui-react';
 
 import Header from '../components/Header';
 import OcrModal from '../components/OcrModal/OcrModal';
@@ -17,6 +24,7 @@ class CreateReview extends Component {
     content: '',
     type: 'long-review',
     confirm: false,
+    spoiler: false,
   };
 
   onClickCreateButton = () => {
@@ -28,6 +36,7 @@ class CreateReview extends Component {
         is_long: true,
         is_short: false,
         is_phrase: false,
+        is_spoiler: this.state.spoiler,
       });
     } else {
       this.props.onPostArticle({
@@ -37,6 +46,7 @@ class CreateReview extends Component {
         is_long: false,
         is_short: this.state.type === 'short-review',
         is_phrase: this.state.type === 'phrase',
+        is_spoiler: false,
       });
     }
   };
@@ -120,6 +130,19 @@ class CreateReview extends Component {
       </div>
     );
 
+    const SpoilerCheckbox = (
+      <div>
+        <Checkbox
+          className="SpoilerCheckbox"
+          onChange={() =>
+            this.setState(prevState => ({ spoiler: !prevState.spoiler }))
+          }
+          checked={this.state.spoiler}
+          label="스포일러 방지 체크"
+        />
+      </div>
+    );
+
     const PhraseCheckbox = (
       <div className="field">
         <div className="ui radio checkbox">
@@ -193,8 +216,9 @@ class CreateReview extends Component {
               </div>
 
               <OcrModal id="ocr-modal" />
-
+              {this.state.type === 'long-review' ? SpoilerCheckbox : null}
               <Button
+                color={'black'}
                 className="SubmitButton"
                 id="create-review"
                 content="Submit"

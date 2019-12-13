@@ -54,7 +54,8 @@ class BookTestCase(TestCase):
                         'content': 'test_content',
                         'is_long': True,
                         'is_short': False,
-                        'is_phrase': False
+                        'is_phrase': False,
+                        'is_spoiler': False,
                     }),
                     content_type='application/json')
 
@@ -563,7 +564,8 @@ class BookTestCase(TestCase):
                                    'content': 'test_content',
                                    'is_long': True,
                                    'is_short': False,
-                                   'is_phrase': False
+                                   'is_phrase': False,
+                                   'is_spoiler': False,
                                }),
                                content_type='application/json')
 
@@ -576,7 +578,8 @@ class BookTestCase(TestCase):
                         'content': 'test_content',
                         'is_long': True,
                         'is_short': False,
-                        'is_phrase': False
+                        'is_phrase': False,
+                        'is_spoiler': False,
                     }),
                     content_type='application/json')
 
@@ -611,7 +614,8 @@ class BookTestCase(TestCase):
                                    'content': 'test_content',
                                    'is_long': True,
                                    'is_short': False,
-                                   'is_phrase': False
+                                   'is_phrase': False,
+                                   'is_spoiler': False,
                                }),
                               content_type='application/json')
 
@@ -639,6 +643,7 @@ class BookTestCase(TestCase):
                                    'content': 'test_content',
                                    'is_long': True,
                                    'is_short': False,
+                                   'is_spoiler': False,
                                    'wrong_key': 'wrong_value'
                               }),
                               content_type='application/json')
@@ -654,6 +659,7 @@ class BookTestCase(TestCase):
                                    'is_long': True,
                                    'is_short': False,
                                    'is_phrase': False,
+                                   'is_spoiler': False,
                               }),
                               content_type='application/json')
 
@@ -668,6 +674,7 @@ class BookTestCase(TestCase):
                                    'is_long': True,
                                    'is_short': False,
                                    'is_phrase': False,
+                                   'is_spoiler': False,
                               }),
                               content_type='application/json')
 
@@ -806,7 +813,8 @@ class BookTestCase(TestCase):
                             'content': 'test_content_' + str(i),
                             'is_long': True,
                             'is_short': False,
-                            'is_phrase': False
+                            'is_phrase': False,
+                            'is_spoiler': False,
                         }),
                         content_type='application/json')
 
