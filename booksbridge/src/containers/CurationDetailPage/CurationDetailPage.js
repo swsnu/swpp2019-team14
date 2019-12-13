@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Icon, Container, Divider } from 'semantic-ui-react';
+import { Icon, Container, Divider, Button } from 'semantic-ui-react';
 
 import Header from '../../components/Header';
 import BookInfo from '../../components/BookDetail/BookInfo';
@@ -13,6 +13,7 @@ import BookListItem from '../../components/CurationDetailPage/BookListItem';
 import * as actionCreators from '../../store/actions/actionCreators';
 
 import './CurationDetailPage.css';
+import { stringify } from 'querystring';
 
 class CurationDetailPage extends Component {
   constructor(params) {
@@ -27,6 +28,22 @@ class CurationDetailPage extends Component {
       this.props.onPostLikeCuration(curation_id);
     }
   }
+
+  handleDeleteCuration = () => {
+    this.props.onDeleteCuration(this.props.currentCuration.id);
+    this.props.history.push('/curation/');
+  };
+
+  handleEditCuration = () => {
+    console.log('[DEBUG] handleEditCuration');
+    this.props.history.push(
+      '/curation/' +
+        this.props.logged_in_user.username +
+        '/' +
+        this.props.currentCuration.id +
+        '/edit/',
+    );
+  };
 
   render() {
     if (!this.props.currentCuration) {
@@ -70,13 +87,39 @@ class CurationDetailPage extends Component {
         {this.props.currentCuration.like_count}
       </div>
     );
+
+    const editButton =
+      this.props.currentCuration.author.id === this.props.logged_in_user.id ? (
+        <Button onClick={this.handleEditCuration} icon size="small">
+          <Icon name="pencil" size="small" />
+        </Button>
+      ) : null;
+
+    const deleteButton =
+      this.props.currentCuration.author.id === this.props.logged_in_user.id ? (
+        <Button
+          onClick={this.handleDeleteCuration}
+          icon
+          color="red"
+          size="small"
+        >
+          <Icon name="times" size="small" />
+        </Button>
+      ) : null;
+
     return (
       <div>
         <Header />
         <div className="curation-detail-page">
           <ProfileSummary user={this.props.currentCuration.author} />
-          <div className="curation-detail-title">
-            <h1>{this.props.currentCuration.title}</h1>
+          <div className="curation-detail-header">
+            <div className="curation-detail-title">
+              <h1>{this.props.currentCuration.title}</h1>
+            </div>
+            <div className="curation-detail-title-buttons">
+              {editButton}
+              {deleteButton}
+            </div>
           </div>
           <Divider />
           <Container>
@@ -112,6 +155,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onLoadCuration: id => dispatch(actionCreators.getSpecificCuration(id)),
+    onDeleteCuration: curation_id =>
+      dispatch(actionCreators.deleteSpecificCuration(curation_id)),
     onPostLikeCuration: curation_id =>
       dispatch(actionCreators.postCurationLike(curation_id)),
     onDeleteLikeCuration: curation_id =>

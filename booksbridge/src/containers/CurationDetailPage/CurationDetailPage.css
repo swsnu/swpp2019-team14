@@ -14,10 +14,22 @@
   line-height: 1.5;
 }
 
+.curation-detail-header {
+  padding-top: 12%;
+  display: flex;
+  justify-content: end;
+}
+
 .curation-detail-title {
+  width: 100%;
   font-family: 'NanumSquare', sans-serif;
   text-align: left;
-  padding-top: 12%;
+}
+
+.curation-detail-title-buttons {
+  height: 32px;
+  display: flex;
+  justify-content: center;
 }
 
 .curation-detail-content {

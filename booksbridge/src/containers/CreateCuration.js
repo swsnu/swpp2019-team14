@@ -33,22 +33,53 @@ class CreateCuration extends Component {
     }
   };
 
+  // TODO: recursive call to onEdit and setState
+  async onEdit() {
+    await this.props.onLoadCuration(this.props.match.params.curation_id);
+    this.setState({
+      title: this.props.currentCuration.title,
+      content: this.props.currentCuration.content,
+      selectedBooks: this.props.currentCuration.books.map(book => book.book),
+      bookInCuration: this.props.currentCuration.books.map(book => {
+        return { isbn: book.book.isbn, content: book.content };
+      }),
+    });
+  }
+
   render() {
+    if (
+      this.props.match.params.username &&
+      this.props.match.params.curation_id &&
+      this.state.title === ''
+    ) {
+      this.onEdit();
+    }
+
     return (
       <div className="create-curation">
         <Header />
         <div>
           <CurationModal
             className="curation-modal"
+            initialBooks={this.state.selectedBooks}
             update={list => {
               let bookInCuration = [];
+              let currContent = '';
               list.map((book, index) => {
                 bookInCuration = bookInCuration.concat({
                   isbn: book.isbn,
-                  content: '',
+                  content: this.state.bookInCuration.some(isbn_content_pair => {
+                    if (isbn_content_pair.isbn === book.isbn) {
+                      currContent = isbn_content_pair.content;
+                    }
+                    return isbn_content_pair.isbn === book.isbn;
+                  })
+                    ? currContent
+                    : '',
                 });
               });
               this.setState({
+                ...this.state,
                 selectedBooks: list,
                 bookInCuration: bookInCuration,
               });
@@ -63,6 +94,7 @@ class CreateCuration extends Component {
                   id="curation-title"
                   type="text"
                   name="title"
+                  value={this.state.title ? this.state.title : ''}
                   placeholder="Enter Title"
                   onChange={event =>
                     this.setState({ title: event.target.value })
@@ -75,6 +107,7 @@ class CreateCuration extends Component {
                 <TextArea
                   id="curation-content"
                   name="content"
+                  value={this.state.content ? this.state.content : ''}
                   placeholder="Enter Content"
                   rows={this.state.type === 'long-review' ? '20' : '5'}
                   onChange={event =>
@@ -84,6 +117,8 @@ class CreateCuration extends Component {
               </div>
               {this.state.selectedBooks
                 ? this.state.selectedBooks.map((book, index) => {
+                    let content = '';
+
                     return (
                       <div className="bookdetail-container">
                         <BookResultSummary
@@ -98,6 +133,17 @@ class CreateCuration extends Component {
                         <label className="FormLabel">이 책에 대한 코멘트</label>
                         <TextArea
                           id="curation-book-content"
+                          value={
+                            this.state.bookInCuration.some(
+                              isbn_content_pair => {
+                                if (isbn_content_pair.isbn === book.isbn)
+                                  content = isbn_content_pair.content;
+                                return isbn_content_pair.isbn === book.isbn;
+                              },
+                            )
+                              ? content
+                              : ''
+                          }
                           onChange={event => {
                             let value = event.target.value;
                             this.setState((state, props) => ({
@@ -134,8 +180,15 @@ class CreateCuration extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    currentCuration: state.curation.selectedCuration,
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
+    onLoadCuration: id => dispatch(actionCreators.getSpecificCuration(id)),
     onPostCuration: curation => {
       dispatch(actionCreators.postCuration(curation));
     },
@@ -143,6 +196,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(withRouter(CreateCuration));
