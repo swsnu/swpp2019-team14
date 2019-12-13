@@ -1194,7 +1194,6 @@ def post_like(request, page, post_id):
 
         posts_all = Post.objects.all().order_by('-id')
         result_dict = make_post_paginator(posts_all, page, request.user.id)
-        print(result_dict)
         # send_alarm(request.user,post.author,article_id,'article','like')
         return JsonResponse(result_dict, status=201)
     
@@ -1204,7 +1203,6 @@ def post_like(request, page, post_id):
 
         posts_all = Post.objects.all().order_by('-id')
         result_dict = make_post_paginator(posts_all, page, request.user.id)
-        print(result_dict)
         return JsonResponse(result_dict, status=200)
 
     else:

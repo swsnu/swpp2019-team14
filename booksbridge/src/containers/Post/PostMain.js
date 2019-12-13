@@ -10,9 +10,8 @@ import { Pagination } from 'semantic-ui-react';
 import Header from '../../components/Header';
 import Post from '../../components/Post/Post';
 import CreatePost from './CreatePost';
-import Comments from '../Comments/Comments';
 import * as actionCreators from '../../store/actions/index';
-import Spinner from 'react-bootstrap/Spinner';
+import './PostMain.css';
 
 class PostMain extends Component {
   constructor(params) {
@@ -30,7 +29,6 @@ class PostMain extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
     if (this.props.match.params.page !== prevProps.match.params.page) {
       this.props.onGetPosts(this.props.match.params.page);
     }
@@ -77,35 +75,36 @@ class PostMain extends Component {
     }
   };
 
-  async fetchMoreData() {
-    await this.props.onGetPosts();
-    this.setState(state => {
-      if (state.hasNext & (this.props.loadPost.length > 10 * state.page)) {
-        return {
-          page: state.page + 1,
-          posts: state.posts.concat(
-            this.props.loadPost.slice((state.page - 1) * 10, state.page * 10),
-          ),
-          hasNext: true,
-        };
-      } else {
-        return {
-          page: state.page + 1,
-          posts: state.posts.concat(
-            this.props.loadPost.slice((state.page - 1) * 10, state.page * 10),
-          ),
-          hasNext: false,
-        };
-      }
-    });
-  }
+  // async fetchMoreData() {
+  //   await this.props.onGetPosts();
+  //   this.setState(state => {
+  //     if (state.hasNext & (this.props.loadPost.length > 10 * state.page)) {
+  //       return {
+  //         page: state.page + 1,
+  //         posts: state.posts.concat(
+  //           this.props.loadPost.slice((state.page - 1) * 10, state.page * 10),
+  //         ),
+  //         hasNext: true,
+  //       };
+  //     } else {
+  //       return {
+  //         page: state.page + 1,
+  //         posts: state.posts.concat(
+  //           this.props.loadPost.slice((state.page - 1) * 10, state.page * 10),
+  //         ),
+  //         hasNext: false,
+  //       };
+  //     }
+  //   });
+  // }
 
-  CreateHandler = post => {
-    this.setState(state => ({
+  CreateHandler = () => {
+    this.setState({
+      ...this.state,
       createMode: false,
       // posts: [post].concat(state.posts),
       // page: 1,
-    }));
+    });
   };
 
   createCommentHandler = () => {
@@ -121,24 +120,22 @@ class PostMain extends Component {
     let final = parseInt(this.props.count / 10) + 1;
     if (this.props.count % 10 === 0) final -= 1;
 
-    console.log('DEBUG:', this.props.loadPost);
     const feed = this.props.loadPost.map(post => (
-      <div>
-        <Post
-          author={post.author}
-          id={post.id}
-          title={post.title}
-          content={post.content}
-          date={post.date}
-          like_or_not={post.like_or_not}
-          like_count={post.like_count}
-          logged_in_user={this.props.logged_in_user}
-          clickLike={() => this.onClickLikePostButton(false, post.id)}
-          clickUnlike={() => this.onClickLikePostButton(true, post.id)}
-          comments={post.comments}
-          createCommentHandler={this.createCommentHandler}
-        />
-      </div>
+      <Post
+        className="individual-post"
+        author={post.author}
+        id={post.id}
+        title={post.title}
+        content={post.content}
+        date={post.date}
+        like_or_not={post.like_or_not}
+        like_count={post.like_count}
+        logged_in_user={this.props.logged_in_user}
+        clickLike={() => this.onClickLikePostButton(false, post.id)}
+        clickUnlike={() => this.onClickLikePostButton(true, post.id)}
+        comments={post.comments}
+        createCommentHandler={this.createCommentHandler}
+      />
     ));
 
     const createSpace = this.state.createMode ? (
@@ -150,6 +147,9 @@ class PostMain extends Component {
       />
     ) : (
       <Button
+        id="create-post-button"
+        color="blue"
+        size="small"
         onClick={() => this.setState({ ...this.state, createMode: true })}
       >
         포스트 만들기
@@ -158,26 +158,24 @@ class PostMain extends Component {
     const create = this.state.activePage == 1 ? createSpace : null;
 
     return (
-      <div className="main">
+      <div className="post-main">
         <Header />
-        {create}
+        <div id="open-create-post-button">{create}</div>
         <div className="posts">
-          <div>
-            <div id="result">{feed}</div>
-            <Pagination
-              activePage={this.state.activePage}
-              onPageChange={this.handlePaginationChange}
-              firstItem={null}
-              lastItem={null}
-              pointing
-              secondary
-              totalPages={final}
-            />
-            <div className="TopButton">
-              <ScrollUpButton>
-                <Button>Top</Button>
-              </ScrollUpButton>
-            </div>
+          <div id="post-feed">{feed}</div>
+          <Pagination
+            activePage={this.state.activePage}
+            onPageChange={this.handlePaginationChange}
+            firstItem={null}
+            lastItem={null}
+            pointing
+            secondary
+            totalPages={final}
+          />
+          <div className="TopButton">
+            <ScrollUpButton>
+              <Button>Top</Button>
+            </ScrollUpButton>
           </div>
 
           {/* <InfiniteScroll

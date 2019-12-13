@@ -1,0 +1,38 @@
+#individual-post {
+  min-width: 100px;
+}
+.post-time {
+  /* text-align: right !important; */
+  display: flex;
+  display: row;
+  justify-content: flex-start;
+  float: right;
+  font-size: 0.85714286em !important;
+}
+
+.card-post {
+  padding-top: 10%;
+  padding-bottom: 10%;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+.post-author-time {
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  padding-bottom: 15%;
+}
+
+.post-content {
+  text-align: left !important;
+}
+.post-like {
+  text-align: right !important;
+  padding-top: 15%;
+}
+.post-comments {
+  padding-top: 10%;
+}
+.fold-comments {
+  padding-bottom: 10%;
+}

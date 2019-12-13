@@ -1,0 +1,17 @@
+#post-feed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#create-post-button {
+  position: relative;
+}
+
+#open-create-post-button {
+  padding-top: 5%;
+  padding-bottom: 3%;
+  position: relative;
+  /* right: -300px; */
+}
