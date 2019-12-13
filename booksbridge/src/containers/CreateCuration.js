@@ -19,32 +19,6 @@ class CreateCuration extends Component {
     bookInCuration: [],
   };
 
-  /*static getDerivedStateFromProps(nextProps, prevState) {
-    if (
-      nextProps.match.params.username &&
-      nextProps.match.params.curation_id &&
-      prevState.title == ''
-    ) {
-      console.log('[DEBUG] prevState: ' + prevState.title);
-      console.log(
-        '[DEBUG] nextProps.currCur: ' + nextProps.currentCuration.title,
-      );
-      nextProps.onLoadCuration(nextProps.match.params.curation_id);
-      return {
-        title: nextProps.currentCuration ? nextProps.currentCuration.title : '',
-        content: nextProps.currentCuration
-          ? nextProps.currentCuration.content
-          : '',
-        selectedBooks: nextProps.currentCuration
-          ? nextProps.currentCuration.book_list
-          : [],
-        bookInCuration: nextProps.currentCuration
-          ? nextProps.currentCuration.book_list
-          : [],
-      };
-    } else return null;
-  }*/
-
   onClickCreateButton = () => {
     if (this.state.bookInCuration.length === 0) {
       window.alert('책을 한 권 이상 선택해야 합니다.');
@@ -62,7 +36,6 @@ class CreateCuration extends Component {
   // TODO: recursive call to onEdit and setState
   async onEdit() {
     await this.props.onLoadCuration(this.props.match.params.curation_id);
-    console.log('[DEBUG] title: ' + this.props.currentCuration.title);
     this.setState({
       title: this.props.currentCuration.title,
       content: this.props.currentCuration.content,
@@ -79,14 +52,8 @@ class CreateCuration extends Component {
       this.props.match.params.curation_id &&
       this.state.title === ''
     ) {
-      console.log('EDIT');
       this.onEdit();
     }
-
-    console.log('[DEBUG] this.state.title: ' + this.state.title);
-    console.log(
-      '[DEBUG] this.state.selectedBooks: ' + this.state.selectedBooks,
-    );
 
     return (
       <div className="create-curation">
@@ -94,12 +61,21 @@ class CreateCuration extends Component {
         <div>
           <CurationModal
             className="curation-modal"
+            initialBooks={this.state.selectedBooks}
             update={list => {
               let bookInCuration = [];
+              let currContent = '';
               list.map((book, index) => {
                 bookInCuration = bookInCuration.concat({
                   isbn: book.isbn,
-                  content: '',
+                  content: this.state.bookInCuration.some(isbn_content_pair => {
+                    if (isbn_content_pair.isbn === book.isbn) {
+                      currContent = isbn_content_pair.content;
+                    }
+                    return isbn_content_pair.isbn === book.isbn;
+                  })
+                    ? currContent
+                    : '',
                 });
               });
               this.setState({
