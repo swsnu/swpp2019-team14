@@ -19,6 +19,32 @@ class CreateCuration extends Component {
     bookInCuration: [],
   };
 
+  /*static getDerivedStateFromProps(nextProps, prevState) {
+    if (
+      nextProps.match.params.username &&
+      nextProps.match.params.curation_id &&
+      prevState.title == ''
+    ) {
+      console.log('[DEBUG] prevState: ' + prevState.title);
+      console.log(
+        '[DEBUG] nextProps.currCur: ' + nextProps.currentCuration.title,
+      );
+      nextProps.onLoadCuration(nextProps.match.params.curation_id);
+      return {
+        title: nextProps.currentCuration ? nextProps.currentCuration.title : '',
+        content: nextProps.currentCuration
+          ? nextProps.currentCuration.content
+          : '',
+        selectedBooks: nextProps.currentCuration
+          ? nextProps.currentCuration.book_list
+          : [],
+        bookInCuration: nextProps.currentCuration
+          ? nextProps.currentCuration.book_list
+          : [],
+      };
+    } else return null;
+  }*/
+
   onClickCreateButton = () => {
     if (this.state.bookInCuration.length === 0) {
       window.alert('책을 한 권 이상 선택해야 합니다.');
@@ -32,25 +58,35 @@ class CreateCuration extends Component {
       });
     }
   };
+
   // TODO: recursive call to onEdit and setState
-  onEdit = () => {
-    this.props.onLoadCuration(this.props.match.params.curation_id);
+  async onEdit() {
+    await this.props.onLoadCuration(this.props.match.params.curation_id);
+    console.log('[DEBUG] title: ' + this.props.currentCuration.title);
     this.setState({
       title: this.props.currentCuration.title,
       content: this.props.currentCuration.content,
-      selectedBooks: this.props.currentCuration.book_list,
-      bookInCuration: this.props.currentCuration.book_list,
+      selectedBooks: this.props.currentCuration.books.map(book => book.book),
+      bookInCuration: this.props.currentCuration.books.map(book => {
+        return { isbn: book.book.isbn, content: book.content };
+      }),
     });
-  };
+  }
 
   render() {
     if (
       this.props.match.params.username &&
-      this.props.match.params.curation_id
+      this.props.match.params.curation_id &&
+      this.state.title === ''
     ) {
-      console.log('[DEBUG] called to edit');
+      console.log('EDIT');
       this.onEdit();
     }
+
+    console.log('[DEBUG] this.state.title: ' + this.state.title);
+    console.log(
+      '[DEBUG] this.state.selectedBooks: ' + this.state.selectedBooks,
+    );
 
     return (
       <div className="create-curation">
@@ -67,6 +103,7 @@ class CreateCuration extends Component {
                 });
               });
               this.setState({
+                ...this.state,
                 selectedBooks: list,
                 bookInCuration: bookInCuration,
               });
@@ -81,6 +118,7 @@ class CreateCuration extends Component {
                   id="curation-title"
                   type="text"
                   name="title"
+                  value={this.state.title ? this.state.title : ''}
                   placeholder="Enter Title"
                   onChange={event =>
                     this.setState({ title: event.target.value })
@@ -93,6 +131,7 @@ class CreateCuration extends Component {
                 <TextArea
                   id="curation-content"
                   name="content"
+                  value={this.state.content ? this.state.content : ''}
                   placeholder="Enter Content"
                   rows={this.state.type === 'long-review' ? '20' : '5'}
                   onChange={event =>
@@ -102,6 +141,8 @@ class CreateCuration extends Component {
               </div>
               {this.state.selectedBooks
                 ? this.state.selectedBooks.map((book, index) => {
+                    let content = '';
+
                     return (
                       <div className="bookdetail-container">
                         <BookResultSummary
@@ -116,6 +157,17 @@ class CreateCuration extends Component {
                         <label className="FormLabel">이 책에 대한 코멘트</label>
                         <TextArea
                           id="curation-book-content"
+                          value={
+                            this.state.bookInCuration.some(
+                              isbn_content_pair => {
+                                if (isbn_content_pair.isbn === book.isbn)
+                                  content = isbn_content_pair.content;
+                                return isbn_content_pair.isbn === book.isbn;
+                              },
+                            )
+                              ? content
+                              : ''
+                          }
                           onChange={event => {
                             let value = event.target.value;
                             this.setState((state, props) => ({

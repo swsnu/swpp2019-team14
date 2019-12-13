@@ -27,8 +27,13 @@ class CurationModal extends Component {
   render() {
     return (
       <div className="curation-modal-all">
-        <Button className="select-book-button" onClick={this.openHandler}>
-          Select Book
+        <Button
+          className="select-book-button"
+          onClick={this.openHandler}
+          size="big"
+          color="red"
+        >
+          책 고르기
         </Button>
         <Modal id="curation-modal" size={'large'} open={this.state.open}>
           <Tab.Container id="left-tabs-example" defaultActiveKey="first">
