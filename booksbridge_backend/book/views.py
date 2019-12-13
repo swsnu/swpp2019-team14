@@ -1144,6 +1144,7 @@ def specific_post(request, post_id):
 
     else:
         return HttpResponseNotAllowed(['GET', 'PUT', 'DELETE'])
+
 def make_post_paginator(posts_all, page, user_id):
     paginator = Paginator(posts_all, 10)
     posts_list = paginator.page(page).object_list
