@@ -97,7 +97,7 @@ class OcrModal extends Component {
 
     const loading =
       this.state.file && this.state.run && !this.props.quote ? (
-        <Spinner animation="border" className="Spinner" />
+        <Spinner animation="border" id="ocr-spinner" />
       ) : null;
 
     return (
@@ -128,12 +128,12 @@ class OcrModal extends Component {
               />
             </div>
             {image}
+            {loading}
 
             <div className="ocr-buttons">
               <Button id="run-ocr" onClick={this.runOcrOnFiles}>
                 텍스트 추출하기
               </Button>
-              {loading}
 
               <Copy
                 text={this.props.quote}
