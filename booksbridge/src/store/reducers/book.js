@@ -6,7 +6,7 @@ const initialState = {
   selectedBook: null,
   currentBook: null,
   searchedBooks: [],
-  quote: '',
+  quote: null,
   likedBooks: [],
 };
 
@@ -35,6 +35,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, likedBooks: action.likedBooks };
     case actionTypes.RUN_OCR:
       return { ...state, quote: action.quote };
+    case actionTypes.CLEAR_QUOTE:
+      return { ...state, quote: null };
   }
 
   return state;
