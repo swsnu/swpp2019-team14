@@ -50,6 +50,8 @@ export {
   getLikedBooks,
   getPosts,
   postPost,
+  deletePost,
+  editPost,
   getSpecificPost,
   editSpecificPost,
   deleteSpecificPost,

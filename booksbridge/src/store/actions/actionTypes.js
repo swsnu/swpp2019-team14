@@ -75,6 +75,8 @@ export const GET_LIKED_BOOKS = 'GET_LIKED_BOOKS';
 
 export const GET_POSTS = 'GET_POSTS';
 export const POST_POST = 'POST_POST';
+export const DELETE_POST = 'DELETE_POST';
+export const EDIT_POST = 'EDIT_POST';
 export const GET_SPECIFIC_POST = 'GET_SPECIFIC_POST';
 export const EDIT_SPECIFIC_POST = 'EDIT_SPECIFIC_POST';
 export const DELETE_SPECIFIC_POST = 'DELETE_SPECIFIC_POST';

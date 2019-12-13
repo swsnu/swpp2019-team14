@@ -564,6 +564,23 @@ export const postPost = (page, post) => dispatch =>
     });
   });
 
+export const deletePost = (page, post_id) => dispatch =>
+  axios.delete(`/api/post/${page}/${post_id}/`).then(res => {
+    dispatch({
+      type: actionTypes.DELETE_POST,
+      posts: res.data.posts,
+      count: res.data.count,
+    });
+  });
+export const editPost = (page, post_id, content) => dispatch =>
+  axios.edit(`/api/post/${page}/${post_id}/`, content).then(res => {
+    dispatch({
+      type: actionTypes.DELETE_POST,
+      posts: res.data.posts,
+      count: res.data.count,
+    });
+  });
+
 export const getSpecificPost = id => dispatch =>
   axios.get(`/api/post/${id}/`).then(res =>
     dispatch({

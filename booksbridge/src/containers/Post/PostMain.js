@@ -125,7 +125,6 @@ class PostMain extends Component {
         className="individual-post"
         author={post.author}
         id={post.id}
-        title={post.title}
         content={post.content}
         date={post.date}
         like_or_not={post.like_or_not}
@@ -135,6 +134,7 @@ class PostMain extends Component {
         clickUnlike={() => this.onClickLikePostButton(true, post.id)}
         comments={post.comments}
         createCommentHandler={this.createCommentHandler}
+        activePage={this.state.activePage}
       />
     ));
 

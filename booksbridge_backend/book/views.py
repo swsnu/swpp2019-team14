@@ -1086,29 +1086,29 @@ def make_book_dict(book, full):
 
 
 
-def post(request):
-    if not request.user.is_authenticated:
-        return HttpResponse(status=401)
+# def post(request):
+#     if not request.user.is_authenticated:
+#         return HttpResponse(status=401)
     
-    elif request.method == 'POST':
-        try:
-            req_data = json.loads(request.body.decode())
-            # title = req_data['title']
-            content = req_data['content']
-        except (KeyError) as e:
-            return HttpResponse(status=400)
+#     elif request.method == 'POST':
+#         try:
+#             req_data = json.loads(request.body.decode())
+#             # title = req_data['title']
+#             content = req_data['content']
+#         except (KeyError) as e:
+#             return HttpResponse(status=400)
         
-        post = Post(title='', content=content, author=request.user)
-        post.save()
+#         post = Post(title='', content=content, author=request.user)
+#         post.save()
         
-        response_dict = make_post_dict(post, request.user.id)
-        return JsonResponse(response_dict, status=201)
+#         response_dict = make_post_dict(post, request.user.id)
+#         return JsonResponse(response_dict, status=201)
     
-    elif request.method == 'GET':  
-        pass 
+#     elif request.method == 'GET':  
+#         pass 
         
-    else:
-        return HttpResponseNotAllowed(['GET', 'POST'])
+#     else:
+#         return HttpResponseNotAllowed(['GET', 'POST'])
 
 
 def make_post_dict(post, user_id):
@@ -1133,16 +1133,35 @@ def make_post_dict(post, user_id):
     return response_dict
 
           
-def specific_post(request, post_id):
+def specific_post(request, page, post_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=40)
     
-    elif request.method == 'GET':
+    elif request.method == 'DELETE':
         post = get_object_or_404(Post, id=post_id) 
-        response_dict = make_post_dict(post, request.user.id)
-        return JsonResponse(response_dict, status=200)
+        post.delete()
 
+        posts_all = Post.objects.all().order_by('-id')
+        response_dict = make_post_paginator(posts_all, page, request.user.id)
+        return JsonResponse(response_dict, status=201)
+    
+    elif request.method == 'PUT':
+        try:
+            req_data = json.loads(request.body.decode())
+            content = req_data['content']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        post = get_object_or_404(Post, id=post_id) 
+        post.content = req_data['content']
+        post.save()
+
+        posts_all = Post.objects.all().order_by('-id')
+        response_dict = make_post_paginator(posts_all, page, request.user.id)
+        return JsonResponse(response_dict, status=201)
+ 
     else:
+        print(request.method)
         return HttpResponseNotAllowed(['GET', 'PUT', 'DELETE'])
 
 def make_post_paginator(posts_all, page, user_id):
@@ -1183,9 +1202,13 @@ def post_page(request, page):
         # return JsonResponse(response_dict, status=200)
         return JsonResponse(make_post_paginator(posts_all, page, request.user.id))
 
+    else:
+        print(request.method)
+        return HttpResponseNotAllowed(['GET', 'POST']) 
+
  
 def post_like(request, page, post_id):
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated: 
         return HttpResponse(status=401)
     
     elif request.method == 'POST':

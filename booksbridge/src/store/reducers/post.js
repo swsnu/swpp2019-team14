@@ -26,6 +26,19 @@ const reducer = (state = initialState, action) => {
         posts: action.posts,
         count: action.count,
       };
+    case actionTypes.DELETE_POST:
+      return {
+        ...state,
+        posts: action.posts,
+        count: action.count,
+      };
+    case actionTypes.EDIT_POST:
+      return {
+        ...state,
+        posts: action.posts,
+        count: action.count,
+      };
+
     case actionTypes.GET_SPECIFIC_POST:
       return {
         ...state,

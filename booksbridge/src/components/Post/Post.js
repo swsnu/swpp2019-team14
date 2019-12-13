@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
-import { Button, Card, Item, Icon } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { Button, Card, Icon } from 'semantic-ui-react';
 import './Post.css';
 import Time from '../Time';
 import ProfileSummary from '../ProfileSummary/ProfileSummary';
 import Comments from '../../containers/Comments/Comments';
+import * as actionCreators from '../../store/actions/index';
 
 class Post extends Component {
   state = {
     show: false,
+    content: '',
   };
 
   render() {
@@ -72,5 +74,14 @@ class Post extends Component {
     );
   }
 }
-
-export default withRouter(Post);
+const mapDispatchToProps = dispatch => {
+  return {
+    onDeletePost: (page, id) => dispatch(actionCreators.deletePost(page, id)),
+    onEditPost: (page, id, content) =>
+      dispatch(actionCreators.editPost(page, id, content)),
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Post);
