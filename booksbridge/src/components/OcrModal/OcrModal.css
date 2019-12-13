@@ -14,3 +14,19 @@
   overflow: hidden;
   box-sizing: border-box;
 }
+
+.ocr-buttons {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  padding-top: 1%;
+  padding-bottom: 2%;
+}
+
+#ocr-text {
+  width: 100%;
+  height: 80% !important;
+}
+#ocr-modal {
+  height: auto;
+}

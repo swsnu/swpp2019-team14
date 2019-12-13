@@ -97,7 +97,7 @@ class OcrModal extends Component {
 
     const loading =
       this.state.file && this.state.run && !this.props.quote ? (
-        <Spinner animation="border" className="Spinner" />
+        <Spinner animation="border" id="ocr-spinner" />
       ) : null;
 
     return (
@@ -108,12 +108,12 @@ class OcrModal extends Component {
           content="사진 안의 문자를 추출합니다. 책 안에 인용하고 싶은 문장이 있을 경우, 직접 타이핑하지 말고 이 기능을 활용해 보세요."
           trigger={
             <Button onClick={() => this.openHandler()} id="open-ocr">
-              Quote
+              텍스트 추출하기
             </Button>
           }
         />
 
-        <Modal open={this.state.open}>
+        <Modal id="ocr-modal" open={this.state.open}>
           <Modal.Content>
             <div
               id="choose-file"
@@ -128,29 +128,34 @@ class OcrModal extends Component {
               />
             </div>
             {image}
-
-            <Button id="run-ocr" onClick={this.runOcrOnFiles}>
-              텍스트 추출하기
-            </Button>
             {loading}
 
-            <Copy
-              text={this.props.quote}
-              clickCopy={() => this.clearEverything()}
-            />
-            <Button id="clear" onClick={() => this.clearEverything()}>
-              모두 지우기
-            </Button>
-            <Button
-              id="close-ocr"
-              onClick={() => this.setState({ open: false })}
-            >
-              창닫기
-            </Button>
+            <div className="ocr-buttons">
+              <Button id="run-ocr" onClick={this.runOcrOnFiles}>
+                텍스트 추출하기
+              </Button>
+
+              <Copy
+                text={this.props.quote}
+                clickCopy={() => this.clearEverything()}
+              />
+
+              <Button id="clear" onClick={() => this.clearEverything()}>
+                모두 지우기
+              </Button>
+
+              <Button
+                id="close-ocr"
+                onClick={() => this.setState({ open: false })}
+              >
+                창닫기
+              </Button>
+            </div>
+
             <TextArea
               id="ocr-text"
+              rows="20"
               value={this.props.quote} // this.state.content  vs this.props.quote
-              style={{ minHeight: 500, minWidth: 1000 }}
             />
           </Modal.Content>
         </Modal>
