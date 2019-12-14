@@ -536,6 +536,14 @@ export const getLikedBooks = () => dispatch =>
     }),
   );
 
+export const getBookmarks = (page, username) => dispatch =>
+  axios.get(`/api/like/articles/${username}/${page}`).then(res =>
+    dispatch({
+      type: actionTypes.GET_BOOKMARKS,
+      data: res.data,
+    }),
+  );
+
 export const getToken = () => {
   //   return axios.get('/api/token/').then(res => {
   //     dispatch({
