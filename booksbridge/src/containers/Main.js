@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import './containers.css';
 import './Main.css';
-import { Button } from 'semantic-ui-react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Header from '../components/Header';
 import * as actionCreators from '../store/actions/index';

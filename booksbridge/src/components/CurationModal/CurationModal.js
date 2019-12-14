@@ -116,6 +116,7 @@ class CurationModal extends Component {
                       className="close-select-book-button"
                       onClick={() => {
                         this.setState({ open: false });
+                        this.props.update(this.state.selectedBooks);
                       }}
                     >
                       Close
@@ -153,6 +154,7 @@ class CurationModal extends Component {
                       className="close-select-book-button"
                       onClick={() => {
                         this.setState({ open: false });
+                        this.props.update(this.state.selectedBooks);
                       }}
                     >
                       Close
