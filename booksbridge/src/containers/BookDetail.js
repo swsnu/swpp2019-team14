@@ -114,7 +114,10 @@ class BookDetail extends Component {
             <Icon name="pencil" />
             리뷰 작성하기
           </Button>
-          <SelectLibraryModal book={this.props.currentBook} />
+          <SelectLibraryModal
+            book={this.props.currentBook}
+            calledFromBookDetail={true}
+          />
           <Popup
             size="small"
             position="top center"
@@ -142,7 +145,7 @@ class BookDetail extends Component {
 const mapStateToProps = state => {
   return {
     logged_in_user: state.user.logged_in_user,
-    currentBook: state.book.selectedBook,
+    currentBook: state.book.currentBook,
     shortReviews: state.article.shortReviews,
     longReviews: state.article.longReviews,
     phrases: state.article.phrases,
@@ -152,7 +155,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadBook: isbn => dispatch(actionCreators.getSpecificBook(isbn)),
+    onLoadBook: isbn => dispatch(actionCreators.getCurrentBook(isbn)),
     onLoadArticles: isbn => dispatch(actionCreators.getArticlesByBookId(isbn)),
     onPostLikeArticle: article_id =>
       dispatch(actionCreators.postArticleLike(article_id)),

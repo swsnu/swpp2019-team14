@@ -98,7 +98,10 @@ class SelectLibraryModal extends Component {
             {libraries_html}
           </Modal.Content>
           <Modal.Actions className="LibraryModalAction">
-            <AddLibraryModal mode={'ADD'} />
+            <AddLibraryModal
+              mode={'ADD'}
+              calledFromBookDetail={this.props.calledFromBookDetail}
+            />
             <Button primary onClick={this.close}>
               닫기 <Icon name="chevron right" />
             </Button>

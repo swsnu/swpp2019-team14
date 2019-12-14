@@ -583,7 +583,7 @@ def curation(request):
     # TODO elif request.method == 'DELETE':
     #    pass
     else:
-        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
+        return HttpResponseNotAllowed(['POST', 'PUT'])
 
 # test implemented
 def search_curation(request, keyword):
