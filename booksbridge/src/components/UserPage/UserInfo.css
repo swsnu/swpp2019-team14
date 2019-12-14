@@ -103,6 +103,9 @@
   font-family: 'Nanum Gothic', sans-serif;
 }
 .ProfileComment {
+  white-space: pre-wrap;
+  word-wrap:break-word;
+  width: 280px;
   height: 80px;
   font-family: 'Nanum Gothic', sans-serif;
   margin-top: 5px;

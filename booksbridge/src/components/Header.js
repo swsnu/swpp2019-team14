@@ -116,7 +116,7 @@ class Header extends Component {
                 <Icon
                   name="alarm"
                   size="big"
-                  color={this.props.new_alarm ? 'red' : 'yellow'}
+                  color={this.props.new_alarm ? 'yellow' : 'white'}
                   className="header-alarm-icon"
                 />
               }

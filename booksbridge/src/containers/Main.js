@@ -60,22 +60,16 @@ class Main extends React.Component {
   };
 
   fetchMoreData = () => {
-    // a fake async api call like which sends
-    // 10 more records in 0.7 secs
-    this.props.onGetArticles(this.state.page);
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    delay(700)
-      .then(() =>
-        this.setState({
-          page: this.state.page + 1,
-          articles: this.state.articles.concat(this.props.loadArticle),
-          hasNext: this.props.hasNext,
-        }),
-      )
-      .catch();
+    this.fetchMore();
   };
+  async fetchMore() {
+    await this.props.onGetArticles(this.state.page);
+    this.setState({
+      page: this.state.page + 1,
+      articles: this.state.articles.concat(this.props.loadArticle),
+      hasNext: this.props.hasNext,
+    });
+  }
 
   render() {
     const feed = this.state.articles.map(article => (
@@ -92,6 +86,7 @@ class Main extends React.Component {
           is_long={article.is_long}
           is_short={article.is_short}
           is_phrase={article.is_phrase}
+          is_spoiler={article.is_spoiler}
           like_or_not={article.like_or_not}
           like_count={article.like_count}
           logged_in_user={this.props.logged_in_user}

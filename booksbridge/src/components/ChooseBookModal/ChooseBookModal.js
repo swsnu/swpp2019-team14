@@ -12,6 +12,7 @@ import './ChooseBookModal.css';
 const mapStateToProps = state => {
   return {
     searchedBooks: state.book.searchedBooks,
+    count: state.book.count,
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -33,15 +34,29 @@ class ChooseBookModal extends Component {
     };
   }
 
-  searchHandler = () => {
+  async searchHandler() {
     this.props.onEmptySearchedBooks();
-    this.props.onSearchBooks(this.state.keyword, 1);
-    this.setState({ requestNum: 2, search: true });
-  };
+    await this.props.onSearchBooks(this.state.keyword, 1);
+
+    if (this.props.count >= 10) {
+      this.setState({ requestNum: 2, search: true });
+    } else {
+      console.log('why');
+    }
+  }
 
   seeMoreHandler = () => {
-    this.props.onSearchBooks(this.state.keyword, this.state.requestNum);
-    this.setState({ requestNum: this.state.requestNum + 1 });
+    if ((this.state.requestNum - 1) * 10 < this.props.count) {
+      this.props.onSearchBooks(this.state.keyword, this.state.requestNum);
+      if (this.state.requestNum * 10 >= this.props.count) {
+        this.setState({ ...this.state, search: false });
+      } else {
+        this.setState(state => ({
+          ...this.state,
+          requestNum: state.requestNum + 1,
+        }));
+      }
+    }
   };
 
   render() {
@@ -65,8 +80,8 @@ class ChooseBookModal extends Component {
       : null;
 
     const moreButton = this.state.search && (
-      <Button className="more-button" onClick={this.seeMoreHandler}>
-        More...
+      <Button className="more-button" onClick={() => this.seeMoreHandler()}>
+        더보기
       </Button>
     );
 
@@ -85,13 +100,16 @@ class ChooseBookModal extends Component {
             }}
           />
           <InputGroup.Append>
-            <Button className="search-button" onClick={this.searchHandler}>
-              Search!
+            <Button
+              className="search-button"
+              onClick={() => this.searchHandler()}
+            >
+              검색
             </Button>
           </InputGroup.Append>
         </InputGroup>
         <Button className="close-select-book-button" onClick={this.props.close}>
-          Close
+          닫기
         </Button>
         {result}
         {moreButton}

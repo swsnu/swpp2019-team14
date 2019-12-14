@@ -244,6 +244,16 @@ export const postCuration = curation => dispatch =>
     dispatch(push('/curation/' + res.data.curation.id));
   });
 
+// export const EDIT_CURATION = 'EDIT_CURATION'
+export const editCuration = curation => dispatch =>
+  axios.put('/api/curation/', curation).then(res => {
+    dispatch({
+      type: actionTypes.EDIT_CURATION,
+      curation: res.data,
+    });
+    dispatch(push('/curation/' + res.data.curation.id));
+  });
+
 // export const GET_SPECIFIC_CURATION = 'GET_SPECIFIC_CURATION'
 export const getSpecificCuration = id => dispatch =>
   axios.get(`/api/curation/${id}/`).then(res =>
@@ -533,6 +543,14 @@ export const getLikedBooks = () => dispatch =>
     dispatch({
       type: actionTypes.GET_LIKED_BOOKS,
       likedBooks: res.data,
+    }),
+  );
+
+export const getBookmarks = (page, username) => dispatch =>
+  axios.get(`/api/like/articles/${username}/${page}`).then(res =>
+    dispatch({
+      type: actionTypes.GET_BOOKMARKS,
+      data: res.data,
     }),
   );
 

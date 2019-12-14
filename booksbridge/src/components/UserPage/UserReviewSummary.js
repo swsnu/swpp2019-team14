@@ -34,7 +34,7 @@ const UserReviewSummary = props => {
             ) : null}
           </div>
           <div className="UserPageEditDeleteButton">
-            {props.profile_user.username === props.logged_in_user.username ? (
+            {props.author.username === props.logged_in_user.username ? (
               <div className="ArticleEditDeleteButton">
                 <Popup
                   content="수정"

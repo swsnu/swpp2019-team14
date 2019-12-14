@@ -7,6 +7,8 @@ const initialState = {
   follower_list: [],
   followee_list: [],
   alarms: [],
+  bookmarks: [],
+  bookmark_count: 0,
   new_alarm: false,
 };
 
@@ -34,6 +36,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         logged_in_user: action.user,
         profile_user: action.user,
+      };
+    case actionTypes.GET_BOOKMARKS:
+      console.log(action.data);
+      return {
+        ...state,
+        bookmarks: action.data.articles,
+        bookmark_count: action.data.length,
       };
     case actionTypes.UPLOAD_PROFILE_IMAGE:
       return {

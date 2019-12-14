@@ -26,6 +26,7 @@ const article = {
   is_long: true,
   is_short: false,
   is_phrase: false,
+  is_spoiler: false,
   likes: { count: 0, users: [] },
 };
 

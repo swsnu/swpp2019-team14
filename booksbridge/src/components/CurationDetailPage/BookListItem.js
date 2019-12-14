@@ -30,7 +30,7 @@ class BookListItem extends Component {
           click={click}
           size={size}
         />
-        <h5 className="content-for-book">{content}</h5>
+        <p className="content-for-book">{content}</p>
       </div>
     );
   }
