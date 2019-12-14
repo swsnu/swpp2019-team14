@@ -59,7 +59,10 @@ class Main extends React.Component {
     }
   };
 
-  async fetchMoreData() {
+  fetchMoreData = () => {
+    this.fetchMore();
+  };
+  async fetchMore() {
     await this.props.onGetArticles(this.state.page);
     this.setState({
       page: this.state.page + 1,
