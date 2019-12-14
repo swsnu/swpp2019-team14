@@ -535,8 +535,51 @@ def curation(request):
             
         result_dict = { "curation": curation_dict, "book_content": book_content_list } 
         return JsonResponse(result_dict, status=201)
-    # TODO elif request.method == 'PUT':
-    #    pass
+    elif request.method == 'PUT':
+        try:
+            req_data = json.loads(request.body.decode())
+            title = req_data['title']
+            content = req_data['content']
+            isbn_content_list = req_data['isbn_content_pairs'] 
+            curation_id = req_data['curation_id']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        # TRANSACTION FORM!
+        sid = transaction.savepoint()
+
+        
+        try:
+            curation = Curation.objects.get(id=curation_id)
+        except:
+            return HttpResponse(status=404)
+        
+        curation.title = title
+        curation.content = content
+
+        book_content_list=[]
+
+        for book_in_curation in BookInCuration.objects.filter(curation=curation):
+            if book_in_curation.book.isbn not in list(map(lambda pair: pair['isbn'], isbn_content_list)):
+                book_in_curation.delete()
+
+        for isbn_content_pair in isbn_content_list:
+            if isbn_content_pair['isbn'] not in list(map(lambda book_in_curation: book_in_curation.book.isbn, BookInCuration.objects.filter(curation=curation))):
+                _book = Book.objects.get(isbn=isbn_content_pair['isbn'])
+                BIC = BookInCuration(curation=curation, book=_book)
+                BIC.save()
+            
+        transaction.savepoint_commit(sid)
+
+        curation_dict = model_to_dict(curation)
+        curation.save()
+
+        for BIC in BookInCuration.objects.filter(curation=curation):
+            book_content_list.append(model_to_dict(BIC))
+
+        result_dict = { "curation": curation_dict, "book_content": book_content_list } 
+        return JsonResponse(result_dict, status=201)
+
     # TODO elif request.method == 'DELETE':
     #    pass
     else:
