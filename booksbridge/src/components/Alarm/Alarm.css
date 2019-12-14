@@ -1,7 +1,27 @@
 .new-alarm {
   cursor: pointer;
-  background-color: lavender;
+  font-size: small;
+  margin-bottom : 10px;
+}
+.new-alarm>a {
+  cursor: pointer;
+  font-size: small;
+  color: black !important;
 }
 .old-alarm {
+  cursor: pointer;
+  font-size: small;
+  margin-bottom : 10px;
+}
+.old-alarm>a {
+  cursor: pointer;
+  font-size: small;
+  color: rgb(202, 202, 202) !important;
+}
+.AlarmProfilePic{
+  margin-right: 10px;
+  border-radius: 500rem;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 }

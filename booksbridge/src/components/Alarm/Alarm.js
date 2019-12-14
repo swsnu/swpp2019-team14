@@ -9,7 +9,7 @@ const Alarm = props => {
       >
         <a href={'/page/' + props.alarm.author_username}>
           <img
-            className="profilePic"
+            className="AlarmProfilePic"
             src={
               props.alarm.profile_photo.startsWith('http')
                 ? props.alarm.profile_photo

@@ -61,23 +61,6 @@ class UserInfo extends Component {
     }
   }
 
-  /*
-  handleFollowerModalOpen = () => {
-    console.log('[DEBUG] handleFollowerModalOpen called');
-    this.setState({
-      ...this.state,
-      followerOpen: true,
-    });
-  };
-
-  handleFollowerModalClose = () => {
-    this.setState({
-      ...this.state,
-      followerOpen: false,
-    });
-  };
-  */
-
   handleFileInput(e) {
     e.preventDefault();
     console.log(this.inputRef.current.files[0]);
@@ -167,7 +150,6 @@ class UserInfo extends Component {
       <img src={profile_photo} className="ProfilePicture" />
     );
 
-    // TODO: 글자수 제한, 사진 변경
     return (
       <div className="Wrapper">
         <div className="UploadBox">
