@@ -10,6 +10,8 @@ import ProfileSummary from './ProfileSummary/ProfileSummary';
 const Article = props => {
   const Author = <ProfileSummary user={props.author} />;
 
+  if (props.is_phrase) return null;
+
   return (
     <Alert variant="secondary" className="article">
       <div className="ui feed">
