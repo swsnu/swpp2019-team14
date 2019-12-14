@@ -835,13 +835,62 @@ class BookTestCase(TestCase):
                                    'title': 'test_title',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
-                                       {'isbn': '9780393912470', 'content':'test_content1'},
                                        {'isbn': '9780140447934', 'content':'test_content2'},
                                        {'isbn': '9780131103627', 'content':'test_content3'},
                                    ],
                                }),
                                content_type='application/json')
         self.assertEqual(response.status_code, 201)
+
+        # PUT with KeyError
+        response = client.put('/api/curation/',
+                              json.dumps({
+                                  'title': 'test_title',
+                                  'content': 'test_content',
+                                  'isbn_content_pairs': [
+                                      {'isbn': '9780393912470', 'content':'test_content1'},
+                                      {'isbn': '9780140447934', 'content':'test_content2'},
+                                  ],
+                              }),
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 400)
+
+        # PUT with non-existing curation_id
+        response = client.put('/api/curation/',
+                              json.dumps({
+                                  'title': 'test_title',
+                                  'content': 'test_content',
+                                  'isbn_content_pairs': [
+                                      {'isbn': '9780393912470', 'content':'test_content1'},
+                                      {'isbn': '9780140447934', 'content':'test_content2'},
+                                  ],
+                                  'curation_id': 9999,                                  
+                              }),
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 404)
+
+        # PUT
+        response = client.put('/api/curation/',
+                              json.dumps({
+                                  'title': 'test_title',
+                                  'content': 'test_content',
+                                  'isbn_content_pairs': [
+                                      {'isbn': '9780393912470', 'content':'test_content1'},
+                                      {'isbn': '9780140447934', 'content':'test_content2'},
+                                  ],
+                                  'curation_id': 3,                                  
+                              }),
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 201)
+
+        # Disallowed request
+        response = client.patch('/api/curation/',
+                                content_type='application/json')
+
+        self.assertEqual(response.status_code, 405)
 
 
     def test_article_page(self):

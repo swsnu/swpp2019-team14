@@ -28,7 +28,12 @@ class Library extends Component {
 
   render() {
     const libraries_html = this.props.libraries.map((library, index) => (
-      <LibraryUnit library={library} index={index} authorize={true} />
+      <LibraryUnit
+        library={library}
+        index={index}
+        authorize={true}
+        onDeleteLibrary={library_id => this.onDeleteLibrary(library_id)}
+      />
     ));
 
     return (

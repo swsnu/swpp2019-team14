@@ -33,20 +33,23 @@ class AddLibraryModal extends Component {
   /////////////* Logic for Modal */////////////
   open = () => this.setState({ ...this.state, open: true });
   close = () => {
-    if (this.state.mode === 'ADD')
+    if (this.state.mode === 'ADD') {
       this.setState({
         ...this.state,
         title: '',
         books: [],
         open: false,
       });
-    else
+      this.props.onLoadLibrary();
+      this.props.onEmptySelectedBook();
+    } else {
       this.setState({
         ...this.state,
         open: false,
       });
-    this.props.onLoadLibrary();
-    this.props.onEmptySelectedBook();
+      this.props.onLoadLibrary();
+      this.props.onEmptySelectedBook();
+    }
   };
   /////////////////////////////////////////////
   //////////* Logic for Title Input *//////////
@@ -54,12 +57,13 @@ class AddLibraryModal extends Component {
     this.setState({ ...this.state, title: value });
   /////////////////////////////////////////////
 
-  addToLibrary = () => {
-    /* Debug Start */
+  addToLibrary = book => {
+    /* Debug Start
+    console.log('[DEBUG] booktitle: ' + book.title);
     console.log('[DEBUG] status: ' + this.state.mode);
     console.log('[DEBUG] books: ');
-    this.state.books.map(book => {
-      console.log(book.title);
+    this.state.books.map(_book => {
+      console.log(_book.title);
     });
     console.log(
       '[DEBUG] selectedBook exists?: ' +
@@ -68,17 +72,14 @@ class AddLibraryModal extends Component {
           : 'no'),
     );
     //if (this.props.selectedBook == null) return;
-    /*Debug End */
+    Debug End */
 
-    setTimeout(() => {
-      console.log('[DEBUG] setTiemout called');
-      this.setState({
-        ...this.state,
-        books: this.state.books.concat(this.props.selectedBook),
-      });
-      console.log('[DEBUG] asdf');
-      this.props.onEmptySelectedBook();
-    }, 1000);
+    this.setState({
+      ...this.state,
+      books: this.state.books.concat(book),
+    });
+    console.log('[DEBUG] asdf');
+    this.props.onEmptySelectedBook();
   };
 
   onClickDeleteFromSelectedBooks = isbn => {
