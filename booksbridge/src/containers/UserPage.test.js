@@ -77,6 +77,17 @@ const stubInitialState = {
       likes: 1,
     },
   ],
+  bookmarks: [
+    {
+      author: { username: 'test' },
+      book_title: 'BOOK1',
+      title: 'TITLE1',
+      content: 'CONTENT1',
+      is_long: true,
+      is_short: false,
+      is_phrase: false,
+    },
+  ],
   length: 6,
 };
 

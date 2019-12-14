@@ -6,6 +6,7 @@
 }
 
 .profileName {
+  font-family: 'NanumSquare', sans-serif;
   display: flex;
   flex-direction: column;
   padding-left: 1rem;
@@ -15,6 +16,7 @@
 }
 
 .username {
+  font-family: 'NanumSquare', sans-serif;
   font-size: 0.85714286em;
 }
 
