@@ -12,7 +12,7 @@ class BookInfo extends Component {
 
   render() {
     return (
-      <div className="containerStyle">
+      <div className="BookInfoContainer">
         <div style={{ textAlign: 'left' }}>
           {this.props.thumbnail === '' ? (
             <Image src="/images/no_cover.jpg" className="imageStyle" />
@@ -23,7 +23,7 @@ class BookInfo extends Component {
         <div style={{ textAlign: 'right' }}>
           <div className="BookInfoStyle">
             <div className="BookInfoText">
-              <p className="titleStyle">{this.props.title}</p>
+              <div className="BookTitleStyle">{this.props.title}</div>
               <p>
                 <b>AUTHOR(S) : </b>
                 {this.props.authors}
