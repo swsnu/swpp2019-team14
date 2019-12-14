@@ -378,6 +378,11 @@ def alarm(request):
                 alarm_dict['content'] = author_name+'님이 회원님의 글에 댓글을 남겼습니다.'
             elif alarm.content == 'reply':
                 alarm_dict['content'] = author_name+'님이 회원님의 댓글에 답글을 남겼습니다.'
+            elif alarm.content == 'follower_new':
+                alarm_dict['content'] = author_name+'님이 새 리뷰를 남겼습니다.'
+            else:
+                alarm_dict['content'] = '회원님이 즐겨찾기한 책 '+alarm.content+'에 '+author_name+'님이 새 리뷰를 남겼습니다.'
+
             alarms_array.append(alarm_dict)
         result = {
             'alarms':alarms_array,
@@ -488,12 +493,17 @@ def article(request):
             return HttpResponse(status=400)
 
         try:
-            book = Book.objects.get(isbn=isbn)   
+            book = Book.objects.get(isbn=isbn)
         except Book.DoesNotExist:
             return HttpResponse(status=404)
 
         article = Article(author=request.user, book=book, content=content, title=title, is_long=is_long, is_short=is_short, is_phrase=is_phrase, is_spoiler=is_spoiler)
         article.save()
+        if is_long:
+            for like_user in book.like_users.all():
+                send_alarm(request.user,like_user,article.id,'article',title)
+            for follow in request.user.followee.all():
+                send_alarm(request.user,follow.follower,article.id,'article','follower_new')
         article_dict = model_to_dict(article)
         return JsonResponse(article_dict, status=201)
     # TODO elif request.method == 'PUT':

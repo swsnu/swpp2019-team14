@@ -24,9 +24,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_CURRENT_BOOK:
       return { ...state, currentBook: action.book };
     case actionTypes.POST_BOOK_LIKE:
-      return { ...state, selectedBook: action.book };
+      return { ...state, currentBook: action.book };
     case actionTypes.DELETE_BOOK_LIKE:
-      return { ...state, selectedBook: action.book };
+      return { ...state, currentBook: action.book };
     case actionTypes.EMPTY_SEARCHED_BOOKS:
       return { ...state, searchedBooks: [] };
     case actionTypes.EMPTY_SELECTED_BOOK:
