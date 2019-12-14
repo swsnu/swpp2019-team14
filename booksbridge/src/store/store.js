@@ -7,6 +7,7 @@ import curationReducer from './reducers/curation';
 import articleReducer from './reducers/article';
 import userReducer from './reducers/user';
 import bookReducer from './reducers/book';
+import libraryReducer from './reducers/library';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   curation: curationReducer,
   article: articleReducer,
+  library: libraryReducer,
   router: connectRouter(history),
 });
 export const middlewares = [thunk, routerMiddleware(history)];

@@ -40,8 +40,6 @@ class ChooseBookModal extends Component {
 
     if (this.props.count >= 10) {
       this.setState({ requestNum: 2, search: true });
-    } else {
-      console.log('why');
     }
   }
 

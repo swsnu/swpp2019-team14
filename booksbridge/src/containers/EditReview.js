@@ -72,7 +72,13 @@ class EditReview extends Component {
 
   render() {
     if (!this.props.selectedArticle)
-      return <Spinner animation="border" className="Spinner" />;
+      return (
+        <Spinner
+          id="edit-review-spinner"
+          animation="border"
+          className="Spinner"
+        />
+      );
     const article = this.props.selectedArticle;
 
     const book = (
