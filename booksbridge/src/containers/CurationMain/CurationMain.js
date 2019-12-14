@@ -19,28 +19,23 @@ class CurationMain extends React.Component {
     this.fetchMoreData();
     this.likeHandler = this.likeHandler.bind(this);
   }
-
-  async fetchMoreData() {
-    // a fake async api call like which sends
-    // 10 more records in 0.7 secs
+  fetchMoreData = () => {
+    this.fetchMore();
+  };
+  async fetchMore() {
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
     await this.props.onGetCurations(this.state.page);
-    this.setState({
-      page: this.state.page + 1,
-      curations: this.state.curations.concat(this.props.loadCurations),
-      hasNext: this.props.hasNext,
-    });
-    // function delay(ms) {
-    //   return new Promise(resolve => setTimeout(resolve, ms));
-    // }
-    // delay(500)
-    //   .then(() =>
-    //     this.setState({
-    //       page: this.state.page + 1,
-    //       curations: this.state.curations.concat(this.props.loadCurations),
-    //       hasNext: this.props.hasNext,
-    //     }),
-    //   )
-    //   .catch();
+    delay(500)
+      .then(() =>
+        this.setState({
+          page: this.state.page + 1,
+          curations: this.state.curations.concat(this.props.loadCurations),
+          hasNext: this.props.hasNext,
+        }),
+      )
+      .catch();
   }
 
   likeHandler(like_or_not, curation_id) {
