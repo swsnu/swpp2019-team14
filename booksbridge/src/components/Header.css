@@ -85,15 +85,18 @@
 }
 
 .header-alarm-popup {
-  max-width: 500px !important;
-  height: 500px;
-  overflow: scroll;
+  max-width: 600px !important;
+  max-height: 500px;
+  overflow-y: scroll;
 }
 .header-menu-popup {
   padding: 0px !important;
   margin-top: 0px !important;
   left: 3% !important;
   text-align: center;
+}
+#toggle-button {
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 600px) {

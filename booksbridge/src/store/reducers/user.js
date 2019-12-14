@@ -71,6 +71,12 @@ const reducer = (state = initialState, action) => {
         alarms: action.alarms,
         new_alarm: action.new,
       };
+    case actionTypes.TOGGLE_ALARMS:
+      return {
+        ...state,
+        alarms: action.alarms,
+        new_alarm: action.new,
+      };
   }
   return state;
 };

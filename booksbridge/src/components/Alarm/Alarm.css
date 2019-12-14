@@ -1,7 +1,19 @@
 .new-alarm {
   cursor: pointer;
-  background-color: lavender;
+  padding: 3px;
+  width: fit-content !important;
 }
 .old-alarm {
   cursor: pointer;
+  padding: 3px;
+  width: fit-content !important;
+}
+.new-alarm a {
+  color: black;
+}
+.old-alarm a {
+  color: rgb(170, 170, 170);
+}
+.profilePic-link {
+  margin-right: 10px;
 }

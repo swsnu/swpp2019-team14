@@ -373,13 +373,48 @@ def alarm(request):
             'new': new,
         }
         return JsonResponse(result)
+    elif request.method == 'PUT':
+        alarms_array=[]
+        alarms=request.user.profile.alarms.all().order_by('-id')
+        for alarm in alarms:
+            author=alarm.author
+            author_name=author.profile.nickname
+            author_username=author.get_username()
+            alarm.is_new=False
+            alarm.save()
+            alarm_dict = {
+                'id': alarm.id,
+                'author_name':author_name,
+                'author_username':author_username,
+                'profile_photo': author.profile.profile_photo.name,
+                'is_new':alarm.is_new,
+            }
+            if alarm.category == 'user':
+                alarm_dict['link'] = '/page/' + author_username
+            elif alarm.category == 'curation':
+                alarm_dict['link'] = '/curation/' + alarm.link_id
+            elif alarm.category == 'article':
+                alarm_dict['link'] = '/review/' + alarm.link_id
+            if alarm.content == 'follow':
+                alarm_dict['content'] = author_name+'님이 회원님을 팔로우합니다.'
+            elif alarm.content == 'like':
+                alarm_dict['content'] = author_name+'님이 회원님의 글에 \'좋아요\'를 눌렀습니다.'
+            elif alarm.content == 'comment':
+                alarm_dict['content'] = author_name+'님이 회원님의 글에 댓글을 남겼습니다.'
+            elif alarm.content == 'reply':
+                alarm_dict['content'] = author_name+'님이 회원님의 댓글에 답글을 남겼습니다.'
+            alarms_array.append(alarm_dict)
+        result = {
+            'alarms':alarms_array,
+            'new': False,
+        }
+        return JsonResponse(result)
 
 def specific_alarm(request,alarm_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     elif request.method == 'PUT':
         alarm = Alarm.objects.get(id=alarm_id)
-        alarm.is_new=False
         alarm.save()
         alarm_dict = {
             'id': alarm.id,
