@@ -9,6 +9,13 @@ import * as actionTypes from '../store/actions/actionTypes';
 const getMockReducer = jest.fn(
   initialState => (state = initialState, action) => {
     switch (action.type) {
+      case actionTypes.GET_SEARCHED_BOOKS:
+        return {
+          ...state,
+          books: action.books,
+          count: action.count,
+          searchedBooks: state.searchedBooks.concat(action.books),
+        };
       default:
         break;
     }

@@ -85,9 +85,21 @@ class CommentUnit extends Component {
     return (
       <div className="CommentUnit">
         <Comment>
-          <Comment.Avatar as="a" src={profile_photo} />
+          <a
+            id="redirect-to-userpage"
+            href={'/page/' + this.props.author.username}
+          >
+            <Comment.Avatar as="a" src={profile_photo} />
+          </a>
           <Comment.Content>
-            <Comment.Author as="a">{this.props.author.nickname}</Comment.Author>
+            <a
+              id="redirect-to-userpage"
+              href={'/page/' + this.props.author.username}
+            >
+              <Comment.Author as="a">
+                {this.props.author.nickname}
+              </Comment.Author>
+            </a>
             <Comment.Metadata>
               <span>
                 <Time date={this.props.date} />

@@ -63,12 +63,19 @@ class Main extends React.Component {
     this.fetchMore();
   };
   async fetchMore() {
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
     await this.props.onGetArticles(this.state.page);
-    this.setState({
-      page: this.state.page + 1,
-      articles: this.state.articles.concat(this.props.loadArticle),
-      hasNext: this.props.hasNext,
-    });
+    delay(500)
+      .then(() =>
+        this.setState({
+          page: this.state.page + 1,
+          articles: this.state.articles.concat(this.props.loadArticle),
+          hasNext: this.props.hasNext,
+        }),
+      )
+      .catch();
   }
 
   render() {

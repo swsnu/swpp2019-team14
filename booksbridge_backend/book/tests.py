@@ -1797,62 +1797,62 @@ class BookTestCase(TestCase):
         self.assertEqual(response.status_code, 405)  
     
 
-    def test_group(self):
-        client = Client()
-        self.pretest(client, '/api/group/')
+    # def test_group(self):
+    #     client = Client()
+    #     self.pretest(client, '/api/group/')
 
-        # POST with KeyError
-        response = client.post('/api/group/',
-                               json.dumps({
-                                    'key': 'value',
-                                    'gaehagisilta': 'real_true',
-                               }),
-                               content_type='application/json')
+    #     # POST with KeyError
+    #     response = client.post('/api/group/',
+    #                            json.dumps({
+    #                                 'key': 'value',
+    #                                 'gaehagisilta': 'real_true',
+    #                            }),
+    #                            content_type='application/json')
 
-        self.assertIsNotNone(response.content)
-        self.assertEqual(response.status_code, 400)
+    #     self.assertIsNotNone(response.content)
+    #     self.assertEqual(response.status_code, 400)
 
-        # POST
-        response = client.post('/api/group/',
-                               json.dumps({
-                                    'name': 'TEST_GROUP',
-                                    'explanation': 'THIS IS NEW GROUP',
-                               }),
-                               content_type='application/json')
+    #     # POST
+    #     response = client.post('/api/group/',
+    #                            json.dumps({
+    #                                 'name': 'TEST_GROUP',
+    #                                 'explanation': 'THIS IS NEW GROUP',
+    #                            }),
+    #                            content_type='application/json')
 
-        self.assertIsNotNone(response.content)
-        self.assertEqual(response.status_code, 201)
+    #     self.assertIsNotNone(response.content)
+    #     self.assertEqual(response.status_code, 201)
 
-        # GET
-        response = client.get('/api/group/', content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+    #     # GET
+    #     response = client.get('/api/group/', content_type='application/json')
+    #     self.assertEqual(response.status_code, 200)
 
-        # unallowed request
-        response = client.put('/api/group/', content_type='application/json')
-        self.assertEqual(response.status_code, 405)
+    #     # unallowed request
+    #     response = client.put('/api/group/', content_type='application/json')
+    #     self.assertEqual(response.status_code, 405)
     
 
-    def test_specific_group(self):
-        client = Client()
-        self.pretest(client, '/api/group/1/')
+    # def test_specific_group(self):
+    #     client = Client()
+    #     self.pretest(client, '/api/group/1/')
 
-        # group registration 
-        response = client.post('/api/group/',
-                               json.dumps({
-                                    'name': 'TEST_GROUP',
-                                    'explanation': 'THIS IS NEW GROUP',
-                               }),
-                               content_type='application/json')
+    #     # group registration 
+    #     response = client.post('/api/group/',
+    #                            json.dumps({
+    #                                 'name': 'TEST_GROUP',
+    #                                 'explanation': 'THIS IS NEW GROUP',
+    #                            }),
+    #                            content_type='application/json')
 
-        # POST
-        response = client.post('/api/group/1/',
-                               content_type='application/json')
-        self.assertEqual(response.status_code, 201)
+    #     # POST
+    #     response = client.post('/api/group/1/',
+    #                            content_type='application/json')
+    #     self.assertEqual(response.status_code, 201)
 
-        # Disallowed request
-        response = client.patch('/api/group/1/',
-                                content_type='application/json')
-        self.assertEqual(response.status_code, 405)
+    #     # Disallowed request
+    #     response = client.patch('/api/group/1/',
+    #                             content_type='application/json')
+    #     self.assertEqual(response.status_code, 405)
 
         
     def test_book_like(self):

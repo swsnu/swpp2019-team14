@@ -121,25 +121,25 @@ class Follow(models.Model):
     followee = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="followee")
 
-class Group(models.Model):
-    name = models.CharField(max_length=20)
-    explanation = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
-    members = models.ManyToManyField(User, through='MemberInGroup')
+# class Group(models.Model):
+#     name = models.CharField(max_length=20)
+#     explanation = models.TextField()
+#     date = models.DateTimeField(auto_now_add=True)
+#     members = models.ManyToManyField(User, through='MemberInGroup')
 
-class AdminInGroup(models.Model):
-    admin = models.ForeignKey(User, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='admin')
+# class AdminInGroup(models.Model):
+#     admin = models.ForeignKey(User, on_delete=models.CASCADE)
+#     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='admin')
 
-class MemberInGroup(models.Model):
-    member = models.ForeignKey(User, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+# class MemberInGroup(models.Model):
+#     member = models.ForeignKey(User, on_delete=models.CASCADE)
+#     group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
-class PostInGroup(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='posts')
-    title = models.TextField()
-    content = models.TextField()
+# class PostInGroup(models.Model):
+#     author = models.ForeignKey(User, on_delete=models.CASCADE)
+#     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='posts')
+#     title = models.TextField()
+#     content = models.TextField()
     
 
 

@@ -98,7 +98,7 @@ describe('<CreateCuration />', () => {
 
   it('should post long review', () => {
     const title = 'TITLE';
-    const content = 'CONTENT';
+    const content = 'content';
     const component = mount(createCuration);
     const title_space = component.find('#curation-title').at(0);
     const content_space = component.find('#curation-content').at(0);

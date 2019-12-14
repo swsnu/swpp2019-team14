@@ -14,9 +14,13 @@ const ReplyUnit = props => {
   return (
     <div className="ReplyUnit">
       <Comment>
-        <Comment.Avatar src={profile_photo} />
+        <a id="redirect-to-userpage" href={'/page/' + props.author.username}>
+          <Comment.Avatar src={profile_photo} />
+        </a>
         <Comment.Content>
-          <Comment.Author as="a">{props.author.nickname}</Comment.Author>
+          <a id="redirect-to-userpage" href={'/page/' + props.author.username}>
+            <Comment.Author as="a">{props.author.nickname}</Comment.Author>
+          </a>
           <Comment.Metadata>
             <div>
               <Time date={props.date} />
