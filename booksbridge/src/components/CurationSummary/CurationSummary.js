@@ -20,6 +20,7 @@ const CurationSummary = props => {
                 href={'/book/' + book.isbn}
                 src={book.thumbnail}
                 alt="First slide"
+                className="curation-summary-image"
                 centered
               />
             );

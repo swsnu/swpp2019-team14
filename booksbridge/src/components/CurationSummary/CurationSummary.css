@@ -1,6 +1,9 @@
 .curation-summary-images {
   text-align: center;
 }
+.curation-summary-image {
+  width: 22%;
+}
 .carousel-items {
   background-color: rgba(221, 236, 228, 0.13) !important;
   padding-left: 10%;
