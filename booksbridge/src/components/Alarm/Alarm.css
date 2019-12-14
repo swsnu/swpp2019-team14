@@ -1,27 +1,19 @@
 .new-alarm {
   cursor: pointer;
-  font-size: small;
-  margin-bottom : 10px;
-}
-.new-alarm>a {
-  cursor: pointer;
-  font-size: small;
-  color: black !important;
+  padding: 3px;
+  width: fit-content !important;
 }
 .old-alarm {
   cursor: pointer;
-  font-size: small;
-  margin-bottom : 10px;
+  padding: 3px;
+  width: fit-content !important;
 }
-.old-alarm>a {
-  cursor: pointer;
-  font-size: small;
-  color: rgb(202, 202, 202) !important;
+.new-alarm a {
+  color: black;
 }
-.AlarmProfilePic{
+.old-alarm a {
+  color: rgb(202, 202, 202);
+}
+.profilePic-link {
   margin-right: 10px;
-  border-radius: 500rem;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
 }

@@ -7,7 +7,10 @@ const Alarm = props => {
         href={props.alarm.link}
         onClick={() => props.onClickAlarm(props.alarm.id)}
       >
-        <a href={'/page/' + props.alarm.author_username}>
+        <a
+          className="profilePic-link"
+          href={'/page/' + props.alarm.author_username}
+        >
           <img
             className="AlarmProfilePic"
             src={

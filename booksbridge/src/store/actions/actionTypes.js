@@ -72,6 +72,7 @@ export const UPLOAD_PROFILE_IMAGE = 'UPLOAD_PROFILE_IMAGE';
 
 export const GET_ALARMS = 'GET_ALARMS';
 export const TOGGLE_ALARM = 'TOGGLE_ALARM';
+export const TOGGLE_ALARMS = 'TOGGLE_ALARMS';
 
 export const GET_LIKED_BOOKS = 'GET_LIKED_BOOKS';
 export const GET_BOOKMARKS = 'GET_BOOKMARKS';

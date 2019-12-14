@@ -561,3 +561,12 @@ export const getToken = () => {
   //     })
   //   });
 };
+
+export const toggleAlarmsAll = () => dispatch =>
+  axios.put('/api/alarm/').then(res =>
+    dispatch({
+      type: actionTypes.TOGGLE_ALARMS,
+      alarms: res.data.alarms,
+      new: res.data.new,
+    }),
+  );
