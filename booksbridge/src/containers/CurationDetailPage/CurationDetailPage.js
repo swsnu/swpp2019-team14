@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Icon, Container, Divider, Button } from 'semantic-ui-react';
+import { Icon, Popup, Button } from 'semantic-ui-react';
 
 import Header from '../../components/Header';
 import BookInfo from '../../components/BookDetail/BookInfo';
@@ -9,11 +9,11 @@ import BookResultSummary from '../../components/BookResultSummary/BookResultSumm
 import Comments from '../Comments/Comments';
 import ProfileSummary from '../../components/ProfileSummary/ProfileSummary';
 import BookListItem from '../../components/CurationDetailPage/BookListItem';
+import Time from '../../components/Time';
 
 import * as actionCreators from '../../store/actions/actionCreators';
 
 import './CurationDetailPage.css';
-import { stringify } from 'querystring';
 
 class CurationDetailPage extends Component {
   constructor(params) {
@@ -35,7 +35,6 @@ class CurationDetailPage extends Component {
   };
 
   handleEditCuration = () => {
-    console.log('[DEBUG] handleEditCuration');
     this.props.history.push(
       '/curation/' +
         this.props.logged_in_user.username +
@@ -54,7 +53,6 @@ class CurationDetailPage extends Component {
       // { {book info}, content } list
       return (
         <div>
-          <Divider />
           <BookListItem
             cover={entry.book.thumbnail}
             title={entry.book.title}
@@ -90,47 +88,50 @@ class CurationDetailPage extends Component {
 
     const editButton =
       this.props.currentCuration.author.id === this.props.logged_in_user.id ? (
-        <Button onClick={this.handleEditCuration} icon size="small">
-          <Icon name="pencil" size="small" />
-        </Button>
+        <Popup
+          content="수정"
+          position={'top center'}
+          trigger={<Icon onClick={this.handleEditCuration} name="pencil" />}
+        />
       ) : null;
 
     const deleteButton =
       this.props.currentCuration.author.id === this.props.logged_in_user.id ? (
-        <Button
-          onClick={this.handleDeleteCuration}
-          icon
-          color="red"
-          size="small"
-        >
-          <Icon name="times" size="small" />
-        </Button>
+        <Popup
+          content="삭제"
+          position={'top center'}
+          trigger={<Icon name="delete" onClick={this.handleDeleteCuration} />}
+        />
       ) : null;
 
     return (
       <div>
         <Header />
         <div className="curation-detail-page">
-          <ProfileSummary user={this.props.currentCuration.author} />
           <div className="curation-detail-header">
             <div className="curation-detail-title">
-              <h1>{this.props.currentCuration.title}</h1>
-            </div>
-            <div className="curation-detail-title-buttons">
-              {editButton}
-              {deleteButton}
+              <p>{this.props.currentCuration.title}</p>
             </div>
           </div>
-          <Divider />
-          <Container>
-            <h5 className="curation-detail-content">
-              {this.props.currentCuration.content}
-            </h5>
-          </Container>
+          <div className="AuthorDateInfo">
+            <div className="CurationAuthorProfile">
+              <ProfileSummary user={this.props.currentCuration.author} />
+            </div>
+            <div className="CurationDateInfo">
+              <Time date={this.props.currentCuration.date} />
+            </div>
+          </div>
+          <p className="curation-detail-content">
+            {this.props.currentCuration.content}
+          </p>
           <div className="book-and-content">{bookAndContent}</div>
 
           <div className="CurationContainer">
             {likeButton}
+            <div className="curation-detail-title-buttons">
+              {editButton}
+              {deleteButton}
+            </div>
             <div className="CurationComments">
               <Comments
                 comments={this.props.currentCuration.comments}

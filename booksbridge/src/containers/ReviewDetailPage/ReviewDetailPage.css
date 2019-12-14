@@ -1,12 +1,12 @@
 .ReviewContainer {
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'NanumSquare', sans-serif;
   padding-left: 25%;
   padding-right: 25%;
   margin: 10px;
   white-space: pre-wrap;
   text-align: left;
   line-height: 1.5;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 #ReviewDetailBookInfo {
@@ -29,9 +29,10 @@
 }
 
 .ReviewDateInfo {
+  font-family: 'NanumSquare', sans-serif;
   text-align: right;
   padding-right: 25%;
-  font-size: 0.85714286em;
+  font-size: 12px;
   display: flex;
   align-items: center;
 }
