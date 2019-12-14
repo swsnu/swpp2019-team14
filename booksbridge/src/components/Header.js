@@ -121,19 +121,29 @@ class Header extends Component {
                 />
               }
               hoverable
+              flowing
               wide
-              className="header-alarm-popup"
               on="click"
               position="bottom right"
             >
-              {this.props.alarms
-                ? this.props.alarms.map((alarm, index) => (
+              <div className="header-alarm-popup">
+                {this.props.alarms ? (
+                  this.props.alarms.map((alarm, index) => (
                     <Alarm
                       alarm={alarm}
                       onClickAlarm={this.props.onToggleAlarm}
                     />
                   ))
-                : null}
+                ) : (
+                  <p>알람이 없습니다.</p>
+                )}
+              </div>
+              <div
+                id="toggle-button"
+                onClick={() => this.props.onToggleAlarms()}
+              >
+                모두 읽음으로 표시
+              </div>
             </Popup>
           </div>
         </div>
@@ -160,6 +170,9 @@ const mapDispatchToProps = dispatch => {
     },
     onToggleAlarm: id => {
       dispatch(actionCreators.toggleAlarm(id));
+    },
+    onToggleAlarms: () => {
+      dispatch(actionCreators.toggleAlarmsAll());
     },
   };
 };

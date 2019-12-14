@@ -2,6 +2,11 @@
     max-width: 100%;
 }
 
+.Comments{
+    font-family: 'NanumSquare', sans-serif;
+    font-size: 16px;
+}
+
 .comments{
     box-shadow: inset 0 0 0 1px white !important;
 }

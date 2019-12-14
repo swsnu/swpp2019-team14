@@ -1,47 +1,56 @@
 .curation-detail-page {
-  white-space: pre-wrap;
-  text-align: left;
-  display: 'flex';
-  flex-direction: 'row';
-  padding-top: 3%;
+  font-family: 'NanumSquare', sans-serif;
   padding-left: 25%;
   padding-right: 25%;
   margin: 10px;
   white-space: pre-wrap;
-  font-family: 'NanumSquare', sans-serif;
   text-align: left;
   font-size: 16px;
   line-height: 1.5;
 }
 
 .curation-detail-header {
-  padding-top: 12%;
+  text-align: justify;
+  margin: 10px;
   display: flex;
   justify-content: end;
+}
+
+.CurationAuthorProfile {
+  font-size: 14px;
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
+.CurationDateInfo {
+  text-align: right;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
 }
 
 .curation-detail-title {
   width: 100%;
   font-family: 'NanumSquare', sans-serif;
-  text-align: left;
+  font-weight: 700;
+  font-size: 35px;
 }
 
 .curation-detail-title-buttons {
-  height: 32px;
-  display: flex;
-  justify-content: center;
+  text-align: right;
+  padding-bottom: 10%;
 }
 
 .curation-detail-content {
   font-family: 'NanumSquare', sans-serif;
-  padding-top: 5%;
+  padding-top: 3%;
 }
 .book-and-content {
   padding-top: 5%;
 }
 .CurationLikeButton {
   padding-top: 10%;
-  padding-bottom: 10%;
+  padding-bottom: 3%;
   text-align: right;
 }
 

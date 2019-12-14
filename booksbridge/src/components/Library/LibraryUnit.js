@@ -35,7 +35,7 @@ const LibraryUnit = props => {
                 <div className="CardButton">
                   <ConfirmDelete
                     id="confirm-delete-library"
-                    onConfirm={() => this.onDeleteLibrary(props.library.id)}
+                    onConfirm={() => props.onDeleteLibrary(props.library.id)}
                   />
                 </div>
               </div>

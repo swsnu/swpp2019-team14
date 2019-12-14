@@ -378,10 +378,51 @@ def alarm(request):
                 alarm_dict['content'] = author_name+'님이 회원님의 글에 댓글을 남겼습니다.'
             elif alarm.content == 'reply':
                 alarm_dict['content'] = author_name+'님이 회원님의 댓글에 답글을 남겼습니다.'
+            elif alarm.content == 'follower_new':
+                alarm_dict['content'] = author_name+'님이 새 리뷰를 남겼습니다.'
+            else:
+                alarm_dict['content'] = '회원님이 즐겨찾기한 책 '+alarm.content+'에 '+author_name+'님이 새 리뷰를 남겼습니다.'
+
             alarms_array.append(alarm_dict)
         result = {
             'alarms':alarms_array,
             'new': new,
+        }
+        return JsonResponse(result)
+    elif request.method == 'PUT':
+        alarms_array=[]
+        alarms=request.user.profile.alarms.all().order_by('-id')
+        for alarm in alarms:
+            author=alarm.author
+            author_name=author.profile.nickname
+            author_username=author.get_username()
+            alarm.is_new=False
+            alarm.save()
+            alarm_dict = {
+                'id': alarm.id,
+                'author_name':author_name,
+                'author_username':author_username,
+                'profile_photo': author.profile.profile_photo.name,
+                'is_new':alarm.is_new,
+            }
+            if alarm.category == 'user':
+                alarm_dict['link'] = '/page/' + author_username
+            elif alarm.category == 'curation':
+                alarm_dict['link'] = '/curation/' + alarm.link_id
+            elif alarm.category == 'article':
+                alarm_dict['link'] = '/review/' + alarm.link_id
+            if alarm.content == 'follow':
+                alarm_dict['content'] = author_name+'님이 회원님을 팔로우합니다.'
+            elif alarm.content == 'like':
+                alarm_dict['content'] = author_name+'님이 회원님의 글에 \'좋아요\'를 눌렀습니다.'
+            elif alarm.content == 'comment':
+                alarm_dict['content'] = author_name+'님이 회원님의 글에 댓글을 남겼습니다.'
+            elif alarm.content == 'reply':
+                alarm_dict['content'] = author_name+'님이 회원님의 댓글에 답글을 남겼습니다.'
+            alarms_array.append(alarm_dict)
+        result = {
+            'alarms':alarms_array,
+            'new': False,
         }
         return JsonResponse(result)
 
@@ -393,7 +434,6 @@ def specific_alarm(request,alarm_id):
         return HttpResponse(status=401)
     elif request.method == 'PUT':
         alarm = Alarm.objects.get(id=alarm_id)
-        alarm.is_new=False
         alarm.save()
         alarm_dict = {
             'id': alarm.id,
@@ -488,12 +528,17 @@ def article(request):
             return HttpResponse(status=400)
 
         try:
-            book = Book.objects.get(isbn=isbn)   
+            book = Book.objects.get(isbn=isbn)
         except Book.DoesNotExist:
             return HttpResponse(status=404)
 
         article = Article(author=request.user, book=book, content=content, title=title, is_long=is_long, is_short=is_short, is_phrase=is_phrase, is_spoiler=is_spoiler)
         article.save()
+        if is_long:
+            for like_user in book.like_users.all():
+                send_alarm(request.user,like_user,article.id,'article',title)
+            for follow in request.user.followee.all():
+                send_alarm(request.user,follow.follower,article.id,'article','follower_new')
         article_dict = model_to_dict(article)
         return JsonResponse(article_dict, status=201)
     # TODO elif request.method == 'PUT':
@@ -542,12 +587,55 @@ def curation(request):
             
         result_dict = { "curation": curation_dict, "book_content": book_content_list } 
         return JsonResponse(result_dict, status=201)
-    # TODO elif request.method == 'PUT':
-    #    pass
+    elif request.method == 'PUT':
+        try:
+            req_data = json.loads(request.body.decode())
+            title = req_data['title']
+            content = req_data['content']
+            isbn_content_list = req_data['isbn_content_pairs'] 
+            curation_id = req_data['curation_id']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        # TRANSACTION FORM!
+        sid = transaction.savepoint()
+
+        
+        try:
+            curation = Curation.objects.get(id=curation_id)
+        except:
+            return HttpResponse(status=404)
+        
+        curation.title = title
+        curation.content = content
+
+        book_content_list=[]
+
+        for book_in_curation in BookInCuration.objects.filter(curation=curation):
+            if book_in_curation.book.isbn not in list(map(lambda pair: pair['isbn'], isbn_content_list)):
+                book_in_curation.delete()
+
+        for isbn_content_pair in isbn_content_list:
+            if isbn_content_pair['isbn'] not in list(map(lambda book_in_curation: book_in_curation.book.isbn, BookInCuration.objects.filter(curation=curation))):
+                _book = Book.objects.get(isbn=isbn_content_pair['isbn'])
+                BIC = BookInCuration(curation=curation, book=_book)
+                BIC.save()
+            
+        transaction.savepoint_commit(sid)
+
+        curation_dict = model_to_dict(curation)
+        curation.save()
+
+        for BIC in BookInCuration.objects.filter(curation=curation):
+            book_content_list.append(model_to_dict(BIC))
+
+        result_dict = { "curation": curation_dict, "book_content": book_content_list } 
+        return JsonResponse(result_dict, status=201)
+
     # TODO elif request.method == 'DELETE':
     #    pass
     else:
-        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
+        return HttpResponseNotAllowed(['POST', 'PUT'])
 
 # test implemented
 def search_curation(request, keyword):
@@ -1010,6 +1098,39 @@ def book_like(request, isbn):
     else:
         return HttpResponseNotAllowed(['POST','PUT'])
 
+def bookmark(request, username, page):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    if request.method == 'GET':
+        user = User.objects.get(username=username)
+        article_list = user.article_set.all().order_by('-id')
+        paginator = Paginator(article_list, 5)
+        results = paginator.get_page(page)
+        articles = list()
+        for article in results:
+            deltatime = datetime.now() - article.date
+            time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
+            author_dict = make_user_dict(article.author)
+            article_dict = {
+                'author': author_dict,
+                'book_isbn': article.book.isbn,
+                'book_title': article.book.title,
+                'id': article.id,
+                'title': article.title,
+                'content': article.content,
+                'date': time_array,
+                'is_long': article.is_long,
+                'is_short': article.is_short,
+                'is_phrase': article.is_phrase,
+            }
+            articles.append(article_dict)
+            response_dict = {'articles':articles, 'length':article_list.count()}
+        return JsonResponse(response_dict)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+    
+
 
 # test implemented
 def article_like(request, article_id):
@@ -1110,82 +1231,82 @@ def make_book_dict(book, full):
     return book_dict
 
 
-def group(request):
-    if not request.user.is_authenticated:
-        return HttpResponse(status=401)
+# def group(request):
+#     if not request.user.is_authenticated:
+#         return HttpResponse(status=401)
     
-    elif request.method == 'POST':
-        # 처음 그룹 생성
-        try:
-            req_data = json.loads(request.body.decode())
-            name = req_data['name']
-            explanation = req_data['explanation']
-        except (KeyError) as e:
-            return HttpResponse(status=400)
-        admin = request.user
+#     elif request.method == 'POST':
+#         # 처음 그룹 생성
+#         try:
+#             req_data = json.loads(request.body.decode())
+#             name = req_data['name']
+#             explanation = req_data['explanation']
+#         except (KeyError) as e:
+#             return HttpResponse(status=400)
+#         admin = request.user
         
-        with transaction.atomic():
-            group = Group(name=name, explanation=explanation)
-            group.save()
-            admin_in_group = AdminInGroup(admin=admin, group=group)
-            admin_in_group.save()
-            member_in_group = MemberInGroup(member=admin, group=group)
-            member_in_group.save()
+#         with transaction.atomic():
+#             group = Group(name=name, explanation=explanation)
+#             group.save()
+#             admin_in_group = AdminInGroup(admin=admin, group=group)
+#             admin_in_group.save()
+#             member_in_group = MemberInGroup(member=admin, group=group)
+#             member_in_group.save()
         
-        # response format from group
-        # { name, explanation, admin_id, [member_id], {posts} }
-        response_dict = model_to_dict(group)
-        response_dict['admin'] = admin_in_group.admin.id
-        response_dict['members'] = member_in_group.member.id
-        response_dict['posts'] = None
-        return JsonResponse(response_dict, status=201)
+#         # response format from group
+#         # { name, explanation, admin_id, [member_id], {posts} }
+#         response_dict = model_to_dict(group)
+#         response_dict['admin'] = admin_in_group.admin.id
+#         response_dict['members'] = member_in_group.member.id
+#         response_dict['posts'] = None
+#         return JsonResponse(response_dict, status=201)
     
-    elif request.method == 'GET':  
-        # 내가 속한 모든 그룹 가져오기
-        # [ {id, name, explanation}, { ... }, { ... }, ... ]
-        member_in_group = MemberInGroup.objects.select_related('group').filter(member_id=request.user.id)
-        groups = [ x.group for x in member_in_group]
-        result = [ { 'id': group.id, 'name': group.name, 'explanation': group.explanation } for group in groups ]
-        response_dict = { 'groups': result }
-        return JsonResponse(response_dict, status=200)
+#     elif request.method == 'GET':  
+#         # 내가 속한 모든 그룹 가져오기
+#         # [ {id, name, explanation}, { ... }, { ... }, ... ]
+#         member_in_group = MemberInGroup.objects.select_related('group').filter(member_id=request.user.id)
+#         groups = [ x.group for x in member_in_group]
+#         result = [ { 'id': group.id, 'name': group.name, 'explanation': group.explanation } for group in groups ]
+#         response_dict = { 'groups': result }
+#         return JsonResponse(response_dict, status=200)
         
-    else:
-        return HttpResponseNotAllowed(['GET', 'POST'])
+#     else:
+#         return HttpResponseNotAllowed(['GET', 'POST'])
 
 
-def specific_group(request, group_id):
-    if not request.user.is_authenticated:
-        return HttpResponse(status=401)
+# def specific_group(request, group_id):
+#     if not request.user.is_authenticated:
+#         return HttpResponse(status=401)
     
-    elif request.method == 'POST':
-        # 그룹에 가입 
-        member_in_group = MemberInGroup(member=request.user, group_id=group_id)
-        member_in_group.save()
-        return HttpResponse(status=201)
+#     elif request.method == 'POST':
+#         # 그룹에 가입 
+#         member_in_group = MemberInGroup(member=request.user, group_id=group_id)
+#         member_in_group.save()
+#         return HttpResponse(status=201)
     
     
-    #elif request.method == 'GET':  
-    #    # 그룹 정보 및 멤버 가져오기 (post 완료되면 post 정보도 가져오는 코드 추가 필요)
-    #    pass
+#     #elif request.method == 'GET':  
+#     #    # 그룹 정보 및 멤버 가져오기 (post 완료되면 post 정보도 가져오는 코드 추가 필요)
+#     #    pass
 
-    #elif request.method == 'PUT':  
-    #    # 관리자인 경우 그룹 정보 수정
-    #    pass
+#     #elif request.method == 'PUT':  
+#     #    # 관리자인 경우 그룹 정보 수정
+#     #    pass
     
 
-    #elif request.method == 'DELETE':  
-    #    # 그룹에서 탈퇴 (관리자인 경우 그룹도 함께 삭제)
-    #    pass
+#     #elif request.method == 'DELETE':  
+#     #    # 그룹에서 탈퇴 (관리자인 경우 그룹도 함께 삭제)
+#     #    pass
     
-    else:
-        return HttpResponseNotAllowed(['GET', 'POST', 'PUT', 'DELETE'])
+#     else:
+#         return HttpResponseNotAllowed(['GET', 'POST', 'PUT', 'DELETE'])
     
-#def post(request, group_id):
-#    pass
+# #def post(request, group_id):
+# #    pass
 
 
-#def specific_post(request, group_id, post_id):
-#    pass
+# #def specific_post(request, group_id, post_id):
+# #    pass
 
 
 

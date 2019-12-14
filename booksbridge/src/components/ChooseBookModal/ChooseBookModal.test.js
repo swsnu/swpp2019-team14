@@ -5,6 +5,7 @@ import { getMockStore } from '../../test-utils/mocks';
 import { Provider } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
 import * as actionTypes from '../../store/actions/actionTypes';
+import store from '../../store/store';
 
 const book1 = {
   author: {
@@ -89,16 +90,18 @@ describe('<ChooseBookModal />', () => {
       .mockImplementation((keyword, page) => dispatch => {
         dispatch({
           type: actionTypes.GET_SEARCHED_BOOKS,
-          count: 100,
           books: [book1, book2],
+          count: 200,
         });
       });
-    spyEmptySearchedBooks = jest
-      .spyOn(actionCreators, 'emptySearchedBooks')
-      .mockImplementation(() => {
-        return dispatch => {};
-      });
   });
+
+  spyEmptySearchedBooks = jest
+    .spyOn(actionCreators, 'emptySearchedBooks')
+    .mockImplementation(() => {
+      return dispatch => {};
+    });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -151,16 +154,18 @@ describe('<ChooseBookModal />', () => {
     const component = mount(modal1);
     const wrapper = component.find('.choose-book-modal-content');
     expect(wrapper.length).toBe(2);
-
     const input = 'TEST_INPUT';
     const searchBar = component.find('#search-form').at(0);
     searchBar.simulate('change', { target: { value: input } });
     const searchButton = component.find('.search-button').at(0);
     searchButton.simulate('click');
     expect(spySearchBooks).toHaveBeenCalledTimes(1);
-    // const moreButton = component.find('.more-button').at(0);
+
+    const moreButton = component.find('.more-button').at(0);
+    expect(moreButton.length).toBe(0);
     // moreButton.simulate('click');
     // expect(spySearchBooks).toHaveBeenCalledTimes(2);
+
     const modalInstance = component
       .find(ChooseBookModal.WrappedComponent)
       .instance();
