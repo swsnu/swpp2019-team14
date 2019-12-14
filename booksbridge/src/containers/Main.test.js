@@ -57,4 +57,6 @@ describe('<Main />', () => {
     const wrapper = component.find('.main');
     expect(wrapper.length).toBe(1);
   });
+
+  it('should ')
 });
