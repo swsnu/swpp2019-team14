@@ -11,7 +11,7 @@ import { history } from '../store/store';
 import * as actionCreators from '../store/actions/actionCreators';
 
 const stubInitialState = {
-  selectedBook: {
+  currentBook: {
     isbn: 1,
     title: 'TEST_BOOK',
     url: 'TEST_URL',

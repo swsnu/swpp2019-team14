@@ -25,11 +25,23 @@ class CreateCuration extends Component {
     } else if (this.state.title === '' || this.state.content === '') {
       window.alert('제목과 내용을 반드시 입력해야 합니다.');
     } else {
-      this.props.onPostCuration({
-        title: this.state.title,
-        content: this.state.content,
-        isbn_content_pairs: this.state.bookInCuration,
-      });
+      if (
+        this.props.match.params.username &&
+        this.props.match.params.curation_id
+      ) {
+        this.props.onEditCuration({
+          title: this.state.title,
+          content: this.state.content,
+          isbn_content_pairs: this.state.bookInCuration,
+          curation_id: this.props.match.params.curation_id,
+        });
+      } else {
+        this.props.onPostCuration({
+          title: this.state.title,
+          content: this.state.content,
+          isbn_content_pairs: this.state.bookInCuration,
+        });
+      }
     }
   };
 
@@ -169,7 +181,7 @@ class CreateCuration extends Component {
               <Button
                 className="SubmitButton"
                 id="create-curation"
-                content="Submit"
+                content="큐레이션 만들기"
                 onClick={() => this.onClickCreateButton()}
               />
             </Form>
@@ -191,6 +203,9 @@ const mapDispatchToProps = dispatch => {
     onLoadCuration: id => dispatch(actionCreators.getSpecificCuration(id)),
     onPostCuration: curation => {
       dispatch(actionCreators.postCuration(curation));
+    },
+    onEditCuration: curation => {
+      dispatch(actionCreators.editCuration(curation));
     },
   };
 };

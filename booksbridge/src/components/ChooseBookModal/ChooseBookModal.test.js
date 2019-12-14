@@ -4,30 +4,59 @@ import ChooseBookModal from './ChooseBookModal';
 import { getMockStore } from '../../test-utils/mocks';
 import { Provider } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
+import * as actionTypes from '../../store/actions/actionTypes';
 
-const stubInitialState = {
-  selectedBook: {
-    author: {
-      id: 1,
-      username: 'TEST_USER',
-      profile_photo: '',
-      nickname: 'TEST_USER',
-    },
-    book_isbn: 9788915092044,
-    book_title: 'TEST_BOOK',
-    book_thumbnail: '',
+const book1 = {
+  author: {
     id: 1,
-    title: 'TEST_ARTICLE',
-    content: 'TEST_ARTICLE',
-    date: [0, 0, 0, 0, 454],
-    is_long: true,
-    is_short: false,
-    is_phrase: false,
+    username: 'TEST_USER',
+    profile_photo: '',
+    nickname: 'TEST_USER',
   },
-  searchedBooks: [],
+  book_isbn: 9788915092044,
+  book_title: 'TEST_BOOK',
+  book_thumbnail: '',
+  id: 1,
+  title: 'TEST_ARTICLE',
+  content: 'TEST_ARTICLE',
+  date: [0, 0, 0, 0, 454],
+  is_long: true,
+  is_short: false,
+  is_phrase: false,
 };
 
+const book2 = {
+  author: {
+    id: 2,
+    username: 'TEST_USER',
+    profile_photo: '',
+    nickname: 'TEST_USER',
+  },
+  book_isbn: 9788915092044,
+  book_title: 'TEST_BOOK',
+  book_thumbnail: '',
+  id: 2,
+  title: 'TEST_ARTICLE',
+  content: 'TEST_ARTICLE',
+  date: [0, 0, 0, 0, 454],
+  is_long: true,
+  is_short: false,
+  is_phrase: false,
+};
+
+const stubInitialState = {
+  selectedBook: book1,
+  searchedBooks: [],
+  count: 0,
+};
 const mockStore = getMockStore(stubInitialState);
+
+const stubInitialState1 = {
+  selectedBook: book1,
+  searchedBooks: [book1, book2],
+  count: 100,
+};
+const mockStore1 = getMockStore(stubInitialState1);
 
 jest.mock('../BookResultSummary/BookResultSummary', () => {
   return jest.fn(props => {
@@ -57,8 +86,12 @@ describe('<ChooseBookModal />', () => {
     );
     spySearchBooks = jest
       .spyOn(actionCreators, 'getSearchedBooks')
-      .mockImplementation((keyword, page) => {
-        return dispatch => {};
+      .mockImplementation((keyword, page) => dispatch => {
+        dispatch({
+          type: actionTypes.GET_SEARCHED_BOOKS,
+          count: 100,
+          books: [book1, book2],
+        });
       });
     spyEmptySearchedBooks = jest
       .spyOn(actionCreators, 'emptySearchedBooks')
@@ -96,9 +129,10 @@ describe('<ChooseBookModal />', () => {
     searchBar.simulate('keypress', { key: 'Spacebar' });
     searchBar.simulate('keypress', { key: 'Enter' });
     expect(spySearchBooks).toHaveBeenCalledTimes(1);
+    expect(spyEmptySearchedBooks).toHaveBeenCalledTimes(1);
   });
 
-  it('should click see more button', () => {
+  it('cannot have see more button', () => {
     const input = 'TEST_INPUT';
     const component = mount(modal);
     const searchBar = component.find('#search-form').at(0);
@@ -106,74 +140,9 @@ describe('<ChooseBookModal />', () => {
     const searchButton = component.find('.search-button').at(0);
     searchButton.simulate('click');
     const moreButton = component.find('.more-button').at(0);
-    moreButton.simulate('click');
-    expect(spySearchBooks).toHaveBeenCalledTimes(2);
-    const modalInstance = component
-      .find(ChooseBookModal.WrappedComponent)
-      .instance();
-    expect(modalInstance.state.keyword).toEqual(input);
+    expect(moreButton.length).toBe(0);
   });
   it('with some searched books', () => {
-    const stubInitialState1 = {
-      selectedBook: {
-        author: {
-          id: 1,
-          username: 'TEST_USER',
-          profile_photo: '',
-          nickname: 'TEST_USER',
-        },
-        book_isbn: 9788915092044,
-        book_title: 'TEST_BOOK',
-        book_thumbnail: '',
-        id: 1,
-        title: 'TEST_ARTICLE',
-        content: 'TEST_ARTICLE',
-        date: [0, 0, 0, 0, 454],
-        is_long: true,
-        is_short: false,
-        is_phrase: false,
-      },
-      searchedBooks: [
-        {
-          author: {
-            id: 1,
-            username: 'TEST_USER',
-            profile_photo: '',
-            nickname: 'TEST_USER',
-          },
-          book_isbn: 9788915092044,
-          book_title: 'TEST_BOOK',
-          book_thumbnail: '',
-          id: 1,
-          title: 'TEST_ARTICLE',
-          content: 'TEST_ARTICLE',
-          date: [0, 0, 0, 0, 454],
-          is_long: true,
-          is_short: false,
-          is_phrase: false,
-        },
-        {
-          author: {
-            id: 2,
-            username: 'TEST_USER',
-            profile_photo: '',
-            nickname: 'TEST_USER',
-          },
-          book_isbn: 9788915092044,
-          book_title: 'TEST_BOOK',
-          book_thumbnail: '',
-          id: 2,
-          title: 'TEST_ARTICLE',
-          content: 'TEST_ARTICLE',
-          date: [0, 0, 0, 0, 454],
-          is_long: true,
-          is_short: false,
-          is_phrase: false,
-        },
-      ],
-    };
-
-    const mockStore1 = getMockStore(stubInitialState1);
     const modal1 = (
       <Provider store={mockStore1}>
         <ChooseBookModal />
@@ -182,5 +151,21 @@ describe('<ChooseBookModal />', () => {
     const component = mount(modal1);
     const wrapper = component.find('.choose-book-modal-content');
     expect(wrapper.length).toBe(2);
+
+    const input = 'TEST_INPUT';
+    const searchBar = component.find('#search-form').at(0);
+    searchBar.simulate('change', { target: { value: input } });
+    const searchButton = component.find('.search-button').at(0);
+    searchButton.simulate('click');
+    expect(spySearchBooks).toHaveBeenCalledTimes(1);
+    // const moreButton = component.find('.more-button').at(0);
+    // moreButton.simulate('click');
+    // expect(spySearchBooks).toHaveBeenCalledTimes(2);
+    const modalInstance = component
+      .find(ChooseBookModal.WrappedComponent)
+      .instance();
+    expect(modalInstance.state.keyword).toEqual(input);
+    expect(modalInstance.state.search).toEqual(false);
+    expect(modalInstance.state.requestNum).toEqual(1);
   });
 });

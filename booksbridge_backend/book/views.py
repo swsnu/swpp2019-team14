@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, JsonResponse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie , csrf_exempt
 import json, re
@@ -283,7 +283,7 @@ def specific_article(request,review_id):
             article.title = req_data['title']
             article.content = req_data['content']
             article.save()
-        except(KeyError, JSONDecodeError) as e:
+        except(KeyError) as e:
             return HttpResponseBadRequest()
         response_dict = make_article_dict(article)
         response_dict['comments'] = get_comments(article)
@@ -307,6 +307,8 @@ def article_page(request, page):
             articles.append(article_dict)
         response_body={'articles': articles, 'has_next': paginator.page(page).has_next()}
         return JsonResponse(response_body)
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 # test implemented
 def get_comments(post):
@@ -345,6 +347,7 @@ def get_comments(post):
 def alarm(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
+
     elif request.method == 'GET':
         alarms_array=[]
         alarms = request.user.profile.alarms.all().order_by('-id')
@@ -382,6 +385,9 @@ def alarm(request):
         }
         return JsonResponse(result)
 
+    else:
+        return HttpResponseNotAllowed(['GET',])
+
 def specific_alarm(request,alarm_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -393,6 +399,9 @@ def specific_alarm(request,alarm_id):
             'id': alarm.id,
         }
         return JsonResponse(alarm_dict)
+
+    else:
+        return HttpResponseNotAllowed(['PUT',])
 
 def send_alarm(sender,reciever,link_id,category,content):
     if(sender!=reciever):
@@ -512,35 +521,78 @@ def curation(request):
         # TRANSACTION FORM!
         sid = transaction.savepoint()
 
-        try:
-            curation = Curation(author=request.user, title=title, content=content)
-            curation.save()
-            curation_dict = model_to_dict(curation)
-            book_content_list=[]
+        
+        curation = Curation(author=request.user, title=title, content=content)
+        curation.save()
+        curation_dict = model_to_dict(curation)
+        book_content_list=[]
 
-            for each_content in isbn_content_list:
-                try:
-                    new_book_in_curation = BookInCuration(curation=curation, book=Book.objects.get(isbn=each_content['isbn']), content=each_content['content']) 
-                except Book.DoesNotExist:
-                    return HttpResponse(status=404)
-                new_book_in_curation.save()
-                book_content_list.append(model_to_dict(new_book_in_curation))
+        for each_content in isbn_content_list:
+            try:
+                new_book_in_curation = BookInCuration(curation=curation, book=Book.objects.get(isbn=each_content['isbn']), content=each_content['content']) 
+            except Book.DoesNotExist:
+                return HttpResponse(status=404)
+            new_book_in_curation.save()
+            book_content_list.append(model_to_dict(new_book_in_curation))
             
-            transaction.savepoint_commit(sid)
-        except:
-            transaction.savepoint_rollback(sid)
-            return HttpResponse(status=400)
+        transaction.savepoint_commit(sid)
+        
+        #transaction.savepoint_rollback(sid)
+        #return HttpResponse(status=400)
             
         result_dict = { "curation": curation_dict, "book_content": book_content_list } 
         return JsonResponse(result_dict, status=201)
-    # TODO elif request.method == 'PUT':
-    #    pass
+    elif request.method == 'PUT':
+        try:
+            req_data = json.loads(request.body.decode())
+            title = req_data['title']
+            content = req_data['content']
+            isbn_content_list = req_data['isbn_content_pairs'] 
+            curation_id = req_data['curation_id']
+        except (KeyError) as e:
+            return HttpResponse(status=400)
+
+        # TRANSACTION FORM!
+        sid = transaction.savepoint()
+
+        
+        try:
+            curation = Curation.objects.get(id=curation_id)
+        except:
+            return HttpResponse(status=404)
+        
+        curation.title = title
+        curation.content = content
+
+        book_content_list=[]
+
+        for book_in_curation in BookInCuration.objects.filter(curation=curation):
+            if book_in_curation.book.isbn not in list(map(lambda pair: pair['isbn'], isbn_content_list)):
+                book_in_curation.delete()
+
+        for isbn_content_pair in isbn_content_list:
+            if isbn_content_pair['isbn'] not in list(map(lambda book_in_curation: book_in_curation.book.isbn, BookInCuration.objects.filter(curation=curation))):
+                _book = Book.objects.get(isbn=isbn_content_pair['isbn'])
+                BIC = BookInCuration(curation=curation, book=_book)
+                BIC.save()
+            
+        transaction.savepoint_commit(sid)
+
+        curation_dict = model_to_dict(curation)
+        curation.save()
+
+        for BIC in BookInCuration.objects.filter(curation=curation):
+            book_content_list.append(model_to_dict(BIC))
+
+        result_dict = { "curation": curation_dict, "book_content": book_content_list } 
+        return JsonResponse(result_dict, status=201)
+
     # TODO elif request.method == 'DELETE':
     #    pass
     else:
-        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
+        return HttpResponseNotAllowed(['POST', 'PUT'])
 
-# TODO: test NOT implemented. Doesn't seem to be in use.
+# test implemented
 def search_curation(request, keyword):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -549,16 +601,16 @@ def search_curation(request, keyword):
         decoded_keyword = urllib.parse.unquote(keyword)
         result_curations = []
         all_curations = Curation.objects.all()
-        if all_curations:
-            for curation in all_curations:
-                if decoded_keyword in curation.title or decoded_keyword in curation.content:
-                    result_curations.append(make_curation_dict(curation))
-                else:
-                    for book_in_curation in curation.book_in_curation.all():
-                        if decoded_keyword in book_in_curation.book.title:
-                            result_curations.append(make_curation_dict(curation))
-                            break
-        print(result_curations)
+        
+        for curation in all_curations:
+            if decoded_keyword in curation.title or decoded_keyword in curation.content:
+                result_curations.append(make_curation_dict(curation))
+            else:
+                for book_in_curation in curation.book_in_curation.all():
+                    if decoded_keyword in book_in_curation.book.title:
+                        result_curations.append(make_curation_dict(curation))
+                        break
+
         return JsonResponse(result_curations, safe=False)
     else:
         return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE'])
@@ -623,7 +675,7 @@ def make_curation_dict(curation):
     }
     return curation_dict
 
-# TODO: test NOT implemented for delete
+# test implemented
 def specific_curation(request, curation_id):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -839,7 +891,7 @@ def like_books(request):
             for book in request.user.book_set.all():
                 book_dict = make_book_dict(book, False)
                 like_books.append(book_dict)
-            return JsonResponse(like_books,safe=False)
+            return JsonResponse(like_books, safe=False)
         except: 
             return HttpResponse(status=404)
 
@@ -856,18 +908,17 @@ def search_user(request, keyword):
         decoded_keyword =urllib.parse.unquote(keyword)
         result_users=[]
         all_users = User.objects.all()
-        if all_users:
-            for user in all_users:
-                if decoded_keyword in user.get_username() or decoded_keyword in user.profile.nickname:
-                    user_dict = {
-                        'id': user.id,
-                        'username': user.username,
-                        'date_joined': user.date_joined.date(),
-                        'profile_photo': user.profile.profile_photo.name,
-                        'nickname': user.profile.nickname,
-                        'profile_text': user.profile.profile_text,
-                    }
-                    result_users.append(user_dict)
+        for user in all_users:
+            if decoded_keyword in user.get_username() or decoded_keyword in user.profile.nickname:
+                user_dict = {
+                    'id': user.id,
+                    'username': user.username,
+                    'date_joined': user.date_joined.date(),
+                    'profile_photo': user.profile.profile_photo.name,
+                    'nickname': user.profile.nickname,
+                    'profile_text': user.profile.profile_text,
+                }
+                result_users.append(user_dict)
         return JsonResponse(result_users, safe=False)
     
     else:
@@ -910,12 +961,12 @@ def follow(request, user_id):
     elif request.method == 'POST':
         # { user_id } 
         try:
-            followee = get_object_or_404(User, id=user_id)  
+            followee = User.objects.get(id=user_id)  
             follow = Follow(follower=request.user, followee=followee)
+            follow.save()
         except:
-            HttpResponse(status=404)
+            return HttpResponse(status=404)
             
-        follow.save()
         follower_dict = {'id': follow.follower.id,
                          'username': follow.follower.username,
                          'profile_photo': follow.follower.profile.profile_photo.name,
@@ -960,7 +1011,7 @@ def follow(request, user_id):
             followee = get_object_or_404(User, id=user_id)  
             follow = Follow.objects.get(follower=request.user, followee=followee)
         except:
-            HttpResponse(status=404)
+            return HttpResponse(status=404)
 
         follower_dict = {'id': follow.follower.id,
                          'username': follow.follower.username,
@@ -1188,31 +1239,31 @@ def specific_group(request, group_id):
         member_in_group.save()
         return HttpResponse(status=201)
     
-    '''
-    elif request.method == 'GET':  
-        # 그룹 정보 및 멤버 가져오기 (post 완료되면 post 정보도 가져오는 코드 추가 필요)
-        pass
+    
+    #elif request.method == 'GET':  
+    #    # 그룹 정보 및 멤버 가져오기 (post 완료되면 post 정보도 가져오는 코드 추가 필요)
+    #    pass
 
-    elif request.method == 'PUT':  
-        # 관리자인 경우 그룹 정보 수정
-        pass
+    #elif request.method == 'PUT':  
+    #    # 관리자인 경우 그룹 정보 수정
+    #    pass
     
 
-    elif request.method == 'DELETE':  
-        # 그룹에서 탈퇴 (관리자인 경우 그룹도 함께 삭제)
-        pass
+    #elif request.method == 'DELETE':  
+    #    # 그룹에서 탈퇴 (관리자인 경우 그룹도 함께 삭제)
+    #    pass
     
     else:
         return HttpResponseNotAllowed(['GET', 'POST', 'PUT', 'DELETE'])
     
-def post(request, group_id):
-    pass
+#def post(request, group_id):
+#    pass
 
 
-def specific_post(request, group_id, post_id):
-    pass
+#def specific_post(request, group_id, post_id):
+#    pass
 
-'''
+
 
 
 
