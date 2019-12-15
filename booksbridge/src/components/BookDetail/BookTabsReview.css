@@ -34,6 +34,11 @@
     padding: 20px 0px 0px 0px;
     color: black !important;
 }
+.PhraseContent{
+    font-size: 12px;
+    word-wrap:break-word;
+    color: black !important;
+}
 .ReviewAdditionalDetail{
     padding: 0px 0px 0px 60px;
     text-align: left;

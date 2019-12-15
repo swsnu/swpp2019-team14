@@ -75,7 +75,11 @@ const BookTabsReview = props => {
                 <div>
                   <span>{props.book_title}</span>
                 </div>
-                <div className="ReviewContent">{props.content}</div>
+                {props.is_phrase ? (
+                  <div className="PhraseContent">{props.content}</div>
+                ) : (
+                  <div className="ReviewContent">{props.content}</div>
+                )}
               </div>
               {props.like_or_not ? (
                 <div
