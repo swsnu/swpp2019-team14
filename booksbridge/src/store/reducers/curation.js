@@ -53,6 +53,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedCuration: action.curation,
       };
+    case actionTypes.EDIT_SPECIFIC_CURATION_COMMENT:
+      return {
+        ...state,
+        comments: action.comments,
+      };
+    case actionTypes.DELETE_SPECIFIC_CURATION_COMMENT:
+      return {
+        ...state,
+        comments: action.comments,
+      };
     case actionTypes.GET_SEARCHED_CURATIONS:
       return { ...state, curations: action.curations };
     case actionTypes.GET_CURATIONS_BY_USERID:

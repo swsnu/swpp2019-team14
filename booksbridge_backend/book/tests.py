@@ -1192,7 +1192,7 @@ class BookTestCase(TestCase):
                                content_type='application/json')
 
         self.assertIsNotNone(response.content)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         # POST as reply
         response = client.post('/api/comment/article/',
@@ -1204,7 +1204,7 @@ class BookTestCase(TestCase):
                                content_type='application/json')
 
         self.assertIsNotNone(response.content)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
     def test_article_comment(self):
         # Initialize
@@ -1230,7 +1230,7 @@ class BookTestCase(TestCase):
                                content_type='application/json')
 
         self.assertIsNotNone(response.content)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         # Disallowed request
         response = client.delete('/api/comment/article/',
@@ -1777,7 +1777,7 @@ class BookTestCase(TestCase):
                                content_type='application/json')
 
         self.assertIsNotNone(response.content)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         # POST as reply
         response = client.post('/api/comment/curation/',
@@ -1789,7 +1789,7 @@ class BookTestCase(TestCase):
                                content_type='application/json')
 
         self.assertIsNotNone(response.content)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         # unallowed requests 
         response = client.get('/api/comment/curation/', 

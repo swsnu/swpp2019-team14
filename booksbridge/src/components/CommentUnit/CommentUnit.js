@@ -1,6 +1,6 @@
 import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
-import { Button, Comment, Form, Header } from 'semantic-ui-react';
+import { Button, Comment, Form, Icon } from 'semantic-ui-react';
 import ReplyUnit from './ReplyUnit';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
@@ -12,6 +12,8 @@ class CommentUnit extends Component {
   state = {
     reply: false,
     content: '',
+    onEdit: false,
+    editcontent: '',
   };
 
   //reply
@@ -39,11 +41,60 @@ class CommentUnit extends Component {
     }
   };
 
+  onClickDeleteComment = id => {
+    if (this.props.is_article) {
+      this.props.onDeleteComment(id);
+    } else {
+      this.props.onDeleteCurationComment(id);
+    }
+  };
+
+  onClickEditComment = () => {
+    if (this.state.editcontent != '') {
+      if (this.props.is_article) {
+        const comment = {
+          id: this.props.id,
+          content: this.state.editcontent,
+        };
+        this.props.onEditComment(comment);
+        this.setState({ onEdit: false });
+      } else {
+        const comment = {
+          id: this.props.id,
+          content: this.state.editcontent,
+        };
+        this.props.onEditCurationComment(comment);
+        this.setState({ onEdit: false });
+      }
+    } else {
+      window.alert('Content is empty.');
+    }
+  };
+
   render() {
     let profile_photo;
     if (this.props.author.profile_photo.startsWith('http'))
       profile_photo = this.props.author.profile_photo;
     else profile_photo = '/media/' + this.props.author.profile_photo;
+
+    const EditDeleteButton =
+      this.props.author.username === this.props.logged_in_user.username ? (
+        <div className="CommentDeleteButton">
+          <Icon
+            name="pencil"
+            onClick={() =>
+              this.setState({
+                onEdit: !this.state.onEdit,
+                editcontent: this.props.content,
+              })
+            }
+          />
+          <Icon
+            name="delete"
+            onClick={() => this.onClickDeleteComment(this.props.id)}
+          />
+        </div>
+      ) : null;
 
     let replies;
     if (this.props.replies.length) {
@@ -51,10 +102,16 @@ class CommentUnit extends Component {
         return (
           <ReplyUnit
             key={reply.id}
+            is_article={this.props.is_article}
             author={reply.author}
             date={reply.date}
             content={reply.content}
             replies={reply.replies}
+            id={reply.id}
+            logged_in_user={this.props.logged_in_user}
+            EditCommentHandler={this.props.onEditComment}
+            EditCurationCommentHandler={this.props.onEditCurationComment}
+            DeleteHandler={this.onClickDeleteComment}
           />
         );
       });
@@ -82,6 +139,28 @@ class CommentUnit extends Component {
         </div>
       </Form>
     );
+    const editForm = (
+      <Form reply>
+        <Form.TextArea
+          id="edit-input"
+          className="ReplyTextArea"
+          value={this.state.editcontent}
+          onChange={e =>
+            this.setState({ ...this.state, editcontent: e.target.value })
+          }
+        />
+        <div className="ReplyButton">
+          <Button
+            className="ReplyButton"
+            content="댓글 수정"
+            labelPosition="right"
+            icon="edit"
+            onClick={() => this.onClickEditComment()}
+            secondary
+          />
+        </div>
+      </Form>
+    );
     return (
       <div className="CommentUnit">
         <Comment>
@@ -92,20 +171,24 @@ class CommentUnit extends Component {
             <Comment.Avatar as="a" src={profile_photo} />
           </a>
           <Comment.Content>
-            <a
-              id="redirect-to-userpage"
-              href={'/page/' + this.props.author.username}
-            >
-              <Comment.Author as="a">
-                {this.props.author.nickname}
-              </Comment.Author>
-            </a>
-            <Comment.Metadata>
-              <span>
-                <Time date={this.props.date} />
-              </span>
-            </Comment.Metadata>
-            <Comment.Text>{this.props.content}</Comment.Text>
+            <div className="CommentContents">
+              <a
+                id="redirect-to-userpage"
+                href={'/page/' + this.props.author.username}
+              >
+                <Comment.Author as="a">
+                  {this.props.author.nickname}
+                </Comment.Author>
+              </a>
+              <Comment.Metadata>
+                <span>
+                  <Time date={this.props.date} />
+                </span>
+              </Comment.Metadata>
+              <div className="CommentButton">{EditDeleteButton}</div>
+              <Comment.Text>{this.props.content}</Comment.Text>
+            </div>
+            {this.state.onEdit == true ? editForm : null}
             <Comment.Actions>
               <a
                 id="show-reply-form"
@@ -117,7 +200,10 @@ class CommentUnit extends Component {
               </a>
             </Comment.Actions>
           </Comment.Content>
-          <Comment.Group>{replies}</Comment.Group>
+
+          <Comment.Group>
+            <div className="CommentReplies">{replies}</div>
+          </Comment.Group>
           {this.state.reply == true ? replyForm : null}
         </Comment>
       </div>
@@ -131,6 +217,14 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreators.postLongReviewComment(comment)),
     onPostCurationComment: comment =>
       dispatch(actionCreators.postCurationComment(comment)),
+    onEditComment: comment =>
+      dispatch(actionCreators.editSpecificLongReviewComment(comment)),
+    onEditCurationComment: comment =>
+      dispatch(actionCreators.editSpecificCurationComment(comment)),
+    onDeleteComment: id =>
+      dispatch(actionCreators.deleteSpecificLongReviewComment(id)),
+    onDeleteCurationComment: id =>
+      dispatch(actionCreators.deleteSpecificCurationComment(id)),
   };
 };
 

@@ -143,6 +143,7 @@ class ReviewDetailPage extends Component {
                 comments={this.props.comments}
                 article_id={this.props.match.params.review_id}
                 is_article={true}
+                logged_in_user={this.props.logged_in_user}
               />
             </div>
           </div>

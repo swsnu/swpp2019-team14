@@ -27,6 +27,11 @@ const stubArticle = {
   is_phrase: false,
 };
 
+const stubSpecificArticle = {
+  article: stubArticle,
+  comments: [],
+};
+
 const stubShortArticle = {
   id: 11,
   book_id: 123456789101,
@@ -43,6 +48,11 @@ const stubCuration = {
   author_id: 2,
   title: 'TEST_TITLE',
   content: 'TEST_CONTENT',
+};
+
+const stubSpecificCuration = {
+  curation: stubCuration,
+  comments: [],
 };
 
 const stubBookInCuration = {
@@ -323,7 +333,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
-          data: stubArticle,
+          data: stubSpecificArticle,
         };
         resolve(result);
       });
@@ -341,7 +351,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
-          data: stubArticle,
+          data: stubSpecificArticle,
         };
         resolve(result);
       });
@@ -440,6 +450,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
+          data: stubSpecificCuration,
         };
         resolve(result);
       });

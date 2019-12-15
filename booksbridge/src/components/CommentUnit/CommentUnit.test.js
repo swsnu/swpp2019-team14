@@ -48,6 +48,7 @@ describe('<CommentUnit />', () => {
             key={stub_comment.id}
             article_id={stub_comment.article_id}
             author={stub_comment.author}
+            logged_in_user={stub_comment.author}
             date={stub_comment.date}
             content={stub_comment.content}
             replies={stub_comment.replies}
@@ -73,6 +74,7 @@ describe('<CommentUnit />', () => {
             author={stub_comment.author}
             date={stub_comment.date}
             content={stub_comment.content}
+            logged_in_user={stub_comment.author}
             replies={[]}
           />
         </ConnectedRouter>
@@ -97,6 +99,7 @@ describe('<CommentUnit />', () => {
             author={author}
             date={stub_comment.date}
             content={stub_comment.content}
+            logged_in_user={author}
             replies={[]}
           />
         </ConnectedRouter>

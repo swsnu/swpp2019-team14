@@ -45,7 +45,10 @@ describe('<Comments />', () => {
     comments = (
       <Provider store={mockStore}>
         <ConnectedRouter history={history}>
-          <Comments comments={stub_comment} />
+          <Comments
+            logged_in_user={stub_comment_author}
+            comments={stub_comment}
+          />
         </ConnectedRouter>
       </Provider>
     );
