@@ -126,7 +126,7 @@ describe('ActionCreators', () => {
   });
 
   it(`'login error when id or password is wrong'`, done => {
-    const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => { });
+    const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
     const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
       return new Promise((resolve, reject) => {
@@ -450,7 +450,7 @@ describe('ActionCreators', () => {
       return new Promise((resolve, reject) => {
         const result = {
           status: 200,
-          data: stubSpecificCuration
+          data: stubSpecificCuration,
         };
         resolve(result);
       });
