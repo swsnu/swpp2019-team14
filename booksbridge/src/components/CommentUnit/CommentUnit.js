@@ -206,10 +206,11 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreators.postCurationComment(comment)),
     onEditComment: comment =>
       dispatch(actionCreators.editSpecificLongReviewComment(comment)),
+    onEditCurationComment: comment =>
+      dispatch(actionCreators.editSpecificCurationComment(comment)),
     /*
   
-  onEditCurationComment: comment =>
-    dispatch(actionCreators.editCurationComment(comment)),
+  
   onDeleteComment: comment =>
     dispatch(actionCreators.deleteLongReviewComment(comment)),
   onDeleteCurationComment: comment =>

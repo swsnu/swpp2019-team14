@@ -393,7 +393,7 @@ export const editSpecificCurationComment = comment => dispatch =>
   axios.put(`/api/comment/curation/${comment.id}/`, comment).then(res =>
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_CURATION_COMMENT,
-      comment: res.data,
+      comments: res.data,
     }),
   );
 // export const DELETE_SPECIFIC_CURATION_COMMNET = 'DELETE_SPECIFIC_CURATION_COMMNET'

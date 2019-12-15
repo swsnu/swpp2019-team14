@@ -487,6 +487,21 @@ def specific_comment(request, comment_id):
             return HttpResponseBadRequest()
         return JsonResponse(get_comments(comment.article), safe=False)
 
+def specific_curation_comment(request, comment_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'PUT':
+        comment = get_object_or_404(CurationComment, id=comment_id)
+        if not request.user.id==comment.author_id:
+            return HttpResponse(status=403)
+        try:
+            req_data = json.loads(request.body.decode())
+            comment.content = req_data['content']
+            comment.save()
+        except(KeyError) as e:
+            return HttpResponseBadRequest()
+        return JsonResponse(get_comments(comment.curation), safe=False)
+
 # test implemented
 def curation_comment(request):
     if not request.user.is_authenticated:

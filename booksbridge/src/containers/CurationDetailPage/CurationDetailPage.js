@@ -134,6 +134,7 @@ class CurationDetailPage extends Component {
             </div>
             <div className="CurationComments">
               <Comments
+                logged_in_user={this.props.logged_in_user}
                 comments={this.props.comments}
                 curation_id={this.props.match.params.curation_id}
                 is_article={false}
