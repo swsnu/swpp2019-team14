@@ -41,11 +41,11 @@ class CommentUnit extends Component {
     }
   };
 
-  onClickDeleteComment = () => {
+  onClickDeleteComment = id => {
     if (this.props.is_article) {
-      this.props.onDeleteComment(this.props.id);
+      this.props.onDeleteComment(id);
     } else {
-      this.props.onDeleteCurationComment(this.props.id);
+      this.props.onDeleteCurationComment(id);
     }
   };
 
@@ -89,7 +89,10 @@ class CommentUnit extends Component {
               })
             }
           />
-          <Icon name="delete" onClick={() => this.onClickDeleteComment()} />
+          <Icon
+            name="delete"
+            onClick={() => this.onClickDeleteComment(this.props.id)}
+          />
         </div>
       ) : null;
 
@@ -108,6 +111,7 @@ class CommentUnit extends Component {
             logged_in_user={this.props.logged_in_user}
             EditCommentHandler={this.props.onEditComment}
             EditCurationCommentHandler={this.props.onEditCurationComment}
+            DeleteHandler={this.onClickDeleteComment}
           />
         );
       });

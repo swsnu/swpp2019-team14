@@ -23,7 +23,7 @@ const ReplyUnit = props => {
             handleInput(props.content);
           }}
         />
-        <Icon name="delete" />
+        <Icon name="delete" onClick={() => props.DeleteHandler(props.id)} />
       </div>
     ) : null;
 
