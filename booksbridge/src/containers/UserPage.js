@@ -193,7 +193,7 @@ class UserPage extends Component {
                 content={curation.content}
                 date={curation.date}
                 id={curation.id}
-                author={this.props.profile_user}
+                author={curation.author}
                 deleteHandler={this.deleteCurationHandler}
               />
             </div>
