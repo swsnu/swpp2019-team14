@@ -1,8 +1,10 @@
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, JsonResponse
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import ensure_csrf_cookie , csrf_exempt
-import json, re
-import urllib, requests
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+import json
+import re
+import urllib
+import requests
 from .models import *
 from .text_detection import *
 from django.contrib.auth import authenticate, login, logout
@@ -11,7 +13,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.paginator import Paginator
 from bs4 import BeautifulSoup
 from django.db import transaction
-import io, os
+import io
+import os
 from django.core.files.storage import FileSystemStorage
 
 
@@ -31,6 +34,8 @@ def signup(request):
         return HttpResponseNotAllowed(['POST'])
 
 # test implemented
+
+
 def profile(request, userid):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -41,7 +46,7 @@ def profile(request, userid):
         profile.profile_text = req_data['profile_text']
         profile.profile_photo = req_data['profile_photo']
         profile.save()
-        like_books=[]
+        like_books = []
         for book in request.user.book_set.all():
                 book_dict = make_book_dict(book, False)
                 like_books.append(book_dict)
@@ -54,6 +59,8 @@ def profile(request, userid):
         return HttpResponseNotAllowed(['PUT'])
 
 # test implemented
+
+
 def photo_upload(request):
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
@@ -66,7 +73,7 @@ def photo_upload(request):
         profile = request.user.profile
         profile.profile_photo = image
         profile.save()
-        like_books=[]
+        like_books = []
         for book in request.user.book_set.all():
                 book_dict = make_book_dict(book, False)
                 like_books.append(book_dict)
@@ -78,28 +85,56 @@ def photo_upload(request):
         return HttpResponseNotAllowed(['POST'])
 
 # test implemented
+
+
 def signin(request):
-    if request.method == 'POST':
+    if request.COOKIES.get('username') is not None:
+        username = request.COOKIES.get('username')
+        password = request.COOKIES.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            user.save()
+            user_dict = {'id': user.id, 'username': user.username, 'nickname': user.profile.nickname,
+                'profile_photo': user.profile.profile_photo.name, 'profile_text': user.profile.profile_text}
+            return JsonResponse(user_dict, status=200)
+        else:
+            return HttpResponse(status=400)
+
+    elif request.method == 'POST':
         req_data = json.loads(request.body.decode())
         username = req_data['username']
         password = req_data['password']
+        autoLogin = req_data['auto_login']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             user.save()
-            user_dict = {'id':user.id, 'username':user.username, 'nickname':user.profile.nickname, 'profile_photo':user.profile.profile_photo.name, 'profile_text': user.profile.profile_text}
-            return JsonResponse(user_dict, status=200)
+            user_dict = {'id': user.id, 'username': user.username, 'nickname': user.profile.nickname,
+                'profile_photo': user.profile.profile_photo.name, 'profile_text': user.profile.profile_text}
+            resp = JsonResponse(user_dict, status=200)
+            if autoLogin:
+                resp.set_cookie('username', username)
+                resp.set_cookie('password', password)
+            return resp
+
         else:
             return HttpResponse(status=400)
     else:
         return HttpResponseNotAllowed(['POST'])
 
 # test implemented
+
+
 def signout(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
+            resp = HttpResponse(status=204)
+            resp.delete_cookie('username')
+            resp.delete_cookie('password')
             logout(request)
-            return HttpResponse(status=204)
+            return resp
         else:
             return HttpResponse(status=401)
     else:
@@ -623,8 +658,8 @@ def curation(request):
             
         transaction.savepoint_commit(sid)
         
-        #transaction.savepoint_rollback(sid)
-        #return HttpResponse(status=400)
+        # transaction.savepoint_rollback(sid)
+        # return HttpResponse(status=400)
             
         result_dict = { "curation": curation_dict, "book_content": book_content_list } 
         return JsonResponse(result_dict, status=201)

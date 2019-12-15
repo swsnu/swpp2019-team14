@@ -25,7 +25,6 @@ export const postUser = user => {
 };
 
 // export const LOGIN_USER = 'LOGIN_USER'
-
 export const loginUser = user => {
   return dispatch => {
     return axios

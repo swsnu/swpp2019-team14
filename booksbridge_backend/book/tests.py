@@ -31,7 +31,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'Fourteen',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False
                                }),
                                content_type='application/json')
 
@@ -179,6 +180,7 @@ class BookTestCase(TestCase):
                               json.dumps({
                                   'username': 'PeaceSong',
                                   'password': 'q1w2e3r4',
+                                  'auto_login': False,
                               }),
                               content_type='application/json')
         self.assertEqual(response.status_code, 400)
@@ -187,7 +189,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
         self.assertIsNotNone(response.content)
@@ -197,7 +200,8 @@ class BookTestCase(TestCase):
         response = client.put('/api/sign_in/',
                               json.dumps({
                                   'username': 'John',
-                                  'password': 'mypassword'
+                                  'password': 'mypassword',
+                                  'auto_login': False,
                               }),
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)
@@ -229,7 +233,8 @@ class BookTestCase(TestCase):
         client.post('/api/sign_in/',
                     json.dumps({
                         'username': 'John',
-                        'password': 'mypassword'
+                        'password': 'mypassword',
+                        'auto_login': False,
                     }),
                     content_type='application/json')
 
@@ -285,7 +290,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -346,7 +352,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John_Smith',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -384,7 +391,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -451,7 +459,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -507,7 +516,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -570,7 +580,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -691,7 +702,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -798,7 +810,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -914,7 +927,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -973,7 +987,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -1032,7 +1047,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -1420,7 +1436,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -1496,7 +1513,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -1630,7 +1648,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
                                
@@ -1742,7 +1761,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -1896,7 +1916,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -1956,7 +1977,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'JBG',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
         
@@ -1995,7 +2017,7 @@ class BookTestCase(TestCase):
         # Follow by user 2
         response = client.post('/api/follow/user_id=2/',
                                content_type='application/json') 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 401)
 
         # Sign out
         client.get('/api/sign_out/',
@@ -2005,7 +2027,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'John',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -2013,13 +2036,13 @@ class BookTestCase(TestCase):
         response = client.get('/api/alarm/',
                               content_type='application/json')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 401)
 
         # Disallowed request
         response = client.patch('/api/alarm/',
                                 content_type='application/json')
 
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 401)
         
 
     def test_speicific_alarm(self):
@@ -2059,7 +2082,8 @@ class BookTestCase(TestCase):
         response = client.post('/api/sign_in/',
                                json.dumps({
                                    'username': 'JBG',
-                                   'password': 'mypassword'
+                                   'password': 'mypassword',
+                                   'auto_login': False,
                                }),
                                content_type='application/json')
 
@@ -2076,7 +2100,7 @@ class BookTestCase(TestCase):
         response = client.put('/api/alarm/1/',
                                content_type='application/json')
         
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 401)
 
         # Disallowed request
         response = client.patch('/api/alarm/1/',

@@ -90,7 +90,7 @@ class OcrModal extends Component {
   };
 
   render() {
-    console.log('[DEBUG]: ', this.state.file, this.state.run, this.props.quote);
+    //console.log('[DEBUG]: ', this.state.file, this.state.run, this.props.quote);
     const image = this.state.imageShow && (
       <img id="target" src={this.state.image} width={300} height={300} />
     );
