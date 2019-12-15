@@ -94,11 +94,15 @@ class CommentUnit extends Component {
         return (
           <ReplyUnit
             key={reply.id}
+            is_article={this.props.is_article}
             author={reply.author}
             date={reply.date}
             content={reply.content}
             replies={reply.replies}
+            id={reply.id}
             logged_in_user={this.props.logged_in_user}
+            EditCommentHandler={this.props.onEditComment}
+            EditCurationCommentHandler={this.props.onEditCurationComment}
           />
         );
       });
