@@ -119,86 +119,86 @@ class UserPage extends Component {
 
     const articles = this.props.articles_by_userID
       ? this.props.articles_by_userID.map((article, index) => {
-        return (
-          <div key={index}>
-            <UserReviewSummary
-              logged_in_user={this.props.logged_in_user}
-              title={article.title}
-              book_isbn={article.book_isbn}
-              book_title={article.book_title}
-              content={article.content}
-              date={article.date}
-              is_long={article.is_long}
-              is_short={article.is_short}
-              is_phrase={article.is_phrase}
-              id={article.id}
-              author={this.props.profile_user}
-              deleteHandler={this.deleteHandler}
-            />
-          </div>
-        );
-      })
+          return (
+            <div key={index}>
+              <UserReviewSummary
+                logged_in_user={this.props.logged_in_user}
+                title={article.title}
+                book_isbn={article.book_isbn}
+                book_title={article.book_title}
+                content={article.content}
+                date={article.date}
+                is_long={article.is_long}
+                is_short={article.is_short}
+                is_phrase={article.is_phrase}
+                id={article.id}
+                author={this.props.profile_user}
+                deleteHandler={this.deleteHandler}
+              />
+            </div>
+          );
+        })
       : [];
 
     const curations = this.props.curations_by_userID
       ? this.props.curations_by_userID.map((curation, index) => {
-        return (
-          <div key={index}>
-            <UserCurationSummary
-              logged_in_user={this.props.logged_in_user}
-              title={curation.title}
-              books={curation.books}
-              content={curation.content}
-              date={curation.date}
-              id={curation.id}
-              author={this.props.profile_user}
-              deleteHandler={this.deleteCurationHandler}
-            />
-          </div>
-        );
-      })
+          return (
+            <div key={index}>
+              <UserCurationSummary
+                logged_in_user={this.props.logged_in_user}
+                title={curation.title}
+                books={curation.books}
+                content={curation.content}
+                date={curation.date}
+                id={curation.id}
+                author={this.props.profile_user}
+                deleteHandler={this.deleteCurationHandler}
+              />
+            </div>
+          );
+        })
       : [];
 
     const bookmarks = this.props.bookmarks
       ? this.props.bookmarks.map((article, index) => {
-        return (
-          <div key={index}>
-            <UserReviewSummary
-              logged_in_user={this.props.logged_in_user}
-              author={article.author}
-              title={article.title}
-              book_isbn={article.book_isbn}
-              book_title={article.book_title}
-              content={article.content}
-              date={article.date}
-              is_long={article.is_long}
-              is_short={article.is_short}
-              is_phrase={article.is_phrase}
-              id={article.id}
-              deleteHandler={this.deleteHandler}
-            />
-          </div>
-        );
-      })
+          return (
+            <div key={index}>
+              <UserReviewSummary
+                logged_in_user={this.props.logged_in_user}
+                author={article.author}
+                title={article.title}
+                book_isbn={article.book_isbn}
+                book_title={article.book_title}
+                content={article.content}
+                date={article.date}
+                is_long={article.is_long}
+                is_short={article.is_short}
+                is_phrase={article.is_phrase}
+                id={article.id}
+                deleteHandler={this.deleteHandler}
+              />
+            </div>
+          );
+        })
       : [];
 
     const CurationBookmarks = this.props.CurationBookmarks
       ? this.props.CurationBookmarks.map((curation, index) => {
-        return (
-          <div key={index}>
-            <UserCurationSummary
-              logged_in_user={this.props.logged_in_user}
-              title={curation.title}
-              books={curation.books}
-              content={curation.content}
-              date={curation.date}
-              id={curation.id}
-              author={this.props.profile_user}
-              deleteHandler={this.deleteCurationHandler}
-            />
-          </div>
-        );
-      })
+          return (
+            <div key={index}>
+              <UserCurationSummary
+                logged_in_user={this.props.logged_in_user}
+                title={curation.title}
+                books={curation.books}
+                content={curation.content}
+                date={curation.date}
+                id={curation.id}
+                author={this.props.profile_user}
+                deleteHandler={this.deleteCurationHandler}
+              />
+            </div>
+          );
+        })
       : [];
 
     let slicedBooks = [];
@@ -217,10 +217,10 @@ class UserPage extends Component {
           />
         </a>
       ) : (
-          <a href={'/book/' + book.isbn}>
-            <img className="LikeBookThumbnail" src={book.thumbnail} />
-          </a>
-        );
+        <a href={'/book/' + book.isbn}>
+          <img className="LikeBookThumbnail" src={book.thumbnail} />
+        </a>
+      );
     });
 
     return (
@@ -239,93 +239,93 @@ class UserPage extends Component {
             {this.props.ReviewLength === 0 ? (
               '아직 작성된 리뷰가 없습니다.'
             ) : (
-                <div>
-                  {articles}
-                  <Pagination
-                    defaultActivePage={1}
-                    activePage={this.state.activeReviewPage}
-                    onPageChange={this.handleReviewPaginationChange}
-                    firstItem={null}
-                    lastItem={null}
-                    pointing
-                    secondary
-                    totalPages={ReviewFinal}
-                  />
-                </div>
-              )}
+              <div>
+                {articles}
+                <Pagination
+                  defaultActivePage={1}
+                  activePage={this.state.activeReviewPage}
+                  onPageChange={this.handleReviewPaginationChange}
+                  firstItem={null}
+                  lastItem={null}
+                  pointing
+                  secondary
+                  totalPages={ReviewFinal}
+                />
+              </div>
+            )}
             <ContainerHeader title="작성한 큐레이션" />
             {curations.length === 0 ? (
               '아직 작성된 큐레이션이 없습니다.'
             ) : (
-                <div>
-                  {curations}
-                  <Pagination
-                    defaultActivePage={1}
-                    activePage={this.state.activeCurationPage}
-                    onPageChange={this.handleCurationPaginationChange}
-                    firstItem={null}
-                    lastItem={null}
-                    pointing
-                    secondary
-                    totalPages={CurationFinal}
-                  />
-                </div>
-              )}
+              <div>
+                {curations}
+                <Pagination
+                  defaultActivePage={1}
+                  activePage={this.state.activeCurationPage}
+                  onPageChange={this.handleCurationPaginationChange}
+                  firstItem={null}
+                  lastItem={null}
+                  pointing
+                  secondary
+                  totalPages={CurationFinal}
+                />
+              </div>
+            )}
             <ContainerHeader title="즐겨찾기한 책" />
             {like_books.length === 0 ? (
               '아직 즐겨찾기한 책 없습니다.'
             ) : (
-                <div>
-                  {likebooks}
-                  <br />
-                  <Pagination
-                    defaultActivePage={1}
-                    activePage={this.state.activeBookPage}
-                    onPageChange={this.handleBookPaginationChange}
-                    firstItem={null}
-                    lastItem={null}
-                    pointing
-                    secondary
-                    totalPages={BookFinal}
-                  />
-                </div>
-              )}
+              <div>
+                {likebooks}
+                <br />
+                <Pagination
+                  defaultActivePage={1}
+                  activePage={this.state.activeBookPage}
+                  onPageChange={this.handleBookPaginationChange}
+                  firstItem={null}
+                  lastItem={null}
+                  pointing
+                  secondary
+                  totalPages={BookFinal}
+                />
+              </div>
+            )}
             <ContainerHeader title="좋아하는 리뷰" />
             {this.props.bookmarks.length === 0 ? (
               '아직 좋아하는 게시글이 없습니다.'
             ) : (
-                <div>
-                  {bookmarks}
-                  <Pagination
-                    defaultActivePage={1}
-                    activePage={this.state.activeBookmarkPage}
-                    onPageChange={this.handleBookmarkPaginationChange}
-                    firstItem={null}
-                    lastItem={null}
-                    pointing
-                    secondary
-                    totalPages={BookmarkFinal}
-                  />
-                </div>
-              )}
+              <div>
+                {bookmarks}
+                <Pagination
+                  defaultActivePage={1}
+                  activePage={this.state.activeBookmarkPage}
+                  onPageChange={this.handleBookmarkPaginationChange}
+                  firstItem={null}
+                  lastItem={null}
+                  pointing
+                  secondary
+                  totalPages={BookmarkFinal}
+                />
+              </div>
+            )}
             <ContainerHeader title="좋아하는 큐레이션" />
             {this.props.CurationBookmarks.length === 0 ? (
               '아직 좋아하는 큐레이션이 없습니다.'
             ) : (
-                <div>
-                  {CurationBookmarks}
-                  <Pagination
-                    defaultActivePage={1}
-                    activePage={this.state.activeCurationBookmarkPage}
-                    onPageChange={this.handleCurationBookmarkPaginationChange}
-                    firstItem={null}
-                    lastItem={null}
-                    pointing
-                    secondary
-                    totalPages={CurationBookmarkFinal}
-                  />
-                </div>
-              )}
+              <div>
+                {CurationBookmarks}
+                <Pagination
+                  defaultActivePage={1}
+                  activePage={this.state.activeCurationBookmarkPage}
+                  onPageChange={this.handleCurationBookmarkPaginationChange}
+                  firstItem={null}
+                  lastItem={null}
+                  pointing
+                  secondary
+                  totalPages={CurationBookmarkFinal}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
