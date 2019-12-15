@@ -469,12 +469,23 @@ def article_comment(request):
         comment = ArticleComment(article=article, author=request.user, content=content, parent=parent)
         comment.save()
         return JsonResponse(get_comments(article), safe=False)
-    # TODO elif request.method == 'PUT':
-    #    pass
-    # TODO elif request.method == 'DELETE':
-    #    pass
     else:
-        return HttpResponseNotAllowed(['POST', 'PUT', 'DELETE']) 
+        return HttpResponseNotAllowed(['POST']) 
+
+def specific_comment(request, comment_id):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    elif request.method == 'PUT':
+        comment = get_object_or_404(ArticleComment, id=comment_id)
+        if not request.user.id==comment.author_id:
+            return HttpResponse(status=403)
+        try:
+            req_data = json.loads(request.body.decode())
+            comment.content = req_data['content']
+            comment.save()
+        except(KeyError) as e:
+            return HttpResponseBadRequest()
+        return JsonResponse(get_comments(comment.article), safe=False)
 
 # test implemented
 def curation_comment(request):

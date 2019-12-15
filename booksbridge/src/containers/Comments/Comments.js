@@ -49,6 +49,7 @@ class Comments extends Component {
                 content={comment.content}
                 replies={comment.replies}
                 is_article={this.props.is_article}
+                logged_in_user={this.props.logged_in_user}
               />
             );
           });

@@ -353,7 +353,7 @@ export const editSpecificLongReviewComment = comment => dispatch =>
   axios.put(`/api/comment/article/${comment.id}/`, comment).then(res =>
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_LONG_REVIEW_COMMENT,
-      comment: res.data,
+      comments: res.data,
     }),
   );
 // export const DELETE_SPECIFIC_LONG_REVIEW_COMMNET = 'DELETE_SPECIFIC_LONG_REVIEW_COMMNET'

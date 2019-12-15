@@ -1,6 +1,6 @@
 import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
-import { Button, Comment, Form, Header } from 'semantic-ui-react';
+import { Button, Comment, Form, Icon } from 'semantic-ui-react';
 import ReplyUnit from './ReplyUnit';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
@@ -12,6 +12,8 @@ class CommentUnit extends Component {
   state = {
     reply: false,
     content: '',
+    onEdit: false,
+    editcontent: '',
   };
 
   //reply
@@ -39,11 +41,52 @@ class CommentUnit extends Component {
     }
   };
 
+  onClickEditComment = () => {
+    if (this.state.editcontent != '') {
+      if (this.props.is_article) {
+        const comment = {
+          id: this.props.id,
+          content: this.state.editcontent,
+        };
+        this.props.onEditComment(comment);
+        this.setState({ onEdit: false });
+      } else {
+        const comment = {
+          id: this.props.id,
+          content: this.state.editcontent,
+        };
+        this.props.onEditCurationComment(comment);
+        this.setState({ onEdit: false });
+      }
+    } else {
+      window.alert('Content is empty.');
+    }
+  };
+
   render() {
     let profile_photo;
     if (this.props.author.profile_photo.startsWith('http'))
       profile_photo = this.props.author.profile_photo;
     else profile_photo = '/media/' + this.props.author.profile_photo;
+
+    const EditDeleteButton =
+      this.props.author.username === this.props.logged_in_user.username ? (
+        <div className="CommentDeleteButton">
+          <Icon
+            name="pencil"
+            onClick={() =>
+              this.setState({
+                onEdit: !this.state.onEdit,
+                editcontent: this.props.content,
+              })
+            }
+          />
+          <Icon
+            name="delete"
+            onClick={() => this.setState({ delete_confirm: true })}
+          />
+        </div>
+      ) : null;
 
     let replies;
     if (this.props.replies.length) {
@@ -55,6 +98,7 @@ class CommentUnit extends Component {
             date={reply.date}
             content={reply.content}
             replies={reply.replies}
+            logged_in_user={this.props.logged_in_user}
           />
         );
       });
@@ -77,6 +121,28 @@ class CommentUnit extends Component {
             labelPosition="right"
             icon="edit"
             onClick={() => this.onClickPostComment()}
+            secondary
+          />
+        </div>
+      </Form>
+    );
+    const editForm = (
+      <Form reply>
+        <Form.TextArea
+          id="edit-input"
+          className="ReplyTextArea"
+          value={this.state.editcontent}
+          onChange={e =>
+            this.setState({ ...this.state, editcontent: e.target.value })
+          }
+        />
+        <div className="ReplyButton">
+          <Button
+            className="ReplyButton"
+            content="댓글 수정"
+            labelPosition="right"
+            icon="edit"
+            onClick={() => this.onClickEditComment()}
             secondary
           />
         </div>
@@ -106,8 +172,10 @@ class CommentUnit extends Component {
                   <Time date={this.props.date} />
                 </span>
               </Comment.Metadata>
+              <div className="CommentButton">{EditDeleteButton}</div>
               <Comment.Text>{this.props.content}</Comment.Text>
             </div>
+            {this.state.onEdit == true ? editForm : null}
             <Comment.Actions>
               <a
                 id="show-reply-form"
@@ -136,6 +204,17 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreators.postLongReviewComment(comment)),
     onPostCurationComment: comment =>
       dispatch(actionCreators.postCurationComment(comment)),
+    onEditComment: comment =>
+      dispatch(actionCreators.editSpecificLongReviewComment(comment)),
+    /*
+  
+  onEditCurationComment: comment =>
+    dispatch(actionCreators.editCurationComment(comment)),
+  onDeleteComment: comment =>
+    dispatch(actionCreators.deleteLongReviewComment(comment)),
+  onDeleteCurationComment: comment =>
+    dispatch(actionCreators.deleteCurationComment(comment)),
+    */
   };
 };
 

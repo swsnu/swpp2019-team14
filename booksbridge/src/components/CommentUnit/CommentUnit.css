@@ -8,7 +8,9 @@
   width: 95% !important;
   margin-left: 5% !important;
 }
-
+.CommentButton{
+  float: right;
+}
 .CommentContents{
-  margin-left: 40px !important;
+  margin-left: 45px !important;
 }
