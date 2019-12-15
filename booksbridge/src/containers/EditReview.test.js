@@ -150,7 +150,6 @@ const mockStore4 = getMockStore(stubInitialState4);
 describe('<EditReview />', () => {
   let editReview, spyEditArticle, spyAlert;
   beforeEach(() => {
-    console.log('SDfsdfs\n\n\n\n\n\n');
     editReview = (
       <Provider store={mockStore}>
         <ConnectedRouter history={history}>
@@ -171,7 +170,6 @@ describe('<EditReview />', () => {
 
   it('should render', () => {
     const component = mount(editReview);
-    console.log(component.debug());
     const wrapper = component.find('.EditReview');
     expect(wrapper.length).toBe(1);
   });

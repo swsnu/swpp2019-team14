@@ -48,7 +48,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         comments: action.comments,
       };
-
+    case actionTypes.EDIT_SPECIFIC_LONG_REVIEW_COMMENT:
+      return {
+        ...state,
+        comments: action.comments,
+      };
+    case actionTypes.DELETE_SPECIFIC_LONG_REVIEW_COMMENT:
+      return {
+        ...state,
+        comments: action.comments,
+      };
     case actionTypes.POST_ARTICLE_LIKE:
       let liked = [];
       if (action.article.is_long) {
