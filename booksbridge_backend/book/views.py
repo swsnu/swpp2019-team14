@@ -618,7 +618,12 @@ def curation(request):
         for isbn_content_pair in isbn_content_list:
             if isbn_content_pair['isbn'] not in list(map(lambda book_in_curation: book_in_curation.book.isbn, BookInCuration.objects.filter(curation=curation))):
                 _book = Book.objects.get(isbn=isbn_content_pair['isbn'])
-                BIC = BookInCuration(curation=curation, book=_book)
+                BIC = BookInCuration(curation=curation, book=_book, content=isbn_content_pair['content'])
+                BIC.save()
+            else:
+                _book = Book.objects.get(isbn=isbn_content_pair['isbn'])
+                BIC = BookInCuration.objects.get(curation=curation, book=_book)
+                BIC.content = isbn_content_pair['content']
                 BIC.save()
             
         transaction.savepoint_commit(sid)

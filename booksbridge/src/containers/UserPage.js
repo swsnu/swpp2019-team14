@@ -39,6 +39,10 @@ class UserPage extends Component {
     this.props.onDeleteArticle(article_id);
   }
 
+  deleteCurationHandler = curation_id => {
+    this.props.onDeleteCuration(curation_id);
+  };
+
   handleReviewPaginationChange = (e, { activePage }) => {
     this.setState({ ...this.state, activeReviewPage: activePage });
     this.props.onLoadUserReviews(activePage, this.props.match.params.username);
@@ -98,61 +102,70 @@ class UserPage extends Component {
       this.props.onLoadUserReviews(1, this.props.match.params.username);
     }
 
-    const articles = this.props.articles_by_userID.map((article, index) => {
-      return (
-        <div key={index}>
-          <UserReviewSummary
-            logged_in_user={this.props.logged_in_user}
-            title={article.title}
-            book_isbn={article.book_isbn}
-            book_title={article.book_title}
-            content={article.content}
-            date={article.date}
-            is_long={article.is_long}
-            is_short={article.is_short}
-            is_phrase={article.is_phrase}
-            id={article.id}
-            author={this.props.profile_user}
-            deleteHandler={this.deleteHandler}
-          />
-        </div>
-      );
-    });
+    const articles = this.props.articles_by_userID
+      ? this.props.articles_by_userID.map((article, index) => {
+          return (
+            <div key={index}>
+              <UserReviewSummary
+                logged_in_user={this.props.logged_in_user}
+                title={article.title}
+                book_isbn={article.book_isbn}
+                book_title={article.book_title}
+                content={article.content}
+                date={article.date}
+                is_long={article.is_long}
+                is_short={article.is_short}
+                is_phrase={article.is_phrase}
+                id={article.id}
+                author={this.props.profile_user}
+                deleteHandler={this.deleteHandler}
+              />
+            </div>
+          );
+        })
+      : [];
 
-    const curations = this.props.curations_by_userID.map((curation, index) => {
-      return (
-        <div key={index}>
-          <UserCurationSummary
-            title={curation.title}
-            books={curation.books}
-            content={curation.content}
-            date={curation.date}
-            id={curation.id}
-          />
-        </div>
-      );
-    });
+    const curations = this.props.curations_by_userID
+      ? this.props.curations_by_userID.map((curation, index) => {
+          return (
+            <div key={index}>
+              <UserCurationSummary
+                logged_in_user={this.props.logged_in_user}
+                title={curation.title}
+                books={curation.books}
+                content={curation.content}
+                date={curation.date}
+                id={curation.id}
+                author={this.props.profile_user}
+                deleteHandler={this.deleteCurationHandler}
+              />
+            </div>
+          );
+        })
+      : [];
 
-    const bookmarks = this.props.bookmarks.map((article, index) => {
-      return (
-        <div key={index}>
-          <UserReviewSummary
-            logged_in_user={this.props.logged_in_user}
-            author={article.author}
-            title={article.title}
-            book_isbn={article.book_isbn}
-            book_title={article.book_title}
-            content={article.content}
-            date={article.date}
-            is_long={article.is_long}
-            is_short={article.is_short}
-            is_phrase={article.is_phrase}
-            id={article.id}
-            deleteHandler={this.deleteHandler}
-          />
-        </div>
-      );
-    });
+    const bookmarks = this.props.bookmarks
+      ? this.props.bookmarks.map((article, index) => {
+          return (
+            <div key={index}>
+              <UserReviewSummary
+                logged_in_user={this.props.logged_in_user}
+                author={article.author}
+                title={article.title}
+                book_isbn={article.book_isbn}
+                book_title={article.book_title}
+                content={article.content}
+                date={article.date}
+                is_long={article.is_long}
+                is_short={article.is_short}
+                is_phrase={article.is_phrase}
+                id={article.id}
+                deleteHandler={this.deleteHandler}
+              />
+            </div>
+          );
+        })
+      : [];
 
     let slicedBooks = [];
     slicedBooks = like_books.slice(
@@ -293,10 +306,15 @@ const mapDispatchToProps = dispatch => {
     onLoadBookmarks: (page, username) => {
       dispatch(actionCreators.getBookmarks(page, username));
     },
-    onGetFollows: profile_user_id =>
-      dispatch(actionCreators.getFollows(profile_user_id)),
-    onDeleteArticle: article_id =>
-      dispatch(actionCreators.deleteSpecificArticle(article_id, null)),
+    onGetFollows: profile_user_id => {
+      dispatch(actionCreators.getFollows(profile_user_id));
+    },
+    onDeleteArticle: article_id => {
+      dispatch(actionCreators.deleteSpecificArticle(article_id, null));
+    },
+    onDeleteCuration: curation_id => {
+      dispatch(actionCreators.deleteSpecificCuration(curation_id));
+    },
   };
 };
 
