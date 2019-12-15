@@ -267,7 +267,7 @@ export const getSpecificCuration = id => dispatch =>
   axios.get(`/api/curation/${id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SPECIFIC_CURATION,
-      curation: res.data,
+      data: res.data,
     }),
   );
 
@@ -276,7 +276,7 @@ export const editSpecificCuration = curation => dispatch =>
   axios.put(`/api/curation/${curation.id}/`, curation).then(res =>
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_CURATION,
-      curation: res.data,
+      data: res.data,
     }),
   );
 
@@ -377,7 +377,7 @@ export const postCurationComment = comment => dispatch =>
   axios.post('/api/comment/curation/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_CURATION_COMMENT,
-      curation: res.data,
+      comments: res.data,
     }),
   );
 // export const GET_SPECIFIC_CURATION_COMMENT = 'GET_SPECIFIC_CURATION_COMMENT'

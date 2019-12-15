@@ -499,7 +499,7 @@ def curation_comment(request):
         comment = CurationComment(curation=curation, author=request.user, content=content, parent=parent)
         comment.save()
         
-        return JsonResponse(make_curation_dict(curation), status=201)
+        return JsonResponse(get_comments(curation), safe=False)
     # TODO elif request.method == 'PUT':
     #    pass
     # TODO elif request.method == 'DELETE':
@@ -721,9 +721,9 @@ def specific_curation(request, curation_id):
 
     elif request.method == 'GET':
         curation = get_object_or_404(Curation, id=curation_id)
-        
-        result_dict = make_curation_dict(curation)
-        result_dict['like_or_not'] = curation.like_users.all().filter(id=request.user.id).exists()
+        curation_dict = make_curation_dict(curation)
+        curation_dict['like_or_not'] = curation.like_users.all().filter(id=request.user.id).exists()
+        result_dict = {'curation':curation_dict, 'comments':get_comments(curation)}
         return JsonResponse(result_dict, status=200)
     elif request.method == 'DELETE':
         curation = get_object_or_404(Curation, id=curation_id)
