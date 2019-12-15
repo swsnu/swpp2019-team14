@@ -90,7 +90,7 @@ class Signin extends Component {
                 <Form.Input>
                   <Popup
                     trigger={autoLoginRadio}
-                    content="자동 로그인 기능을 사용함으로써, 당신의 로그인 정보를 저장하는 우리의 쿠키 정책에 동의하게 됩니다. 공공장소에서는 자동 로그인 기능을 사용하지 마십시오."
+                    content="자동 로그인 기능을 사용함으로써, 사용자의 로그인 정보를 사용자의 컴퓨터에 저장하는 우리의 쿠키 정책에 동의하게 됩니다. 공공장소에서는 자동 로그인 기능을 사용하지 마십시오."
                     position="top center"
                   />
                 </Form.Input>
