@@ -45,7 +45,7 @@ const Article = props => {
                 <div className="MainArticleContent">
                   <div className="content">
                     {props.is_spoiler ? (
-                      <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
+                      <Image src="/images/short-paragraph.png" />
                     ) : (
                       props.content
                     )}
