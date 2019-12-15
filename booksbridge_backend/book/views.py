@@ -469,6 +469,7 @@ def specific_alarm(request,alarm_id):
         return HttpResponse(status=401)
     elif request.method == 'PUT':
         alarm = Alarm.objects.get(id=alarm_id)
+        alarm.is_new = False
         alarm.save()
         alarm_dict = {
             'id': alarm.id,

@@ -159,12 +159,20 @@ export const postArticle = article => dispatch =>
 
 // export const GET_SPECIFIC_ARTICLE = 'GET_SPECIFIC_ARTICLE'
 export const getSpecificArticle = id => dispatch =>
-  axios.get(`/api/article/${id}/`).then(res =>
-    dispatch({
-      type: actionTypes.GET_SPECIFIC_ARTICLE,
-      data: res.data,
-    }),
-  );
+  axios
+    .get(`/api/article/${id}/`)
+    .then(res =>
+      dispatch({
+        type: actionTypes.GET_SPECIFIC_ARTICLE,
+        data: res.data,
+      }),
+    )
+    .catch(err => {
+      if (err.response.status === 404) {
+        alert('404: 찾으려는 리뷰가 없어요... 삭제되었나 봐요 :(');
+        dispatch(push('/main/'));
+      }
+    });
 
 // export const EDIT_SPECIFIC_ARTICLE = 'EDIT_SPECIFIC_ARTICLE'
 export const editSpecificArticle = article => dispatch =>
@@ -263,12 +271,20 @@ export const editCuration = curation => dispatch =>
 
 // export const GET_SPECIFIC_CURATION = 'GET_SPECIFIC_CURATION'
 export const getSpecificCuration = id => dispatch =>
-  axios.get(`/api/curation/${id}/`).then(res =>
-    dispatch({
-      type: actionTypes.GET_SPECIFIC_CURATION,
-      data: res.data,
-    }),
-  );
+  axios
+    .get(`/api/curation/${id}/`)
+    .then(res =>
+      dispatch({
+        type: actionTypes.GET_SPECIFIC_CURATION,
+        data: res.data,
+      }),
+    )
+    .catch(err => {
+      if (err.response.status === 404) {
+        alert('404: 찾으려는 큐레이션이 없어요... 삭제되었나 봐요 :(');
+        dispatch(push('/curation/'));
+      }
+    });
 
 // export const EDIT_SPECIFIC_CURATION = 'EDIT_SPECIFIC_CURATION'
 export const editSpecificCuration = curation => dispatch =>
