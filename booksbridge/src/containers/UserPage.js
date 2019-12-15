@@ -20,11 +20,13 @@ class UserPage extends Component {
       activeCurationPage: 1,
       activeBookPage: 1,
       activeBookmarkPage: 1,
+      activeCurationBookmarkPage: 1,
     };
     this.props.onLoadUser(this.props.match.params.username);
     this.props.onLoadUserReviews(1, this.props.match.params.username);
     this.props.onLoadUserCurations(1, this.props.match.params.username);
     this.props.onLoadBookmarks(1, this.props.match.params.username);
+    this.props.onLoadCurationBookmarks(1, this.props.match.params.username);
     this.deleteHandler = this.deleteHandler.bind(this);
   }
 
@@ -32,6 +34,10 @@ class UserPage extends Component {
     // Typical usage (don't forget to compare props):
     if (this.props.match.params.username !== prevProps.match.params.username) {
       this.props.onLoadUser(this.props.match.params.username);
+      this.props.onLoadUserReviews(1, this.props.match.params.username);
+      this.props.onLoadUserCurations(1, this.props.match.params.username);
+      this.props.onLoadBookmarks(1, this.props.match.params.username);
+      this.props.onLoadCurationBookmarks(1, this.props.match.params.username);
     }
   }
 
@@ -61,6 +67,10 @@ class UserPage extends Component {
   };
 
   handleBookmarkPaginationChange = (e, { activePage }) => {
+    this.setState({ ...this.state, activeBookmarkPage: activePage });
+  };
+
+  handleCurationBookmarkPaginationChange = (e, { activePage }) => {
     this.setState({ ...this.state, activeBookmarkPage: activePage });
   };
 
@@ -94,6 +104,11 @@ class UserPage extends Component {
       this.props.BookmarkLength % 5 === 0
         ? this.props.BookmarkLength / 5
         : parseInt(this.props.BookmarkLength / 5) + 1;
+
+    let CurationBookmarkFinal =
+      this.props.CurationBookmarkLength % 5 === 0
+        ? this.props.CurationBookmarkLength / 5
+        : parseInt(this.props.CurationBookmarkLength / 5) + 1;
 
     if (
       this.props.ReviewLength !== 0 &&
@@ -161,6 +176,25 @@ class UserPage extends Component {
                 is_phrase={article.is_phrase}
                 id={article.id}
                 deleteHandler={this.deleteHandler}
+              />
+            </div>
+          );
+        })
+      : [];
+
+    const CurationBookmarks = this.props.CurationBookmarks
+      ? this.props.CurationBookmarks.map((curation, index) => {
+          return (
+            <div key={index}>
+              <UserCurationSummary
+                logged_in_user={this.props.logged_in_user}
+                title={curation.title}
+                books={curation.books}
+                content={curation.content}
+                date={curation.date}
+                id={curation.id}
+                author={this.props.profile_user}
+                deleteHandler={this.deleteCurationHandler}
               />
             </div>
           );
@@ -256,7 +290,7 @@ class UserPage extends Component {
                 />
               </div>
             )}
-            <ContainerHeader title="좋아하는 게시글" />
+            <ContainerHeader title="좋아하는 리뷰" />
             {this.props.bookmarks.length === 0 ? (
               '아직 좋아하는 게시글이 없습니다.'
             ) : (
@@ -271,6 +305,24 @@ class UserPage extends Component {
                   pointing
                   secondary
                   totalPages={BookmarkFinal}
+                />
+              </div>
+            )}
+            <ContainerHeader title="좋아하는 큐레이션" />
+            {this.props.CurationBookmarks.length === 0 ? (
+              '아직 좋아하는 큐레이션이 없습니다.'
+            ) : (
+              <div>
+                {CurationBookmarks}
+                <Pagination
+                  defaultActivePage={1}
+                  activePage={this.state.activeCurationBookmarkPage}
+                  onPageChange={this.handleCurationBookmarkPaginationChange}
+                  firstItem={null}
+                  lastItem={null}
+                  pointing
+                  secondary
+                  totalPages={CurationBookmarkFinal}
                 />
               </div>
             )}
@@ -290,6 +342,8 @@ const mapStateToProps = state => ({
   CurationLength: state.curation.length,
   BookmarkLength: state.user.bookmark_count,
   bookmarks: state.user.bookmarks,
+  CurationBookmarkLength: state.user.CurationBookmark_count,
+  CurationBookmarks: state.user.CurationBookmarks,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -305,6 +359,9 @@ const mapDispatchToProps = dispatch => {
     },
     onLoadBookmarks: (page, username) => {
       dispatch(actionCreators.getBookmarks(page, username));
+    },
+    onLoadCurationBookmarks: (page, username) => {
+      dispatch(actionCreators.getCurationBookmarks(page, username));
     },
     onGetFollows: profile_user_id => {
       dispatch(actionCreators.getFollows(profile_user_id));

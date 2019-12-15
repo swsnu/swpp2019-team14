@@ -579,6 +579,14 @@ export const getBookmarks = (page, username) => dispatch =>
     }),
   );
 
+export const getCurationBookmarks = (page, username) => dispatch =>
+  axios.get(`/api/like/curations/${username}/${page}`).then(res =>
+    dispatch({
+      type: actionTypes.GET_CURATION_BOOKMARKS,
+      data: res.data,
+    }),
+  );
+
 export const getToken = () => {
   //   return axios.get('/api/token/').then(res => {
   //     dispatch({
