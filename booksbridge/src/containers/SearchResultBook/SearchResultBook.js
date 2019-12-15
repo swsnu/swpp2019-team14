@@ -97,6 +97,8 @@ class SearchResultBook extends Component {
             content={curation.content}
             date={curation.date}
             id={curation.id}
+            author={{ username: '' }}
+            logged_in_user={{ username: 'abc' }}
           />
         </div>
       ))
