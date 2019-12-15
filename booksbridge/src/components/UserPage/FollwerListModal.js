@@ -6,15 +6,6 @@ import SearchUser from '../SearchUser/SearchUser';
 
 import './FollowerListModal.css';
 import '../CommentUnit/CommentUnit.css';
-
-const mapStateToProps = store => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-
 class FollwerListModal extends Component {
   constructor(props) {
     super(props);
@@ -100,7 +91,4 @@ class FollwerListModal extends Component {
     );
   }
 }
-export default connect(
-  null,
-  mapDispatchToProps,
-)(FollwerListModal);
+export default FollwerListModal;
