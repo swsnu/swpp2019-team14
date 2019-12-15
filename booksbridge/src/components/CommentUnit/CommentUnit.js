@@ -41,6 +41,14 @@ class CommentUnit extends Component {
     }
   };
 
+  onClickDeleteComment = () => {
+    if (this.props.is_article) {
+      this.props.onDeleteComment(this.props.id);
+    } else {
+      this.props.onDeleteCurationComment(this.props.id);
+    }
+  };
+
   onClickEditComment = () => {
     if (this.state.editcontent != '') {
       if (this.props.is_article) {
@@ -81,10 +89,7 @@ class CommentUnit extends Component {
               })
             }
           />
-          <Icon
-            name="delete"
-            onClick={() => this.setState({ delete_confirm: true })}
-          />
+          <Icon name="delete" onClick={() => this.onClickDeleteComment()} />
         </div>
       ) : null;
 
@@ -212,14 +217,10 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreators.editSpecificLongReviewComment(comment)),
     onEditCurationComment: comment =>
       dispatch(actionCreators.editSpecificCurationComment(comment)),
-    /*
-  
-  
-  onDeleteComment: comment =>
-    dispatch(actionCreators.deleteLongReviewComment(comment)),
-  onDeleteCurationComment: comment =>
-    dispatch(actionCreators.deleteCurationComment(comment)),
-    */
+    onDeleteComment: id =>
+      dispatch(actionCreators.deleteSpecificLongReviewComment(id)),
+    onDeleteCurationComment: id =>
+      dispatch(actionCreators.deleteSpecificCurationComment(id)),
   };
 };
 

@@ -360,7 +360,8 @@ export const editSpecificLongReviewComment = comment => dispatch =>
 export const deleteSpecificLongReviewComment = id => dispatch =>
   axios.delete(`/api/comment/article/${id}/`).then(res =>
     dispatch({
-      type: actionTypes.DELETE_SPECIFIC_LONG_REVIEW_COMMNET,
+      type: actionTypes.DELETE_SPECIFIC_LONG_REVIEW_COMMENT,
+      comments: res.data,
     }),
   );
 // export const GET_COMMENTS_BY_REVIEWID = 'GET_COMMENTS_BY_REVIEWID'
@@ -385,7 +386,7 @@ export const getSpecificCurationComment = id => dispatch =>
   axios.get(`/api/comment/curation/${id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SPECIFIC_CURATION_COMMENT,
-      comment: res.data,
+      comments: res.data,
     }),
   );
 // export const EDIT_SPECIFIC_CURATION_COMMENT  = 'EDIT_SPECIFIC_CURATION_COMMENT'
@@ -400,7 +401,8 @@ export const editSpecificCurationComment = comment => dispatch =>
 export const deleteSpecificCurationComment = id => dispatch =>
   axios.delete(`/api/comment/curation/${id}/`).then(res =>
     dispatch({
-      type: actionTypes.DELETE_SPECIFIC_CURATION_COMMNET,
+      type: actionTypes.DELETE_SPECIFIC_CURATION_COMMENT,
+      comments: res.data,
     }),
   );
 // export const GET_COMMENTS_BY_CURATIONID = 'GET_COMMENTS_BY_CURATIONID'
