@@ -4,6 +4,7 @@ const initialState = {
   hasNext: null,
   curations: [],
   selectedCuration: null,
+  comments: [],
   likes: null,
   curationsByUserID: [],
   length: 0,
@@ -23,13 +24,14 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_SPECIFIC_CURATION:
       return {
         ...state,
-        selectedCuration: action.curation,
+        selectedCuration: action.data.curation,
+        comments: action.data.comments,
       };
 
     case actionTypes.POST_CURATION_COMMENT:
       return {
         ...state,
-        selectedCuration: action.curation,
+        comments: action.comments,
       };
 
     case actionTypes.EDIT_SPECIFIC_CURATION:

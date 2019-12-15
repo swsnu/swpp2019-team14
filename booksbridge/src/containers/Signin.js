@@ -22,7 +22,9 @@ class Signin extends Component {
   };
 
   componentDidMount() {
-    axios.get('/api/token/');
+    axios.get('/api/token/').then(res => {
+      if (res.status === 200) this.props.history.push('/main');
+    });
   }
 
   render() {

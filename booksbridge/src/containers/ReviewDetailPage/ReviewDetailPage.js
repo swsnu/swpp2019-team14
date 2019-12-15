@@ -140,7 +140,7 @@ class ReviewDetailPage extends Component {
             </div>
             <div className="ReviewComments">
               <Comments
-                comments={this.props.currentArticle.comments}
+                comments={this.props.comments}
                 article_id={this.props.match.params.review_id}
                 is_article={true}
               />
@@ -156,6 +156,7 @@ const mapStateToProps = state => {
   return {
     currentArticle: state.article.selectedArticle,
     logged_in_user: state.user.logged_in_user,
+    comments: state.article.comments,
   };
 };
 

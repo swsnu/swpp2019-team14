@@ -7,6 +7,7 @@ const initialState = {
   articles: [],
   hasNext: null,
   selectedArticle: null,
+  comments: [],
   articlesByUserID: [],
   length: 0,
 };
@@ -29,12 +30,12 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_SPECIFIC_ARTICLE:
       return {
         ...state,
-        selectedArticle: action.article,
+        selectedArticle: action.data.article,
+        comments: action.data.comments,
       };
     case actionTypes.EDIT_SPECIFIC_ARTICLE:
       return {
         ...state,
-        selectedArticle: action.article,
       };
     case actionTypes.GET_ARTICLES_BY_USERID:
       return {
@@ -45,7 +46,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.POST_LONG_REVIEW_COMMENT:
       return {
         ...state,
-        selectedArticle: action.article,
+        comments: action.comments,
       };
 
     case actionTypes.POST_ARTICLE_LIKE:

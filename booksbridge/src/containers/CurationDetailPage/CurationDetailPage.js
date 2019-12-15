@@ -134,7 +134,7 @@ class CurationDetailPage extends Component {
             </div>
             <div className="CurationComments">
               <Comments
-                comments={this.props.currentCuration.comments}
+                comments={this.props.comments}
                 curation_id={this.props.match.params.curation_id}
                 is_article={false}
               />
@@ -150,6 +150,7 @@ const mapStateToProps = state => {
   return {
     currentCuration: state.curation.selectedCuration,
     logged_in_user: state.user.logged_in_user,
+    comments: state.curation.comments,
   };
 };
 

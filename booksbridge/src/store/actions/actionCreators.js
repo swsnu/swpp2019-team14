@@ -127,14 +127,22 @@ export const deleteBookLike = isbn => dispatch =>
     }),
   );
 
-export const getArticles = page => dispatch =>
-  axios.get(`/api/article/page/${page}/`).then(res =>
-    dispatch({
-      type: actionTypes.GET_ARTICLES,
-      articles: res.data.articles,
-      has_next: res.data.has_next,
-    }),
-  );
+export const getArticles = page => {
+  return dispatch => {
+    return axios
+      .get(`/api/article/page/${page}/`)
+      .then(res => {
+        dispatch({
+          type: actionTypes.GET_ARTICLES,
+          articles: res.data.articles,
+          has_next: res.data.has_next,
+        });
+      })
+      .catch(err => {
+        if (err.response.status === 401) dispatch(push(`/sign-in`));
+      });
+  };
+};
 
 // export const POST_ARTICLE = 'POST_ARTICLE'
 export const postArticle = article => dispatch =>
@@ -155,7 +163,7 @@ export const getSpecificArticle = id => dispatch =>
   axios.get(`/api/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SPECIFIC_ARTICLE,
-      article: res.data,
+      data: res.data,
     }),
   );
 
@@ -164,12 +172,12 @@ export const editSpecificArticle = article => dispatch =>
   axios.put(`/api/article/${article.id}/`, article).then(res => {
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_ARTICLE,
-      article: res.data,
+      data: res.data,
     });
     if (article.is_long) {
-      dispatch(push(`/review/${res.data.id}`));
+      dispatch(push(`/review/${res.data.article.id}`));
     } else {
-      dispatch(push('/book/' + res.data.book.isbn));
+      dispatch(push('/book/' + res.data.article.book.isbn));
     }
   });
 
@@ -259,7 +267,7 @@ export const getSpecificCuration = id => dispatch =>
   axios.get(`/api/curation/${id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SPECIFIC_CURATION,
-      curation: res.data,
+      data: res.data,
     }),
   );
 
@@ -268,7 +276,7 @@ export const editSpecificCuration = curation => dispatch =>
   axios.put(`/api/curation/${curation.id}/`, curation).then(res =>
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_CURATION,
-      curation: res.data,
+      data: res.data,
     }),
   );
 
@@ -329,7 +337,7 @@ export const postLongReviewComment = comment => dispatch =>
   axios.post('/api/comment/article/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_LONG_REVIEW_COMMENT,
-      article: res.data,
+      comments: res.data,
     }),
   );
 // export const GET_SPECIFIC_LONG_REVIEW_COMMENT = 'GET_SPECIFIC_LONG_REVIEW_COMMENT'
@@ -369,7 +377,7 @@ export const postCurationComment = comment => dispatch =>
   axios.post('/api/comment/curation/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_CURATION_COMMENT,
-      curation: res.data,
+      comments: res.data,
     }),
   );
 // export const GET_SPECIFIC_CURATION_COMMENT = 'GET_SPECIFIC_CURATION_COMMENT'
