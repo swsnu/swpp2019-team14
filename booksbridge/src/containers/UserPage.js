@@ -32,6 +32,9 @@ class UserPage extends Component {
     // Typical usage (don't forget to compare props):
     if (this.props.match.params.username !== prevProps.match.params.username) {
       this.props.onLoadUser(this.props.match.params.username);
+      this.props.onLoadUserReviews(1, this.props.match.params.username);
+      this.props.onLoadUserCurations(1, this.props.match.params.username);
+      this.props.onLoadBookmarks(1, this.props.match.params.username);
     }
   }
 

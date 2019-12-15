@@ -79,10 +79,17 @@ class BookDetail extends Component {
     const LikeButton = (
       <div onClick={() => this.onClickLikeBookButton(like_or_not, isbn)}>
         <Button as="div" labelPosition="right">
-          <Button className="BookLikeButton" color="black">
-            <Icon name="heart" />
-            즐겨찾기
-          </Button>
+          {like_or_not ? (
+            <Button className="BookLikeButton" color="black">
+              <Icon name="heart" />
+              즐겨찾기 해제
+            </Button>
+          ) : (
+            <Button className="BookLikeButton" color="black">
+              <Icon name="heart" />
+              즐겨찾기
+            </Button>
+          )}
           <Label as="a" basic color="black" pointing="left">
             {like_users.length}
           </Label>
@@ -122,7 +129,7 @@ class BookDetail extends Component {
             size="small"
             position="top center"
             trigger={LikeButton}
-            content="책을 즐겨찾기 할 경우, 이 책에 남겨지는 새로운 리뷰를 나의 피드에서 바로 확인할 수 있습니다!"
+            content="책을 즐겨찾기 할 경우, 새로운 리뷰가 남겨질 때 알람을 받아볼 수 있습니다!"
           />
         </div>
         <div className="tab">
