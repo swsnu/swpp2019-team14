@@ -1204,7 +1204,7 @@ class BookTestCase(TestCase):
                                content_type='application/json')
 
         self.assertIsNotNone(response.content)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
     def test_article_comment(self):
         # Initialize
