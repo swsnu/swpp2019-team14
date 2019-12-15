@@ -58,5 +58,5 @@ describe('<Main />', () => {
     expect(wrapper.length).toBe(1);
   });
 
-  it('should ')
+  //it('should ')
 });
