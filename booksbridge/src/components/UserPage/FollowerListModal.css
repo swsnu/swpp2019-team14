@@ -51,3 +51,19 @@
   text-align: center;
   font-family: 'NanumSquare', sans-serif;
 }
+
+@media only screen and (max-width: 600px) {
+  .FollowerList {
+    height: auto !important;
+    width: 100% !important;
+  }
+  .FollowerListContent {
+    flex-direction: column;
+  }
+  .FollowerListContentFollower {
+    width: 100%;
+  }
+  .FollowerListContentFollowee {
+    width: 100%;
+  }
+}

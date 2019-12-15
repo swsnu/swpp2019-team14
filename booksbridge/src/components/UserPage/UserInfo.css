@@ -104,7 +104,7 @@
 }
 .ProfileComment {
   white-space: pre-wrap;
-  word-wrap:break-word;
+  word-wrap: break-word;
   width: 280px;
   height: 80px;
   font-family: 'Nanum Gothic', sans-serif;
@@ -166,4 +166,17 @@
 }
 .EditConfirmButtonImage {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .Wrapper {
+    width: 95%;
+  }
+  .commentForm {
+    margin-left: 10%;
+    width: 50%;
+  }
+  .ProfileComment {
+    width: 50%;
+  }
 }
