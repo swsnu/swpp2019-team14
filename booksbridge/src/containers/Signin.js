@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import './containers.css';
-import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react';
+import {
+  Button,
+  Divider,
+  Form,
+  Grid,
+  Segment,
+  Radio,
+  Popup,
+} from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/index';
 import axios from 'axios';
 import './containers.css';
@@ -10,15 +18,25 @@ class Signin extends Component {
   state = {
     username: '',
     password: '',
+    autoLogin: false,
   };
 
   onClickSignInButton = e => {
     const user = {
       username: this.state.username,
       password: this.state.password,
+      autoLogin: this.state.autoLogin,
     };
     e.preventDefault();
     this.props.onLoginUser(user);
+  };
+
+  onToggleAutoLogin = () => {
+    console.log('[DEBUG]');
+    this.setState({
+      ...this.state,
+      autoLogin: !this.state.autoLogin,
+    });
   };
 
   componentDidMount() {
@@ -28,6 +46,14 @@ class Signin extends Component {
   }
 
   render() {
+    const autoLoginRadio = (
+      <Radio
+        toggle
+        label="Sign-in automatically"
+        onChange={() => this.onToggleAutoLogin()}
+      />
+    );
+
     return (
       <div className="login_page">
         <img id="MainLogo" src="/images/MainLogo.png" />
@@ -60,6 +86,14 @@ class Signin extends Component {
                   }
                   required
                 />
+
+                <Form.Input>
+                  <Popup
+                    trigger={autoLoginRadio}
+                    content="자동 로그인 기능을 사용함으로써, 당신의 로그인 정보를 저장하는 우리의 쿠키 정책에 동의하게 됩니다. 공공장소에서는 자동 로그인 기능을 사용하지 마십시오."
+                    position="top center"
+                  />
+                </Form.Input>
 
                 <Button
                   id="login-button"

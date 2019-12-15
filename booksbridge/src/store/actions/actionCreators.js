@@ -25,8 +25,26 @@ export const postUser = user => {
 };
 
 // export const LOGIN_USER = 'LOGIN_USER'
-
 export const loginUser = user => {
+  return dispatch => {
+    return axios
+      .post('/api/sign_in/', user)
+      .then(res => {
+        dispatch({
+          type: actionTypes.LOGIN_USER,
+          user: res.data,
+        });
+        storage.set('logged_in_user', res.data);
+        dispatch(push('/main/'));
+      })
+      .catch(err => {
+        alert('아이디 혹은 비밀번호가 틀렸습니다.');
+      });
+  };
+};
+
+// export const LOGIN_USER_AUTO = 'LOGIN_USER_AUTO'
+export const loginUserAuto = user => {
   return dispatch => {
     return axios
       .post('/api/sign_in/', user)
