@@ -181,7 +181,12 @@ class CreateCuration extends Component {
               <Button
                 className="SubmitButton"
                 id="create-curation"
-                content="큐레이션 만들기"
+                content={
+                  this.props.match.params.username &&
+                  this.props.match.params.curation_id
+                    ? '큐레이션 수정하기'
+                    : '큐레이션 만들기'
+                }
                 onClick={() => this.onClickCreateButton()}
               />
             </Form>
