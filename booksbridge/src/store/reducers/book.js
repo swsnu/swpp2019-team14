@@ -20,7 +20,11 @@ const reducer = (state = initialState, action) => {
         searchedBooks: state.searchedBooks.concat(action.books),
       };
     case actionTypes.GET_SPECIFIC_BOOK:
-      return { ...state, selectedBook: action.book, currentBook: action.book };
+      return {
+        ...state,
+        selectedBook: action.book,
+        currentBook: action.book,
+      };
     case actionTypes.GET_CURRENT_BOOK:
       return { ...state, currentBook: action.book };
     case actionTypes.POST_BOOK_LIKE:
