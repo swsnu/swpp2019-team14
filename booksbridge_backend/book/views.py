@@ -264,9 +264,9 @@ def specific_article(request,review_id):
         return HttpResponse(status=401)
     elif request.method == 'GET':
         article = get_object_or_404(Article, id=review_id)
-        response_dict = make_article_dict(article)
-        response_dict['comments'] = get_comments(article)
-        response_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
+        article_dict = make_article_dict(article)
+        article_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
+        response_dict = {'article':article_dict, 'comments':get_comments(article)}
         return JsonResponse(response_dict)
     elif request.method == 'DELETE':
         article = get_object_or_404(Article, id=review_id)
@@ -285,9 +285,9 @@ def specific_article(request,review_id):
             article.save()
         except(KeyError) as e:
             return HttpResponseBadRequest()
-        response_dict = make_article_dict(article)
-        response_dict['comments'] = get_comments(article)
-        response_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
+        article_dict = make_article_dict(article)
+        article_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
+        response_dict = {'article':article_dict, 'comments':get_comments(article)}
         return JsonResponse(response_dict, status=200)
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
@@ -468,10 +468,7 @@ def article_comment(request):
         send_alarm(request.user,article.author,article_id,'article','comment')
         comment = ArticleComment(article=article, author=request.user, content=content, parent=parent)
         comment.save()
-        response_dict = make_article_dict(article)
-        response_dict['comments'] = get_comments(article)
-        response_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
-        return JsonResponse(response_dict, status=201)
+        return JsonResponse(get_comments(article), safe=False)
     # TODO elif request.method == 'PUT':
     #    pass
     # TODO elif request.method == 'DELETE':
@@ -696,8 +693,6 @@ def make_curation_dict(curation):
     book_list = [{'book': make_book_dict(get_object_or_404(Book, isbn=book.book_id), False), 'content': book.content} 
                  for book in book_in_curation]  # book_id: isbn 
 
-    comments = get_comments(curation)
-
     # NOT USED ANYMORE
     # like_query_result = CurationLike.objects.select_related('user').filter(curation_id=curation.id)
     # like_user_dict = [{'id': instance.user.id, 
@@ -715,7 +710,6 @@ def make_curation_dict(curation):
         'title': curation.title,
         'content': curation.content,
         'date': time_array,
-        'comments': comments,
         'like_count': likeusers.count(), 
     }
     return curation_dict
@@ -1142,7 +1136,6 @@ def article_like(request, article_id):
         article.like_users.add(request.user)
         result_dict = make_article_dict(article)
         send_alarm(request.user,article.author,article_id,'article','like')
-        result_dict['comments'] = get_comments(article)
         result_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
         return JsonResponse(result_dict, status=201)
     
@@ -1156,7 +1149,6 @@ def article_like(request, article_id):
         article = get_object_or_404(Article, id=article_id)
         article.like_users.remove(request.user)
         result_dict = make_article_dict(article)
-        result_dict['comments'] = get_comments(article)
         result_dict['like_or_not'] = article.like_users.all().filter(id=request.user.id).exists()
         return JsonResponse(result_dict, status=200)
 

@@ -4,6 +4,7 @@ const initialState = {
   hasNext: null,
   curations: [],
   selectedCuration: null,
+  comments: [],
   likes: null,
   curationsByUserID: [],
   length: 0,

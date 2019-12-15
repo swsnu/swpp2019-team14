@@ -163,7 +163,7 @@ export const getSpecificArticle = id => dispatch =>
   axios.get(`/api/article/${id}/`).then(res =>
     dispatch({
       type: actionTypes.GET_SPECIFIC_ARTICLE,
-      article: res.data,
+      data: res.data,
     }),
   );
 
@@ -172,12 +172,12 @@ export const editSpecificArticle = article => dispatch =>
   axios.put(`/api/article/${article.id}/`, article).then(res => {
     dispatch({
       type: actionTypes.EDIT_SPECIFIC_ARTICLE,
-      article: res.data,
+      data: res.data,
     });
     if (article.is_long) {
-      dispatch(push(`/review/${res.data.id}`));
+      dispatch(push(`/review/${res.data.article.id}`));
     } else {
-      dispatch(push('/book/' + res.data.book.isbn));
+      dispatch(push('/book/' + res.data.article.book.isbn));
     }
   });
 
@@ -337,7 +337,7 @@ export const postLongReviewComment = comment => dispatch =>
   axios.post('/api/comment/article/', comment).then(res =>
     dispatch({
       type: actionTypes.POST_LONG_REVIEW_COMMENT,
-      article: res.data,
+      comments: res.data,
     }),
   );
 // export const GET_SPECIFIC_LONG_REVIEW_COMMENT = 'GET_SPECIFIC_LONG_REVIEW_COMMENT'

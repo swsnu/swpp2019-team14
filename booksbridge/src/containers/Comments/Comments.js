@@ -32,21 +32,27 @@ class Comments extends Component {
   };
 
   render() {
-    const comments = this.props.comments.map(comment => {
-      return (
-        <CommentUnit
-          key={comment.id}
-          id={comment.id}
-          article_id={this.props.article_id}
-          curation_id={this.props.curation_id}
-          author={comment.author}
-          date={comment.date}
-          content={comment.content}
-          replies={comment.replies}
-          is_article={this.props.is_article}
-        />
-      );
-    });
+    if (this.props.comments === null) return null;
+
+    const comments =
+      this.props.comments.length === 0
+        ? '아직 댓글이 없습니다'
+        : this.props.comments.map(comment => {
+            return (
+              <CommentUnit
+                key={comment.id}
+                id={comment.id}
+                article_id={this.props.article_id}
+                curation_id={this.props.curation_id}
+                author={comment.author}
+                date={comment.date}
+                content={comment.content}
+                replies={comment.replies}
+                is_article={this.props.is_article}
+              />
+            );
+          });
+
     return (
       <div className="Comments">
         <Comment.Group threaded>
