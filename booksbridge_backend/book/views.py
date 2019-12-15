@@ -106,7 +106,7 @@ def signin(request):
         req_data = json.loads(request.body.decode())
         username = req_data['username']
         password = req_data['password']
-        autoLogin = req_data['autoLogin']
+        autoLogin = req_data['auto_login']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -115,7 +115,6 @@ def signin(request):
                 'profile_photo': user.profile.profile_photo.name, 'profile_text': user.profile.profile_text}
             resp = JsonResponse(user_dict, status=200)
             if autoLogin:
-                print("[DEBUG] autoLogin enabled")
                 resp.set_cookie('username', username)
                 resp.set_cookie('password', password)
             return resp

@@ -25,14 +25,13 @@ class Signin extends Component {
     const user = {
       username: this.state.username,
       password: this.state.password,
-      autoLogin: this.state.autoLogin,
+      auto_login: this.state.autoLogin,
     };
     e.preventDefault();
     this.props.onLoginUser(user);
   };
 
   onToggleAutoLogin = () => {
-    console.log('[DEBUG]');
     this.setState({
       ...this.state,
       autoLogin: !this.state.autoLogin,
