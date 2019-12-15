@@ -1316,6 +1316,8 @@ def make_book_dict(book, full):
 @ensure_csrf_cookie
 def token(request):
     if request.method == 'GET':
+        if request.user.is_authenticated:
+            return HttpResponse(status=200)
         return HttpResponse(status=204)
     else:
         return HttpResponseNotAllowed(['GET'])

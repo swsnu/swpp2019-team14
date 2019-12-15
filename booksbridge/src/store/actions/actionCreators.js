@@ -127,14 +127,22 @@ export const deleteBookLike = isbn => dispatch =>
     }),
   );
 
-export const getArticles = page => dispatch =>
-  axios.get(`/api/article/page/${page}/`).then(res =>
-    dispatch({
-      type: actionTypes.GET_ARTICLES,
-      articles: res.data.articles,
-      has_next: res.data.has_next,
-    }),
-  );
+export const getArticles = page => {
+  return dispatch => {
+    return axios
+      .get(`/api/article/page/${page}/`)
+      .then(res => {
+        dispatch({
+          type: actionTypes.GET_ARTICLES,
+          articles: res.data.articles,
+          has_next: res.data.has_next,
+        });
+      })
+      .catch(err => {
+        if (err.response.status === 401) dispatch(push(`/sign-in`));
+      });
+  };
+};
 
 // export const POST_ARTICLE = 'POST_ARTICLE'
 export const postArticle = article => dispatch =>
