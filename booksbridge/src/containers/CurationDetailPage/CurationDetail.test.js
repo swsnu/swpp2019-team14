@@ -56,24 +56,24 @@ const stubInitialState = {
     title: 'TEST_TITLE',
     content: 'TEST_CONTENT',
     date: 'TEST_DATE',
-    comments: [
-      {
-        id: 1,
-        curation: 1,
-        author: {
-          id: 3,
-          username: 'TEST_USER',
-          profile_photo: '',
-          nickname: 'TEST_USER',
-        },
-        content: 'TEST_CONTENT',
-        date: 'TEST_DATE',
-        parent: 1,
-        replies: [],
-      },
-    ],
     likes: { count: 0, users: [] },
   },
+  comments: [
+    {
+      id: 1,
+      curation: 1,
+      author: {
+        id: 3,
+        username: 'TEST_USER',
+        profile_photo: '',
+        nickname: 'TEST_USER',
+      },
+      content: 'TEST_CONTENT',
+      date: 'TEST_DATE',
+      parent: 1,
+      replies: [],
+    },
+  ],
 };
 const mockStore = getMockStore(stubInitialState);
 
