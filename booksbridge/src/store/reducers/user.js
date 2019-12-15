@@ -8,6 +8,8 @@ const initialState = {
   followee_list: [],
   alarms: [],
   bookmarks: [],
+  CurationBookmarks: [],
+  CurationBookmark_count: 0,
   bookmark_count: 0,
   new_alarm: false,
 };
@@ -43,6 +45,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         bookmarks: action.data.articles,
         bookmark_count: action.data.length,
+      };
+    case actionTypes.GET_CURATION_BOOKMARKS:
+      console.log(action.data);
+      return {
+        ...state,
+        CurationBookmarks: action.data.curations,
+        CurationBookmark_count: action.data.length,
       };
     case actionTypes.UPLOAD_PROFILE_IMAGE:
       return {
