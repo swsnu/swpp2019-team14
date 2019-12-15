@@ -92,20 +92,22 @@ class CommentUnit extends Component {
             <Comment.Avatar as="a" src={profile_photo} />
           </a>
           <Comment.Content>
-            <a
-              id="redirect-to-userpage"
-              href={'/page/' + this.props.author.username}
-            >
-              <Comment.Author as="a">
-                {this.props.author.nickname}
-              </Comment.Author>
-            </a>
-            <Comment.Metadata>
-              <span>
-                <Time date={this.props.date} />
-              </span>
-            </Comment.Metadata>
-            <Comment.Text>{this.props.content}</Comment.Text>
+            <div className="CommentContents">
+              <a
+                id="redirect-to-userpage"
+                href={'/page/' + this.props.author.username}
+              >
+                <Comment.Author as="a">
+                  {this.props.author.nickname}
+                </Comment.Author>
+              </a>
+              <Comment.Metadata>
+                <span>
+                  <Time date={this.props.date} />
+                </span>
+              </Comment.Metadata>
+              <Comment.Text>{this.props.content}</Comment.Text>
+            </div>
             <Comment.Actions>
               <a
                 id="show-reply-form"
@@ -117,7 +119,10 @@ class CommentUnit extends Component {
               </a>
             </Comment.Actions>
           </Comment.Content>
-          <Comment.Group>{replies}</Comment.Group>
+
+          <Comment.Group>
+            <div className="CommentReplies">{replies}</div>
+          </Comment.Group>
           {this.state.reply == true ? replyForm : null}
         </Comment>
       </div>

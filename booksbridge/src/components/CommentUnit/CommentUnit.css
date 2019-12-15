@@ -1,7 +1,14 @@
 .ui.comments .comment .avatar img {
   border-radius: 500rem !important;
 }
+.ui.comments .comment .avatar{
+  margin: 0px !important;
+}
 .ReplyTextArea {
-  width: 90% !important;
-  margin-left: 10% !important;
+  width: 95% !important;
+  margin-left: 5% !important;
+}
+
+.CommentContents{
+  margin-left: 40px !important;
 }
