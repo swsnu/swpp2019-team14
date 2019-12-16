@@ -95,7 +95,7 @@ class AddLibraryModal extends Component {
     }
     let title_books_dict = {
       title: this.state.title.trim(),
-      books: this.state.books.trim(),
+      books: this.state.books,
     };
     if (this.state.mode === 'ADD') this.props.onSaveLibrary(title_books_dict);
     else this.props.onEditLibrary(this.props.id, title_books_dict);
