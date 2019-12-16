@@ -4,6 +4,7 @@ const Alarm = props => {
   return (
     <div className={props.alarm.is_new ? 'new-alarm' : 'old-alarm'}>
       <a
+        id="click-alarm"
         href={props.alarm.link}
         onClick={() => props.onClickAlarm(props.alarm.id)}
       >
