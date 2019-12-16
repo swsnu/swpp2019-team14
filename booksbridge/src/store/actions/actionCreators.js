@@ -150,11 +150,7 @@ export const postArticle = article => dispatch =>
       type: actionTypes.POST_ARTICLE,
       article: res.data,
     });
-    if (article.is_long) {
-      dispatch(push(`/review/${res.data.id}`));
-    } else {
-      dispatch(push('/book/' + article.isbn));
-    }
+    dispatch(push(`/review/${res.data.id}`));
   });
 
 // export const GET_SPECIFIC_ARTICLE = 'GET_SPECIFIC_ARTICLE'
