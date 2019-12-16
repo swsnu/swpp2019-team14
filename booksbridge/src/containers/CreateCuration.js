@@ -20,9 +20,7 @@ class CreateCuration extends Component {
   };
 
   onClickCreateButton = () => {
-    if (this.state.bookInCuration.length === 0) {
-      window.alert('책을 한 권 이상 선택해야 합니다.');
-    } else if (this.state.title === '' || this.state.content === '') {
+    if (this.state.title === '' || this.state.content === '') {
       window.alert('제목과 내용을 반드시 입력해야 합니다.');
     } else if (
       (this.state.title !== '' && this.state.title.trim() === '') ||
@@ -39,6 +37,8 @@ class CreateCuration extends Component {
       })
     ) {
       window.alert('책 설명은 1500자 이내여야 합니다.');
+    } else if (this.state.bookInCuration.length === 0) {
+      window.alert('책을 한 권 이상 선택해야 합니다.');
     } else {
       if (
         this.props.match.params.username &&

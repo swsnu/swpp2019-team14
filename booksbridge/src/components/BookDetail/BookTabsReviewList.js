@@ -91,7 +91,7 @@ class BookTabsReviewList extends Component {
     });
 
     return (
-      <div>
+      <div id="book-tabs-review-list">
         {reviews}
         <Pagination
           defaultActivePage={1}
