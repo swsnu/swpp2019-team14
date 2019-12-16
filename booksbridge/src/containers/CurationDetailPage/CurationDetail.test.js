@@ -7,73 +7,81 @@ import { history } from '../../store/store';
 import { Provider } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
 
+const author1 = {
+  id: 2,
+  username: 'www',
+  nickname: 'www',
+  profile_photo:
+    'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+  profile_text: '',
+};
+const author2 = {
+  id: 10,
+  username: 'TEST_USER',
+  profile_photo: '',
+  nickname: 'TEST_USER',
+};
+
+const book1 = {
+  isbn: 9788915092044,
+  title: 'TEST_TITLE',
+  contents: 'TEST_CONTENT',
+  url: 'TEST_URL',
+  thumbnail: null,
+  authors: 'TEST_AUTHOR',
+  publisher: 'TEST_PUBLISHER',
+  published_date: 'TEST_DATE',
+};
+
+const book2 = {
+  isbn: 123456789,
+  title: 'TEST_TITLE',
+  contents: 'TEST_CONTENT',
+  url: 'TEST_URL',
+  thumbnail: null,
+  authors: 'TEST_AUTHOR',
+  publisher: 'TEST_PUBLISHER',
+  published_date: 'TEST_DATE',
+};
+
+const comment = {
+  id: 1,
+  curation: 1,
+  author: {
+    id: 3,
+    username: 'TEST_USER',
+    profile_photo: '',
+    nickname: 'TEST_USER',
+  },
+  content: 'TEST_CONTENT',
+  date: 'TEST_DATE',
+  parent: 1,
+  replies: [],
+};
+
 const stubInitialState = {
   curations: [],
-  logged_in_user: {
-    id: 2,
-    username: 'www',
-    nickname: 'www',
-    profile_photo:
-      'https://react.semantic-ui.com/images/avatar/large/matthew.png',
-    profile_text: '',
-  },
+  logged_in_user: author1,
   selectedCuration: {
     id: 1,
-    author: {
-      id: 2,
-      username: 'TEST_USER',
-      profile_photo: '',
-      nickname: 'TEST_USER',
-    },
+    author: author2,
     books: [
       {
-        book: {
-          isbn: 9788915092044,
-          title: 'TEST_TITLE',
-          contents: 'TEST_CONTENT',
-          url: 'TEST_URL',
-          thumbnail: null,
-          authors: 'TEST_AUTHOR',
-          publisher: 'TEST_PUBLISHER',
-          published_date: 'TEST_DATE',
-        },
+        book: book1,
         content: 'TEST_CONTENT',
       },
       {
-        book: {
-          isbn: 123456789,
-          title: 'TEST_TITLE',
-          contents: 'TEST_CONTENT',
-          url: 'TEST_URL',
-          thumbnail: null,
-          authors: 'TEST_AUTHOR',
-          publisher: 'TEST_PUBLISHER',
-          published_date: 'TEST_DATE',
-        },
+        book: book2,
         content: 'TEST_CONTENT',
       },
     ],
     title: 'TEST_TITLE',
     content: 'TEST_CONTENT',
     date: 'TEST_DATE',
-    likes: { count: 0, users: [] },
+    like_or_not: false,
+    like_count: 10,
   },
-  comments: [
-    {
-      id: 1,
-      curation: 1,
-      author: {
-        id: 3,
-        username: 'TEST_USER',
-        profile_photo: '',
-        nickname: 'TEST_USER',
-      },
-      content: 'TEST_CONTENT',
-      date: 'TEST_DATE',
-      parent: 1,
-      replies: [],
-    },
-  ],
+  comments: [comment],
 };
 const mockStore = getMockStore(stubInitialState);
 
@@ -84,12 +92,38 @@ const stubInitialState2 = {
 };
 const mockStore2 = getMockStore(stubInitialState2);
 
+const stubInitialState3 = {
+  curations: [],
+  logged_in_user: author1,
+  selectedCuration: {
+    id: 1,
+    author: author1,
+    books: [
+      {
+        book: book1,
+        content: 'TEST_CONTENT',
+      },
+      {
+        book: book2,
+        content: 'TEST_CONTENT',
+      },
+    ],
+    title: 'TEST_TITLE',
+    content: 'TEST_CONTENT',
+    date: 'TEST_DATE',
+    like_or_not: true,
+    like_count: 10,
+  },
+  comments: [comment],
+};
+const mockStore3 = getMockStore(stubInitialState3);
+
 describe('<CurationDetailPage/>', () => {
   let page,
-    spyLoadCuration,
     spyPostLikeCuration,
-    spyGetLikeCuration,
-    spyDeleteLikeCuration;
+    spyDeleteLikeCuration,
+    spyDeleteCuration,
+    spyPush;
   beforeEach(() => {
     page = (
       <Provider store={mockStore}>
@@ -98,24 +132,20 @@ describe('<CurationDetailPage/>', () => {
         </ConnectedRouter>
       </Provider>
     );
-    spyLoadCuration = jest
-      .spyOn(actionCreators, 'getSpecificCuration')
-      .mockImplementation(id => {
-        return dispatch => {};
-      });
     spyPostLikeCuration = jest
       .spyOn(actionCreators, 'postCurationLike')
-      .mockImplementation(id => {
-        return dispatch => {};
-      });
-    spyGetLikeCuration = jest
-      .spyOn(actionCreators, 'getCurationLike')
       .mockImplementation(id => {
         return dispatch => {};
       });
     spyDeleteLikeCuration = jest
       .spyOn(actionCreators, 'deleteCurationLike')
       .mockImplementation(id => {
+        return dispatch => {};
+      });
+    spyPush = jest.spyOn(history, 'push').mockImplementation(() => {});
+    spyDeleteCuration = jest
+      .spyOn(actionCreators, 'deleteSpecificCuration')
+      .mockImplementation(() => {
         return dispatch => {};
       });
   });
@@ -149,5 +179,65 @@ describe('<CurationDetailPage/>', () => {
     expect(spyPostLikeCuration).toHaveBeenCalledTimes(1);
     // wrapper.simulate('click');
     // expect(spyDeleteLikeCuration).toHaveBeenCalledTimes(1);
+  });
+
+  it('no edit and delete button for non author', () => {
+    const page3 = (
+      <Provider store={mockStore3}>
+        <ConnectedRouter history={history}>
+          <CurationDetailPage />
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(page3);
+    const wrapper = component.find('.curation-detail-page');
+    expect(wrapper.length).toBe(1);
+  });
+  it('like', () => {
+    const page3 = (
+      <Provider store={mockStore3}>
+        <ConnectedRouter history={history}>
+          <CurationDetailPage />
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(page3);
+    const likeButton = component.find('.CurationLikeButton');
+    likeButton.simulate('click');
+    expect(spyDeleteLikeCuration).toHaveBeenCalledTimes(1);
+  });
+  it('like', () => {
+    const component = mount(page);
+    const likeButton = component.find('.CurationLikeButton');
+    likeButton.simulate('click');
+    expect(spyPostLikeCuration).toHaveBeenCalledTimes(1);
+  });
+  it('click delete button', () => {
+    const page3 = (
+      <Provider store={mockStore3}>
+        <ConnectedRouter history={history}>
+          <CurationDetailPage />
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(page3);
+    console.log(component.debug());
+    const button = component.find('#redirect-delete-curation').at(0);
+    button.simulate('click');
+    expect(spyDeleteCuration).toHaveBeenCalledTimes(1);
+    expect(spyPush).toHaveBeenCalledTimes(1);
+  });
+  it('click edit button', () => {
+    const page3 = (
+      <Provider store={mockStore3}>
+        <ConnectedRouter history={history}>
+          <CurationDetailPage />
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(page3);
+    const button = component.find('#redirect-edit-curation').at(0);
+    button.simulate('click');
+    expect(spyPush).toHaveBeenCalledTimes(1);
   });
 });
