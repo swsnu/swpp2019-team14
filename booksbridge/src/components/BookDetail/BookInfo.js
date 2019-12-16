@@ -15,12 +15,14 @@ class BookInfo extends Component {
       <div className="BookInfoContainer">
         <div style={{ textAlign: 'left' }}>
           {this.props.thumbnail === '' ? (
+            /* Need to confirm no_cover.jpg is currently on the remote */
             <Image src="/images/no_cover.jpg" className="imageStyle" />
           ) : (
             <Image src={this.props.thumbnail} className="imageStyle" />
           )}
         </div>
         <div style={{ textAlign: 'right' }}>
+          {/* Need to confirm BookInfoStyle is currently on the remote */}
           <div className="BookInfoStyle">
             <div className="BookInfoText">
               <div className="BookTitleStyle">{this.props.title}</div>
