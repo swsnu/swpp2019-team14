@@ -77,7 +77,7 @@ describe('<OcrModal />', () => {
     const copyButton = component.find('#copy').at(0);
     copyButton.simulate('click');
     const modalInstance = component.find(OcrModal.WrappedComponent).instance();
-    expect(modalInstance.state.open).toEqual(false);
+    expect(modalInstance.state.open).toEqual(true);
   });
   it('should run ocr', () => {
     const component = mount(modal);

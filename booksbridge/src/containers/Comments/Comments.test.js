@@ -75,7 +75,7 @@ describe('<Comments />', () => {
     const component = mount(comments);
     const wrapper = component.find('button.ReplyButton');
     wrapper.simulate('click');
-    expect(spyAlert).toHaveBeenCalledWith('Content is empty.');
+    expect(spyAlert).toHaveBeenCalledWith('내용을 반드시 입력하셔야 합니다.');
   });
   it(`submit with correct input`, () => {
     const content = 'comment example';
