@@ -14,6 +14,8 @@ class Comments extends Component {
     if (this.state.content !== '') {
       if (this.state.content.trim() === '') {
         window.alert('공백 문자로만 이루어진 내용은 허용되지 않습니다.');
+      } else if (this.state.content.trim().length > 1500) {
+        window.alert('댓글은 1500글자 이내여야 합니다.');
       } else {
         if (this.props.is_article) {
           this.props.onPostComment({

@@ -78,7 +78,6 @@ class AddLibraryModal extends Component {
       ...this.state,
       books: this.state.books.concat(book),
     });
-    console.log('[DEBUG] asdf');
     this.props.onEmptySelectedBook();
   };
 
@@ -90,6 +89,10 @@ class AddLibraryModal extends Component {
   };
 
   save = () => {
+    if (this.state.title.trim().length > 40) {
+      window.alert('제목은 40자 이내여야 합니다.');
+      return;
+    }
     let title_books_dict = {
       title: this.state.title.trim(),
       books: this.state.books.trim(),
