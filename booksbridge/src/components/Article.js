@@ -26,7 +26,13 @@ const Article = props => {
             <div className="item">
               <div className="book_cover">
                 <a id="book-cover" href={'/book/' + props.book_isbn}>
-                  <img src={props.book_thumbnail} />
+                  <img
+                    src={
+                      props.book_thumbnail
+                        ? props.book_thumbnail
+                        : '/images/no_cover.jpg'
+                    }
+                  />
                 </a>
               </div>
               <div className="MainArticle">
