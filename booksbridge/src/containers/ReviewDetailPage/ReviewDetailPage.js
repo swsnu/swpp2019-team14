@@ -39,6 +39,7 @@ class ReviewDetailPage extends Component {
 
     const LikeButton = like_or_not ? (
       <div
+        className="like-review-page"
         onClick={() =>
           this.onClickLikeArticleButton(
             like_or_not,
@@ -51,6 +52,7 @@ class ReviewDetailPage extends Component {
       </div>
     ) : (
       <div
+        className="like-review-page"
         onClick={() =>
           this.onClickLikeArticleButton(
             like_or_not,
@@ -130,6 +132,7 @@ class ReviewDetailPage extends Component {
                     position={'top center'}
                     trigger={
                       <Icon
+                        id="delete-review-page"
                         name="delete"
                         onClick={() => this.setState({ delete_confirm: true })}
                       />

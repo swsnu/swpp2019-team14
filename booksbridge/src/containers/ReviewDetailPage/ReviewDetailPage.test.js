@@ -21,6 +21,7 @@ const stubInitialState = {
     content: 'REVIEW CONTENT',
     title: 'REVIEW TITLE',
     date: [0, 0, 0, 0, 0],
+    is_long: true,
     like_count: 1,
     like_or_not: true,
     author: { username: 'TEST', profile_photo: 'TEST', nickname: 'TEST' },
@@ -28,11 +29,37 @@ const stubInitialState = {
   comments: [],
   logged_in_user: { username: 'TEST', profile_photo: 'TEST', nickname: 'TEST' },
 };
-
 const mockStore = getMockStore(stubInitialState);
 
+const stubInitialState2 = {
+  selectedArticle: {
+    book: {
+      isbn: 1,
+      title: 'TITLE',
+      authors: 'AUTHOR',
+      publisher: 'PUBLISHER',
+      publishedDate: '20190101',
+      thumbnail: '',
+    },
+    content: 'REVIEW CONTENT',
+    date: [0, 0, 0, 0, 0],
+    like_count: 1,
+    like_or_not: false,
+    is_long: false,
+    author: { username: 'TEST', profile_photo: 'TEST', nickname: 'TEST' },
+  },
+  comments: [],
+  logged_in_user: { username: 'TES', profile_photo: 'TES', nickname: 'TES' },
+};
+const mockStore2 = getMockStore(stubInitialState2);
+
 describe('<ReviewDetailPage />', () => {
-  let reviewdetailpage, spyGetArticle;
+  let reviewdetailpage,
+    spyGetArticle,
+    spyLikeArticle,
+    spyUnlikeArticle,
+    spyPush,
+    spyDeleteArticle;
   beforeEach(() => {
     reviewdetailpage = (
       <Provider store={mockStore}>
@@ -46,6 +73,24 @@ describe('<ReviewDetailPage />', () => {
       .mockImplementation(() => {
         return dispatch => {};
       });
+    spyLikeArticle = jest
+      .spyOn(actionCreators, 'postArticleLike')
+      .mockImplementation(() => {
+        return dispatch => {};
+      });
+    spyUnlikeArticle = jest
+      .spyOn(actionCreators, 'deleteArticleLike')
+      .mockImplementation(() => {
+        return dispatch => {};
+      });
+    spyDeleteArticle = jest
+      .spyOn(actionCreators, 'deleteSpecificArticle')
+      .mockImplementation(() => {
+        return dispatch => {};
+      });
+    spyPush = jest.spyOn(history, 'push').mockImplementation(() => {
+      return dispatch => {};
+    });
   });
 
   it('should render review detail page without errors', () => {
@@ -74,5 +119,32 @@ describe('<ReviewDetailPage />', () => {
       </Provider>,
     );
     expect(component.find('Spinner').length).toBe(1);
+  });
+  it('should like ', () => {
+    const component = mount(reviewdetailpage);
+    const button = component.find('.like-review-page');
+    button.simulate('click');
+    expect(spyUnlikeArticle).toHaveBeenCalledTimes(1);
+  });
+  it('should like ', () => {
+    const component = mount(
+      <Provider store={mockStore2}>
+        <ConnectedRouter history={history}>
+          <ReviewDetailPage />
+        </ConnectedRouter>
+      </Provider>,
+    );
+    const button = component.find('.like-review-page');
+    button.simulate('click');
+    expect(spyLikeArticle).toHaveBeenCalledTimes(1);
+  });
+  it('should delete', () => {
+    const component = mount(reviewdetailpage);
+    const button = component.find('#delete-review-page').at(0);
+    button.simulate('click');
+    const confirm = component.find('Button[content="삭제"]').at(0);
+    confirm.simulate('click');
+    expect(spyDeleteArticle).toHaveBeenCalledTimes(1);
+    expect(spyPush).toHaveBeenCalledTimes(1);
   });
 });
