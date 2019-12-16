@@ -75,7 +75,7 @@ const BookTabsReview = props => {
                 <div>
                   <span>{props.book_title}</span>
                 </div>
-                {props.is_phrase ? (
+                {!props.is_long ? (
                   <div className="PhraseContent">{props.content}</div>
                 ) : (
                   <div className="ReviewContent">{props.content}</div>

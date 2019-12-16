@@ -27,7 +27,7 @@ const UserCurationSummary = props => {
       <div className="CurationSummary">
         <div className="CurationSummaryHeader">
           <a href={'/curation/' + props.id}>
-            <h3 className="CurationTitle">{props.title}</h3>
+            <p className="CurationTitle">{props.title}</p>
           </a>
           <div className="UserPageEditDeleteButton">
             {props.author.username === props.logged_in_user.username ? (

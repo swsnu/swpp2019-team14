@@ -12,9 +12,12 @@
   color: rgb(72, 72, 72);
 }
 .CurationTitle {
+  font-size: 24px;
   font-family: 'NanumSquare', sans-serif;
+  text-overflow: ellipsis;
   color: black !important;
   font-weight: 900;
+  word-wrap: break-word;
 }
 .CurationContent {
   font-family: 'Nanum Gothic', sans-serif;

@@ -15,6 +15,7 @@
   font-family: 'NanumSquare', sans-serif;
   color: black !important;
   font-weight: 900;
+  word-wrap: break-word;
 }
 .ShortContent {
   font-family: 'Nanum Gothic', sans-serif;
