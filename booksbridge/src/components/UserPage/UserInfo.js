@@ -53,7 +53,7 @@ class UserInfo extends Component {
       const profile = {
         id: user.id,
         nickname: this.state.nickname,
-        profile_text: this.state.comment,
+        profile_text: this.state.comments,
         profile_photo: user.profile_photo,
       };
       this.props.onEditProfile(profile);

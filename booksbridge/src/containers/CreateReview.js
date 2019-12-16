@@ -31,8 +31,8 @@ class CreateReview extends Component {
     if (this.state.type === 'long-review') {
       this.props.onPostArticle({
         isbn: this.props.selectedBook.isbn,
-        title: this.state.title,
-        content: this.state.content,
+        title: this.state.title.trim(),
+        content: this.state.content.trim(),
         is_long: true,
         is_short: false,
         is_phrase: false,
@@ -42,7 +42,7 @@ class CreateReview extends Component {
       this.props.onPostArticle({
         isbn: this.props.selectedBook.isbn,
         title: '',
-        content: this.state.content,
+        content: this.state.content.trim(),
         is_long: false,
         is_short: this.state.type === 'short-review',
         is_phrase: this.state.type === 'phrase',
@@ -62,9 +62,17 @@ class CreateReview extends Component {
     } else if (this.state.type === 'long-review') {
       if (this.state.title === '')
         window.alert('제목을 반드시 입력해야 합니다.');
+      else if (this.state.title !== '' && this.state.title.trim() === '')
+        window.alert('공백 문자로만 이루어진 제목은 허용되지 않습니다.');
+      else if (this.state.title.trim().length > 40)
+        window.alert('제목은 40자 이내여야 합니다.');
       else if (this.state.content === '')
         window.alert('내용을 반드시 작성해야 합니다.');
-      else if (this.state.content.length < 140) {
+      else if (this.state.content !== '' && this.state.content.trim() === '')
+        window.alert('공백 문자로만 이루어진 내용은 허용되지 않습니다.');
+      else if (this.state.content.trim().length > 5000)
+        window.alert('내용은 5000자 이내여야 합니다.');
+      else if (this.state.content.trim().length < 140) {
         window.alert('긴 리뷰는 140자 이상 작성해야 합니다.');
       } else {
         this.setState({ ...this.state, confirm: true });
@@ -72,12 +80,20 @@ class CreateReview extends Component {
     } else if (this.state.type === 'short-review') {
       if (this.state.content === '')
         window.alert('내용을 반드시 작성해야 합니다.');
-      else if (this.state.content.length > 140) {
+      else if (this.state.content !== '' && this.state.content.trim() === '')
+        window.alert('공백 문자로만 이루어진 내용은 허용되지 않습니다.');
+      else if (this.state.content.trim().length > 5000)
+        window.alert('내용은 5000자 이내여야 합니다.');
+      else if (this.state.content.trim().length > 140) {
         window.alert('짧은 리뷰는 140자를 넘을 수 없습니다.');
       } else this.setState({ ...this.state, confirm: true });
     } else {
       if (this.state.content === '')
         window.alert('내용을 반드시 작성해야 합니다.');
+      else if (this.state.content !== '' && this.state.content.trim() === '')
+        window.alert('공백 문자로만 이루어진 내용은 허용되지 않습니다.');
+      else if (this.state.content.trim().length > 5000)
+        window.alert('내용은 5000자 이내여야 합니다.');
       else this.setState({ ...this.state, confirm: true });
     }
   };
@@ -160,6 +176,22 @@ class CreateReview extends Component {
       </div>
     );
 
+    const currentContentLength =
+      this.state.content.trim().length === 0 ||
+      (this.state.type === 'short-review' &&
+        this.state.content.trim().length > 140) ||
+      (this.state.type === 'long-review' &&
+        this.state.content.trim().length < 140) ||
+      this.state.content.trim().length > 5000 ? (
+        <div className="CreateReviewContentHeaderCurrentLengthIllegal">
+          현재 글자 수: {this.state.content.trim().length}자
+        </div>
+      ) : (
+        <div className="CreateReviewContentHeaderCurrentLength">
+          현재 글자 수: {this.state.content.trim().length}자
+        </div>
+      );
+
     return (
       <div className="CreateReview">
         <Header />
@@ -203,7 +235,10 @@ class CreateReview extends Component {
               ) : null}
               <br />
               <div className="field">
-                <label className="FormLabel">리뷰 내용</label>
+                <div className="CreateReviewContentHeader">
+                  <label className="FormLabel">리뷰 내용</label>
+                  {this.state.type === 'phrase' ? null : currentContentLength}
+                </div>
                 <TextArea
                   id="review-content"
                   name="content"
@@ -221,7 +256,7 @@ class CreateReview extends Component {
                 color={'black'}
                 className="SubmitButton"
                 id="create-review"
-                content="Submit"
+                content="리뷰 만들기"
                 onClick={this.confirm_open}
               />
               <Confirm
@@ -232,7 +267,7 @@ class CreateReview extends Component {
                 size={'large'}
                 cancelButton="취소"
                 confirmButton="작성"
-                content="이대로 리뷰를 올리시겠습니까? 올린 후, 리뷰의 종류(Long Review/Short Reivew/Phrase)는 수정할 수 없습니다."
+                content="이대로 리뷰를 올리시겠습니까? 올린 후, 리뷰의 종류(Long Review/Short Review/Phrase)는 수정할 수 없습니다."
               />
             </Form>
           </div>

@@ -24,28 +24,42 @@ class CreateCuration extends Component {
       window.alert('책을 한 권 이상 선택해야 합니다.');
     } else if (this.state.title === '' || this.state.content === '') {
       window.alert('제목과 내용을 반드시 입력해야 합니다.');
+    } else if (
+      (this.state.title !== '' && this.state.title.trim() === '') ||
+      (this.state.content !== '' && this.state.content.trim() === '')
+    ) {
+      window.alert('공백 문자로만 이루어진 제목이나 내용은 허용되지 않습니다.');
+    } else if (this.state.title.trim().length > 40) {
+      window.alert('제목은 40자 이내여야 합니다.');
+    } else if (this.state.content.trim().length > 5000) {
+      window.alert('내용은 5000자 이내여야 합니다.');
+    } else if (
+      this.state.bookInCuration.some(isbn_content_pair => {
+        return isbn_content_pair.content.trim().length > 1500;
+      })
+    ) {
+      window.alert('책 설명은 1500자 이내여야 합니다.');
     } else {
       if (
         this.props.match.params.username &&
         this.props.match.params.curation_id
       ) {
         this.props.onEditCuration({
-          title: this.state.title,
-          content: this.state.content,
+          title: this.state.title.trim(),
+          content: this.state.content.trim(),
           isbn_content_pairs: this.state.bookInCuration,
           curation_id: this.props.match.params.curation_id,
         });
       } else {
         this.props.onPostCuration({
-          title: this.state.title,
-          content: this.state.content,
+          title: this.state.title.trim(),
+          content: this.state.content.trim(),
           isbn_content_pairs: this.state.bookInCuration,
         });
       }
     }
   };
 
-  // TODO: recursive call to onEdit and setState
   async onEdit() {
     await this.props.onLoadCuration(this.props.match.params.curation_id);
     this.setState({
