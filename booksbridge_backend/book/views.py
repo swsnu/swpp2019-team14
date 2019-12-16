@@ -1182,12 +1182,13 @@ def bookmark(request, username, page):
         return HttpResponse(status=401)
 
     if request.method == 'GET':
-        user = User.objects.get(username=username)
-        article_list = user.article_set.all().order_by('-id')
-        paginator = Paginator(article_list, 5)
+        user = get_object_or_404(User, username=username)
+        like_list = ArticleLike.objects.filter(user=user).order_by('-id')
+        paginator = Paginator(like_list, 5)
         results = paginator.get_page(page)
         articles = list()
-        for article in results:
+        for like in results:
+            article = like.article
             deltatime = datetime.now() - article.date
             time_array = [deltatime.days//365,deltatime.days//30,deltatime.days,deltatime.seconds//3600,deltatime.seconds//60]
             author_dict = make_user_dict(article.author)
@@ -1204,7 +1205,7 @@ def bookmark(request, username, page):
                 'is_phrase': article.is_phrase,
             }
             articles.append(article_dict)
-            response_dict = {'articles':articles, 'length':article_list.count()}
+            response_dict = {'articles':articles, 'length':like_list.count()}
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -1215,14 +1216,15 @@ def curation_bookmark(request, username, page):
 
     if request.method == 'GET':
         user = User.objects.get(username=username)
-        curation_list = user.curation_set.all().order_by('-id')
-        paginator = Paginator(curation_list, 5)
+        like_list = CurationLike.objects.filter(user=user).order_by('-id')
+        paginator = Paginator(like_list, 5)
         results = paginator.get_page(page)
         curations = list()
-        for curation in results:
+        for like in results:
+            curation = like.curation
             curation_dict = make_curation_dict(curation)
             curations.append(curation_dict) 
-        response_dict = {'curations': curations, 'length': curation_list.count()}
+        response_dict = {'curations': curations, 'length': like_list.count()}
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
