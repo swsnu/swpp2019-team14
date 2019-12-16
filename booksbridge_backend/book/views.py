@@ -180,7 +180,7 @@ def searchbooks(request,keyword,page):
                             thumbnail = book['thumbnail'],
                             authors = ' '.join(book['authors']),
                             publisher = book['publisher'],
-                            published_date = book['datetime'][0:9],
+                            published_date = book['datetime'][0:10],
                         )
                     except ValueError:
                         new_book = Book(
@@ -191,7 +191,7 @@ def searchbooks(request,keyword,page):
                             thumbnail = book['thumbnail'],
                             authors = ' '.join(book['authors']),
                             publisher = book['publisher'],
-                            published_date = book['datetime'][0:9],
+                            published_date = book['datetime'][0:10],
                         )
                     new_book.save()
                     book_dict = make_book_dict(new_book, False)

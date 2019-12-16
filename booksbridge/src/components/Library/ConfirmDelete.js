@@ -21,9 +21,9 @@ class ConfirmDelete extends Component {
         </Button>
         <Confirm
           open={this.state.open}
-          content="정말 이 라이브러리를 지우시겠어요?"
-          cancelButton="아..아니요..."
-          confirmButton="가즈아!!!"
+          content="이 라이브러리를 삭제합니까?"
+          cancelButton="취소"
+          confirmButton="삭제"
           onCancel={this.handleCancel}
           onConfirm={this.handleConfirm}
           className="Confirmation"

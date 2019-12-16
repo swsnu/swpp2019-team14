@@ -82,8 +82,8 @@ class OcrModal extends Component {
     this.setState({
       ...this.state,
       file: null,
-      open: false,
-      imageShow: true,
+      open: true,
+      imageShow: false,
       image: null,
       run: false,
     });
