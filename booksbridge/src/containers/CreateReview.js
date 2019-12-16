@@ -46,7 +46,7 @@ class CreateReview extends Component {
         is_long: false,
         is_short: this.state.type === 'short-review',
         is_phrase: this.state.type === 'phrase',
-        is_spoiler: false,
+        is_spoiler: this.state.spoiler,
       });
     }
   };
@@ -251,7 +251,7 @@ class CreateReview extends Component {
               </div>
 
               <OcrModal id="ocr-modal" />
-              {this.state.type === 'long-review' ? SpoilerCheckbox : null}
+              {this.state.type !== 'phrase' ? SpoilerCheckbox : null}
               <Button
                 color={'black'}
                 className="SubmitButton"

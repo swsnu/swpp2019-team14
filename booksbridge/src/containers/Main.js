@@ -110,7 +110,7 @@ class Main extends React.Component {
               id="createReviewLogo"
               className="createReviewLogo"
               src="/images/create-review-image.jpg"
-              width="600"
+              width="100%"
             />
           </a>
           <br />
@@ -119,7 +119,7 @@ class Main extends React.Component {
               id="createCurationLogo"
               className="createCurationLogo"
               src="/images/create-curation-image.jpg"
-              width="600"
+              width="100%"
             />
           </a>
           <InfiniteScroll
@@ -130,7 +130,7 @@ class Main extends React.Component {
             loader={<Spinner animation="border" />}
             endMessage={
               <p style={{ textAlign: 'center' }}>
-                <b>Yay! You have seen it all</b>
+                <b>모든 글을 보셨습니다.</b>
               </p>
             }
           >

@@ -88,6 +88,7 @@ const stubInitialState = {
       is_phrase: false,
     },
   ],
+  CurationBookmarks: [],
   length: 6,
 };
 

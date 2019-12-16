@@ -138,14 +138,21 @@ class ReviewDetailPage extends Component {
                 </div>
               ) : null}
             </div>
-            <div className="ReviewComments">
-              <Comments
-                comments={this.props.comments}
-                article_id={this.props.match.params.review_id}
-                is_article={true}
-                logged_in_user={this.props.logged_in_user}
-              />
-            </div>
+
+            {this.props.currentArticle.is_long ? (
+              <div className="ReviewComments">
+                <Comments
+                  comments={this.props.comments}
+                  article_id={this.props.match.params.review_id}
+                  is_article={true}
+                  logged_in_user={this.props.logged_in_user}
+                />
+              </div>
+            ) : (
+              <p style={{ textAlign: 'center' }}>
+                Short Review와 Phrase는 댓글 기능을 지원하지 않습니다.
+              </p>
+            )}
           </div>
         </div>
       </div>
