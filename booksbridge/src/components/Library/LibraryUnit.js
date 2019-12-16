@@ -7,8 +7,12 @@ import './LibraryUnit.css';
 
 const LibraryUnit = props => {
   let images_html = props.library.books.slice(0, 5).map((book, _index) => {
-    return (
+    return props.authorize ? (
       <a className="BookCoverWrapper" key={_index} href={'/book/' + book.isbn}>
+        <Image src={book.thumbnail} className="BookCover" />
+      </a>
+    ) : (
+      <a className="BookCoverWrapper" key={_index}>
         <Image src={book.thumbnail} className="BookCover" />
       </a>
     );
