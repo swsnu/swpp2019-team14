@@ -68,10 +68,15 @@ class UserPage extends Component {
 
   handleBookmarkPaginationChange = (e, { activePage }) => {
     this.setState({ ...this.state, activeBookmarkPage: activePage });
+    this.props.onLoadBookmarks(activePage, this.props.match.params.username);
   };
 
   handleCurationBookmarkPaginationChange = (e, { activePage }) => {
-    this.setState({ ...this.state, activeBookmarkPage: activePage });
+    this.setState({ ...this.state, activeCurationBookmarkPage: activePage });
+    this.props.onLoadCurationBookmarks(
+      activePage,
+      this.props.match.params.username,
+    );
   };
 
   render() {
