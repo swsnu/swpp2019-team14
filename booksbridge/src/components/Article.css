@@ -55,7 +55,8 @@
   width: 75%;
 }
 .MainArticleContent {
-  display: inline-block;
+  white-space: pre-wrap;
+  
   overflow: hidden;
   text-overflow: ellipsis;
 

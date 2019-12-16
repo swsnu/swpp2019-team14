@@ -177,11 +177,7 @@ export const editSpecificArticle = article => dispatch =>
       type: actionTypes.EDIT_SPECIFIC_ARTICLE,
       data: res.data,
     });
-    if (article.is_long) {
-      dispatch(push(`/review/${res.data.article.id}`));
-    } else {
-      dispatch(push('/book/' + res.data.article.book.isbn));
-    }
+    dispatch(push(`/review/${res.data.article.id}`));
   });
 
 // export const DELETE_SPECIFIC_ARTICLE = 'DELETE_SPECIFIC_ARTICLE'

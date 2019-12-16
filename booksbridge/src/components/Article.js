@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Image, Icon } from 'semantic-ui-react';
+import { Image, Icon, Reveal } from 'semantic-ui-react';
 import * as actionCreators from '../store/actions/actionCreators';
 import './Article.css';
 import Alert from 'react-bootstrap/Alert';
@@ -45,7 +45,12 @@ const Article = props => {
                 <div className="MainArticleContent">
                   <div className="content">
                     {props.is_spoiler ? (
-                      <Image src="/images/short-paragraph.png" />
+                      <Reveal animated="move down">
+                        <Reveal.Content visible>
+                          <Image src="/images/short-paragraph.jpg" />
+                        </Reveal.Content>
+                        <Reveal.Content hidden>{props.content}</Reveal.Content>
+                      </Reveal>
                     ) : (
                       props.content
                     )}
