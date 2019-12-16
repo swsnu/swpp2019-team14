@@ -91,7 +91,13 @@ class CurationDetailPage extends Component {
         <Popup
           content="수정"
           position={'top center'}
-          trigger={<Icon onClick={this.handleEditCuration} name="pencil" />}
+          trigger={
+            <Icon
+              id="redirect-edit-curation"
+              onClick={this.handleEditCuration}
+              name="pencil"
+            />
+          }
         />
       ) : null;
 
@@ -100,7 +106,13 @@ class CurationDetailPage extends Component {
         <Popup
           content="삭제"
           position={'top center'}
-          trigger={<Icon name="delete" onClick={this.handleDeleteCuration} />}
+          trigger={
+            <Icon
+              id="redirect-delete-curation"
+              name="delete"
+              onClick={this.handleDeleteCuration}
+            />
+          }
         />
       ) : null;
 

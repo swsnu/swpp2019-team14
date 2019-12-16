@@ -273,7 +273,8 @@ describe('<EditReview />', () => {
     // expect(instance.state.content).toEqual(content);
     const edit = component.find('Button[content="수정"]').at(0);
     expect(edit.length).toBe(1); //
-    expect(spyEditArticle).toHaveBeenCalledTimes(0);
+    edit.simulate('click');
+    expect(spyEditArticle).toHaveBeenCalledTimes(1);
     expect(spyAlert).toHaveBeenCalledTimes(0); //
   });
   it('should not edit phrase review with empty content', () => {
@@ -294,7 +295,8 @@ describe('<EditReview />', () => {
     // expect(instance.state.content).toEqual(content);
     const edit = component.find('Button[content="수정"]').at(0);
     expect(edit.length).toBe(1); //
-    expect(spyEditArticle).toHaveBeenCalledTimes(0);
+    edit.simulate('click');
+    expect(spyEditArticle).toHaveBeenCalledTimes(1);
     expect(spyAlert).toHaveBeenCalledTimes(0); //
   });
 });

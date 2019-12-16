@@ -6,7 +6,7 @@ import re
 import urllib
 import requests
 from .models import *
-from .text_detection import *
+from text_detection import run_text_detection, run_text_detection_url
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404, get_list_or_404
