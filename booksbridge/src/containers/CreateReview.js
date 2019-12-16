@@ -232,7 +232,7 @@ class CreateReview extends Component {
                 size={'large'}
                 cancelButton="취소"
                 confirmButton="작성"
-                content="이대로 리뷰를 올리시겠습니까? 올린 후, 리뷰의 종류(Long Review/Short Reivew/Phrase)는 수정할 수 없습니다."
+                content="이대로 리뷰를 올리시겠습니까? 올린 후, 리뷰의 종류(Long Review/Short Review/Phrase)는 수정할 수 없습니다."
               />
             </Form>
           </div>
