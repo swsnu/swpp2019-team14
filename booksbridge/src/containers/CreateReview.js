@@ -176,6 +176,22 @@ class CreateReview extends Component {
       </div>
     );
 
+    const currentContentLength =
+      this.state.content.trim().length === 0 ||
+      (this.state.type === 'short-review' &&
+        this.state.content.trim().length > 140) ||
+      (this.state.type === 'long-review' &&
+        this.state.content.trim().length < 140) ||
+      this.state.content.trim().length > 5000 ? (
+        <div className="CreateReviewContentHeaderCurrentLengthIllegal">
+          현재 글자 수: {this.state.content.trim().length}자
+        </div>
+      ) : (
+        <div className="CreateReviewContentHeaderCurrentLength">
+          현재 글자 수: {this.state.content.trim().length}자
+        </div>
+      );
+
     return (
       <div className="CreateReview">
         <Header />
@@ -219,7 +235,10 @@ class CreateReview extends Component {
               ) : null}
               <br />
               <div className="field">
-                <label className="FormLabel">리뷰 내용</label>
+                <div className="CreateReviewContentHeader">
+                  <label className="FormLabel">리뷰 내용</label>
+                  {this.state.type === 'phrase' ? null : currentContentLength}
+                </div>
                 <TextArea
                   id="review-content"
                   name="content"
