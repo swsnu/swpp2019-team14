@@ -15,10 +15,13 @@ const CurationSummary = props => {
       <Carousel.Item className="curation-summary-items">
         <Image.Group className="curation-summary-images">
           {book_set.map(book => {
+            let cover;
+            if (book.thumbnail === '') cover = '/images/no_cover.jpg';
+            else cover = book.thumbnail;
             return (
               <Image
                 href={'/book/' + book.isbn}
-                src={book.thumbnail}
+                src={cover}
                 alt="First slide"
                 className="curation-summary-image"
                 centered

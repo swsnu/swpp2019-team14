@@ -237,7 +237,7 @@ export const getCurations = page => dispatch =>
     dispatch({
       type: actionTypes.GET_CURATIONS,
       curations: res.data.curations,
-      has_next: res.data.has_next,
+      hasNext: res.data.has_next,
     }),
   );
 

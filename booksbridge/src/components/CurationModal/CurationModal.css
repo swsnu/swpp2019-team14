@@ -49,6 +49,10 @@
 .selected-book-modal-content {
   max-height: 90% !important;
 }
+.curation-modal-scroll {
+  overflow-y: scroll;
+  height: 100%;
+}
 @media only screen and (max-width: 600px) {
   #curation-modal {
     flex-direction: column;

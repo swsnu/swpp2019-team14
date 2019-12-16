@@ -90,27 +90,29 @@ class CurationModal extends Component {
                     eventKey="second"
                   >
                     <div className="search-book-tab">
-                      {this.props.libraries ? (
-                        this.props.libraries.map((library, index) => (
-                          <a
-                            onClick={() => {
-                              this.setState((state, props) => ({
-                                selectedBooks: state.selectedBooks.concat(
-                                  library.books,
-                                ),
-                              }));
-                            }}
-                          >
-                            <LibraryUnit
-                              library={library}
-                              index={index}
-                              authorize={false}
-                            />
-                          </a>
-                        ))
-                      ) : (
-                        <p>라이브러리가 없습니다.</p>
-                      )}
+                      <div className="curation-modal-scroll">
+                        {this.props.libraries ? (
+                          this.props.libraries.map((library, index) => (
+                            <a
+                              onClick={() => {
+                                this.setState((state, props) => ({
+                                  selectedBooks: state.selectedBooks.concat(
+                                    library.books,
+                                  ),
+                                }));
+                              }}
+                            >
+                              <LibraryUnit
+                                library={library}
+                                index={index}
+                                authorize={false}
+                              />
+                            </a>
+                          ))
+                        ) : (
+                          <p>라이브러리가 없습니다.</p>
+                        )}
+                      </div>
                     </div>
                     <Button
                       className="close-select-book-button"
@@ -127,28 +129,30 @@ class CurationModal extends Component {
                     eventKey="third"
                   >
                     <div className="search-book-tab">
-                      {this.props.likedBooks
-                        ? this.props.likedBooks.map(book => {
-                            return (
-                              <BookResultSummary
-                                cover={book.thumbnail}
-                                title={book.title}
-                                authors={book.authors}
-                                publisher={book.publisher}
-                                isbn={book.isbn}
-                                direct={false}
-                                size="small"
-                                click={() => {
-                                  this.setState((state, props) => ({
-                                    selectedBooks: state.selectedBooks.concat(
-                                      book,
-                                    ),
-                                  }));
-                                }}
-                              />
-                            );
-                          })
-                        : null}
+                      <div className="curation-modal-scroll">
+                        {this.props.likedBooks
+                          ? this.props.likedBooks.map(book => {
+                              return (
+                                <BookResultSummary
+                                  cover={book.thumbnail}
+                                  title={book.title}
+                                  authors={book.authors}
+                                  publisher={book.publisher}
+                                  isbn={book.isbn}
+                                  direct={false}
+                                  size="small"
+                                  click={() => {
+                                    this.setState((state, props) => ({
+                                      selectedBooks: state.selectedBooks.concat(
+                                        book,
+                                      ),
+                                    }));
+                                  }}
+                                />
+                              );
+                            })
+                          : null}
+                      </div>
                     </div>
                     <Button
                       className="close-select-book-button"
