@@ -30,6 +30,7 @@
 }
 
 .curation-detail-title {
+  word-wrap:break-word;
   width: 100%;
   font-family: 'NanumSquare', sans-serif;
   font-weight: 700;
@@ -42,10 +43,12 @@
 }
 
 .curation-detail-content {
+  word-wrap:break-word;
   font-family: 'NanumSquare', sans-serif;
   padding-top: 3%;
 }
 .book-and-content {
+  word-wrap:break-word;
   padding-top: 5%;
 }
 .CurationLikeButton {
