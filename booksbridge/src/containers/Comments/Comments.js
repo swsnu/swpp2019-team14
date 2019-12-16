@@ -33,7 +33,7 @@ class Comments extends Component {
         this.setState({ content: '' });
       }
     } else {
-      window.alert('내용을 반드시 입력하셔아 합니다.');
+      window.alert('내용을 반드시 입력하셔야 합니다.');
     }
   };
 
