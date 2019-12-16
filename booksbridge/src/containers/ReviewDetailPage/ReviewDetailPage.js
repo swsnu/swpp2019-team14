@@ -149,7 +149,9 @@ class ReviewDetailPage extends Component {
                 />
               </div>
             ) : (
-              'Short Review와 Phrase는 댓글 기능을 지원하지 않습니다.'
+              <p style={{ textAlign: 'center' }}>
+                Short Review와 Phrase는 댓글 기능을 지원하지 않습니다.
+              </p>
             )}
           </div>
         </div>
