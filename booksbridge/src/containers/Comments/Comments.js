@@ -11,23 +11,27 @@ class Comments extends Component {
     content: '',
   };
   onClickPostComment = () => {
-    if (this.state.content != '') {
-      if (this.props.is_article) {
-        this.props.onPostComment({
-          article_id: this.props.article_id,
-          content: this.state.content,
-          parent_id: -1,
-        });
+    if (this.state.content !== '') {
+      if (this.state.content.trim() === '') {
+        window.alert('공백 문자로만 이루어진 내용은 허용되지 않습니다.');
       } else {
-        this.props.onPostCurationComment({
-          curation_id: this.props.curation_id,
-          content: this.state.content,
-          parent_id: -1,
-        });
+        if (this.props.is_article) {
+          this.props.onPostComment({
+            article_id: this.props.article_id,
+            content: this.state.content.trim(),
+            parent_id: -1,
+          });
+        } else {
+          this.props.onPostCurationComment({
+            curation_id: this.props.curation_id,
+            content: this.state.content.trim(),
+            parent_id: -1,
+          });
+        }
+        this.setState({ content: '' });
       }
-      this.setState({ content: '' });
     } else {
-      window.alert('Content is empty.');
+      window.alert('내용을 반드시 입력하셔아 합니다.');
     }
   };
 

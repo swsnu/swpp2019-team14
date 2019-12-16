@@ -91,8 +91,8 @@ class AddLibraryModal extends Component {
 
   save = () => {
     let title_books_dict = {
-      title: this.state.title,
-      books: this.state.books,
+      title: this.state.title.trim(),
+      books: this.state.books.trim(),
     };
     if (this.state.mode === 'ADD') this.props.onSaveLibrary(title_books_dict);
     else this.props.onEditLibrary(this.props.id, title_books_dict);
@@ -117,7 +117,7 @@ class AddLibraryModal extends Component {
     const saveButton = (
       <Button
         onClick={this.save}
-        disabled={this.state.title == ''}
+        disabled={this.state.title.trim() === ''}
         color="green"
       >
         <Icon name="checkmark" />

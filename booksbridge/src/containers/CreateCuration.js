@@ -24,21 +24,26 @@ class CreateCuration extends Component {
       window.alert('책을 한 권 이상 선택해야 합니다.');
     } else if (this.state.title === '' || this.state.content === '') {
       window.alert('제목과 내용을 반드시 입력해야 합니다.');
+    } else if (
+      (this.state.title !== '' && this.state.title.trim() === '') ||
+      (this.state.content !== '' && this.state.content.trim() === '')
+    ) {
+      window.alert('공백 문자로만 이루어진 제목이나 내용은 허용되지 않습니다.');
     } else {
       if (
         this.props.match.params.username &&
         this.props.match.params.curation_id
       ) {
         this.props.onEditCuration({
-          title: this.state.title,
-          content: this.state.content,
+          title: this.state.title.trim(),
+          content: this.state.content.trim(),
           isbn_content_pairs: this.state.bookInCuration,
           curation_id: this.props.match.params.curation_id,
         });
       } else {
         this.props.onPostCuration({
-          title: this.state.title,
-          content: this.state.content,
+          title: this.state.title.trim(),
+          content: this.state.content.trim(),
           isbn_content_pairs: this.state.bookInCuration,
         });
       }
