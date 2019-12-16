@@ -41,6 +41,7 @@
   font-size: 0.85714286em !important;
 }
 .MainArticleTitle {
+  word-wrap:break-word;
   font-family: 'NanumSquare', sans-serif;
   font-weight: 700;
   padding-bottom: 5px;

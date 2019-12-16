@@ -169,7 +169,7 @@ export const getSpecificArticle = id => dispatch =>
     )
     .catch(err => {
       if (err.response.status === 404) {
-        alert('404: 찾으려는 리뷰가 없어요... 삭제되었나 봐요 :(');
+        alert('해당 리뷰가 존재하지 않습니다.');
         dispatch(push('/main/'));
       }
     });
@@ -281,7 +281,7 @@ export const getSpecificCuration = id => dispatch =>
     )
     .catch(err => {
       if (err.response.status === 404) {
-        alert('404: 찾으려는 큐레이션이 없어요... 삭제되었나 봐요 :(');
+        alert('해당 큐레이션은 존재하지 않습니다.');
         dispatch(push('/curation/'));
       }
     });
