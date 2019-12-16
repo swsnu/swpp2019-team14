@@ -101,9 +101,9 @@ class UserPage extends Component {
         : parseInt(this.props.CurationLength / 5) + 1;
 
     let BookFinal =
-      like_books.length % 6 === 0
-        ? like_books.length / 6
-        : parseInt(like_books.length / 6) + 1;
+      like_books.length % 5 === 0
+        ? like_books.length / 5
+        : parseInt(like_books.length / 5) + 1;
 
     let BookmarkFinal =
       this.props.BookmarkLength % 5 === 0
@@ -208,8 +208,8 @@ class UserPage extends Component {
 
     let slicedBooks = [];
     slicedBooks = like_books.slice(
-      (this.state.activeBookPage - 1) * 6,
-      this.state.activeBookPage * 6,
+      (this.state.activeBookPage - 1) * 5,
+      this.state.activeBookPage * 5,
     );
 
     const likebooks = slicedBooks.map(book => {
