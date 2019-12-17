@@ -18,12 +18,17 @@ const ReplyUnit = props => {
       <div className="CommentDeleteButton">
         <Icon
           name="pencil"
+          id="edit-reply-icon"
           onClick={() => {
             showEditForm(!onEdit);
             handleInput(props.content);
           }}
         />
-        <Icon name="delete" onClick={() => props.DeleteHandler(props.id)} />
+        <Icon
+          name="delete"
+          id="reply-delete-icon"
+          onClick={() => props.DeleteHandler(props.id)}
+        />
       </div>
     ) : null;
 
@@ -60,6 +65,7 @@ const ReplyUnit = props => {
       <div className="ReplyButton">
         <Button
           className="ReplyButton"
+          id="edit-reply-button"
           content="답글 수정"
           labelPosition="right"
           icon="edit"

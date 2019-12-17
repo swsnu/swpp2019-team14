@@ -221,7 +221,6 @@ describe('<CurationDetailPage/>', () => {
       </Provider>
     );
     const component = mount(page3);
-    console.log(component.debug());
     const button = component.find('#redirect-delete-curation').at(0);
     button.simulate('click');
     expect(spyDeleteCuration).toHaveBeenCalledTimes(1);
