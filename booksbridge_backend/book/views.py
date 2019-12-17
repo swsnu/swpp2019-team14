@@ -88,7 +88,7 @@ def photo_upload(request):
 
 
 def signin(request):
-    if request.COOKIES.get('username') is not None:
+    if request.method == 'POST' and isinstance(request.COOKIES.get('username'), str) and request.COOKIES.get('username') != '':
         username = request.COOKIES.get('username')
         password = request.COOKIES.get('password')
         user = authenticate(request, username=username, password=password)
@@ -403,7 +403,8 @@ def alarm(request):
                 alarm_dict['link'] = '/page/' + author_username
             elif alarm.category == 'curation':
                 alarm_dict['link'] = '/curation/' + alarm.link_id
-            elif alarm.category == 'article':
+            #elif alarm.category == 'article':
+            else:
                 alarm_dict['link'] = '/review/' + alarm.link_id
             if alarm.content == 'follow':
                 alarm_dict['content'] = author_name+'님이 회원님을 팔로우합니다.'
@@ -444,7 +445,8 @@ def alarm(request):
                 alarm_dict['link'] = '/page/' + author_username
             elif alarm.category == 'curation':
                 alarm_dict['link'] = '/curation/' + alarm.link_id
-            elif alarm.category == 'article':
+            #elif alarm.category == 'article':
+            else:
                 alarm_dict['link'] = '/review/' + alarm.link_id
             if alarm.content == 'follow':
                 alarm_dict['content'] = author_name+'님이 회원님을 팔로우합니다.'
@@ -689,11 +691,11 @@ def curation(request):
         book_content_list=[]
 
         for book_in_curation in BookInCuration.objects.filter(curation=curation):
-            if book_in_curation.book.isbn not in list(map(lambda pair: pair['isbn'], isbn_content_list)):
+            if str(book_in_curation.book.isbn) not in list(map(lambda pair: str(pair['isbn']), isbn_content_list)):
                 book_in_curation.delete()
 
         for isbn_content_pair in isbn_content_list:
-            if isbn_content_pair['isbn'] not in list(map(lambda book_in_curation: book_in_curation.book.isbn, BookInCuration.objects.filter(curation=curation))):
+            if str(isbn_content_pair['isbn']) not in list(map(lambda book_in_curation: str(book_in_curation.book.isbn), BookInCuration.objects.filter(curation=curation))):
                 _book = Book.objects.get(isbn=isbn_content_pair['isbn'])
                 BIC = BookInCuration(curation=curation, book=_book, content=isbn_content_pair['content'])
                 BIC.save()
