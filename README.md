@@ -4,6 +4,9 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=swsnu_swpp2019-team14&metric=alert_status&kill_cache=1&service=github&style=flat-square)](https://sonarcloud.io/dashboard?id=swsnu_swpp2019-team14)
 [![Coverage Status](https://coveralls.io/repos/github/swsnu/swpp2019-team14/badge.svg?branch=master)](https://coveralls.io/github/swsnu/swpp2019-team14?branch=master)
 
+**Click in coverage badge and you can find higher coverage. Due to reasons unknown, actual coverage number does not appear in the badge** 
+
+
 ## www.booksbridge.online
 
 
