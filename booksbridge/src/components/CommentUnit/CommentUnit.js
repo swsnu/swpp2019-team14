@@ -82,6 +82,7 @@ class CommentUnit extends Component {
         <div className="CommentDeleteButton">
           <Icon
             name="pencil"
+            id="pencil-button"
             onClick={() =>
               this.setState({
                 onEdit: !this.state.onEdit,
@@ -90,6 +91,7 @@ class CommentUnit extends Component {
             }
           />
           <Icon
+            id="delete-button"
             name="delete"
             onClick={() => this.onClickDeleteComment(this.props.id)}
           />
@@ -151,6 +153,7 @@ class CommentUnit extends Component {
         />
         <div className="ReplyButton">
           <Button
+            id="edit-button"
             className="ReplyButton"
             content="댓글 수정"
             labelPosition="right"
