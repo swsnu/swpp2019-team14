@@ -77,7 +77,10 @@ class BookDetail extends Component {
     const like_or_not = like_users.some(test); //true or false
 
     const LikeButton = (
-      <div onClick={() => this.onClickLikeBookButton(like_or_not, isbn)}>
+      <div
+        id="like-book-button"
+        onClick={() => this.onClickLikeBookButton(like_or_not, isbn)}
+      >
         <Button as="div" labelPosition="right">
           {like_or_not ? (
             <Button className="BookLikeButton" color="black">
