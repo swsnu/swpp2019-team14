@@ -186,4 +186,55 @@ describe('<UserInfo />', () => {
     component.find('img.EditConfirmButtonImage').simulate('click');
     expect(spyEditProfile).toBeCalledTimes(1);
   });
+
+  it('should edit my profile pic', () => {
+    userinfo = (
+      <Provider store={mypage}>
+        <ConnectedRouter history={history}>
+          <UserInfo
+            logged_in_user={MypageState.logged_in_user}
+            profile_user={MypageState.profile_user}
+          />
+        </ConnectedRouter>
+      </Provider>
+    );
+    const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+    const component = mount(userinfo);
+    component.find('img.EditButtonImage').simulate('click');
+    component
+      .find('img.ProfilePicture')
+      .at(0)
+      .simulate('click');
+  });
+
+  it('should not edit profile with invalid input', () => {
+    userinfo = (
+      <Provider store={mypage}>
+        <ConnectedRouter history={history}>
+          <UserInfo
+            logged_in_user={MypageState.logged_in_user}
+            profile_user={MypageState.profile_user}
+          />
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(userinfo);
+    component.find('img.EditButtonImage').simulate('click');
+    component.find('img.EditConfirmButtonImage').simulate('click');
+    const nicknameform = component.find('input.NicknameForm');
+    const commentform = component.find('textarea.commentForm');
+    nicknameform.simulate('change', { target: { value: '   ' } });
+    component.find('img.EditConfirmButtonImage').simulate('click');
+    nicknameform.simulate('change', { target: { value: '' } });
+    component.find('img.EditConfirmButtonImage').simulate('click');
+    nicknameform.simulate('change', { target: { value: 'aaaaaaaaaaaaaaa' } });
+    component.find('img.EditConfirmButtonImage').simulate('click');
+    commentform.simulate('change', {
+      target: {
+        value:
+          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      },
+    });
+    component.find('img.EditConfirmButtonImage').simulate('click');
+  });
 });
