@@ -59,12 +59,12 @@
   }
   .left-page {
     width: 100%;
+    flex: auto;
     flex-basis: 55%;
     height: 55%;
     margin-left: 0px !important;
     overflow: hidden;
     margin-right: 0px !important;
-    flex: auto;
   }
   .selected-book-tab {
     padding-bottom: 10px !important;
