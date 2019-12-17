@@ -8,24 +8,23 @@ import { Provider } from 'react-redux';
 import { connectRouter, ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
+const user = {
+  id: '0',
+  username: 'USERNAME',
+  nickname: 'NICKNAME',
+  profile_photo: 'url',
+  profile_text: 'PROFILE COMMENT',
+  like_books: [],
+};
+
 const stubInitialState = {
-  logged_in_user: {
-    id: '0',
-    username: 'USERNAME',
-    nickname: 'NICKNAME',
-    profile_photo: 'url',
-    profile_text: 'PROFILE COMMENT',
-  },
-  profile_user: {
-    id: '0',
-    username: 'USERNAME',
-    nickname: 'NICKNAME',
-    profile_photo: 'url',
-    profile_text: 'PROFILE COMMENT',
-    like_books: [],
-  },
+  logged_in_user: user,
+  profile_user: user,
   articlesByUserID: [
     {
+      logged_in_user: user,
+      profile_user: user,
+      author: user,
       book_title: 'BOOK1',
       title: 'TITLE1',
       content: 'CONTENT1',
@@ -53,12 +52,9 @@ const stubInitialState = {
   curationsByUserID: [
     {
       id: 1,
-      author: {
-        id: 2,
-        username: 'TEST_USER',
-        profile_photo: '',
-        nickname: 'TEST_USER',
-      },
+      logged_in_user: user,
+      profile_user: user,
+      author: user,
       books: [
         {
           book: {
@@ -79,7 +75,7 @@ const stubInitialState = {
   ],
   bookmarks: [
     {
-      author: { username: 'test' },
+      author: user,
       book_title: 'BOOK1',
       title: 'TITLE1',
       content: 'CONTENT1',
@@ -95,7 +91,12 @@ const stubInitialState = {
 const mockStore = getMockStore(stubInitialState);
 
 describe('<UserPage />', () => {
-  let userpage, spyGetUser, spyGetReviews, spyGetFollows;
+  let userpage,
+    spyGetUser,
+    spyGetReviews,
+    spyGetFollows,
+    deleteArticle,
+    deleteCuration;
   beforeEach(() => {
     userpage = (
       <Provider store={mockStore}>
@@ -119,6 +120,18 @@ describe('<UserPage />', () => {
       .mockImplementation(() => {
         return dispatch => {};
       });
+
+    deleteCuration = jest
+      .spyOn(actionCreators, 'deleteSpecificCuration')
+      .mockImplementation(() => {
+        return dispatch => {};
+      });
+
+    deleteArticle = jest
+      .spyOn(actionCreators, 'deleteSpecificArticle')
+      .mockImplementation(() => {
+        return dispatch => {};
+      });
   });
 
   it('should render user page without errors', () => {
@@ -137,5 +150,43 @@ describe('<UserPage />', () => {
       .find('PaginationItem[content=2]')
       .at(0)
       .simulate('click');
+  });
+
+  it('should edit review', () => {
+    const component = mount(userpage);
+    const wrapper = component.find('.UserPage');
+    const edit_button = wrapper.find('#edit-review-button').at(1);
+    edit_button.simulate('click');
+  });
+
+  it('should edit curation', () => {
+    const component = mount(userpage);
+    const wrapper = component.find('.UserPage');
+    const edit_button = wrapper.find('#edit-curation-button').at(1);
+    edit_button.simulate('click');
+  });
+
+  it('should delete review', () => {
+    const component = mount(userpage);
+    const wrapper = component.find('.UserPage');
+    const delete_button = wrapper.find('#delete-review-button').at(1);
+    delete_button.simulate('click');
+    const confirm = component.find('Button[content="취소"]').at(0);
+    confirm.simulate('click');
+    delete_button.simulate('click');
+    const delete_confirm = component.find('Button[content="삭제"]').at(0);
+    delete_confirm.simulate('click');
+  });
+
+  it('should delete curation', () => {
+    const component = mount(userpage);
+    const wrapper = component.find('.UserPage');
+    const delete_button = wrapper.find('#delete-curation-button').at(1);
+    delete_button.simulate('click');
+    const confirm = component.find('Button[content="취소"]').at(0);
+    confirm.simulate('click');
+    delete_button.simulate('click');
+    const delete_confirm = component.find('Button[content="삭제"]').at(0);
+    delete_confirm.simulate('click');
   });
 });

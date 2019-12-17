@@ -44,7 +44,7 @@ const UserReviewSummary = props => {
                       className="ReviewEditIcon"
                       href={'/review/edit/' + props.id}
                     >
-                      <Icon name="pencil" />
+                      <Icon id="edit-review-button" name="pencil" />
                     </a>
                   }
                 />
@@ -52,7 +52,11 @@ const UserReviewSummary = props => {
                   content="삭제"
                   position={'top center'}
                   trigger={
-                    <Icon name="delete" onClick={() => openConfirm(true)} />
+                    <Icon
+                      id="delete-review-button"
+                      name="delete"
+                      onClick={() => openConfirm(true)}
+                    />
                   }
                 />
               </div>

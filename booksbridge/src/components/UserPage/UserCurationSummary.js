@@ -9,7 +9,6 @@ const UserCurationSummary = props => {
     props.deleteHandler(props.id);
   };
 
-  if (props.books.length === 0) return null;
   let books_title =
     props.books[0].book.title + ' 등 총 ' + props.books.length + '권';
   return (
@@ -46,7 +45,7 @@ const UserCurationSummary = props => {
                         '/edit/'
                       }
                     >
-                      <Icon name="pencil" />
+                      <Icon id="edit-curation-button" name="pencil" />
                     </a>
                   }
                 />
@@ -54,7 +53,11 @@ const UserCurationSummary = props => {
                   content="삭제"
                   position={'top center'}
                   trigger={
-                    <Icon name="delete" onClick={() => openConfirm(true)} />
+                    <Icon
+                      id="delete-curation-button"
+                      name="delete"
+                      onClick={() => openConfirm(true)}
+                    />
                   }
                 />
               </div>
