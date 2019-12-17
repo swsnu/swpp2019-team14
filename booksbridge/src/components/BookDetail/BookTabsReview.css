@@ -22,7 +22,6 @@
     color: black !important;
 }
 .ReviewContent{
-    display: block;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 7.5rem;
