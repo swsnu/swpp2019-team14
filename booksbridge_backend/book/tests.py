@@ -17,6 +17,13 @@ class BookTestCase(TestCase):
         book2.save()
         book3 = Book(isbn='9780131103627', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
         book3.save()
+        book4 = Book(isbn='9780131103628', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
+        book4.save()
+        book5 = Book(isbn='9780131103629', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
+        book5.save()
+        book6 = Book(isbn='9780131103630', title='I Love SWPP!', contents='contents', url='url', thumbnail='thumbnail', authors='authors', publisher='publishers', published_date='published_date')
+        book6.save()
+
         client = Client()
 
         # Create user
@@ -59,6 +66,11 @@ class BookTestCase(TestCase):
                         'is_spoiler': False,
                     }),
                     content_type='application/json')
+
+        # Article Like
+        response = client.post('/api/like/article/1/',
+                               json.dumps({}),
+                               content_type='application/json')
 
         # Library registration
         client.post('/api/library/9999/',
@@ -196,6 +208,32 @@ class BookTestCase(TestCase):
         self.assertIsNotNone(response.content)
         self.assertEqual(response.status_code, 200)
 
+        # Sign out
+        client.get('/api/sign_out/',
+                   content_type='application/json')
+
+        # POST with auto login
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John',
+                                   'password': 'mypassword',
+                                   'auto_login': True,
+                               }),
+                               content_type='application/json')
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 200)
+
+        # POST with cookie
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'John',
+                                   'password': 'mypassword',
+                                   'auto_login': True,
+                               }),
+                               content_type='application/json')
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 200)
+
         # PUT
         response = client.put('/api/sign_in/',
                               json.dumps({
@@ -205,6 +243,7 @@ class BookTestCase(TestCase):
                               }),
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)
+
 
         # DELETE
         response = client.delete('/api/sign_in/',
@@ -470,12 +509,6 @@ class BookTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        """
-        # GET on bs query
-        response = client.get('/api/book/' + parse.quote('some random bs') + '/1/',
-                              content_type='application/json')
-
-        self.assertEqual(response.status_code, 200)"""
 
         # POST
         response = client.post('/api/book/' + parse.quote('The Norton Anthology') + '/1/',
@@ -743,7 +776,7 @@ class BookTestCase(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-        # POST
+        # POST with long
         response = client.post('/api/article/',
                               json.dumps({
                                    'isbn': '9780393912470',
@@ -751,6 +784,22 @@ class BookTestCase(TestCase):
                                    'content': 'test_content',
                                    'is_long': True,
                                    'is_short': False,
+                                   'is_phrase': False,
+                                   'is_spoiler': False,
+                              }),
+                              content_type='application/json')
+
+        self.assertIsNotNone(response.content)
+        self.assertEqual(response.status_code, 201)
+
+        # POST with non-long
+        response = client.post('/api/article/',
+                              json.dumps({
+                                   'isbn': '9780393912470',
+                                   'title': 'test_title',
+                                   'content': 'test_content',
+                                   'is_long': False,
+                                   'is_short': True,
                                    'is_phrase': False,
                                    'is_spoiler': False,
                               }),
@@ -845,11 +894,13 @@ class BookTestCase(TestCase):
         # POST
         response = client.post('/api/curation/',
                                json.dumps({
-                                   'title': 'test_title',
+                                   'title': 'test_title2',
                                    'content': 'test_content',
                                    'isbn_content_pairs': [
+                                       {'isbn': '9780393912470', 'content':'test_content1'},
                                        {'isbn': '9780140447934', 'content':'test_content2'},
                                        {'isbn': '9780131103627', 'content':'test_content3'},
+                                       {'isbn': '9780131103628', 'content':'test_content3'},
                                    ],
                                }),
                                content_type='application/json')
@@ -887,18 +938,20 @@ class BookTestCase(TestCase):
         # PUT
         response = client.put('/api/curation/',
                               json.dumps({
-                                  'title': 'test_title',
+                                  'title': 'test_title_put',
                                   'content': 'test_content',
                                   'isbn_content_pairs': [
-                                      {'isbn': '9780393912470', 'content':'test_content1'},
                                       {'isbn': '9780140447934', 'content':'test_content2'},
+                                      {'isbn': '9780131103628', 'content':'test_content3'},
+                                      {'isbn': '9780131103629', 'content':'test_content3'},
+                                      {'isbn': '9780131103630', 'content':'test_content3'},
                                   ],
                                   'curation_id': 3,                                  
                               }),
                               content_type='application/json')
 
         self.assertEqual(response.status_code, 201)
-
+            
         # Disallowed request
         response = client.patch('/api/curation/',
                                 content_type='application/json')
@@ -1308,6 +1361,103 @@ class BookTestCase(TestCase):
 
         self.assertEqual(response.status_code, 405)
     
+
+    def test_specific_comment(self):
+        # Initialize
+        client = Client()
+        self.pretest(client, '/api/comment/article/1/')
+
+        # Another user creation
+        user2 = User.objects.create_user(
+            email='jbg@snu.ac.kr',
+            username='JBG',
+            password='mypassword')
+
+        Profile.objects.create(user=user2) 
+
+        # Comment registration
+        response = client.post('/api/comment/article/',
+                               json.dumps({
+                                    'article_id': 1,
+                                    'content': 'test_comment',
+                                    'parent_id': None
+                               }),
+                               content_type='application/json')
+
+        # PUT with KeyError
+        response = client.put('/api/comment/article/1/',
+                               json.dumps({
+                                    'key': 'value',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 400)
+
+        # PUT
+        response = client.put('/api/comment/article/1/',
+                               json.dumps({
+                                    'content': 'test_comment1',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+
+        # DELETE
+        response = client.delete('/api/comment/article/1/',
+                               json.dumps({
+                                    'content': 'test_comment1',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+
+        # Sign out
+        client.get('/api/sign_out/',
+                   content_type='application/json')
+
+        # User 2 sign-in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'JBG',
+                                   'password': 'mypassword',
+                                   'auto_login': False,
+                               }),
+                               content_type='application/json')
+
+        # Article comment by user 2
+        response = client.post('/api/comment/article/',
+                               json.dumps({
+                                    'article_id': 1,
+                                    'content': 'test_comment',
+                                    'parent_id': None
+                               }),
+                               content_type='application/json')
+
+        # PUT with no permission
+        response = client.put('/api/comment/article/1/',
+                               json.dumps({
+                                    'content': 'test_comment1',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 403)
+
+        # DELETE with no permission
+        response = client.delete('/api/comment/article/1/',
+                               json.dumps({
+                                    'content': 'test_comment1',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 403)
+
+        # Disallowed request
+        response = client.patch('/api/comment/article/1/',
+                                content_type='application/json')
+
+        self.assertEqual(response.status_code, 405)
+
+
     def test_specific_curation(self):
         # Initialize
         client = Client()
@@ -1326,10 +1476,106 @@ class BookTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        # disallowed requests 
+        # Disallowed requests 
         response = client.post('/api/curation/1/',
                                  content_type='application/json')
         self.assertEqual(response.status_code, 405)                        
+
+
+    def test_specific_curation_comment(self):
+        # Initialize
+        client = Client()
+        self.pretest(client, '/api/comment/curation/1/')
+
+        # Another user creation
+        user2 = User.objects.create_user(
+            email='jbg@snu.ac.kr',
+            username='JBG',
+            password='mypassword')
+
+        Profile.objects.create(user=user2) 
+
+        # Comment registration
+        response = client.post('/api/comment/curation/',
+                               json.dumps({
+                                    'curation_id': 1,
+                                    'content': 'test_comment',
+                                    'parent_id': None
+                               }),
+                               content_type='application/json')
+
+        # PUT with KeyError
+        response = client.put('/api/comment/curation/1/',
+                               json.dumps({
+                                    'key': 'value',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 400)
+
+        # PUT
+        response = client.put('/api/comment/curation/1/',
+                               json.dumps({
+                                    'content': 'test_comment1',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+
+        # DELETE
+        response = client.delete('/api/comment/curation/1/',
+                               json.dumps({
+                                    'content': 'test_comment1',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+
+        # Sign out
+        client.get('/api/sign_out/',
+                   content_type='application/json')
+
+        # User 2 sign-in
+        response = client.post('/api/sign_in/',
+                               json.dumps({
+                                   'username': 'JBG',
+                                   'password': 'mypassword',
+                                   'auto_login': False,
+                               }),
+                               content_type='application/json')
+
+        # Article comment by user 2
+        response = client.post('/api/comment/curation/',
+                               json.dumps({
+                                    'article_id': 1,
+                                    'content': 'test_comment',
+                                    'parent_id': None
+                               }),
+                               content_type='application/json')
+
+        # PUT with no permission
+        response = client.put('/api/comment/curation/1/',
+                               json.dumps({
+                                    'content': 'test_comment1',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 403)
+
+        # DELETE with no permission
+        response = client.delete('/api/comment/curation/1/',
+                               json.dumps({
+                                    'content': 'test_comment1',
+                               }),
+                               content_type='application/json')
+
+        self.assertEqual(response.status_code, 403)
+
+        # Disallowed request
+        response = client.patch('/api/comment/curation/1/',
+                                 content_type='application/json')
+        self.assertEqual(response.status_code, 405)          
+
 
     def test_search_curation(self):
         # Initialize
@@ -1728,6 +1974,11 @@ class BookTestCase(TestCase):
         client = Client()
         self.pretest(client, '/api/image/profile/')
 
+        # Like a book
+        response = client.post('/api/like/book/9780393912470/',
+                               json.dumps({}),
+                               content_type='application/json')
+
         # POST 
         with open('sapiens.jpg', 'rb') as f:
             response = client.post('/api/image/profile/', { 'image': f})
@@ -1968,6 +2219,14 @@ class BookTestCase(TestCase):
                                }),
                                content_type='application/json')
 
+        # Follow by user 1
+        response = client.post('/api/follow/user_id=3/',
+                               content_type='application/json') 
+
+        # Like a book
+        response = client.post('/api/like/book/9780393912470/',
+                               json.dumps({}),
+                               content_type='application/json')
 
         # Sign out
         client.get('/api/sign_out/',
@@ -2017,7 +2276,19 @@ class BookTestCase(TestCase):
         # Follow by user 2
         response = client.post('/api/follow/user_id=2/',
                                content_type='application/json') 
-        self.assertEqual(response.status_code, 401)
+
+        # Article by user 2
+        client.post('/api/article/',
+                    json.dumps({
+                        'isbn': '9780393912470',
+                        'title': 'test_title1',
+                        'content': 'test_content1',
+                        'is_long': True,
+                        'is_short': False,
+                        'is_phrase': False,
+                        'is_spoiler': False,
+                    }),
+                    content_type='application/json')
 
         # Sign out
         client.get('/api/sign_out/',
@@ -2036,13 +2307,19 @@ class BookTestCase(TestCase):
         response = client.get('/api/alarm/',
                               content_type='application/json')
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 200)
+
+        # PUT
+        response = client.put('/api/alarm/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
 
         # Disallowed request
         response = client.patch('/api/alarm/',
                                 content_type='application/json')
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 405)
         
 
     def test_speicific_alarm(self):
@@ -2100,8 +2377,46 @@ class BookTestCase(TestCase):
         response = client.put('/api/alarm/1/',
                                content_type='application/json')
         
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 200)
 
         # Disallowed request
         response = client.patch('/api/alarm/1/',
                                 content_type='application/json')
+                        
+        self.assertEqual(response.status_code, 405)
+
+    
+    def test_bookmark(self):
+        # Initialize
+        client = Client()
+        self.pretest(client, '/api/like/articles/Fourteen/1/')
+
+        # GET
+        response = client.get('/api/like/articles/Fourteen/1/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+
+        # Disallowed request
+        response = client.patch('/api/like/articles/Fourteen/1/',
+                                content_type='application/json')
+
+        self.assertEqual(response.status_code, 405)
+
+
+    def test_curation_bookmark(self):
+        # Initialize
+        client = Client()
+        self.pretest(client, '/api/like/curations/Fourteen/1/')
+
+        # GET
+        response = client.get('/api/like/curations/Fourteen/1/',
+                              content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+
+        # Disallowed request
+        response = client.patch('/api/like/curations/Fourteen/1/',
+                                content_type='application/json')
+
+        self.assertEqual(response.status_code, 405)
